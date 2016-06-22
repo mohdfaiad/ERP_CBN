@@ -855,10 +855,6 @@ inherited frmCadastroCliente: TfrmCadastroCliente
       ImageIndex = 1
       OnEnter = TabSheet2Enter
       OnExit = TabSheet2Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 24
         Top = 17
@@ -1827,7 +1823,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
