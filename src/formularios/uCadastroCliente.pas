@@ -291,7 +291,6 @@ begin
   memObs.Clear;
   cbxFuncionario.ItemIndex := -1;
   edtCodigoEndereco.Text := '0';
-  edtCodigoEndereco.Text   := '0';
 end;
 
 procedure TfrmCadastroCliente.btnCancelarClick(Sender: TObject);
