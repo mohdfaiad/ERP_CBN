@@ -1,0 +1,394 @@
+unit Funcoes;
+
+interface
+
+uses Controls, Printers;
+
+function substituiString(S, localizar, substituir :String): String;
+
+{ ******* FUN«’ES / VALORES *******}
+function arredonda(valor :Real; const considerar_casas :integer = 2) :Real;
+
+{ ******* FUN«’ES / BANCO DE DADOS *******}
+function Maior_Valor_Cadastrado(Tabela, campo :String): String;
+function Campo_por_campo(Tabela, campo_procurado, campo_referencia, valor_campo_referencia :String;
+          const campo_referencia2 :String = ''; const valor_referencia2 :String = '') :String;
+
+{ ******* FUN«’ES / FISCAL *******}
+function CFOP_entrada(codigo_natureza :integer) :Boolean;
+function buscaCFOPCorrespondente(CFOP: String): String;
+function CFOP_por_codigo_natureza(codigo_natureza :integer) :String;
+function Codigo_natureza_por_CFOP(CFOP :String) :String;
+function retorna_estado(const codigo_estado :integer = 0; const uf :String = ''):Variant;
+
+{ ******* FUN«’ES / DATA-HORA *******}
+function SegundosToTime( Segundos : Cardinal ) : String;
+function TimeToSegundos( hora :TTime): Cardinal;
+Function DataExt(Data: TDate): String;
+function RemoveAcento(Str: string): string;
+
+procedure executa_SQL(SQL :STring);
+procedure EmiteSomErro;
+function impressoraPadrao:String;
+
+
+implementation
+
+uses StrUtils, Windows, SysUtils, Types, Math, Dialogs, uModulo, DateUtils, Forms, MMSystem;
+
+function RemoveAcento(Str: string): string;
+const ComAcento = '‡‚ÍÙ˚„ı·ÈÌÛ˙Á¸¿¬ ‘€√’¡…Õ”⁄‹';
+      SemAcento = 'aaeouaoaeioucuAAEOUAOAEIOUU';
+var x: Integer;
+begin
+  for x := 1 to Length(Str) do
+    if Pos(Str[x],ComAcento) <> 0 then
+      Str[x] := SemAcento[Pos(Str[x], ComAcento)];
+
+  Result := Str;
+end;
+
+function impressoraPadrao:String;
+begin
+  Result := IfThen(pos('\\',Printer.Printers[Printer.PrinterIndex]) > 0,'','\\localhost\' )+ Printer.Printers[Printer.PrinterIndex];
+end;
+
+procedure executa_SQL(SQL :String);
+begin
+  dm.qryGenerica.Close;
+  dm.qryGenerica.SQL.Text := SQL;
+  dm.qryGenerica.ExecSQL;
+end;
+
+function Codigo_natureza_por_CFOP(CFOP :String) :String;
+begin
+  Result := '';
+  Result := Campo_por_campo('NATUREZAS_OPERACAO', 'CODIGO', 'CFOP', CFOP);
+
+  if Result = '' then  raise  Exception.Create('CFOP inv·lido ou n„o cadastrado!');
+end;
+
+procedure EmiteSomErro;
+begin
+  if FileExists(ExtractFilePath( Application.ExeName )+'\ERRO.wav') then
+    PlaySound(PChar(ExtractFilePath( Application.ExeName )+'\ERRO.wav'), 1, SND_ASYNC);
+end;
+
+function CFOP_por_codigo_natureza(codigo_natureza :integer) :String;
+begin
+  Result := '';
+  Result := Campo_por_campo('NATUREZAS_OPERACAO', 'CFOP', 'CODIGO', intToStr(codigo_natureza));
+
+  if Result = '' then  raise  Exception.Create('CÛdigo da Natureza de operaÁ„o inv·lido.');
+
+end;
+
+Function DataExt(Data: TDate): String;
+Var Ano, dia, mes :Word;
+    DiaRet, MesRet: String;
+begin
+  Try
+    DecodeDate(Data,Ano,Mes,Dia);
+    Case DayOfWeek(Data) Of
+      1: DiaRet := 'Domingo';
+      2: DiaRet := 'Segunda Feira';
+      3: DiaRet := 'TerÁa Feira';
+      4: DiaRet := 'Quarta Feira';
+      5: DiaRet := 'Quinta Feira';
+      6: DiaREt := 'Sexta Feira';
+      7: DiaRet := 'S·bado';
+    Else
+      DiaRet    := ''
+    end;
+
+    Case Mes Of
+      1 : MesRet := 'Janeiro';
+      2 : MesRet := 'Fevereiro';
+      3 : MesRet := 'MarÁo';
+      4 : MesRet := 'Abril';
+      5 : MesRet := 'Maio';
+      6 : MesRet := 'Junho';
+      7 : MesRet := 'Julho';
+      8 : MesRet := 'Agosto';
+      9 : MesRet := 'Setembro';
+      10: MesRet := 'Outubro';
+      11: MesRet := 'Novembro';
+      12: MesRet := 'Dezembro';
+    Else
+      MesRet := '';
+    end;
+
+    Result := DiaRet + ', ' + IntToStr(Dia) + ' de ' + MesRet + ' de ' + IntToStr(Ano);
+  except
+    Result := 'Data Inv·lida!'
+  end;
+end;
+
+function retorna_estado(const codigo_estado :integer; const uf :String):Variant;
+begin
+  if (uf = '') and (codigo_estado = 0) then
+    raise Exception.Create('Nenhum par‚metro v·lido foi informado');
+
+  if uf <> '' then
+    case AnsiIndexStr(UpperCase(uf),
+        ['AC','AL','AP','AM','BA','CE','DF','ES','RR','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','TO','SC','SP','SE']) of
+
+      0 : result :=  1;
+      1 : result :=  2;
+      2 : result :=  3;
+      3 : result :=  4;
+      4 : result :=  5;
+      5 : result :=  6;
+      6 : result :=  7;
+      7 : result :=  8;
+      8 : result :=  9;
+      9 : result := 10;
+     10 : result := 11;
+     11 : result := 12;
+     12 : result := 13;
+     13 : result := 14;
+     14 : result := 15;
+     15 : result := 16;
+     16 : result := 17;
+     17 : result := 18;
+     18 : result := 19;
+     19 : result := 20;
+     20 : result := 21;
+     21 : result := 22;
+     22 : result := 23;
+     23 : result := 24;
+     24 : result := 25;
+     25 : result := 26;
+     26 : result := 27;
+    end
+  else
+    case codigo_estado of
+
+      0 : result := 'AC';
+      1 : result := 'AL';
+      2 : result := 'AP';
+      3 : result := 'AM';
+      4 : result := 'BA';
+      5 : result := 'CE';
+      6 : result := 'DF';
+      7 : result := 'ES';
+      8 : result := 'RR';
+      9 : result := 'GO';
+     10 : result := 'MA';
+     11 : result := 'MT';
+     12 : result := 'MS';
+     13 : result := 'MG';
+     14 : result := 'PA';
+     15 : result := 'PB';
+     16 : result := 'PR';
+     17 : result := 'PE';
+     18 : result := 'PI';
+     19 : result := 'RJ';
+     20 : result := 'RN';
+     21 : result := 'RS';
+     22 : result := 'RO';
+     23 : result := 'TO';
+     24 : result := 'SC';
+     25 : result := 'SP';
+     26 : result := 'SE';
+    end;
+end;
+
+
+{ Recebe a quantidade de segundos e converte em TTime }
+function SegundosToTime( Segundos : Cardinal ) : String;
+var
+  Seg, Min, Hora: Cardinal;
+begin
+  Hora := Segundos div 3600;
+  Seg := Segundos mod 3600;
+  Min := Seg div 60;
+  Seg := Seg mod 60;
+
+  Result := FormatFloat(',00', Hora) + ':' +   
+  FormatFloat('00', Min) + ':' +
+  FormatFloat('00', Seg);
+end;
+
+function TimeToSegundos( hora :TTime): Cardinal;
+var hor, min, seg, milseg :Word;
+segundos :Cardinal;
+begin
+  DecodeTime(hora, hor, min, seg, milseg);
+
+  segundos := hor * 60;      { transformo hora em minutos }
+  segundos := segundos + min; { somo os minutos transformados com os ja existentes }
+  segundos := segundos * 60;  { transformo os minutos em segundos}
+  segundos := segundos + seg; { somo os segundos transformados com os ja existentes }
+
+  Result := segundos;
+end;
+
+{  Recebe um CFOP (de saÌda) e retorna o CÛdigo da Natureza de operaÁ„o do CFOP correspondente (de entrada)
+   ( se ele tiver equivalencia cadastrada na tabela CFOP_CORRESPONDENTE )                                   }
+function buscaCFOPCorrespondente(CFOP: String): String;
+var codigo_natureza :String;
+begin
+  codigo_natureza := campo_por_campo('NATUREZAS_OPERACAO','CODIGO','CFOP',CFOP);
+
+  Result := '';
+
+  if ( codigo_natureza <> '' ) then
+    Result          := Campo_por_campo('CFOP_CORRESPONDENTE', 'COD_CFOP_ENTRADA', 'COD_CFOP_SAIDA',codigo_natureza)
+  else
+    raise Exception.Create('CFOP '+ CFOP +' n„o cadastrado');
+end;
+
+function CFOP_entrada(codigo_natureza :integer) :Boolean;
+var CFOP :String;
+    primeiro_digito :integer;
+begin
+  CFOP := Campo_por_campo('NATUREZAS_OPERACAO', 'CFOP', 'CODIGO', intToStr(codigo_natureza));
+
+  if CFOP = '' then  raise  Exception.Create('CÛdigo da Natureza de operaÁ„o inv·lido.');
+  
+  primeiro_digito := strToInt( copy(CFOP,1,1) );
+
+  if primeiro_digito < 4 then  Result := true
+                         else  Result := false;
+end;
+
+function Campo_por_campo(Tabela, campo_procurado, campo_referencia, valor_campo_referencia :String;
+ const campo_referencia2 :String; const valor_referencia2 :String) :String;
+var segunda_condicao :String;
+begin
+  Result := '';
+
+  if campo_referencia2 <> '' then
+    segunda_condicao := ' AND '+campo_referencia2+' = :param2';
+
+  dm.qryGenerica.Close;
+  dm.qryGenerica.SQL.Text := 'SELECT first 1 '+campo_procurado+' FROM '+Tabela+
+                             ' WHERE '+campo_referencia+' = :param1'+
+                             segunda_condicao;
+
+  if strToIntDef(valor_campo_referencia, 0) > 0 then // se for numero
+    dm.qryGenerica.ParamByName('param1').AsInteger := strToInt(valor_campo_referencia)
+  else
+    dm.qryGenerica.ParamByName('param1').AsString  := valor_campo_referencia;
+
+  if campo_referencia2 <> '' then begin
+    if strToIntDef(valor_referencia2, 0) > 0 then // se for numero
+      dm.qryGenerica.ParamByName('param2').AsInteger := strToInt(valor_referencia2)
+    else
+      dm.qryGenerica.ParamByName('param2').AsString := valor_referencia2;
+
+  end;
+  dm.qryGenerica.Open;
+
+  if not dm.qryGenerica.IsEmpty then
+    Result := dm.qryGenerica.fieldByName(campo_procurado).AsString;
+end;
+
+//pode ser usada para recuperar ultimo registro cadastrado
+function Maior_Valor_Cadastrado(Tabela, campo :String): String;
+var alias :String;
+begin
+  alias := campo;
+   
+  if pos('(',campo) > 0 then begin
+    alias := copy(campo, pos('(',campo)+1, length(campo) );
+    alias := copy(alias, 1, pos(' ',alias)-1)
+  end;
+
+  dm.qryGenerica.Close;
+  dm.qryGenerica.SQL.Text := 'SELECT MAX('+campo+') as '+alias+' FROM '+Tabela+'';
+  dm.qryGenerica.Open;
+
+  Result := dm.qryGenerica.fieldByName(alias).AsString;
+end;
+
+//substitui parte da string informada
+function substituiString(S, localizar, substituir :String): String;
+var
+   Retorno: String;
+   Posicao: Integer;
+begin
+   Retorno := S;
+
+   Posicao := Pos (Localizar, Retorno);
+   if Posicao <> 0 then // Verificando se a substring Localizar existe.
+   begin
+      // Excluindo a Localizar.
+      Delete(Retorno, Posicao, Length (Localizar));
+      // Inserindo a string do par‚metro Substituir
+      Insert(Substituir, Retorno , Posicao);
+   end;
+
+  Result := Retorno;
+end;
+
+// ARREDONDA VALOR DUAS CASAS DECIMAIS (PARA CIMA OU PARA BAIXO)
+// EX: 1,2 = 1,0 | 1,3 = 1,5 | 1,7 = 1,5 | 1,8 = 2,0
+function arredonda(valor :Real; const considerar_casas :integer) :Real;
+var ultimaCasa :integer;
+    valorStr :String;
+    acrescenta :Real;
+    terceira_casa :Integer;
+begin
+  Result := 0;
+
+  if valor = 0 then
+    Exit;
+
+  if considerar_casas > 2 then begin
+     acrescenta    := 0.01;
+     terceira_casa := 0;
+
+     result         := Int(valor*1000)/1000; //corta para 3 casas
+
+  end
+  else begin
+
+    valorStr := formatFloat('0.00',valor);
+    ultimaCasa := strToInt( copy( valorStr, length( valorStr ) ,1) );
+
+    if ultimaCasa < 3 then  begin
+      Result := strToFloat( copy( valorStr, 1, length( valorStr ) -1 )+'0' );
+
+    end
+    else if ultimaCasa > 7 then begin
+      Result := strToFloat( copy( valorStr, 1, length( valorStr ) -1 )+'0' );
+      Result := Result + 0.1;
+    end
+    else
+      Result := strToFloat( copy( valorStr, 1, length( valorStr ) -1 )+'5' );
+
+  end;
+
+end;
+
+end.
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
