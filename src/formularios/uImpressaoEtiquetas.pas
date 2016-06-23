@@ -96,6 +96,8 @@ type
     RLDBMemo1: TRLDBMemo;
     RLDBMemo2: TRLDBMemo;
     qry: TFDQuery;
+    cdsTamOS: TIntegerField;
+    cdsImpOS: TIntegerField;
     procedure btnImprimirZebraClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridImpDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -119,6 +121,7 @@ type
     procedure rgTipoEtiquetaClick(Sender: TObject);
     procedure btnSelecionaClick(Sender: TObject);
     procedure btnImprimirLazerClick(Sender: TObject);
+    procedure cdsTamQtdeChange(Sender: TField);
   private
     fCor2       :String;
     fCor        :String;
@@ -196,7 +199,7 @@ procedure TfrmImpressaoEtiquetas.imprimir;
 var
   F: TextFile;
   i, x, lin3, lin6, coluna, margem, margem_logo :integer;
-  cor1, cor2, codbar, prod1, prod2, tam, ref, nomeLogo, codcor, site :String;
+  cor1, cor2, codbar, prod1, prod2, tam, ref, nomeLogo, codcor, site, os :String;
 begin
   nomeLogo := '';
   site     := 'www.babyduck.com.br';
@@ -210,9 +213,11 @@ begin
   lin3 := 015;  lin6 := 020;  margem_logo := 0;
 
   cdsimp.First;
-  while not cdsImp.Eof do begin
+  while not cdsImp.Eof do
+  begin
 
-    for x := 1 to cdsImpQTDE.AsInteger do begin
+    for x := 1 to cdsImpQTDE.AsInteger do
+    begin
 
       if      coluna = 1 then   margem := 260
       else if coluna = 2 then   margem := 545
@@ -229,24 +234,30 @@ begin
       prod2  := TRIM(copy(cdsImpPRODUTO.AsString,retornaIdQuebra(cdsImpPRODUTO.AsString,21,'L'),20));
       tam    := TRIM(cdsImpTAMANHO.AsString);
       ref    := TRIM(cdsImpREFERENCIA.AsString);
+      os     := cdsImpOS.AsString;
       nomeLogo := edtCaminho.Text;
 
       if nomeLogo <> '' then
-        memo1.Lines.Add('^FO'+intToStr(margem_logo)                     +',320^XGE:'+ nomeLogo +'.GRF^FS');
+        memo1.Lines.Add('^FO'+intToStr(margem_logo)                     +',325^XGE:'+ nomeLogo +'.GRF^FS');
 
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(cor1)*12))          +',079^ADI,15,12^FD'+cor1+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(codcor)*12))        +',077^A0I,30,24^FD'+codcor+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(cor2)*12))          +',057^ADI,15,12^FD'+cor2+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(lin3)                              +',162^ADI,15,12^FD'+codbar+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(prod1)*12))         +',137^ADI,15,12^FD'+prod1+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(prod2)*12))         +',112^ADI,15,12^FD'+prod2+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(lin6)                              +',187^BY1,3,12^BCI,90,N,N,N^FD'+codbar+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: ')*12))       +',032^ADI,15,12^FDTAM: ^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length(site)*12))          +',285^ADI,15,12^FD'+site+'^FS');
-      memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: '+tam)*12))   +',030^A0I,30,24^FD'+tam+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(cor1)*12))          +',078^ADI,15,12^FD'+cor1+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(codcor)*12))        +',076^A0I,30,24^FD'+codcor+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(cor2)*12))          +',056^ADI,15,12^FD'+cor2+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(lin3)                              +',160^ADI,15,12^FD'+codbar+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(prod1)*12))         +',136^ADI,15,12^FD'+prod1+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(prod2)*12))         +',111^ADI,15,12^FD'+prod2+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(lin6)                              +',180^BY1,3,12^BCI,90,N,N,N^FD'+codbar+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: ')*12))       +',031^ADI,15,12^FDTAM: ^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length(site)*12))          +',276^ADI,15,12^FD'+site+'^FS');
+      memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: '+tam)*12))   +',029^A0I,30,24^FD'+tam+'^FS');
       memo1.Lines.Add('^FO'+intToStr(margem-(length('REF: ')*12))       +',005^ADI,15,12^FDREF: ^FS');
       memo1.Lines.Add('^FO'+intToStr(margem-(length('REF: '+ref)*12))   +',003^A0I,30,24^FD'+ref+'^FS');
 
+      if os <> '0' then
+      begin
+        memo1.Lines.Add('^FO'+intToStr(margem-(length('OS ')*12))       +',292^ADI,15,12^FDOS ^FS');  
+        memo1.Lines.Add('^FO'+intToStr(margem-(length('OS '+os)*12))      +',292^ADI,15,12^FD'+os+'^FS');
+      end;
       lin3 := lin3 + 285;  lin6 := lin6 + 285;  margem_logo := margem_logo + 282;
 
       inc(coluna);
@@ -323,7 +334,7 @@ begin
     //cdsImpGRADE.AsString      := cdsTamGRADE.AsString;
     cdsImpTAMANHO.AsString    := cdsTamDESCRICAO.AsString;
     cdsImpQTDE.asInteger      := cdsTamQTDE.asInteger;
-
+    cdsImpOS.AsInteger        := cdsTamOS.AsInteger;
     cdsImp.Post;
 
     edtQtde.AsInteger := edtQtde.AsInteger + cdsImpQTDE.AsInteger;
@@ -420,6 +431,21 @@ procedure TfrmImpressaoEtiquetas.cdsTamAfterScroll(DataSet: TDataSet);
 begin
    if cdsTam.State in [dsInsert] then
     cdsTam.Cancel;
+
+   cdsTamOS.ReadOnly := (cdsTamQtde.AsInteger <= 0);
+end;
+
+procedure TfrmImpressaoEtiquetas.cdsTamQtdeChange(Sender: TField);
+begin
+  if (Sender.Value <= 0) then
+  begin
+    if cdsTamOS.AsInteger > 0 then
+      cdsTamOS.Clear;
+
+    cdsTamOS.ReadOnly := true;
+  end
+  else
+    cdsTamOS.ReadOnly := false;
 end;
 
 procedure TfrmImpressaoEtiquetas.btnLimpaClick(Sender: TObject);
