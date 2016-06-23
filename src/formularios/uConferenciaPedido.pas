@@ -567,6 +567,9 @@ begin
      btnSalvaCaixas.enabled   := Conferido;
 
      cdsItens.FindFirst;
+     chkTodos.Enabled := true;
+     chkConferidos.Enabled := true;
+     chkNaoConferidos.Enabled := true;
   end;
 
   if Conferido then
@@ -854,7 +857,6 @@ begin
    if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then
      ConferenciaPedido.Fim  := Date;
 
-
    cdsItensConferidos.First;
    if not assigned(ConferenciaPedido.Itens) then
      ConferenciaPedido.Itens := TObjectList.Create;
@@ -951,6 +953,11 @@ begin
 
   if cdsCaixas.Active         then  cdsCaixas.EmptyDataSet;
   if cdsSubstitutos.Active    then  cdsSubstitutos.EmptyDataSet;
+
+  chkTodos.Enabled := false;
+  chkConferidos.Enabled := false;
+  chkNaoConferidos.Enabled := false;
+  chkTodos.Checked := true;
 end;
 
 function TfrmConferenciaPedido.Conferencia_finalizada: Boolean;

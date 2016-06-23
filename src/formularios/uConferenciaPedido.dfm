@@ -4913,6 +4913,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Height = 17
         Anchors = [akRight, akBottom]
         Caption = 'Apenas n'#227'o conferidos'
+        Enabled = False
         TabOrder = 3
         OnClick = chkTodosClick
       end
@@ -4923,6 +4924,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Height = 17
         Anchors = [akRight, akBottom]
         Caption = 'Apenas conferidos'
+        Enabled = False
         TabOrder = 4
         OnClick = chkTodosClick
       end
@@ -4934,6 +4936,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Anchors = [akRight, akBottom]
         Caption = 'Todos'
         Checked = True
+        Enabled = False
         State = cbChecked
         TabOrder = 5
         OnClick = chkTodosClick
@@ -6514,7 +6517,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 289
     Bitmap = {
-      494C010104000900500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
