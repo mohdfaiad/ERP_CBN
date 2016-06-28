@@ -96,7 +96,8 @@ uses
   RepositorioCoresKit,
   RepositorioContaBanco,
   RepositorioNFCe,
-  RepositorioParametrosNFCe;
+  RepositorioParametrosNFCe,
+  RepositorioMovimento;
 
 
 { TFabricaRepositorio }
@@ -185,6 +186,7 @@ begin
    else if (NomeDaEntidade  = 'TContaBanco')                then result := TRepositorioContaBanco.Create
    else if (NomeDaEntidade  = 'TNFCe')                      then result := TRepositorioNFCe.Create
    else if (NomeDaEntidade  = 'TParametrosNFCe')            then result := TRepositorioParametrosNFCe.Create
+   else if (NomeDaEntidade  = 'TMovimento')                 then result := TRepositorioMovimento.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

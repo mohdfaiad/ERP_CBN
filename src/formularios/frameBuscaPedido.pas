@@ -31,6 +31,7 @@ type
     FBuscaParcial      :Boolean;
     FpermiteCancelado  :Boolean;
     FBuscaParaConferencia: Boolean;
+    FPedidosLoja: Boolean;
 
     procedure buscaPedido(codigo:String);
     procedure Setcodigo(const Value: integer);
@@ -52,6 +53,7 @@ type
     property pedido_faturado      :Boolean read FPedido_Faturado;
     property permiteCancelado     :Boolean read FpermiteCancelado write SetpermiteCancelado;
     property BuscaParaConferencia :Boolean read FBuscaParaConferencia write SetBuscaParaConferencia;
+    property pedidosLoja          :Boolean read FPedidosLoja     write FPedidosLoja;
     
     procedure limpa;
     
@@ -76,11 +78,15 @@ begin
   if not self.FpermiteCancelado then
     condicao_cancelado := ' and ((p.cancelado is null) or (p.cancelado <> ''S'')) ';
 
+  if FPedidosLoja then
+    condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
+
   if Pedido = nil then
     Pedido := TObjetoGenerico.Create;
 
   Pedido.SQL := 'Select first 1 p.*, pf.codigo_nota_fiscal from Pedidos p       '+
                 ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo '+
+                ' left join nfce on nfce.codigo_pedido = p.codigo               '+
                 'where p.'+campoRetorno+'='''+ codigo + ''''+ condicao_tipo +
                 condicao_cancelado;
 
@@ -154,13 +160,16 @@ begin
   condicao_tipo := IfThen(FTipoBusca = tbpTodos, '',
                           IfThen(FTipoBusca = tbpFaturados, ' and (not (pf.codigo is null) or (p.despachado = ''S'')) ',
                                                             ' and ( (pf.codigo is null) and ((p.despachado is null) or (p.despachado <> ''S'')) ) '));
+  if FPedidosLoja then
+    condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
 
   if not FBuscaParaConferencia then
   begin
-    SQL := 'select p.dt_representante "Data Rep.", p.numpedido , p.valor_total, c.razao cliente '+
+    SQL := 'select '+IfThen(FPedidosLoja, 'iif(nfce.codigo is null, '''', ''ENVIADO'') st', 'p.dt_representante "Data Rep."')+', p.numpedido , p.valor_total, c.razao cliente '+
            '   from pedidos p                                                                   '+
            ' left join pessoas c on c.codigo = p.cod_cliente                                    '+
            ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo                      '+
+           ' left join nfce on nfce.codigo_pedido = p.codigo                                    '+
            ' where ((p.cancelado is null) or (p.cancelado <> ''S'')) '+ condicao_tipo+
            ' order by p.dt_representante                                                        ';
   end
@@ -293,7 +302,8 @@ begin
   else if rgTipoBusca.ItemIndex = 2 then
     self.FTipoBusca := tbpNaoFaturados;
 
-  edtNumPedido.SetFocus;  
+  if edtNumPedido.enabled then
+    edtNumPedido.SetFocus;
 end;
 
 procedure TBuscaPedido.FrameEnter(Sender: TObject);

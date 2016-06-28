@@ -164,6 +164,8 @@ type
     versao153: TMemo;
     versao154: TMemo;
     versao155: TMemo;
+    versao156: TMemo;
+    versao157: TMemo;
 
   private
 

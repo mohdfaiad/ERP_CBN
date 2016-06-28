@@ -177,6 +177,7 @@ type
   public
     function salvar: Boolean;
     function SalvarSemDeletar :Boolean;
+    function Recebido :Boolean;
   end;
 
 implementation
@@ -187,7 +188,7 @@ uses
   Classes,
   uModulo,
   ExcecaoParametroInvalido,
-  Especificacao,
+  Especificacao, Funcoes,
   EspecificacaoConferenciaPorCodigoPedido;
 
 { TPedido }
@@ -723,6 +724,11 @@ end;
 function TPedido.GetValor_total_bruto: Real;
 begin
   result := (Fdesconto + Fdesconto_fpgto + Fdesconto_itens + Fvalor_total) - Facrescimo;
+end;
+
+function TPedido.Recebido: Boolean;
+begin
+  result := (StrToIntDef(Campo_por_campo('MOVIMENTOS','CODIGO','CODIGO_PEDIDO', intToStr(self.FCodigo)) ,0) > 0);
 end;
 
 end.

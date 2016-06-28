@@ -5552,4 +5552,67 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 155
     WordWrap = False
   end
+  object versao156: TMemo
+    Left = 370
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE PARAMETROS_NFCE ('
+      '    CODIGO                INTEGER NOT NULL,'
+      '    FORMA_EMISSAO         INTEGER,'
+      '    INTERVALO_TENTATIVAS  SMALLINT,'
+      '    TENTATIVAS            SMALLINT,'
+      '    VERSAO_DF             SMALLINT,'
+      '    ID_TOKEN              VARCHAR(10),'
+      '    TOKEN                 VARCHAR(100),'
+      '    CERTIFICADO           VARCHAR(20),'
+      '    SENHA                 VARCHAR(20),'
+      '    VISUALIZA_IMPRESSAO   CHAR(1),'
+      '    VIA_CONSUMIDOR        CHAR(1),'
+      '    IMPRIME_ITENS         CHAR(1),'
+      '    AMBIENTE              CHAR(1))'
+      '^'
+      
+        'ALTER TABLE PARAMETROS_NFCE ADD CONSTRAINT PK_PARAMETROS_NFCE PR' +
+        'IMARY KEY (CODIGO)'
+      '^')
+    TabOrder = 156
+    WordWrap = False
+  end
+  object versao157: TMemo
+    Left = 394
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_MOVIMENTOS_ID'
+      '^'
+      'CREATE TABLE MOVIMENTOS ('
+      '    CODIGO         INTEGER NOT NULL,'
+      '    TIPO_MOEDA     INTEGER,'
+      '    CODIGO_PEDIDO  INTEGER,'
+      '    DATA           TIMESTAMP,'
+      '    VALOR_PAGO     NUMERIC(15,2)'
+      ')'
+      '^'
+      
+        'ALTER TABLE MOVIMENTOS ADD CONSTRAINT PK_MOVIMENTOS PRIMARY KEY ' +
+        '(CODIGO);'
+      '^'
+      
+        'ALTER TABLE MOVIMENTOS ADD CONSTRAINT FK_MOVIMENTOS_2 FOREIGN KE' +
+        'Y (CODIGO_PEDIDO) REFERENCES PEDIDOS (CODIGO)'
+      '^'
+      'CREATE TRIGGER MOVIMENTOS_BI FOR MOVIMENTOS'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0))THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_MOVIMENTOS_ID,1);'
+      'END'
+      '^')
+    TabOrder = 157
+    WordWrap = False
+  end
 end

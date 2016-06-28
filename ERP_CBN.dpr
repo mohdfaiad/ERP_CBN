@@ -397,10 +397,12 @@ uses
   NFCE in 'src\dominio\entidade\NFCE.pas',
   EspecificacaoFiltraNFCe in 'src\dominio\objetoValor\especificacao\EspecificacaoFiltraNFCe.pas',
   ConfiguracoesNFCe in 'src\dominio\objetoValor\ConfiguracoesNFCe.pas',
-  Movimento in 'src\dominio\entidade\Movimento.pas',
   EspecificacaoMovimentosPorCodigoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoMovimentosPorCodigoPedido.pas',
   RepositorioNFCE in 'src\infraestrutura\persistencia\RepositorioNFCE.pas',
-  RepositorioParametrosNFCe in 'src\infraestrutura\persistencia\RepositorioParametrosNFCe.pas';
+  RepositorioParametrosNFCe in 'src\infraestrutura\persistencia\RepositorioParametrosNFCe.pas',
+  RepositorioMovimento in 'src\infraestrutura\persistencia\RepositorioMovimento.pas',
+  Movimento in 'src\dominio\entidade\Movimento.pas',
+  uRecebimentoPedido in 'src\formularios\uRecebimentoPedido.pas' {frmRecebimentoPedido};
 
 {$R *.res}
 {$R win7810.res}

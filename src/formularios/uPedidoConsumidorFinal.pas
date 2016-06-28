@@ -8,29 +8,20 @@ uses
   Vcl.Buttons, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, DBGridCBN, Math,
   frameBuscaProduto, Datasnap.DBClient, Vcl.Mask, RxToolEdit, RxCurrEdit,
   frameBuscaFormaPagamento, frameBuscaPessoa, Printers, Pedido, RLReport,
-  RLParser, System.StrUtils, Vcl.Imaging.pngimage, ConfiguracoesNFCe;
+  RLParser, System.StrUtils, Vcl.Imaging.pngimage, ConfiguracoesNFCe,
+  frameBuscaPedido;
 
 type
-  TEstadoTela = (teInserindo, teAlterando);
+  TEstadoItem = (teInserindo, teAlterando);
+
 type
-  TfrmPedidoConsumidorFinal = class(TFrmPadrao)
+  TfrmPedidoConsumidorFinal = class(TfrmPadrao)
     BuscaProduto1: TBuscaProduto;
     pnlBotoes: TPanel;
     btnVoltar: TBitBtn;
     btnAlteraItem: TBitBtn;
     btnDeletaItem: TBitBtn;
     btnFinalizaPedido: TBitBtn;
-    BitBtn5: TBitBtn;
-    edtValorItem: TCurrencyEdit;
-    edtTotalPedido: TCurrencyEdit;
-    edtPrecoKg: TCurrencyEdit;
-    edtPecas: TCurrencyEdit;
-    edtPeso: TCurrencyEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
     cdsItens: TClientDataSet;
     dsItens: TDataSource;
     cdsItensCOD_PRODUTO: TIntegerField;
@@ -46,8 +37,6 @@ type
     Shape2: TShape;
     cdsItensPRECO_KG: TFloatField;
     Shape3: TShape;
-    edtNumPedido: TEdit;
-    Label6: TLabel;
     RLReport1: TRLReport;
     RLBand1: TRLBand;
     RLBand2: TRLBand;
@@ -80,10 +69,28 @@ type
     RLLabel12: TRLLabel;
     RLLabel13: TRLLabel;
     RLLabel14: TRLLabel;
-    Label7: TLabel;
-    edtDesconto: TCurrencyEdit;
     gridItens: TDBGrid;
-    procedure BitBtn5Click(Sender: TObject);
+    Image1: TImage;
+    edtCodigoPedido: TCurrencyEdit;
+    BuscaPedido1: TBuscaPedido;
+    cdsItensCODIGO_ITEM: TIntegerField;
+    btnNovo: TBitBtn;
+    btnCancelar: TBitBtn;
+    pnlValores: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    btnAddItem: TBitBtn;
+    edtValorItem: TCurrencyEdit;
+    edtTotalPedido: TCurrencyEdit;
+    edtPrecoKg: TCurrencyEdit;
+    edtPecas: TCurrencyEdit;
+    edtPeso: TCurrencyEdit;
+    edtDesconto: TCurrencyEdit;
+    procedure btnAddItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAlteraItemClick(Sender: TObject);
     procedure edtPrecoKgChange(Sender: TObject);
@@ -93,26 +100,38 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnFinalizaPedidoClick(Sender: TObject);
     procedure edtDescontoChange(Sender: TObject);
+    procedure BuscaPedido1edtNumPedidoChange(Sender: TObject);
+    procedure BuscaPedido1btnBuscarClick(Sender: TObject);
+    procedure BuscaPedido1Exit(Sender: TObject);
+    procedure BuscaPedido1edtNumPedidoEnter(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
   private
-    FEstadoTela           :TEstadoTela;
+    FEstadoItem           :TEstadoItem;
+
     FTotalPedido          :Real;
     Configuracoes         :TConfiguracoesNFCe;
+    cupomPendente         :Boolean;
 
     procedure adicionaItem;
     procedure limpaCampos;
     procedure carregaItem;
     procedure cancelaItem;
     procedure verificaSair;
-    procedure finalizaPedido(const cc :Boolean = false);
+    procedure finalizaPedido;
     procedure imprimePedido(pedido :TPedido);
     procedure limparDados;
     function tabelaPrecoProduto :integer;
     function buscaCorProduto :integer;
     function verificaObrigatorios :Boolean;
     function verificaObrigatoriosItem :Boolean;
+    function efetuaRecebimento :Boolean;
 
     procedure atualizaEstoque(pedido :TPedido);
-    procedure geraCupomEletronico(codigoPedido :integer);
+    procedure habilitaDesabilita(habilita_desabilita :String);
+    function geraCupomEletronico(codigoPedido :integer) :Boolean;
+    procedure carregaPedido(Pedido :TPedido);
+    procedure calculaTotal;
 
   public
     { Public declarations }
@@ -127,13 +146,14 @@ const
 implementation
 
 uses Repositorio, FabricaRepositorio, Item, TipoPessoa, Funcoes, Estoque,
-  uModulo, EspecificacaoEstoquePorProdutoCorTamanho, ServicoEmissorNFCe, Venda;
+  uModulo, EspecificacaoEstoquePorProdutoCorTamanho, ServicoEmissorNFCe, Venda,
+  uRecebimentoPedido;
 
 {$R *.dfm}
 
 procedure TfrmPedidoConsumidorFinal.adicionaItem;
 begin
-  if FEstadoTela = teInserindo then
+  if FEstadoItem = teInserindo then
   begin
     cdsItens.Append;
   end
@@ -164,7 +184,10 @@ end;
 
 procedure TfrmPedidoConsumidorFinal.btnVoltarClick(Sender: TObject);
 begin
-  verificaSair;
+  if cupomPendente then
+    limparDados
+  else
+    verificaSair;
 end;
 
 function TfrmPedidoConsumidorFinal.buscaCorProduto: integer;
@@ -172,13 +195,52 @@ begin
    result := StrToIntDef( Campo_por_campo('PRODUTO_CORES', 'CODCOR', 'CODPRODUTO', BuscaProduto1.codproduto),0);
 end;
 
+procedure TfrmPedidoConsumidorFinal.BuscaPedido1btnBuscarClick(Sender: TObject);
+begin
+  inherited;
+  BuscaPedido1.btnBuscarClick(Sender);
+end;
+
+procedure TfrmPedidoConsumidorFinal.BuscaPedido1edtNumPedidoChange(
+  Sender: TObject);
+begin
+{  if pos('L',BuscaPedido1.edtNumPedido.Text) <= 0 then
+  begin
+    BuscaPedido1.edtNumPedido.Text := 'L'+BuscaPedido1.edtNumPedido.Text;
+    BuscaPedido1.edtNumPedido.SelStart := Length( BuscaPedido1.edtNumPedido.Text );
+  end;    }
+end;
+
+procedure TfrmPedidoConsumidorFinal.BuscaPedido1edtNumPedidoEnter(
+  Sender: TObject);
+begin
+//  BuscaPedido1.edtNumPedido.SelStart := length(BuscaPedido1.edtNumPedido.Text);
+end;
+
+procedure TfrmPedidoConsumidorFinal.BuscaPedido1Exit(Sender: TObject);
+begin
+  inherited;
+  if assigned(BuscaPedido1.Ped) then
+    carregaPedido(BuscaPedido1.Ped);
+end;
+
 procedure TfrmPedidoConsumidorFinal.btnAlteraItemClick(Sender: TObject);
 begin
   if cdsItens.IsEmpty then
     exit;
 
-  FEstadoTela := teAlterando;
+  FEstadoItem := teAlterando;
   carregaItem;
+end;
+
+procedure TfrmPedidoConsumidorFinal.btnNovoClick(Sender: TObject);
+begin
+  BuscaPedido1.edtNumPedido.Text := 'L'+ IntToStr(dm.GetValorGenerator('GEN_PEDIDOS_LOJA_ID') + 1);
+  habilitaDesabilita('H');
+  edtPeso.SetFocus;
+  BuscaPedido1.Enabled := false;
+  btnNovo.Enabled      := false;
+  pnlValores.Enabled   := true;
 end;
 
 procedure TfrmPedidoConsumidorFinal.btnDeletaItemClick(Sender: TObject);
@@ -192,7 +254,8 @@ end;
 
 procedure TfrmPedidoConsumidorFinal.btnFinalizaPedidoClick(Sender: TObject);
 begin
-   finalizaPedido(true);
+  if BuscaPedido1.edtNumPedido.Text <> '' then
+    finalizaPedido;
 end;
 
 procedure TfrmPedidoConsumidorFinal.atualizaEstoque(pedido :TPedido);
@@ -203,7 +266,7 @@ var Estoque     :TEstoque;
 begin
   Estoque     := nil;
   repositorio := nil;
-
+ try
  try
    Estoque        := nil;
 
@@ -232,12 +295,37 @@ begin
    if assigned(Estoque)     then  FreeAndNil(Estoque);
    if assigned(repositorio) then  FreeAndNil(repositorio);
  end;
+ 
+ Except
+   on E : Exception do
+     raise Exception.Create(e.Message);
+ end;
 end;
 
-procedure TfrmPedidoConsumidorFinal.BitBtn5Click(Sender: TObject);
+procedure TfrmPedidoConsumidorFinal.btnCancelarClick(Sender: TObject);
+begin
+  limparDados;
+  BuscaPedido1.limpa;
+  BuscaPedido1.edtNumPedido.Clear;
+  habilitaDesabilita('D');
+end;
+
+procedure TfrmPedidoConsumidorFinal.btnAddItemClick(Sender: TObject);
 begin
   if verificaObrigatoriosItem then
     adicionaItem;
+end;
+
+procedure TfrmPedidoConsumidorFinal.calculaTotal;
+begin
+  cdsItens.First;
+  while not cdsItens.Eof do
+  begin
+    edtTotalPedido.Value := edtTotalPedido.Value + cdsItensVALOR_ITEM.AsFloat;
+    cdsItens.Next;
+  end;
+
+  edtTotalPedido.Value := edtTotalPedido.Value - edtDesconto.Value;
 end;
 
 procedure TfrmPedidoConsumidorFinal.cancelaItem;
@@ -259,6 +347,36 @@ begin
   edtPeso.SetFocus;
 end;
 
+procedure TfrmPedidoConsumidorFinal.carregaPedido(Pedido: TPedido);
+var i :integer;
+begin
+  limparDados;
+
+  for i := 0 to Pedido.Itens.Count - 1 do
+  begin
+    cdsItens.Append;
+    cdsItensCOD_PRODUTO.AsInteger := (Pedido.Itens[i] as TItem).cod_produto;
+    cdsItensPRECO_KG.AsFloat      := (Pedido.Itens[i] as TItem).preco;
+    cdsItensVALOR_ITEM.AsFloat    := (Pedido.Itens[i] as TItem).valor_total;
+    cdsItensPECAS.AsFloat         := (Pedido.Itens[i] as TItem).qtd_UNICA;
+    cdsItensPECAS.AsFloat         := (Pedido.Itens[i] as TItem).qtd_total;
+    cdsItensPESO.AsFloat          := (Pedido.Itens[i] as TItem).peso;
+    cdsItensCODIGO_ITEM.AsInteger := (Pedido.Itens[i] as TItem).codigo;
+    cdsItens.Post;
+  end;
+
+  edtDesconto.Value := Pedido.desconto;
+
+  calculaTotal;
+
+  habilitaDesabilita('D');
+  btnFinalizaPedido.SetFocus;
+  edtCodigoPedido.AsInteger := Pedido.Codigo;
+  cupomPendente := true;
+
+  btnFinalizaPedido.Caption := '[ F6 ] Enviar Cupom';
+end;
+
 procedure TfrmPedidoConsumidorFinal.edtDescontoChange(Sender: TObject);
 begin
   inherited;
@@ -271,10 +389,17 @@ begin
     edtValorItem.Value := RoundTo( edtPrecoKg.Value * edtPeso.Value ,-2);
 end;
 
-procedure TfrmPedidoConsumidorFinal.finalizaPedido(const cc :Boolean = false);
+function TfrmPedidoConsumidorFinal.efetuaRecebimento: Boolean;
+begin
+  frmRecebimentoPedido := TfrmRecebimentoPedido.Create(nil);
+  frmRecebimentoPedido.edtTotalPedido.Value := edtTotalPedido.Value;
+  result := (frmRecebimentoPedido.ShowModal = mrOk);
+end;
+
+procedure TfrmPedidoConsumidorFinal.finalizaPedido;
 var repositorio :TRepositorio;
     pedido      :TPedido;
-    item        :TItem;
+    item        :TItem; 
 begin
   if not verificaObrigatorios then
     Exit;
@@ -282,11 +407,23 @@ begin
   repositorio := nil;
   pedido      := nil;
   try
+
+    if not (edtCodigoPedido.AsInteger > 0) then
+      if not efetuaRecebimento then
+      begin
+        avisar('O recebimento não foi efetuado. Finalização abortada.');
+        Exit;
+      end;
   try
      repositorio := TFabricaRepositorio.GetRepositorio(TPedido.ClassName);
-     pedido      := TPedido.Create;
+     pedido      := TPedido( repositorio.Get(edtCodigoPedido.AsInteger));
 
-     pedido.numpedido     := 'L'+ IntToStr(dm.GetValorGenerator('GEN_PEDIDOS_LOJA_ID', 1));
+     if not assigned(pedido) then
+     begin
+       pedido            := TPedido.Create;
+       pedido.numpedido  := 'L'+ IntToStr(dm.GetValorGenerator('GEN_PEDIDOS_LOJA_ID', 1));
+     end;
+
      pedido.cod_tab_preco := tabelaPrecoProduto;
      pedido.cod_forma_pag := StrToIntDef(BuscaFormaPagamento1.codFormaPagamento ,0);
      pedido.cod_filial    := 3;
@@ -308,9 +445,12 @@ begin
      pedido.aprovado_por      := 'PEDIDO CONSUMIDOR FINAL';
 
      cdsItens.First;
+     repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
      while not cdsItens.Eof do begin
+       Pedido.Item := TItem(repositorio.Get(cdsItensCODIGO_ITEM.AsInteger ));
 
-       Pedido.Item := TItem.Create;
+       if not assigned(Pedido.Item) then
+         Pedido.Item := TItem.Create;
 
        //Pedido.Item.cod_pedido        := pedido.codigo;
        Pedido.Item.cod_produto       := cdsItensCOD_PRODUTO.AsInteger;
@@ -324,35 +464,66 @@ begin
        Pedido.AdicionarItem(Pedido.Item);
 
        cdsItens.Next;
+       Pedido.Item.Free;
+       Pedido.Item := nil;
      end;
 
      Pedido.salvar;
 
-     atualizaEstoque(Pedido);
+     if not (edtCodigoPedido.AsInteger > 0) then
+     begin
+       atualizaEstoque(Pedido);
+       avisar('Pedido salvo com sucesso!');
+     end;
 
-     avisar('Pedido salvo com sucesso!');
+     edtCodigoPedido.AsInteger := Pedido.Codigo;
+
+     if assigned(frmRecebimentoPedido) then
+       frmRecebimentoPedido.salvaRecebimentoPedido(Pedido.Codigo);
+
+     try
+       if (cupomPendente) or (assigned(frmRecebimentoPedido) and (frmRecebimentoPedido.cc)) then
+       begin
+         cupomPendente := true;
+         cupomPendente :=  not geraCupomEletronico(Pedido.Codigo);
+       end;
+
+     Except
+       On E: Exception Do begin
+         avisar('Erro ao enviar cupom.'+#13#10+e.Message);
+       end;
+     end;
+
      imprimePedido(Pedido);
-
-     if cc then
-       geraCupomEletronico(Pedido.Codigo);
-
-     limparDados;
+     btnCancelar.Click;
 
   Except
     On E: Exception Do begin
-      avisar('Erro ao salvar pedido.'+#13#10+e.Message);
+      avisar('Erro ao finalizar pedido.'+#13#10+e.Message);
     end;
   end;
 
   finally
     FreeAndNil(repositorio);
     FreeAndNil(pedido);
+
+    if cupomPendente then
+    begin
+      habilitaDesabilita('D');
+      btnFinalizaPedido.Caption := '[ F6 ] Enviar Cupom';
+    end;
+
+    if assigned(frmRecebimentoPedido) then
+    begin
+      frmRecebimentoPedido.Release;
+      frmRecebimentoPedido := nil;
+    end;
   end;
 end;
 
 procedure TfrmPedidoConsumidorFinal.FormCreate(Sender: TObject);
 begin
-  FEstadoTela := teInserindo;
+  FEstadoItem := teInserindo;
   cdsItens.CreateDataSet;
   Configuracoes       := TConfiguracoesNFCe.Create;
 end;
@@ -368,31 +539,33 @@ begin
   else if key = VK_F4 then
     btnAlteraItem.Click
   else if key = VK_F6 then
-    btnFinalizaPedido.Click
-  else if key = VK_F10 then
-    finalizaPedido(false);
+    btnFinalizaPedido.Click;
 
   inherited;
 
 end;
 
 procedure TfrmPedidoConsumidorFinal.FormShow(Sender: TObject);
-var codigoCliente :String;
+var codigoCliente, codFPagamento :String;
 begin
-  limpaCampos;
   BuscaProduto1.codproduto := 'QUILO';
   BuscaProduto1.codTabela  := intToStr(tabelaPrecoProduto);
   BuscaProduto1.codproduto := 'QUILO';
   edtPrecoKg.Value         := BuscaProduto1.preco;
   BuscaPessoa1.TipoPessoa  := tpCliente;
+  BuscaPedido1.pedidosLoja := true;
 
   codigoCliente := Campo_por_campo('PESSOAS','CODIGO','RAZAO','CONSUMIDOR');
 
   BuscaPessoa1.cod_pessoa  := IfThen(codigoCliente = '', '0', codigoCliente);
 
+  codFPagamento := Campo_por_campo('FORMAS_PGTO','CODIGO','DESCRICAO','LOJA');
+
+  BuscaFormaPagamento1.codFormaPagamento := IfThen(codFPagamento = '', '0', codFPagamento);
+  habilitaDesabilita('D');
 end;
 
-procedure TfrmPedidoConsumidorFinal.geraCupomEletronico(codigoPedido :integer);
+function TfrmPedidoConsumidorFinal.geraCupomEletronico(codigoPedido :integer) :boolean;
 var i                  :Integer;
     repositorio :TRepositorio;
     Venda              :TVenda;
@@ -403,6 +576,7 @@ begin
    Venda          := nil;
    NFCe           := nil;
    Pedido := nil;
+   result := false;
 
  try
  try
@@ -431,19 +605,27 @@ begin
 
    NFCe.Emitir(Venda, dm.GetValorGenerator('gen_lote_nfce',1));
 
+   result := true;
+
  Except
    On E: Exception do
-   begin
-     dm.GetValorGenerator('gen_nrnota_nfce',-1);
-     dm.GetValorGenerator('gen_lote_nfce',-1);
      raise Exception.Create('Ocorreu um erro ao enviar nota fiscal.'+#13#10+e.Message);
-   end;
  end;
 
  finally
    FreeAndNil(repositorio);
    FreeAndNil(Pedido);
   end;
+end;
+
+procedure TfrmPedidoConsumidorFinal.habilitaDesabilita(habilita_desabilita: String);
+begin
+  pnlValores.Enabled    := (habilita_desabilita = 'H');
+  btnAlteraItem.Enabled := (habilita_desabilita = 'H');
+  btnDeletaItem.Enabled := (habilita_desabilita = 'H');
+
+  btnnovo.Enabled       := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped);
+  BuscaPedido1.Enabled  := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped);
 end;
 
 procedure TfrmPedidoConsumidorFinal.imprimePedido(pedido :TPedido);
@@ -464,16 +646,18 @@ begin
   edtPecas.Clear;
  // edtPrecoKg.Clear;
   edtValorItem.Clear;
-  edtNumPedido.Text        := 'L'+ IntToStr(dm.GetValorGenerator('GEN_PEDIDOS_LOJA_ID') + 1);
 end;
 
 procedure TfrmPedidoConsumidorFinal.limparDados;
 begin
-  BuscaFormaPagamento1.limpa;
   cdsItens.EmptyDataSet;
   FTotalPedido := 0;
   edtTotalPedido.Clear;
   edtDesconto.Clear;
+  edtCodigoPedido.Clear;
+  cupomPendente := false;
+  habilitaDesabilita('H');
+  btnFinalizaPedido.Caption := '[ F6 ] Finalizar Pedido';
 end;
 
 function TfrmPedidoConsumidorFinal.tabelaPrecoProduto: integer;

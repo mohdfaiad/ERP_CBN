@@ -37,7 +37,7 @@ object BuscaPedido: TBuscaPedido
       BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
       B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 1
+    TabOrder = 2
     TabStop = False
     OnClick = btnBuscarClick
   end
@@ -61,7 +61,7 @@ object BuscaPedido: TBuscaPedido
     Width = 121
     Height = 21
     CharCase = ecUpperCase
-    TabOrder = 2
+    TabOrder = 1
     OnExit = edtNumPedidoExit
     OnKeyPress = edtNumPedidoKeyPress
   end

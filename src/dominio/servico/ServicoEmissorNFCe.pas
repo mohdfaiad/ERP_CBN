@@ -187,8 +187,7 @@ begin
       Prod.cProd    := IntToStr(Venda.Itens.Items[nX].Produto.codigo);
       Prod.cEAN     := '';//Venda.Itens.Items[nX].Produto.Codbar;
       Prod.xProd    := Venda.Itens.Items[nX].Produto.descricao;
-      Prod.NCM      := '';
-      showmessage('informar ncm do produto');
+      Prod.NCM      := IntToStr(Venda.Itens.Items[nX].Produto.Cod_Ncm);
       Prod.EXTIPI   := '';
       Prod.CFOP     := '5102';
       Prod.uCom     := 'UN';//Venda.Itens.Items[nX].Produto.getUnidade;
@@ -352,20 +351,15 @@ var
     repositorio   :TREpositorio;
     Movimentos    :TObjectList;
     i             :integer;
-    descontou_tx  :boolean;
-    descontou_servicos :Boolean;
 begin
    repositorio   := nil;
    Movimentos    := nil;
-   descontou_tx  := false;
-   descontou_servicos := false;
+
   try
     Especificacao := TEspecificacaoMovimentosPorCodigoPedido.Create(Venda.Codigo_pedido);
     repositorio   := TFabricaRepositorio.GetRepositorio(TMovimento.ClassName);
     Movimentos    := repositorio.GetListaPorEspecificacao( Especificacao, 'codigo_pedido = '+inttostr(Venda.Codigo_pedido));
 
-    if (Venda.Couvert + Venda.Tx_servico + Venda.Taxa_entrega) <= 0 then
-      descontou_tx := true;
 
    for i := 0 to Movimentos.Count -1 do begin
      with NFCe.NFe.pag.Add do begin
@@ -386,16 +380,6 @@ begin
        end;
 
        vPag := TMovimento(Movimentos[i]).valor_pago;
-
-       if not descontou_tx and (vPag >= (Venda.Couvert + Venda.Tx_servico + Venda.Taxa_entrega)) then begin
-         vPag         := vPag - (Venda.Couvert + Venda.Tx_servico + Venda.Taxa_entrega);
-         descontou_tx := true;
-       end;
-
-       if not descontou_servicos and (vPag > Venda.Total_em_servicos) then begin
-         vPag               := vPag - Venda.Total_em_servicos;
-         descontou_servicos := true;
-       end;
      end;
    end;
 

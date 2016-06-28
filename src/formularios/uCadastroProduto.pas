@@ -711,10 +711,11 @@ begin
     if (cdsCor.Locate('CODCOR',BuscaCor1.edtCodigo.AsInteger,[])) then begin
       cdsCor.Edit;
     end
-    else //begin
+    else
+    begin
       cdsCor.Append;
-      //cdsCorCodigo.aSinteger    := 0;
-    //end;
+      cdsCorCodigo.AsInteger    := (cdsCor.RecordCount + 1) * -1;
+    end;
 
     cdsCorDESCRICAO.AsString  := trim(BuscaCor1.edtDescricao.Text);
     cdsCorREFERENCIA.AsString := BuscaCor1.edtReferencia.Text;
@@ -758,7 +759,7 @@ begin
 
     if cdsCorSTATUS.AsString = 'I' then begin
 
-      ProdutoCores.Codigo     := cdsCorCODIGO.AsInteger;
+      ProdutoCores.Codigo     := IfThen(cdsCorCODIGO.AsInteger < 0, 0, cdsCorCODIGO.AsInteger );
 
       if self.Tag = 1 then
         ProdutoCores.CodProduto := fdm.GetValorGenerator('GEN_PRODUTOS_ID')
@@ -800,7 +801,7 @@ begin
       cdsTabela.CreateDataSet;
 
     cdsTabela.Append;
-   // cdsTabelaCODIGO.AsInteger         := 0;
+    cdsTabelaCODIGO.AsInteger         := (cdsTabela.RecordCount + 1) * -1;
     cdsTabelaCODTABELA.AsInteger      := BuscaTabelaPreco1.edtCodigo.AsInteger;
     cdsTabelaDESCRICAO.AsString       := BuscaTabelaPreco1.edtDescricao.Text;
     cdsTabelaPRECO.AsCurrency         := 0;
@@ -830,7 +831,7 @@ begin
        if cdsTabelaSTATUS.AsString = 'I' then
            ProdutoTabelaPreco.Codigo  := 0
        else
-         ProdutoTabelaPreco.Codigo  := cdsTabelaCODIGO.AsInteger;
+         ProdutoTabelaPreco.Codigo  := IfThen(cdsTabelaCODIGO.AsInteger < 0, 0,cdsTabelaCODIGO.AsInteger);
 
        if self.Tag = 1 then
          ProdutoTabelaPreco.CodProduto  := fdm.GetValorGenerator('GEN_PRODUTOS_ID')
