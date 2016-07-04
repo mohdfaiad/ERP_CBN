@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, Buttons, ObjetoGenerico;
+  Dialogs, StdCtrls, Buttons, ObjetoGenerico, Produto;
 
 type
   TBuscaProduto = class(TFrame)
@@ -24,6 +24,7 @@ type
     procedure FrameExit(Sender: TObject);
   private
     produto     :TObjetoGenerico;
+    FProd       :TProduto;
     Fcodproduto :String;
     FCodGrade   :Integer;
     Fpreco      :Real;
@@ -49,21 +50,20 @@ type
     property codTabela  :String read FcodTabela write SetcodTabela;
     property tipo       :String read FTipo;
     property Kit        :Boolean read FKit write FKit;
+
+    property Prod       :TProduto read FProd;
   end;
 
 implementation
 
-uses uPesquisaSimples;
+uses uPesquisaSimples, repositorio, fabricaRepositorio;
 
 {$R *.dfm}
 
 procedure TBuscaProduto.buscaProduto;
 begin
-
   setaProduto(true);
-
   if ( Fcodproduto = '0' ) then  selecionaProduto;
-
 end;
 
 procedure TBuscaProduto.Setcodproduto(const Value: String);
@@ -88,6 +88,7 @@ begin
   FTipo              := '';
   edtGrade.Text      := '';
   FKit               := false;
+  FreeAndNil(FProd);
 end;
 
 procedure TBuscaProduto.edtGradeEnter(Sender: TObject);
@@ -122,6 +123,7 @@ end;
 procedure TBuscaProduto.setaProduto(enter :Boolean);
 var campo      :String;
     referencia :String;
+    repositorio :TRepositorio;
 begin
   campo := 'REFERENCIA';
   referencia   := trim(edtReferencia.Text);
@@ -134,6 +136,7 @@ begin
     produto := TObjetoGenerico.Create;
 
   try
+    repositorio := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
 
     if produto.verificaExiste('select codigo from produtos where referencia = '''+ referencia +'''') then begin
 
@@ -152,6 +155,8 @@ begin
          FTipo              := produto.getCampo('TIPO').AsString;
          FKit               := produto.getCampo('KIT').AsString = 'S';
 
+         FProd := TProduto(repositorio.Get(produto.getCampo('codigo').AsInteger));
+
          if enter then
            keybd_event(VK_TAB, 0, 0, 0);
        end;
@@ -161,6 +166,7 @@ begin
 
   finally
     FreeAndNil(produto);
+    FreeAndNil(repositorio);
   end;
 end;
 

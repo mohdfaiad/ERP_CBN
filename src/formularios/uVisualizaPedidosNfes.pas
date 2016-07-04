@@ -63,12 +63,17 @@ type
     pnlTopo: TPanel;
     pnlRodape: TPanel;
     Splitter1: TSplitter;
+    btnImprimir: TBitBtn;
+    qryNotasCODIGO: TIntegerField;
+    Label6: TLabel;
     procedure btnFiltrarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure chkPeriodoGeralClick(Sender: TObject);
     procedure chkFiltroAguardandoEnvioClick(Sender: TObject);
     procedure Splitter1CanResize(Sender: TObject; var NewSize: Integer;
       var Accept: Boolean);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure DBGridCBN1DblClick(Sender: TObject);
   private
     procedure Buscar;
     procedure BuscarPedidos;
@@ -76,6 +81,9 @@ type
 
     procedure montaSqlPedido;
     procedure montaSqlNotas;
+
+    procedure imprimirNFe;
+    procedure abrePedido(numPedido :String);
   public
     { Public declarations }
   end;
@@ -85,13 +93,30 @@ var
 
 implementation
 
-uses EspecificacaoNotaFiscalPorPeriodoEStatus, Repositorio, FabricaRepositorio, NotaFiscal, TipoPessoa;
+uses EspecificacaoNotaFiscalPorPeriodoEStatus, Repositorio, FabricaRepositorio, NotaFiscal, TipoPessoa, GeradorNFe, uPedido;
 
 {$R *.dfm}
+
+procedure TfrmVisualizaPedidosNfes.abrePedido(numPedido: String);
+begin
+  frmPedido := TfrmPedido.Create(self);
+  frmPedido.Tag := 1; //alteração de pedido
+  frmPedido.Caption := 'Alteração de Pedido de Venda';
+  frmPedido.BuscaPedido1.numped := numpedido;
+  frmPedido.ShowModal;
+  frmPedido.Release;
+  frmPedido := nil;
+end;
 
 procedure TfrmVisualizaPedidosNfes.btnFiltrarClick(Sender: TObject);
 begin
   Buscar;
+end;
+
+procedure TfrmVisualizaPedidosNfes.btnImprimirClick(Sender: TObject);
+begin
+  if not qryNotas.Active or not qryNotas.IsEmpty then
+     imprimirNFe;
 end;
 
 procedure TfrmVisualizaPedidosNfes.Buscar;
@@ -130,6 +155,28 @@ begin
   dtpFiltroDataFinal.Date   := strToDateTime( DateToStr(Date)+' '+'23:59:59');
 end;
 
+procedure TfrmVisualizaPedidosNfes.imprimirNFe;
+var
+  RepositorioNotaFiscal      :TRepositorio;
+  GeradorNFe                 :TGeradorNFe;
+  NotaFiscal                 :TNotaFiscal;
+begin
+   RepositorioNotaFiscal  := nil;
+   GeradorNFe             := nil;
+   NotaFiscal             := nil;
+  try
+     RepositorioNotaFiscal  := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
+     NotaFiscal             := TNotaFiscal(RepositorioNotaFiscal.Get(qryNotasCODIGO.AsInteger));
+
+     GeradorNFe := TGeradorNFe.Create(FDM.Logo);
+     GeradorNFe.ImprimirComVisualizacao(NotaFiscal);
+  finally
+     FreeAndNil(RepositorioNotaFiscal);
+     FreeAndNil(NotaFiscal);
+     FreeAndNil(GeradorNFe);
+  end;
+end;
+
 procedure TfrmVisualizaPedidosNfes.montaSqlNotas;
 var condicao_periodo, condicao_status :String;
 begin
@@ -140,7 +187,7 @@ begin
                       IfThen(chkFiltroCancelada.Checked, IfThen(chkFiltroAguardandoEnvio.Checked or chkFiltroAutorizada.Checked,' or', '')+' nfr.status = ''135'' ', '')+
                       IfThen(chkFiltroCancelada.Checked, IfThen(chkFiltroAguardandoEnvio.Checked or chkFiltroAutorizada.Checked or chkFiltroCancelada.Checked,' or', '')+' nfr.status not in (''100'',''135'') ', '');
 
-  qryNotas.SQL.Text := 'select nf.numero_nota_fiscal, nf.data_emissao, emit.razao emitente, dest.razao destinatario,                    '+
+  qryNotas.SQL.Text := 'select nf.codigo, nf.numero_nota_fiscal, nf.data_emissao, emit.razao emitente, dest.razao destinatario,                    '+
                        '(sum(inf.valor_unitario * inf.quantidade) - tnf.desconto + tnf.frete + tnf.seguro + tnf.outras_despesas) valor, '+
                        'CASE                                                                                                           '+
                        '  WHEN nfr.status = ''100'' THEN ''Autorizada''                                                                '+
@@ -159,7 +206,7 @@ begin
                        'where nf.codigo_destinatario = :cod_dest and nf.entrada_saida = ''S'' '+ condicao_periodo +
                        IfThen(condicao_status = '','',' and (')+condicao_status+IfThen(condicao_status = '','',') ') +
 
-                       'group by nf.numero_nota_fiscal, nf.data_emissao, emit.razao, dest.razao, nfr.status, tnf.desconto, tnf.frete,      '+
+                       'group by nf.codigo, nf.numero_nota_fiscal, nf.data_emissao, emit.razao, dest.razao, nfr.status, tnf.desconto, tnf.frete,      '+
                        '         tnf.seguro, tnf.outras_despesas                                                                       ';
 
   qryNotas.ParamByName('cod_dest').AsInteger := BuscaPessoa1.edtCodigo.AsInteger;
@@ -218,6 +265,11 @@ begin
 
   dtpFiltroDataInicial.Enabled := not chkPeriodoGeral.checked;
   dtpFiltroDataFinal.Enabled   := not chkPeriodoGeral.checked;
+end;
+
+procedure TfrmVisualizaPedidosNfes.DBGridCBN1DblClick(Sender: TObject);
+begin
+  abrePedido(qryPedidosNUMPEDIDO.AsString);
 end;
 
 end.

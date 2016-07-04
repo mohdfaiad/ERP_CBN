@@ -79,6 +79,7 @@ const
   paPedidoConsumidorFinal        = 62;
   paTransferenciaEstoque         = 63;
   paCadastroContasBanco          = 64;
+  paRelatorioMovimentos          = 65;
 
 implementation
 

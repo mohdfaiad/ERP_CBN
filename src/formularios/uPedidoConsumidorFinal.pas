@@ -90,6 +90,7 @@ type
     edtPecas: TCurrencyEdit;
     edtPeso: TCurrencyEdit;
     edtDesconto: TCurrencyEdit;
+    cdsItensPRECO_PECA: TFloatField;
     procedure btnAddItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAlteraItemClick(Sender: TObject);
@@ -172,6 +173,7 @@ begin
   cdsItensPECAS.AsInteger          := edtPecas.AsInteger;
   cdsItensPESO.AsFloat             := edtPeso.Value;
   cdsItensVALOR_ITEM.AsFloat       := edtValorItem.Value;
+  cdsItensPRECO_PECA.AsFloat       := cdsItensVALOR_ITEM.AsFloat / cdsItensPECAS.AsInteger;
   cdsItens.Post;
 
   edtTotalPedido.Value             := edtTotalPedido.Value + edtValorItem.Value;
@@ -505,7 +507,6 @@ begin
 
   finally
     FreeAndNil(repositorio);
-    FreeAndNil(pedido);
 
     if cupomPendente then
     begin
@@ -548,9 +549,9 @@ end;
 procedure TfrmPedidoConsumidorFinal.FormShow(Sender: TObject);
 var codigoCliente, codFPagamento :String;
 begin
-  BuscaProduto1.codproduto := 'QUILO';
+  BuscaProduto1.codproduto := 'KGLOJA';
   BuscaProduto1.codTabela  := intToStr(tabelaPrecoProduto);
-  BuscaProduto1.codproduto := 'QUILO';
+  BuscaProduto1.codproduto := 'KGLOJA';
   edtPrecoKg.Value         := BuscaProduto1.preco;
   BuscaPessoa1.TipoPessoa  := tpCliente;
   BuscaPedido1.pedidosLoja := true;

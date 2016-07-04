@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.StdCtrls, Vcl.Mask,
   RxToolEdit, RxCurrEdit, Vcl.ExtCtrls, frameBuscaCor, frameBuscaProduto,
-  Vcl.Buttons;
+  Vcl.Buttons, Grade;
 
 type
   TfrmTransferenciaEstoque = class(TfrmPadrao)
@@ -43,6 +43,9 @@ type
     procedure BuscaCor1Enter(Sender: TObject);
     procedure BuscaCor2Enter(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
+    procedure BuscaCor1Exit(Sender: TObject);
+    procedure BuscaProduto1Exit(Sender: TObject);
+    procedure BuscaProduto2Exit(Sender: TObject);
   private
     FEstoqueOrigem :Real;
     FEstoqueDestino :Real;
@@ -51,6 +54,7 @@ type
     procedure mostraEstoqueDestino;
     procedure EfetuaTransferencia;
     procedure AlteraEstoque(codigoEstoque, quantidade :integer);
+    procedure habilitaTamanhos(radGroup :TRadioGroup; grade :TGrade);
   public
     { Public declarations }
   end;
@@ -60,7 +64,7 @@ var
 
 implementation
 
-uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, Funcoes;
+uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, Funcoes, Tamanho;
 
 {$R *.dfm}
 
@@ -132,6 +136,13 @@ begin
   BuscaCor1.FiltroKit     := BuscaProduto1.Kit;
 end;
 
+procedure TfrmTransferenciaEstoque.BuscaCor1Exit(Sender: TObject);
+begin
+  inherited;
+  BuscaCor1.FrameExit(Sender);
+
+end;
+
 procedure TfrmTransferenciaEstoque.BuscaCor2edtDescricaoChange(Sender: TObject);
 begin
   if BuscaCor1.edtDescricao.Text <> '' then
@@ -157,6 +168,13 @@ begin
   end;
 end;
 
+procedure TfrmTransferenciaEstoque.BuscaProduto1Exit(Sender: TObject);
+begin
+  inherited;
+  BuscaProduto1.FrameExit(Sender);
+  habilitaTamanhos(rgTamanhos1, BuscaProduto1.Prod.Grade);
+end;
+
 procedure TfrmTransferenciaEstoque.BuscaProduto2edtDescricaoChange(
   Sender: TObject);
 begin
@@ -165,6 +183,13 @@ begin
     mostraEstoqueDestino;
     //keybd_event(VK_TAB, 0, 0, 0);
   end;
+end;
+
+procedure TfrmTransferenciaEstoque.BuscaProduto2Exit(Sender: TObject);
+begin
+  inherited;
+  BuscaProduto2.FrameExit(Sender);
+  habilitaTamanhos(rgTamanhos2, BuscaProduto2.Prod.Grade);
 end;
 
 procedure TfrmTransferenciaEstoque.edtQtdTransferirChange(Sender: TObject);
@@ -185,6 +210,18 @@ begin
 
   Avisar('Transferência efetuada com sucesso!');
   btnLimpar.Click;
+end;
+
+procedure TfrmTransferenciaEstoque.habilitaTamanhos(radGroup: TRadioGroup; grade: TGrade);
+var i, j :integer;
+begin
+  for i := 0 to radGroup.Items.Count -1 do
+    for j := 0 to grade.Tamanhos.Count - 1 do
+    begin
+      TCustomRadioGroup(radGroup.Components[i]).Enabled := TTamanho(grade.Tamanhos.Items[j]).Descricao = radGroup.Items[i];
+      if TCustomRadioGroup(radGroup.Components[i]).Enabled then
+        break;
+    end;
 end;
 
 procedure TfrmTransferenciaEstoque.mostraEstoqueOrigem;

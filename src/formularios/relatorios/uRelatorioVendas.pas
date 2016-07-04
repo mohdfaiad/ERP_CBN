@@ -469,13 +469,12 @@ begin
   result := result + condicao_exclui_remessa;
   result := result + condicao_exclui_vendas_propria_empresa;
   result := result + condicao_internet;
-  result := result + condicao_funcionario;  
+  result := result + condicao_funcionario;
   result := result + condicao_exclui_bonificacoes;
   result := result + condicao_produto;
   result := result + condicao_cor;
-  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18'+ IfThen(self.RelatorioSemValores,',16',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao ');
+  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18'+ IfThen(self.RelatorioSemValores,',16',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao, pf.codigo ');
   result := result + IfThen(self.RelatorioSemValores,' ORDER BY per.percent_disponivel DESC',IfThen(rgLeiaute.ItemIndex = 0,'',' order by 1, 3 '));
-
 end;
 
 procedure TfrmRelatorioVendas.dtpFimChange(Sender: TObject);

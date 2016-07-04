@@ -402,7 +402,8 @@ uses
   RepositorioParametrosNFCe in 'src\infraestrutura\persistencia\RepositorioParametrosNFCe.pas',
   RepositorioMovimento in 'src\infraestrutura\persistencia\RepositorioMovimento.pas',
   Movimento in 'src\dominio\entidade\Movimento.pas',
-  uRecebimentoPedido in 'src\formularios\uRecebimentoPedido.pas' {frmRecebimentoPedido};
+  uRecebimentoPedido in 'src\formularios\uRecebimentoPedido.pas' {frmRecebimentoPedido},
+  uRelatorioMovimentos in 'src\formularios\relatorios\uRelatorioMovimentos.pas' {frmRelatorioMovimentos};
 
 {$R *.res}
 {$R win7810.res}
@@ -418,6 +419,7 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
+  Application.CreateForm(TfrmRelatorioMovimentos, frmRelatorioMovimentos);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

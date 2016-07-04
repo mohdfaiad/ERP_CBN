@@ -121,6 +121,10 @@ type
     Shape3: TShape;
     Label18: TLabel;
     Label19: TLabel;
+    GroupBox6: TGroupBox;
+    chkDebAutomatico: TCheckBox;
+    cdsTITULAR_CONTA: TStringField;
+    cdsNUMERO_CONTA: TStringField;
     procedure btnNovoClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -158,6 +162,7 @@ type
     procedure BuscaNotaFiscal1Exit(Sender: TObject);
     procedure DBGridCBN2DblClick(Sender: TObject);
     procedure chkDebitoAutClick(Sender: TObject);
+    procedure chkDebAutomaticoClick(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -544,6 +549,12 @@ begin
   self.cdsFORNECEDOR.AsString       := Fornecedor.Razao;
   self.cdsVALOR_PENDENTE.AsFloat    := Conta.valor - totalPago;
   self.cdsCOD_CONTA_BANCO.AsInteger := Conta.codContaBanco;
+
+  if assigned(Conta.ContaBanco) then
+  begin
+    self.cdsTITULAR_CONTA.AsString    := Conta.ContaBanco.titular;
+    self.cdsNUMERO_CONTA.AsString     := Conta.ContaBanco.numero_conta;
+  end;
   self.cds.Post;
 
  Finally
@@ -917,6 +928,18 @@ begin
   edtValorPendente.Value := (cdsParcelasVALOR.AsFloat - cdsParcelasVALOR_PAGO.AsFloat);
   btnExtornar.Enabled    := (cdsParcelasVALOR_PAGO.Value > 0);
   btnReceber.Enabled     := (cdsParcelasVALOR_PAGO.Value < cdsParcelasVALOR.Value);
+end;
+
+procedure TfrmContasPagar.chkDebAutomaticoClick(Sender: TObject);
+begin
+  if not chkDebAutomatico.Checked then
+    cds.Filtered := false
+  else
+  begin
+    cds.Filtered := false;
+    cds.Filter   := 'COD_CONTA_BANCO > 0';
+    cds.Filtered := true;
+  end;
 end;
 
 procedure TfrmContasPagar.chkDebitoAutClick(Sender: TObject);

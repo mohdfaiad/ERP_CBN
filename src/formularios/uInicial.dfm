@@ -42705,6 +42705,10 @@ inherited frmInicial: TfrmInicial
     object Relatrios1: TMenuItem
       Caption = '&5 - Relat'#243'rios'
       ImageIndex = 346
+      object Caixa1: TMenuItem
+        Caption = 'Caixa'
+        OnClick = Caixa1Click
+      end
       object Clientes2: TMenuItem
         Caption = 'Clientes'
         object PedidoseNotas1: TMenuItem
@@ -42789,7 +42793,7 @@ inherited frmInicial: TfrmInicial
     Left = 368
     Top = 32
     Bitmap = {
-      494C0101D001D5013C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101D001D501400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005007000001002000000000000050
       0700000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

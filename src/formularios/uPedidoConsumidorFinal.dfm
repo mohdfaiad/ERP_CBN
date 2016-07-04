@@ -60,13 +60,13 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       item
         Expanded = False
         FieldName = 'PRODUTO'
-        Width = 404
+        Width = 344
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'PRECO_KG'
-        Width = 135
+        Width = 114
         Visible = True
       end
       item
@@ -78,14 +78,21 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       item
         Expanded = False
         FieldName = 'PESO'
-        Width = 146
+        Width = 130
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'VALOR_ITEM'
         Title.Caption = 'VLR ITEM'
-        Width = 169
+        Width = 149
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRECO_PECA'
+        Title.Caption = 'PRE'#199'O PE'#199'A'
+        Width = 120
         Visible = True
       end>
   end
@@ -3546,6 +3553,9 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     end
     object cdsItensCODIGO_ITEM: TIntegerField
       FieldName = 'CODIGO_ITEM'
+    end
+    object cdsItensPRECO_PECA: TFloatField
+      FieldName = 'PRECO_PECA'
     end
   end
   object dsItens: TDataSource

@@ -116,6 +116,7 @@ type
     PedidoConsumidorFinal1: TMenuItem;
     ransfernciaEstoque1: TMenuItem;
     Contasbancrias1: TMenuItem;
+    Caixa1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -190,6 +191,7 @@ type
     procedure PedidoConsumidorFinal1Click(Sender: TObject);
     procedure ransfernciaEstoque1Click(Sender: TObject);
     procedure Contasbancrias1Click(Sender: TObject);
+    procedure Caixa1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -261,7 +263,7 @@ uses
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
   uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque,
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque,
-  uRelatorioTotalizarEstoque, uContasPagar,
+  uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque;
 
@@ -774,6 +776,11 @@ begin
   frmRelatorioVendas.RelatorioSemValores:= False;
   frmRelatorioVendas.ShowModal;
   frmRelatorioVendas.Release;
+end;
+
+procedure TfrmInicial.Caixa1Click(Sender: TObject);
+begin
+  self.AbreForm(TFrmRelatorioMovimentos, paRelatorioMovimentos);
 end;
 
 procedure TfrmInicial.CFOPsCorrespondentes1Click(Sender: TObject);

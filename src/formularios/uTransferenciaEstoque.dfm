@@ -127,6 +127,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Width = 587
     Height = 52
     TabOrder = 0
+    OnExit = BuscaProduto1Exit
     ExplicitLeft = 10
     ExplicitTop = 32
     ExplicitHeight = 52
@@ -156,6 +157,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Height = 46
     TabOrder = 1
     OnEnter = BuscaCor1Enter
+    OnExit = BuscaCor1Exit
     ExplicitLeft = 10
     ExplicitTop = 88
     ExplicitWidth = 425
@@ -214,6 +216,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Width = 587
     Height = 52
     TabOrder = 3
+    OnExit = BuscaProduto2Exit
     ExplicitLeft = 10
     ExplicitTop = 232
     ExplicitHeight = 52

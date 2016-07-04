@@ -2,7 +2,7 @@ unit ContasPagar;
 
 interface
 
-uses SysUtils, Contnrs, NotaFiscal;
+uses SysUtils, Contnrs, NotaFiscal, ContaBanco;
 
 type
   TContasPagar = class
@@ -22,10 +22,12 @@ type
     FParcelas :TObjectList;
     FNotaFiscal :TNotaFiscal;
     FCodContaBanco: integer;
+    FContaBanco :TContaBanco;
 
     function GetItensConta: TObjectList;
     function GetParcelasConta: TObjectList;
     function GetNotaFiscal: TNotaFiscal;
+    function GetContaBanco: TContaBanco;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -43,6 +45,7 @@ type
     property NotaFiscal            :TNotaFiscal read GetNotaFiscal;
     property ItensConta            :TObjectList read GetItensConta;
     property Parcelas              :TObjectList read GetParcelasConta;
+    property ContaBanco            :TContaBanco read GetContaBanco;
 end;
 
 implementation
@@ -51,6 +54,27 @@ uses
   Repositorio, FabricaRepositorio, EspecificacaoItensDaConta, EspecificacaoParcelasDaConta, ItemConta, Parcela;
 
 { TContasPagar }
+
+function TContasPagar.GetContaBanco: TContaBanco;
+var
+  Repositorio   :TRepositorio;
+begin
+   Repositorio    := nil;
+
+   if self.FCodContaBanco <= 0 then
+     Exit;
+
+   try
+      if not Assigned(self.FContaBanco) then begin
+        Repositorio        := TFabricaRepositorio.GetRepositorio(TContaBanco.ClassName);
+        self.FContaBanco   := TContaBanco( Repositorio.Get( self.codContaBanco ));
+      end;
+
+      result := self.FContaBanco;
+   finally
+     FreeAndNil(Repositorio);
+   end;
+end;
 
 function TContasPagar.GetItensConta: TObjectList;
 var

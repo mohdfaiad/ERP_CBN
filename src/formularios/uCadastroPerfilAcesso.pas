@@ -106,6 +106,7 @@ type
     chk62: TCheckBox;
     chk63: TCheckBox;
     chk64: TCheckBox;
+    chk65: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);

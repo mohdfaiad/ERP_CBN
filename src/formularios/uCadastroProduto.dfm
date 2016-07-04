@@ -411,7 +411,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 797
     Height = 438
-    ActivePage = TabSheet3
+    ActivePage = TabSheet5
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -2336,7 +2336,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             Left = 8
             Top = 25
             Width = 764
-            Height = 284
+            Height = 288
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
               'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -2362,6 +2362,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             TitleFont.Style = []
             OnDrawColumnCell = gridReferenciasDrawColumnCell
             OnDblClick = gridReferenciasDblClick
+            OnKeyDown = gridReferenciasKeyDown
             BuscaHabilitada = True
             ConfCores.Normal.CorFonte = clWindowText
             ConfCores.Normal.CorFundo = 14803425
@@ -3762,7 +3763,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 695
     Top = 201
     Bitmap = {
-      494C010106000900200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

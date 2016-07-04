@@ -125,7 +125,10 @@ procedure TfrmRecebimentoPedido.FormKeyDown(Sender: TObject; var Key: Word;
 begin
   inherited;
   if key = VK_F10 then
+  begin
     FCc := false;
+    btnConfirmar.Click;
+  end;
 end;
 
 procedure TfrmRecebimentoPedido.lancaPagamento;

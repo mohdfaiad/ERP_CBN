@@ -307,6 +307,8 @@ type
     procedure gridKitsKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure comKitChange(Sender: TObject);
+    procedure gridReferenciasKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
@@ -987,6 +989,14 @@ begin
 
 end;
 
+procedure TfrmCadastroProduto.gridReferenciasKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  //38 cima - 40 baixo
+  if(ssCtrl in Shift) and (key in [38,40]) then
+
+end;
+
 procedure TfrmCadastroProduto.btnGeraCodBarClick(Sender: TObject);
 var linha :integer;
 begin
@@ -1009,7 +1019,7 @@ begin
 
   finally
     cdsCodPossiveis.Filtered := false;
-    cdsCodPossiveis.RecNo    := linha;    
+    cdsCodPossiveis.RecNo    := linha;
   end;
 end;
 
