@@ -47,8 +47,8 @@ begin
    if TStringUtilitario.EstaVazia(Motivo) then
     raise TExcecaoParametroInvalido.Create(self.ClassName, NOME_METODO, 'Motivo');
 
-   self.FStatus := IfThen(Status = '135', '100', Status);
-   self.FMotivo := IfThen(Status = '135', 'Autorizado o uso da NF-e',Motivo);
+   self.FStatus := IfThen(Status = '135', '101', Status);
+   self.FMotivo := IfThen(Status = '135', 'Cancelamento da NF-e homologado',Motivo);
 end;
 
 constructor TRetornoNFe.Create(CodigoNF: Integer; Status, Motivo: String);

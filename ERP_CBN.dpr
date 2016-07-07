@@ -403,7 +403,9 @@ uses
   RepositorioMovimento in 'src\infraestrutura\persistencia\RepositorioMovimento.pas',
   Movimento in 'src\dominio\entidade\Movimento.pas',
   uRecebimentoPedido in 'src\formularios\uRecebimentoPedido.pas' {frmRecebimentoPedido},
-  uRelatorioMovimentos in 'src\formularios\relatorios\uRelatorioMovimentos.pas' {frmRelatorioMovimentos};
+  uRelatorioMovimentos in 'src\formularios\relatorios\uRelatorioMovimentos.pas' {frmRelatorioMovimentos},
+  OrdemServico in 'src\dominio\entidade\OrdemServico.pas',
+  RepositorioOrdemServico in 'src\infraestrutura\persistencia\RepositorioOrdemServico.pas';
 
 {$R *.res}
 {$R win7810.res}

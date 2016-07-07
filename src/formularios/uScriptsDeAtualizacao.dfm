@@ -5615,4 +5615,50 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 157
     WordWrap = False
   end
+  object versao158: TMemo
+    Left = 418
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_ORDEM_SERVICO_ID'
+      '^'
+      'CREATE TABLE ORDEM_SERVICO ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    NUMERO INTEGER,'
+      '    CODIGO_PRODUTO INTEGER,'
+      '    CODIGO_COR INTEGER,'
+      '    CODIGO_TAMANHO INTEGER,'
+      '    QUANTIDADE INTEGER)'
+      '^'
+      'alter table ORDEM_SERVICO'
+      'add constraint PK_ORDEM_SERVICO'
+      'primary key (CODIGO)'
+      '^'
+      'CREATE TRIGGER ORDEM_SERVICO_BI FOR ORDEM_SERVICO'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_ORDEM_SERVICO_ID,1);'
+      'END'
+      '^'
+      'alter table ORDEM_SERVICO'
+      'add constraint FK_ORDEM_SERVICO_1'
+      'foreign key (CODIGO_PRODUTO)'
+      'references PRODUTOS(CODIGO)'
+      '^'
+      'alter table ORDEM_SERVICO'
+      'add constraint FK_ORDEM_SERVICO_2'
+      'foreign key (CODIGO_COR)'
+      'references CORES(CODIGO)'
+      '^'
+      'alter table ORDEM_SERVICO'
+      'add constraint FK_ORDEM_SERVICO_3'
+      'foreign key (CODIGO_TAMANHO)'
+      'references TAMANHOS(CODIGO)'
+      '^')
+    TabOrder = 158
+    WordWrap = False
+  end
 end

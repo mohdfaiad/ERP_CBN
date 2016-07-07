@@ -238,7 +238,7 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
     Align = alBottom
     TabOrder = 5
     object btnImportar: TBitBtn
-      Left = 740
+      Left = 741
       Top = 7
       Width = 120
       Height = 30
