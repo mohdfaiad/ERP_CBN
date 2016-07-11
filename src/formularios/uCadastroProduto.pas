@@ -309,12 +309,15 @@ type
     procedure comKitChange(Sender: TObject);
     procedure gridReferenciasKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure gridReferenciasKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
     ProdutoTabelaPreco :TProdutoTabelaPreco;
     rep :TRepositorio;
     posicaoGrid :integer;
+    FPressionado :Boolean;
 
     procedure habilita(SN:Boolean);
     procedure limpaCampos;
@@ -330,6 +333,8 @@ type
     procedure salvaCodigoBarras;
     procedure alterar_genero_ProdutoCor;
     procedure removeKit;
+    procedure selecionaDeseleciona;
+    procedure deselecionaTodos;
     
   public
     { Public declarations }
@@ -787,6 +792,24 @@ begin
   fdm.qryGenerica.ExecSQL;
 end;
 
+procedure TfrmCadastroProduto.deselecionaTodos;
+var vMarcacao :integer;
+begin
+  vMarcacao := cdsCodPossiveis.RecNo;
+  cdsCodPossiveis.DisableControls;
+  cdsCodPossiveis.First;
+  while not cdsCodPossiveis.Eof do
+  begin
+    cdsCodPossiveis.Edit;
+    cdsCodPossiveisTAG.AsString := '';
+    cdsCodPossiveis.Post;
+
+    cdsCodPossiveis.Next;
+  end;
+  cdsCodPossiveis.RecNo := vMarcacao;
+  cdsCodPossiveis.EnableControls;
+end;
+
 procedure TfrmCadastroProduto.btnIncTabelaClick(Sender: TObject);
 begin
   inherited;
@@ -851,6 +874,13 @@ begin
 
     cdsTabela.Next;
   end;
+end;
+
+procedure TfrmCadastroProduto.selecionaDeseleciona;
+begin
+  cdsCodPossiveis.Edit;
+  cdsCodPossiveisTAG.AsString := IfThen(cdsCodPossiveisTAG.AsString = '', 'x','');
+  cdsCodPossiveis.Post;
 end;
 
 procedure TfrmCadastroProduto.TabSheet4Exit(Sender: TObject);
@@ -992,9 +1022,26 @@ end;
 procedure TfrmCadastroProduto.gridReferenciasKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-  //38 cima - 40 baixo
-  if(ssCtrl in Shift) and (key in [38,40]) then
+  //16 shift - 38 cima - 40 baixo
+  if((ssShift in Shift) and (key in [38,40])) then
+  begin
+     if not FPressionado then
+     begin
+       deselecionaTodos;
+       FPressionado := true;
+     end;
 
+     selecionaDeseleciona;
+  end;
+end;
+
+procedure TfrmCadastroProduto.gridReferenciasKeyUp(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (Key = 16) then begin
+    FPressionado := false;
+    selecionaDeseleciona;
+  end;
 end;
 
 procedure TfrmCadastroProduto.btnGeraCodBarClick(Sender: TObject);
@@ -1299,9 +1346,7 @@ begin
   if not (cdsCodPossiveis.Active) or (cdsCodPossiveis.IsEmpty) or (cdsCodPossiveisSTATUS.AsString = 'C') then
     Exit;
 
-  cdsCodPossiveis.Edit;
-  cdsCodPossiveisTAG.AsString := IfThen(cdsCodPossiveisTAG.AsString = '', 'x','');
-  cdsCodPossiveis.Post;
+  selecionaDeseleciona;
 end;
 
 procedure TfrmCadastroProduto.btnAddKitClick(Sender: TObject);

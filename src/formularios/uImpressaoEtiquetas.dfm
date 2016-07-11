@@ -1633,7 +1633,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     TabOrder = 5
     object gridTam: TDBGrid
       Left = 5
-      Top = 26
+      Top = 21
       Width = 227
       Height = 252
       Color = 14803425

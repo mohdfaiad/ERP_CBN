@@ -267,13 +267,13 @@ begin
                              ' WHERE '+campo_referencia+' = :param1'+
                              segunda_condicao;
 
-  if strToIntDef(valor_campo_referencia, 0) > 0 then // se for numero
+  if not (copy(valor_campo_referencia,1,1)='0') and (strToIntDef(valor_campo_referencia, 0) > 0) then // se for numero
     dm.qryGenerica.ParamByName('param1').AsInteger := strToInt(valor_campo_referencia)
   else
     dm.qryGenerica.ParamByName('param1').AsString  := valor_campo_referencia;
 
   if campo_referencia2 <> '' then begin
-    if strToIntDef(valor_referencia2, 0) > 0 then // se for numero
+    if not (copy(valor_referencia2,1,1)='0') and (strToIntDef(valor_referencia2, 0) > 0) then // se for numero
       dm.qryGenerica.ParamByName('param2').AsInteger := strToInt(valor_referencia2)
     else
       dm.qryGenerica.ParamByName('param2').AsString := valor_referencia2;

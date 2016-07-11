@@ -2333,10 +2333,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             OnClick = btnGeraCodBarClick
           end
           object gridReferencias: TDBGridCBN
-            Left = 8
+            Left = 6
             Top = 25
             Width = 764
-            Height = 288
+            Height = 286
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
               'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -2363,6 +2363,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             OnDrawColumnCell = gridReferenciasDrawColumnCell
             OnDblClick = gridReferenciasDblClick
             OnKeyDown = gridReferenciasKeyDown
+            OnKeyUp = gridReferenciasKeyUp
             BuscaHabilitada = True
             ConfCores.Normal.CorFonte = clWindowText
             ConfCores.Normal.CorFundo = 14803425
@@ -2530,10 +2531,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             Text = '0'
           end
           object radFiltro: TRadioGroup
-            Left = 8
+            Left = 6
             Top = 311
             Width = 329
-            Height = 66
+            Height = 65
             Anchors = [akLeft, akBottom]
             Caption = ' Filtro de Refer'#234'ncias '
             Columns = 3
@@ -2549,7 +2550,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             Left = 343
             Top = 311
             Width = 219
-            Height = 66
+            Height = 65
             Anchors = [akLeft, akBottom]
             Caption = ' C'#243'digo de Barras das Refer'#234'ncias '
             TabOrder = 5
@@ -3763,7 +3764,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 695
     Top = 201
     Bitmap = {
-      494C010106000900240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
