@@ -441,7 +441,7 @@ begin
 
     codigoBarras := buscaCodBar(cdsProCODPRODUTO.AsInteger, cdsCorCODCOR.AsInteger, cdsTamCODTAMANHO.asInteger);
 
-    if not (cdsTamQtde.AsInteger > 0) or (cdsImp.Locate('CODBAR', codigoBarras,[])) then begin
+    if not (cdsTamQtde.AsInteger > 0) or ((cdsImp.Active) and (cdsImp.Locate('CODBAR', codigoBarras,[]))) then begin
       cdsTam.Next;
       continue;
     end;
