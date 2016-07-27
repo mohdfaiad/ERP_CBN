@@ -171,7 +171,10 @@ end;
 
 function TItem.GetValorImpostos: Real;
 begin
-  result := ( 32.09 * (self.FQuantidade * self.FValorUnitario) )/100;
+  if not(self.Produto.Cod_Ncm > 0) then
+    raise Exception.Create('NCM IBPT não associado ao produto');
+
+  result := ( self.Produto.AliqNcmIbpt * (self.FQuantidade * self.FValorUnitario) )/100;
   result := Arredonda(result);
 end;
 

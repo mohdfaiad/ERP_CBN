@@ -31,6 +31,7 @@ type
     FcodTabela  :String;
     FTipo       :String;
     FKit        :Boolean;
+    FProdutosLoja :Boolean;
 
     procedure buscaProduto;
     function selecionaProduto :String;
@@ -50,6 +51,7 @@ type
     property codTabela  :String read FcodTabela write SetcodTabela;
     property tipo       :String read FTipo;
     property Kit        :Boolean read FKit write FKit;
+    property ProdutosLoja :Boolean read FProdutosLoja write FProdutosLoja;
 
     property Prod       :TProduto read FProd;
   end;
@@ -102,10 +104,14 @@ begin
 end;
 
 function TBuscaProduto.selecionaProduto: String;
+var condicao_loja :String;
 begin
   Result := '';
 
-  frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select referencia, descricao, codigo, ativo from produtos',
+  if FProdutosLoja then
+    condicao_loja := ' Where (p.referencia like ''%L'' or p.referencia = ''KGLOJA'') ';
+
+  frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select p.referencia, p.descricao, p.codigo, p.ativo from produtos p'+condicao_loja,
                                                        'REFERENCIA', 'Selecione o Produto desejado...',800);
 
   if frmPesquisaSimples.ShowModal = mrOk then begin
@@ -124,6 +130,7 @@ procedure TBuscaProduto.setaProduto(enter :Boolean);
 var campo      :String;
     referencia :String;
     repositorio :TRepositorio;
+    condicao_loja :String;
 begin
   campo := 'REFERENCIA';
   referencia   := trim(edtReferencia.Text);
@@ -140,10 +147,13 @@ begin
 
     if produto.verificaExiste('select codigo from produtos where referencia = '''+ referencia +'''') then begin
 
+       if FProdutosLoja then
+         condicao_loja := ' and  (p.referencia like ''%L''  or p.referencia = ''KGLOJA'')';
+
        produto.SQL := 'Select first 1 p.referencia, p.descricao, p.codigo, g.codigo grade, g.descricao descgrade, pt.preco, p.tipo, p.kit    from produtos p '+
                       'inner join grades g on g.codigo = p.cod_grade                                                                                  '+
                       'left join produto_tabela_preco pt on (pt.codproduto = p.codigo and pt.codtabela = '+ codTabela +')                             '+
-                      'where p.' + campo + ' = ''' + referencia + '''';
+                      'where p.' + campo + ' = ''' + referencia + ''' '+condicao_loja;
 
        if not produto.BuscaVazia then begin
          edtReferencia.Text := produto.getCampo('referencia').AsString;

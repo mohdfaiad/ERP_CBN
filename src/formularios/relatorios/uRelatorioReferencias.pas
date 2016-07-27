@@ -236,25 +236,9 @@ end;
 function TfrmRelatorioReferencias.seleciona_cod_barras(tamanho: String): String;
 var codigo_tamanho :String;
 begin
-  result := '';
-
+  result         := '';
   codigo_tamanho := Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', tamanho);
-
-  fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := 'select c.numeracao from codigo_barras c '+
-                              ' where c.codproduto = :cod_produto      '+
-                              '   and c.codcor = :cod_cor              '+
-                              '   and c.codgrade = :cod_grade          '+
-                              '   and c.codtamanho = :cod_tamanho      ';
-
-  fdm.qryGenerica.ParamByName('cod_produto').AsInteger := cdscod_produto.AsInteger;
-  fdm.qryGenerica.ParamByName('cod_cor').AsInteger     := cdscod_cor.AsInteger;
-  fdm.qryGenerica.ParamByName('cod_grade').AsInteger   := cdsCOD_GRADE.AsInteger;
-  fdm.qryGenerica.ParamByName('cod_tamanho').AsInteger := strToIntDef(codigo_tamanho, 0);
-  fdm.qryGenerica.Open;
-
-  result := fdm.qryGenerica.fieldByName('numeracao').AsString;
-
+  result         := buscaCodigoBarras(cdscod_produto.AsInteger, cdscod_cor.AsInteger, strToIntDef(codigo_tamanho, 0), cdsCOD_GRADE.AsInteger);
 end;
 
 procedure TfrmRelatorioReferencias.FormCreate(Sender: TObject);

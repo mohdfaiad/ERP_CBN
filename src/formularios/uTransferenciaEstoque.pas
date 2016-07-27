@@ -53,7 +53,7 @@ type
     procedure mostraEstoqueOrigem;
     procedure mostraEstoqueDestino;
     procedure EfetuaTransferencia;
-    procedure AlteraEstoque(codigoEstoque, quantidade :integer);
+    procedure AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade :integer);
     procedure habilitaTamanhos(radGroup :TRadioGroup; grade :TGrade);
   public
     { Public declarations }
@@ -68,21 +68,26 @@ uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, 
 
 {$R *.dfm}
 
-procedure TfrmTransferenciaEstoque.AlteraEstoque(codigoEstoque, quantidade: integer);
+procedure TfrmTransferenciaEstoque.AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade: integer);
 var Estoque     :TEstoque;
     repositorio :TRepositorio;
+    Especificacao :TEspecificacaoEstoquePorProdutoCorTamanho;
 begin
   Estoque     := nil;
   repositorio := nil;
 
  try
    repositorio := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Estoque     := TEstoque( repositorio.Get( codigoEstoque ) );
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(codigo_produto,
+                                                                      codigo_cor,
+                                                                      codigo_tamanho);
+
+   Estoque     := TEstoque( repositorio.GetPorEspecificacao( Especificacao, intToStr(codigo_produto)) );
 
    if not assigned(Estoque) then
-     Estoque := TEstoque.create(StrToInt(BuscaProduto2.codproduto),
-                                StrToInt(BuscaCor2.codCor),
-                                strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]) ));
+     Estoque := TEstoque.create(codigo_produto,
+                                codigo_cor,
+                                codigo_tamanho);
 
    Estoque.atualiza_estoque( quantidade );
 
@@ -204,9 +209,16 @@ end;
 procedure TfrmTransferenciaEstoque.EfetuaTransferencia;
 begin
   {atualiza estoque origem}
-  AlteraEstoque(edtCodEstoque1.AsInteger, (edtQtdTransferir.AsInteger * -1));
+  AlteraEstoque(StrToInt(BuscaProduto1.codproduto),
+                StrToInt(BuscaCor1.codCor),
+                StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos1.Items[rgTamanhos1.itemIndex]) ),
+                (edtQtdTransferir.AsInteger * -1));
+
   {atualiza estoque destino}
-  AlteraEstoque(edtCodEstoque2.AsInteger, edtQtdTransferir.AsInteger);
+  AlteraEstoque(StrToInt(BuscaProduto2.codproduto),
+                StrToInt(BuscaCor2.codCor),
+                StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]) ),
+                edtQtdTransferir.AsInteger);
 
   Avisar('Transferência efetuada com sucesso!');
   btnLimpar.Click;

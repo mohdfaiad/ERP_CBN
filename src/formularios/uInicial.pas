@@ -116,7 +116,12 @@ type
     PedidoConsumidorFinal1: TMenuItem;
     ransfernciaEstoque1: TMenuItem;
     Contasbancrias1: TMenuItem;
-    Caixa1: TMenuItem;
+    BotaoImg6: TBotaoImg;
+    ImportadorOS1: TMenuItem;
+    CaixaLoja1: TMenuItem;
+    Loja1: TMenuItem;
+    Caixa2: TMenuItem;
+    Pedidos2: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -191,7 +196,11 @@ type
     procedure PedidoConsumidorFinal1Click(Sender: TObject);
     procedure ransfernciaEstoque1Click(Sender: TObject);
     procedure Contasbancrias1Click(Sender: TObject);
-    procedure Caixa1Click(Sender: TObject);
+    procedure BotaoImg6Label1Click(Sender: TObject);
+    procedure ImportadorOS1Click(Sender: TObject);
+    procedure CaixaLoja1Click(Sender: TObject);
+    procedure Caixa2Click(Sender: TObject);
+    procedure Pedidos2Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -258,12 +267,12 @@ uses
   uFechaComissaoRepresentante,
   uSintegra,
   uEFDContribuicoes,
-  uCadastroContador,
-  uEFDFiscal, uCadastroContasBanco,
+  uCadastroContador, uImportadorOrdemServico,
+  uEFDFiscal, uCadastroContasBanco, uCaixa,
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
   uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque,
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque,
-  uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos,
+  uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque;
 
@@ -632,6 +641,11 @@ begin
   end;
 end;
 
+procedure TfrmInicial.Pedidos2Click(Sender: TObject);
+begin
+  self.AbreForm(TFrmRelatorioMovimentos, paRelatorioMovimentos);
+end;
+
 procedure TfrmInicial.PedidoseNotas1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmVisualizaPedidosNfes, paVisualizaPeididosNFes);
@@ -778,9 +792,14 @@ begin
   frmRelatorioVendas.Release;
 end;
 
-procedure TfrmInicial.Caixa1Click(Sender: TObject);
+procedure TfrmInicial.Caixa2Click(Sender: TObject);
 begin
-  self.AbreForm(TFrmRelatorioMovimentos, paRelatorioMovimentos);
+    self.AbreForm(TfrmRelatorioCaixa, paTelaCaixaLoja);
+end;
+
+procedure TfrmInicial.CaixaLoja1Click(Sender: TObject);
+begin
+  self.AbreForm(TFrmCaixa, paTelaCaixaLoja);
 end;
 
 procedure TfrmInicial.CFOPsCorrespondentes1Click(Sender: TObject);
@@ -1018,6 +1037,18 @@ begin
   self.AbreForm(TfrmImportadadorClientesTricae, paImportadorClientesTricae);
 end;
 
+procedure TfrmInicial.ImportadorOS1Click(Sender: TObject);
+begin
+  try
+    self.AbreForm(TfrmImportadorOrdemServico, paImportadorOrdensServico);
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
+end;
+
 procedure TfrmInicial.Contasapagar1Click(Sender: TObject);
 begin
   try
@@ -1033,6 +1064,11 @@ end;
 procedure TfrmInicial.BotaoImg5Label1Click(Sender: TObject);
 begin
   Contasapagar1Click(nil);
+end;
+
+procedure TfrmInicial.BotaoImg6Label1Click(Sender: TObject);
+begin
+  PedidoConsumidorFinal1Click(nil);
 end;
 
 procedure TfrmInicial.ContasaPAgar2Click(Sender: TObject);

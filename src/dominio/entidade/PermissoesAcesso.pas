@@ -80,6 +80,10 @@ const
   paTransferenciaEstoque         = 63;
   paCadastroContasBanco          = 64;
   paRelatorioMovimentos          = 65;
+  paImportadorOrdensServico      = 66;
+  paTelaCaixaLoja                = 67;
+  paEntradaSaidaMoeda            = 68;
+  paRelatorioCaixa               = 69;
 
 implementation
 

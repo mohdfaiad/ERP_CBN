@@ -8,7 +8,8 @@ uses
   DBGridCBN, Provider, DBClient, Mask, RxToolEdit, RxCurrEdit, pngimage, RLReport, RLBarcode,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, ComObj, System.StrUtils,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  frameBuscaOS;
 
 type
   TfrmImpressaoEtiquetas = class(TfrmPadrao)
@@ -98,7 +99,9 @@ type
     qry: TFDQuery;
     cdsTamOS: TIntegerField;
     cdsImpOS: TIntegerField;
-    BitBtn1: TBitBtn;
+    GroupBox6: TGroupBox;
+    BuscaOS1: TBuscaOS;
+    Timer1: TTimer;
     procedure btnImprimirZebraClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridImpDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -123,8 +126,9 @@ type
     procedure btnSelecionaClick(Sender: TObject);
     procedure btnImprimirLazerClick(Sender: TObject);
     procedure cdsTamQtdeChange(Sender: TField);
-    procedure BitBtn1Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BuscaOS1Exit(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     fCor2       :String;
     fCor        :String;
@@ -137,12 +141,12 @@ type
     function insereInformacao(linha, texto: String):String;
     procedure imprimir;
     procedure insereAFila;
-    function buscaCodBar(produto, cor, tamanho :integer):String;
     function retornaIdQuebra(texto :String; meio :integer; Left_Right :String):integer;
 
     procedure adicionaLista(referencia, descricao, codbarras, cor, tamanho :String; quantidade, os :integer);
     procedure preparaRegistrosLaser;
-    procedure importarOrdensServico(caminho :String);
+    procedure carregaOrdemServico;
+    procedure salva_impresso(NOS :String);
   public
     { Public declarations }
   end;
@@ -201,113 +205,6 @@ begin
 
 end;
 
-procedure TfrmImpressaoEtiquetas.importarOrdensServico(caminho: String);
-var Excel, Sheet: OleVariant;
-   i, ordemServico, quantidade :integer;
-   codProduto, codCor, codTamanho :integer;
-   repProduto :TRepositorio;
-   repCor     :TRepositorio;
-   repOS      :TRepositorio;
-   produto :TProduto;
-   cor :TCor;
-   OS  :TOrdemServico;
-   tamanho, codBarras :String;
-begin
-  Aguarda('Importando ordens de serviço, aguarde...');
-
-  try
-    OS           := nil;
-    repOS        := nil;
-    repProduto   := nil;
-    repCor       := nil;
-    try
-      Excel := CreateOleObject('Excel.Application');
-      Excel.WorkBooks.Open(caminho);
-      Excel.Visible := false;
-
-    except
-      on e : Exception do
-        begin
-          avisar('Ocorreu um erro ao abrir o arquivo.'+#13#10+ e.Message);
-        end;
-    end;
-
-    try
-      i := 2;
-      repProduto := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
-      repCor     := TFabricaRepositorio.GetRepositorio(TCor.ClassName);
-      repOs      := TFabricaRepositorio.GetRepositorio(TOrdemServico.ClassName);
-
-      btnLimpa.Click;
-      dm.conexao.TxOptions.AutoCommit := false;
-
-      while Excel.WorkBooks[1].Sheets[1].Cells[i,1].value > 0 do
-      begin
-        ordemServico := StrToInt(TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,1] ));
-        tamanho      := TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,4] );
-        tamanho      := IfThen(tamanho = 'U','UNICA', tamanho);
-        quantidade   := StrToIntDef(TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,5] ) ,0);
-
-        codProduto := strToIntDef(Campo_por_campo('PRODUTOS','CODIGO','REFERENCIA',TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,2] )) ,0);
-        codCor     := strToIntDef(Campo_por_campo('CORES','CODIGO','REFERENCIA',TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,3] )) ,0);
-        codTamanho := strToIntDef(Campo_por_campo('TAMANHOS','CODIGO','DESCRICAO',TRIM( Excel.WorkBooks[1].Sheets[1].Cells[i,4] )) ,0);
-
-        if (codProduto > 0) and (codCor > 0) and (codTamanho > 0) then
-        begin
-          codBarras  := '';
-          codbarras  := buscaCodBar(codProduto, codCor, codTamanho);
-
-          if (codBarras <> '') and (Campo_por_campo('ORDEM_SERVICO','CODIGO','NUMERO',intToStr(ordemServico)) = '') then
-          begin
-            produto    := TProduto(repProduto.Get(codProduto));
-            cor        := TCor(repCor.Get(codCor));
-
-            adicionaLista(produto.Referencia,
-                          produto.Descricao,
-                          codbarras,
-                          cor.Referencia+' '+cor.Descricao,
-                          tamanho,
-                          quantidade,
-                          ordemServico);
-
-            FreeAndNil(produto);
-            FreeAndNil(cor);
-
-            {se não existir OS cadastrada com esse grupo}
-            if Campo_por_campo('ORDEM_SERVICO','CODIGO','NUMERO',intToStr(ordemServico)) = '' then
-            begin
-              OS := TOrdemServico.Create;
-              OS.numero := ordemServico;
-              OS.codigo_produto := codProduto;
-              OS.codigo_cor     := codCor;
-              OS.codigo_tamanho := codTamanho;
-              OS.quantidade     := quantidade;
-              repOS.Salvar(OS);
-            end;
-          end;
-        end;
-
-        inc(i);
-      end;
-
-    except
-      on e : Exception do
-        begin
-          avisar('Ocorreu um erro ao importar os clientes.'+#13#10+ e.Message);
-        end;
-    end;
-
-  finally
-    FreeAndNil(OS);
-    FreeAndNil(repOS);
-    FreeAndNil(repProduto);
-    FreeAndNil(repCor);
-    FimAguarda;
-    Excel := Unassigned;
-    PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
-  end;
-end;
-
 procedure TfrmImpressaoEtiquetas.imprimir;
 var
   F: TextFile;
@@ -316,7 +213,7 @@ var
 begin
   nomeLogo := '';
   site     := 'www.babyduck.com.br';
-  
+
   if cdsImp.IsEmpty then begin
     avisar('Não há referências na fila de impressão!');
     exit;
@@ -360,7 +257,7 @@ begin
         memo1.Lines.Add('^FO'+intToStr(lin3)                              +',160^ADI,15,12^FD'+codbar+'^FS');
         memo1.Lines.Add('^FO'+intToStr(margem-(length(prod1)*12))         +',136^ADI,15,12^FD'+prod1+'^FS');
         memo1.Lines.Add('^FO'+intToStr(margem-(length(prod2)*12))         +',111^ADI,15,12^FD'+prod2+'^FS');
-        memo1.Lines.Add('^FO'+intToStr(lin6)                              +',180^BY1,3,12^BCI,90,N,N,N^FD'+codbar+'^FS');
+        memo1.Lines.Add('^FO'+intToStr(lin6)                              +',190^BY1,3,12^BCI,80,N,N,N^FD'+codbar+'^FS');
         memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: ')*12))       +',031^ADI,15,12^FDTAM: ^FS');
         memo1.Lines.Add('^FO'+intToStr(margem-(length(site)*12))          +',276^ADI,15,12^FD'+site+'^FS');
         memo1.Lines.Add('^FO'+intToStr(margem-(length('TAM: '+tam)*12))   +',029^A0I,30,24^FD'+tam+'^FS');
@@ -390,14 +287,10 @@ begin
          end;
       end;
 
+      salva_impresso(cdsImpOS.AsString);
       cdsImp.Next;
     end;
 
-    if dm.conexao.TxOptions.AutoCommit = false then
-    begin
-      dm.conexao.Commit;
-      dm.conexao.TxOptions.AutoCommit := true;
-    end;
   Except
     on e: Exception do
        avisar('Erro ao imprimir.'+#13#10+e.Message);
@@ -439,7 +332,7 @@ begin
   cdsTam.First;
   while not cdsTam.Eof do begin
 
-    codigoBarras := buscaCodBar(cdsProCODPRODUTO.AsInteger, cdsCorCODCOR.AsInteger, cdsTamCODTAMANHO.asInteger);
+    codigoBarras := buscaCodigoBarras(cdsProCODPRODUTO.AsInteger, cdsCorCODCOR.AsInteger, cdsTamCODTAMANHO.asInteger);
 
     if not (cdsTamQtde.AsInteger > 0) or ((cdsImp.Active) and (cdsImp.Locate('CODBAR', codigoBarras,[]))) then begin
       cdsTam.Next;
@@ -472,7 +365,11 @@ begin
   if not cdsImp.Active then
     cdsImp.CreateDataSet;
 
-  cdsImp.Append;
+  if cdsImp.Locate('OS',os,[]) then
+    cdsImp.Edit
+  else
+    cdsImp.Append;
+
   cdsImpREFERENCIA.AsString := referencia;
   cdsImpPRODUTO.AsString    := descricao;
   cdsImpCODBAR.AsString     := codbarras;
@@ -486,53 +383,12 @@ begin
   edtQtde.AsInteger := edtQtde.AsInteger + cdsImpQTDE.AsInteger;
 end;
 
-procedure TfrmImpressaoEtiquetas.BitBtn1Click(Sender: TObject);
-var Dialog :TOpenDialog;
-  caminho  :String;
-begin
-  if dm.conexao.TxOptions.AutoCommit = false then
-  begin
-    dm.conexao.Rollback;
-    dm.conexao.TxOptions.AutoCommit := true;
-  end;
-
-  try
-    caminho := '';
-
-    Dialog            := TOpenDialog.Create(nil);
-    Dialog.Title      := 'Selecione o arquivo com as ordens de serviço';
-    Dialog.DefaultExt := 'xls; xlsm';
-
-    if Dialog.Execute then
-      caminho := Dialog.FileName;
-
-    if caminho <> '' then
-      importarOrdensServico(caminho);
-
-  finally
-    FreeAndNil(Dialog);
-  end;
-end;
-
 procedure TfrmImpressaoEtiquetas.btnAdicionaClick(Sender: TObject);
 begin
   inherited;
   insereAFila;
   cdsCorAfterScroll(nil);
   GridCor.SetFocus;
-end;
-
-function TfrmImpressaoEtiquetas.buscaCodBar(produto,cor,tamanho: integer): String;
-begin
-  fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := 'select cb.numeracao from codigo_barras cb                                         '+
-                              'where cb.codproduto = :codpro and cb.codcor = :codcor and cb.codtamanho = :codtam ';
-  fdm.qryGenerica.ParamByName('codpro').AsInteger := produto;
-  fdm.qryGenerica.ParamByName('codcor').AsInteger := cor;
-  fdm.qryGenerica.ParamByName('codtam').AsInteger := tamanho;
-  fdm.qryGenerica.Open;
-
-  result := fdm.qryGenerica.fieldByName('numeracao').AsString;
 end;
 
 procedure TfrmImpressaoEtiquetas.cdsProAfterScroll(DataSet: TDataSet);
@@ -547,6 +403,23 @@ begin
   TFDQuery(dspCor.DataSet).ParamByName('codpro').AsInteger := cdsProCODPRODUTO.AsInteger;
   cdsCor.Open;
 
+end;
+
+procedure TfrmImpressaoEtiquetas.carregaOrdemServico;
+begin
+  cdsPro.Locate('CODPRODUTO',BuscaOS1.OrdemServico.codigo_produto,[]);
+  cdsCor.Locate('CODCOR', buscaOS1.OrdemServico.codigo_cor,[]);
+  cdsTam.Locate('CODTAMANHO',BuscaOS1.OrdemServico.codigo_tamanho,[]);
+
+  cdsTam.Edit;
+  cdsTamQtde.AsInteger := buscaOS1.OrdemServico.quantidade;
+  cdsTamOS.AsInteger   := buscaOS1.OrdemServico.numero;
+  cdsTam.Post;
+  cdsTam.Locate('CODTAMANHO',BuscaOS1.OrdemServico.codigo_tamanho,[]);
+
+  btnAdiciona.Click;
+  BuscaOS1.Clear;
+  Timer1.Enabled := true;
 end;
 
 procedure TfrmImpressaoEtiquetas.cdsCorAfterScroll(DataSet: TDataSet);
@@ -675,15 +548,10 @@ begin
     end;
 end;
 
-procedure TfrmImpressaoEtiquetas.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TfrmImpressaoEtiquetas.FormCreate(Sender: TObject);
 begin
   inherited;
-  if dm.conexao.TxOptions.AutoCommit = false then
-  begin
-    dm.conexao.Rollback;
-    dm.conexao.TxOptions.AutoCommit := true;
-  end;
+  BuscaOS1.ExcluiImpressas := true;
 end;
 
 procedure TfrmImpressaoEtiquetas.FormKeyDown(Sender: TObject;
@@ -707,6 +575,33 @@ begin
     edtCaminho.Clear;
 end;
 
+procedure TfrmImpressaoEtiquetas.salva_impresso(NOS: String);
+var OS :TOrdemServico;
+    repositorio :TRepositorio;
+begin
+  OS := nil;
+  repositorio := nil;
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TOrdemServico.ClassName);
+    OS          := TOrdemServico(repositorio.Get( strToIntDef(Campo_por_campo('ORDEM_SERVICO','CODIGO','NUMERO',NOS),0) ));
+
+    if not assigned(OS) then
+      exit;
+
+    OS.impresso := true;
+    repositorio.Salvar(OS);
+  finally
+    FreeAndNil(OS);
+    FreeAndNil(repositorio);
+  end;
+end;
+
+procedure TfrmImpressaoEtiquetas.Timer1Timer(Sender: TObject);
+begin
+  BuscaOS1.edtNumeroOS.SetFocus;
+  Timer1.Enabled := false;
+end;
+
 procedure TfrmImpressaoEtiquetas.btnSelecionaClick(Sender: TObject);
 var Dialog :TOpenDialog;
   caminho  :String;
@@ -728,6 +623,12 @@ begin
   finally
     FreeAndNil(Dialog);
   end;
+end;
+
+procedure TfrmImpressaoEtiquetas.BuscaOS1Exit(Sender: TObject);
+begin
+  if assigned(BuscaOS1.OrdemServico) then
+    carregaOrdemServico;
 end;
 
 procedure TfrmImpressaoEtiquetas.btnImprimirLazerClick(Sender: TObject);

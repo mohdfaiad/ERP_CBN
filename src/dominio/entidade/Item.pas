@@ -112,7 +112,7 @@ type
 implementation
 
 uses
-  Repositorio,
+  Repositorio, Math,
   FabricaRepositorio;
 
 { TItem }
@@ -311,7 +311,7 @@ end;
 
 function TItem.GetValor_total: Real;
 begin
-  Result := (self.GetQtd_total * self.Fpreco) - self.Fdesconto;
+  Result := ( IfThen(self.FPeso > 0, self.FPeso, self.GetQtd_total) * self.Fpreco) - self.Fdesconto;
 end;
 
 end.

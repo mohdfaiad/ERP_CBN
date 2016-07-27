@@ -8,7 +8,7 @@ uses
   ArquivoConfiguracao,
   LogErros,
   DB,
-  Usuario,
+  Usuario, Caixa,
   Windows,
   Parametros,
   FireDAC.Stan.Intf, FireDAC.Stan.Option,
@@ -38,6 +38,7 @@ type
     function GetParametros    :TParametros;
     function GetConexao       :TFDConnection;
     function GetLogo: String;
+    function GetCaixaLoja: TCaixa;
 
   private
     function GetDiretorioSistema        :String;
@@ -45,12 +46,15 @@ type
     function GetNomeDoTerminal          :String;
 
   private
+    FCaixaLoja: TCaixa;
+    FCaixaAberto: Boolean;
     procedure SetArquivoConfiguracao(const Value: TArquivoConfiguracao);
     procedure SetLogErros           (const Value: TLogErros);
     procedure SetUsuario            (const Value: TUsuario);
     procedure SetParametros         (const Value: TParametros);
 
     procedure PreencheDadosConexaoBancoDeDados(Sender: TObject);
+    function getCaixaAberto: Boolean;
 
   public
     constructor Create(AOwner :TComponent); override;
@@ -61,6 +65,8 @@ type
      property ArquivoConfiguracao   :TArquivoConfiguracao read FArquivoConfiguracao write SetArquivoConfiguracao;
      property UsuarioLogado         :TUsuario             read FUsuario             write SetUsuario;
      property Parametros            :TParametros          read GetParametros        write SetParametros;
+     property CaixaLoja             :TCaixa               read GetCaixaLoja         write FCaixaLoja;
+     property caixaAberto           :Boolean              read getCaixaAberto       write FCaixaAberto;
 
      // Apenas leitura
      property DiretorioSistema          :String       read GetDiretorioSistema;
@@ -87,7 +93,7 @@ implementation
 
 uses
   FabricaRepositorio,
-  Forms,
+  Forms, Funcoes,
   ExcecaoBancoDeDadosInvalido,
   ExcecaoBancoDeBackupInvalido,
   Repositorio,
@@ -203,6 +209,14 @@ begin
    self.FDConnection.Connected         := false;
 end;
 
+function Tdm.getCaixaAberto: Boolean;
+begin
+  if not assigned(FCaixaLoja) then
+    FCaixaLoja := GetCaixaLoja;
+
+  Result := FCaixaAberto;
+end;
+
 function Tdm.GetConsulta: TFDQuery;
 begin
    result            := TFDQuery.Create(nil);
@@ -269,6 +283,27 @@ begin
     raise Exception.Create('ATENÇÃO!'+#13+'Não foi possível encontrar o registro de parâmetros no banco de dados. Informe o suporte!');
 
    result := self.FParametros;
+end;
+
+function Tdm.GetCaixaLoja: TCaixa;
+var
+  repositorio        :TRepositorio;
+begin
+  repositorio          := nil;
+  try
+    if not assigned(FCaixaLoja) then
+    begin
+      repositorio := TFabricaRepositorio.GetRepositorio(TCaixa.ClassName);
+      FCaixaLoja  := TCaixa( repositorio.Get( StrToIntDef( Maior_Valor_Cadastrado('Caixa', 'Codigo') ,0) ) );
+    end;
+
+    result := FCaixaLoja;
+
+    self.FcaixaAberto := not (not assigned(FCaixaLoja) or (FCaixaLoja.data_fechamento > 0));
+
+  finally
+    FreeAndNil(repositorio);
+  end;
 end;
 
 function Tdm.GetConexao: TFDConnection;

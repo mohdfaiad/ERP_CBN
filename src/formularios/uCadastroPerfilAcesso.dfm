@@ -596,6 +596,22 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Caption = 'Pedido consumidor final'
             TabOrder = 9
           end
+          object chk67: TCheckBox
+            Left = 8
+            Top = 248
+            Width = 209
+            Height = 17
+            Caption = 'Tela do caixa (Loja)'
+            TabOrder = 10
+          end
+          object chk68: TCheckBox
+            Left = 8
+            Top = 272
+            Width = 209
+            Height = 17
+            Caption = 'Entrada e saida de moeda'
+            TabOrder = 11
+          end
         end
         object TabSheet2: TTabSheet
           Caption = 'Permiss'#245'es Utilit'#225'rios'
@@ -679,6 +695,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Importar Clientes Tricae'
             TabOrder = 9
+          end
+          object chk66: TCheckBox
+            Left = 8
+            Top = 248
+            Width = 212
+            Height = 17
+            Caption = 'Importar Ordens de Servi'#231'o'
+            TabOrder = 10
           end
         end
         object TabSheet6: TTabSheet
@@ -825,8 +849,16 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Top = 32
             Width = 313
             Height = 17
-            Caption = 'Visualizar Relat'#243'rio de Caixa (Loja)'
+            Caption = 'Visualizar Relat'#243'rio de Pedidos (Loja)'
             TabOrder = 17
+          end
+          object chk69: TCheckBox
+            Left = 385
+            Top = 56
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Relat'#243'rio de Caixa (Loja)'
+            TabOrder = 18
           end
         end
       end

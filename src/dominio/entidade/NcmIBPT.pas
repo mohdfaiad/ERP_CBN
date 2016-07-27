@@ -22,6 +22,8 @@ type
     property tabela_ibpt           :String read Ftabela_ibpt           write Ftabela_ibpt;
     property aliqnacional_ibpt     :Real read Faliqnacional_ibpt     write Faliqnacional_ibpt;
     property aliqinternacional_ibpt :Real read Faliqinternacional_ibpt write Faliqinternacional_ibpt;
+
+
 end;
 
 implementation

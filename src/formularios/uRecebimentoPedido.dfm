@@ -1,9 +1,9 @@
 inherited frmRecebimentoPedido: TfrmRecebimentoPedido
   Caption = 'Recebimento do Pedido'
-  ClientHeight = 348
+  ClientHeight = 388
   ClientWidth = 885
   ExplicitWidth = 901
-  ExplicitHeight = 386
+  ExplicitHeight = 426
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -85,6 +85,33 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Font.Style = []
     ParentFont = False
   end
+  object Label7: TLabel
+    Left = 610
+    Top = 274
+    Width = 34
+    Height = 25
+    Caption = 'CPF'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 3684408
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbCpf: TLabel
+    Left = 784
+    Top = 304
+    Width = 77
+    Height = 17
+    Alignment = taRightJustify
+    Caption = 'CPF inv'#225'lido'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object cmbMoeda: TComboBox
     Left = 272
     Top = 58
@@ -100,10 +127,11 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     ParentFont = False
     TabOrder = 0
     Text = '<TIPO MOEDA>'
+    OnClick = cmbMoedaClick
     Items.Strings = (
       '<TIPO MOEDA>'
       'Dinheiro'
-      'Cheque'
+      'Conv'#234'nio'
       'Cart'#227'o Cr'#233'dito'
       'Cart'#227'o D'#233'bito'
       '')
@@ -157,7 +185,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 287
+    Top = 327
     Width = 885
     Height = 61
     Align = alBottom
@@ -246,7 +274,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
         000003410300536A53009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       ParentFont = False
-      TabOrder = 0
+      TabOrder = 1
       OnClick = btnConfirmarClick
     end
     object btnVoltar: TBitBtn
@@ -330,7 +358,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
         0000591F0000785D53009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       OnClick = btnVoltarClick
     end
   end
@@ -507,6 +535,26 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     ParentFont = False
     TabOrder = 2
     OnClick = btnLancaClick
+  end
+  object edtCpf: TEdit
+    Left = 661
+    Top = 266
+    Width = 200
+    Height = 38
+    Ctl3D = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    MaxLength = 14
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 8
+    OnChange = edtCpfChange
+    OnExit = edtCpfExit
+    OnKeyDown = edtCpfKeyDown
+    OnKeyPress = edtCpfKeyPress
   end
   object cdsMoedas: TClientDataSet
     Aggregates = <>

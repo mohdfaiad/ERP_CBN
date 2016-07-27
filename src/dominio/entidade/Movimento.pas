@@ -10,13 +10,13 @@ type
   TMovimento = class
 
   private
-    Fcodigo_caixa: integer;
     Fcodigo: integer;
     Ftipo_moeda: integer;
     Fcodigo_pedido: integer;
     Fdata: TDateTime;
     FPedido :TPedido;
     FValor_PAgo :Real;
+    Fcodigo_caixa: integer;
 
     function GetPedido: TPedido;
 
@@ -26,6 +26,7 @@ type
     property codigo_pedido :integer   read Fcodigo_pedido write Fcodigo_pedido;
     property data          :TDateTime read Fdata          write Fdata;
     property valor_pago    :Real      read FValor_pago    write FValor_pago;
+    property codigo_caixa  :integer   read FCodigo_caixa  write FCodigo_caixa;
 
   public
     property Pedido        :TPedido   read GetPedido;

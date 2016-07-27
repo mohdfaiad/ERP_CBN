@@ -11,7 +11,8 @@ uses
   ImgList, pngimage, RLReport, frameBuscaProduto, System.ImageList,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  frameBuscaNCMIbpt;
 
 type
   TfrmCadastroProduto = class(TfrmPadrao)
@@ -262,6 +263,7 @@ type
     cdsCorDESCRICAO: TStringField;
     cdsCorREFERENCIA: TStringField;
     cdsCorGENERO: TStringField;
+    cdsCODIGO_IBPT: TIntegerField;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);

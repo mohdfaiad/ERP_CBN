@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Data.DB, Datasnap.DBClient,
-  Vcl.Grids, Vcl.DBGrids, DBGridCBN;
+  Vcl.Grids, Vcl.DBGrids, DBGridCBN, Funcoes;
 
 type
   TfrmRecebimentoPedido = class(TfrmPadrao)
@@ -31,6 +31,9 @@ type
     cdsMoedasCODIGO_MOEDA: TIntegerField;
     btnLanca: TBitBtn;
     Label6: TLabel;
+    Label7: TLabel;
+    lbCpf: TLabel;
+    edtCpf: TEdit;
     procedure btnVoltarClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -41,6 +44,11 @@ type
     procedure DBGridCBN1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtCpfChange(Sender: TObject);
+    procedure edtCpfExit(Sender: TObject);
+    procedure edtCpfKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCpfKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure cmbMoedaClick(Sender: TObject);
   private
     FCc: Boolean;
 
@@ -83,11 +91,54 @@ begin
   self.ModalResult := mrCancel;
 end;
 
+procedure TfrmRecebimentoPedido.cmbMoedaClick(Sender: TObject);
+begin
+  edtValorPago.SetFocus;
+end;
+
 procedure TfrmRecebimentoPedido.DBGridCBN1KeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_DELETE then
     extornaRecebimento;
+end;
+
+procedure TfrmRecebimentoPedido.edtCpfKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if key = VK_RETURN then
+  begin
+    key := 0;
+    btnVoltar.SetFocus;
+  end;
+end;
+
+procedure TfrmRecebimentoPedido.edtCpfKeyPress(Sender: TObject; var Key: Char);
+begin
+  If not( key in['0'..'9',#08] ) then
+    key:=#0;
+end;
+
+procedure TfrmRecebimentoPedido.edtCpfChange(Sender: TObject);
+begin
+  inherited;
+  if Valida_CPF_CNPJ(edtCpf.Text) then
+  begin
+    lbCpf.Caption    := 'CPF válido';
+    lbCpf.Font.Color := clGreen;
+  end
+  else
+  begin
+    lbCpf.Caption    := 'CPF inválido';
+    lbCpf.Font.Color := clMaroon;
+  end;
+  
+end;
+
+procedure TfrmRecebimentoPedido.edtCpfExit(Sender: TObject);
+begin
+  if not Valida_CPF_CNPJ(edtCpf.Text) then
+    edtCpf.Clear;
 end;
 
 procedure TfrmRecebimentoPedido.edtTotalPedidoChange(Sender: TObject);
@@ -124,9 +175,10 @@ procedure TfrmRecebimentoPedido.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if key = VK_F10 then
+  if (key = VK_F10) or (key = VK_F6) then
   begin
-    FCc := false;
+    if (key = VK_F10) and (edtCpf.Text = '') then
+      FCc := false;
     btnConfirmar.Click;
   end;
 end;
@@ -167,7 +219,7 @@ begin
       movimento := TMovimento.Create;
       movimento.tipo_moeda    := cdsMoedasCODIGO_MOEDA.AsInteger;
       movimento.codigo_pedido := codigoPedido;
-      movimento.data          := Date;
+      movimento.data          := now;
       movimento.valor_pago    := cdsMoedasVALOR.AsFloat;
 
       repositorio.Salvar(movimento);

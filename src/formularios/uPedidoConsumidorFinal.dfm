@@ -3,7 +3,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   Top = 0
   Align = alClient
   Caption = 'Pedido para consumidor final'
-  ClientHeight = 733
+  ClientHeight = 673
   ClientWidth = 1130
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,24 +18,24 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   OnShow = FormShow
   DesignSize = (
     1130
-    733)
+    673)
   PixelsPerInch = 96
   TextHeight = 13
   object Shape1: TShape
     Left = 848
     Top = 81
     Width = 282
-    Height = 598
+    Height = 538
     Align = alRight
     Pen.Style = psClear
     ExplicitTop = 54
     ExplicitHeight = 632
   end
   object gridItens: TDBGrid
-    Left = 10
-    Top = 136
+    Left = 8
+    Top = 131
     Width = 815
-    Height = 511
+    Height = 451
     Anchors = [akLeft, akTop, akRight, akBottom]
     Color = clLime
     DataSource = dsItens
@@ -60,12 +60,13 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       item
         Expanded = False
         FieldName = 'PRODUTO'
-        Width = 344
+        Width = 359
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'PRECO_KG'
+        Title.Caption = 'PRECO'
         Width = 114
         Visible = True
       end
@@ -92,19 +93,20 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Expanded = False
         FieldName = 'PRECO_PECA'
         Title.Caption = 'PRE'#199'O PE'#199'A'
-        Width = 120
+        Width = 144
         Visible = True
       end>
   end
   inline BuscaProduto1: TBuscaProduto
     Left = 8
-    Top = 88
+    Top = 87
     Width = 697
     Height = 40
     Enabled = False
     TabOrder = 1
+    OnExit = BuscaProduto1Exit
     ExplicitLeft = 8
-    ExplicitTop = 88
+    ExplicitTop = 87
     ExplicitWidth = 697
     ExplicitHeight = 40
     inherited StaticText3: TStaticText
@@ -180,7 +182,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 679
+    Top = 619
     Width = 1130
     Height = 54
     Align = alBottom
@@ -189,15 +191,15 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       1130
       54)
     object btnVoltar: TBitBtn
-      Left = 705
+      Left = 769
       Top = 9
-      Width = 200
+      Width = 170
       Height = 35
       Anchors = [akTop, akRight]
       Caption = ' [ ESC ]  Voltar'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       Glyph.Data = {
@@ -273,14 +275,14 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnVoltarClick
     end
     object btnAlteraItem: TBitBtn
-      Left = 15
+      Left = 11
       Top = 9
-      Width = 200
+      Width = 170
       Height = 35
       Caption = ' [ F4 ]  Alterar Item'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       Glyph.Data = {
@@ -356,14 +358,14 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnAlteraItemClick
     end
     object btnDeletaItem: TBitBtn
-      Left = 227
+      Left = 190
       Top = 9
-      Width = 200
+      Width = 170
       Height = 35
       Caption = ' [ Delete ] Cancela Item'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       Glyph.Data = {
@@ -439,15 +441,15 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnDeletaItemClick
     end
     object btnFinalizaPedido: TBitBtn
-      Left = 916
+      Left = 948
       Top = 9
-      Width = 200
+      Width = 170
       Height = 35
       Anchors = [akTop, akRight]
       Caption = ' [ F6 ] Finalizar Pedido'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       Glyph.Data = {
@@ -523,15 +525,15 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnFinalizaPedidoClick
     end
     object btnCancelar: TBitBtn
-      Left = 495
+      Left = 591
       Top = 9
-      Width = 200
+      Width = 170
       Height = 35
       Anchors = [akTop, akRight]
       Caption = ' Cancelar'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       Glyph.Data = {
@@ -605,6 +607,89 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       ParentFont = False
       TabOrder = 4
       OnClick = btnCancelarClick
+    end
+    object btnCaixa: TBitBtn
+      Left = 369
+      Top = 9
+      Width = 170
+      Height = 35
+      Caption = 'Caixa'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Glyph.Data = {
+        36080000424D3608000000000000360000002800000020000000100000000100
+        2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00CD8D4C00C9843E00C7813C00C6803A00C57E3800C37B3500C176
+        3000C1752E00BD6F2900B4662C00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B006929000065200000631D0000621C0000611A00005F1700005D12
+        00005D110000590B0000500200009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00DFB38400F8E9D500F8E9D500F0D49F00F8E9D500F8E9D500F0D49F00F0D4
+        9F00F0D49F00F0D49F00EAC68900BA723D00FFFFFF00FFFFFF009B9B9B009B9B
+        9B007B4F200094857100948571008C703B0094857100948571008C703B008C70
+        3B008C703B008C703B0086622500560E00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00E0B58700F8E9D500D5985000D5985000F5E2C000D5985000D5985000EDCA
+        8000D5985000D5985000ECCA8E00BB733E00FFFFFF00FFFFFF009B9B9B009B9B
+        9B007C512300948571007134000071340000917E5C0071340000713400008966
+        1C00713400007134000088662A00570F00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00E2B98800F8EAD600FAF2EA00EACFA700F8ECDE00FAF2E800F5E9DA00F3DD
+        BA00F9F0E500EBD3AF00ECCB9000BB733E00FFFFFF00FFFFFF009B9B9B009B9B
+        9B007E55240094867200968E8600866B430094887A00968E8400918576008F79
+        5600958C8100876F4B0088672C00570F00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00E3BB8B00F9EADA00F6E8D400F0D49F00F8ECDC00F3E1C700F0D49F00F1DA
+        B800F0D49F00ECCA8E00ECCA8E00BA733E00FFFFFF00FFFFFF009B9B9B009B9B
+        9B007F57270095867600928470008C703B00948878008F7D63008C703B008D76
+        54008C703B0088662A0088662A00560F00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00E6BF8D00FAEFE300DEAE6900DEAE6900F5E2C000DEAE6900DEAE6900F0D1
+        8D00DEAE6900DEAE6900ECCB9000C47F4000FFFFFF00FFFFFF009B9B9B009B9B
+        9B00825B2900968B7F007A4A05007A4A0500917E5C007A4A05007A4A05008C6D
+        29007A4A05007A4A050088672C00601B00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00E7C18D00FAEFE300FAF2EA00EACFA700F8EAD600FAF2E800F5E9DA00F2DC
+        B500F9F0E500EBD3AF00ECCB9000C47E3F00FFFFFF00FFFFFF009B9B9B009B9B
+        9B00835D2900968B7F00968E8600866B430094867200968E8400918576008E78
+        5100958C8100876F4B0088672C00601A00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00EAC69000F9ECDB00F3E1CB00F3E1CB00F8EBDC00F3E1CB00F3E1CB00F3DF
+        C100F3DFC100E5C5A100ECCB9000C47E3F00FFFFFF00FFFFFF009B9B9B009B9B
+        9B0086622C00958877008F7D67008F7D6700948778008F7D67008F7D67008F7B
+        5D008F7B5D0081613D0088672C00601A00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00EBC99300FAEFE300D39B5A00D39B5A00F5E3C400D5985000D5985000F3DF
+        C1001A25F2003026B800ECCB9000C47E3F00FFFFFF00FFFFFF009B9B9B009B9B
+        9B0087652F00968B7F006F3700006F370000917F600071340000713400008F7B
+        5D0000008E000000540088672C00601A00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00EDCB9600FAEFE300FBF4EC00EAD1AB00F6E7CF00FAF2EA00F6EADD00F3DF
+        C1007A81F6008064B900ECCB9000C47F4000FFFFFF00FFFFFF009B9B9B009B9B
+        9B0089673200968B7F0097908800866D470092836B00968E8600928679008F7B
+        5D00161D92001C00550088672C00601B00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00EECE9600FAEFE300F6E7CC00F8ECDE00F8ECDE00F6E8D400F3E1C700F3DF
+        C100EED19E00EED19E00ECCB9000C8844500FFFFFF00FFFFFF009B9B9B009B9B
+        9B008A6A3200968B7F009283680094887A0094887A00928470008F7D63008F7B
+        5D008A6D3A008A6D3A0088672C00642000009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00F0D19900EAB95100EAB84B00E5AB3900E3A42F00DE981F00DB921900D98D
+        1400D98D1400D78A1400CD843100D2914600FFFFFF00FFFFFF009B9B9B009B9B
+        9B008C6D35008655000086540000814700007F4000007A340000772E00007529
+        00007529000073260000692000006E2D00009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00F1D49A00FAECC700FAECC500F8E7BD00F7E5B800F3DDA400F2D79400EFD0
+        8400EECD7B00EDCF8100EDCF8100D7974600FFFFFF00FFFFFF009B9B9B009B9B
+        9B008D703600968863009688610094835900938154008F7940008E7330008B6C
+        20008A691700896B1D00896B1D00733300009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00F3D89E00FAECC700FAECC700FAECC700F9EBC300F7E7BA00F6E3B500F4DF
+        AA00F3DDA400F0D69700F0D69700DC972D00FFFFFF00FFFFFF009B9B9B009B9B
+        9B008F743A0096886300968863009688630095875F0093835600927F5100907B
+        46008F7940008C7233008C723300783300009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00F5DDA500EAB95100EAB84B00E5AB3900E3A42F00DE981F00DB921900D98D
+        1400D98D1400D78A1400D78A1400DC972E00FFFFFF00FFFFFF009B9B9B009B9B
+        9B00917941008655000086540000814700007F4000007A340000772E00007529
+        0000752900007326000073260000783300009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00F2D59000EEC86F00EEC76D00EEC76D00EDC36900ECC26600EBBE
+        6000EABC5D00E9B65600ECBC6400FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B008E712C008A640B008A6309008A630900895F0500885E0200875A
+        00008658000085520000885800009B9B9B009B9B9B009B9B9B00}
+      NumGlyphs = 2
+      ParentFont = False
+      TabOrder = 5
+      OnClick = btnCaixaClick
     end
   end
   object pnlTopo: TPanel
@@ -2678,13 +2763,14 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Visible = False
     end
     inline BuscaPedido1: TBuscaPedido
-      Left = 209
-      Top = 0
+      Left = 206
+      Top = 3
       Width = 119
       Height = 76
       TabOrder = 0
       OnExit = BuscaPedido1Exit
-      ExplicitLeft = 209
+      ExplicitLeft = 206
+      ExplicitTop = 3
       ExplicitWidth = 119
       ExplicitHeight = 76
       inherited stNumPed: TStaticText [0]
@@ -2702,13 +2788,13 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       end
       inherited btnBuscar: TBitBtn [1]
         Left = 62
-        Top = 54
+        Top = 51
         Width = 55
         Height = 22
         Caption = 'Abrir'
         OnClick = BuscaPedido1btnBuscarClick
         ExplicitLeft = 62
-        ExplicitTop = 54
+        ExplicitTop = 51
         ExplicitWidth = 55
         ExplicitHeight = 22
       end
@@ -2738,7 +2824,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       end
     end
     object btnNovo: TBitBtn
-      Left = 215
+      Left = 212
       Top = 54
       Width = 55
       Height = 22
@@ -2817,8 +2903,8 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     end
   end
   object RLReport1: TRLReport
-    Left = 507
-    Top = 175
+    Left = 543
+    Top = 180
     Width = 280
     Height = 378
     Margins.LeftMargin = 0.610000000000000000
@@ -2848,14 +2934,14 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Height = 112
       BandType = btTitle
       object RLLabel14: TRLLabel
-        Left = -45
+        Left = -44
         Top = 45
-        Width = 366
+        Width = 364
         Height = 14
         Alignment = taCenter
         Caption = 
           '----------------------------------------------------------------' +
-          '----------------0---------'
+          '--------------------------'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -3029,50 +3115,12 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         ParentFont = False
         Text = ''
       end
-      object RLLabel4: TRLLabel
-        Left = 1
-        Top = 15
-        Width = 28
-        Height = 14
-        Caption = 'QTD:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel5: TRLLabel
-        Left = 89
-        Top = 15
-        Width = 34
-        Height = 14
-        Caption = 'PESO:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel6: TRLLabel
-        Left = 177
-        Top = 15
-        Width = 44
-        Height = 14
-        Caption = 'VALOR:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
       object RLDBText3: TRLDBText
-        Left = 31
+        Left = 10
         Top = 15
         Width = 37
         Height = 14
+        Alignment = taRightJustify
         DataField = 'PECAS'
         DataSource = dsItens
         Font.Charset = DEFAULT_CHARSET
@@ -3084,10 +3132,11 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Text = ''
       end
       object RLDBText4: TRLDBText
-        Left = 125
+        Left = 91
         Top = 15
         Width = 30
         Height = 14
+        Alignment = taRightJustify
         DataField = 'PESO'
         DataSource = dsItens
         Font.Charset = DEFAULT_CHARSET
@@ -3099,10 +3148,11 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Text = ''
       end
       object RLDBText5: TRLDBText
-        Left = 223
+        Left = 208
         Top = 15
         Width = 68
         Height = 14
+        Alignment = taRightJustify
         DataField = 'VALOR_ITEM'
         DataSource = dsItens
         Font.Charset = DEFAULT_CHARSET
@@ -3113,12 +3163,80 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         ParentFont = False
         Text = ''
       end
+      object RLLabel5: TRLLabel
+        Left = 51
+        Top = 17
+        Width = 31
+        Height = 11
+        Caption = 'PESO:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel4: TRLLabel
+        Left = -1
+        Top = 17
+        Width = 25
+        Height = 11
+        Caption = 'QTD:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel6: TRLLabel
+        Left = 198
+        Top = 17
+        Width = 37
+        Height = 11
+        Caption = 'VALOR:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLDBText6: TRLDBText
+        Left = 125
+        Top = 15
+        Width = 70
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'PRECO_PECA'
+        DataSource = dsItens
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel15: TRLLabel
+        Left = 123
+        Top = 17
+        Width = 23
+        Height = 11
+        Caption = 'UNI:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
     end
     object RLBand3: TRLBand
       Left = 2
       Top = 154
       Width = 276
-      Height = 79
+      Height = 73
       BandType = btSummary
       object RLLabel7: TRLLabel
         Left = 73
@@ -3152,19 +3270,6 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Width = 72
         Height = 14
         Caption = 'TOT. VALOR:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel10: TRLLabel
-        Left = 73
-        Top = 34
-        Width = 99
-        Height = 14
-        Caption = 'PRE'#199'O POR PE'#199'A:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -3207,8 +3312,8 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Text = ''
       end
       object RLDBResult3: TRLDBResult
-        Left = 149
-        Top = 49
+        Left = -53
+        Top = 45
         Width = 114
         Height = 15
         Alignment = taRightJustify
@@ -3223,24 +3328,48 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
         Info = riSum
         ParentFont = False
         Text = ''
+        Visible = False
       end
-      object RLDBResult4: TRLDBResult
-        Left = 81
-        Top = 33
-        Width = 182
+      object rlbTotal: TRLLabel
+        Left = 188
+        Top = 49
+        Width = 75
         Height = 15
         Alignment = taRightJustify
-        DataFormula = 'VALOR_ITEM/PECAS'
-        DataSource = dsItens
-        DisplayMask = ' ,0.00;- ,0.00'
+        Caption = 'TOT. VALOR:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel10: TRLLabel
+        Left = 73
+        Top = 34
+        Width = 64
+        Height = 14
+        Caption = 'DESCONTO:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbDesconto: TRLLabel
+        Left = 189
+        Top = 34
+        Width = 74
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'DESCONTO:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
         Font.Style = []
-        Info = riAverage
         ParentFont = False
-        Text = ''
       end
     end
   end
@@ -3248,13 +3377,13 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     Left = 850
     Top = 81
     Width = 282
-    Height = 597
+    Height = 537
     Anchors = [akTop, akRight, akBottom]
     BevelOuter = bvNone
     TabOrder = 5
     DesignSize = (
       282
-      597)
+      537)
     object Label1: TLabel
       Left = 10
       Top = 5
@@ -3313,7 +3442,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     end
     object Label5: TLabel
       Left = 10
-      Top = 492
+      Top = 432
       Width = 142
       Height = 19
       Anchors = [akRight, akBottom]
@@ -3324,10 +3453,11 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ExplicitTop = 492
     end
     object Label7: TLabel
       Left = 10
-      Top = 417
+      Top = 357
       Width = 65
       Height = 19
       Anchors = [akRight, akBottom]
@@ -3338,6 +3468,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ExplicitTop = 417
     end
     object btnAddItem: TBitBtn
       Left = 9
@@ -3436,7 +3567,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     end
     object edtTotalPedido: TCurrencyEdit
       Left = 9
-      Top = 515
+      Top = 455
       Width = 260
       Height = 53
       TabStop = False
@@ -3465,6 +3596,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Font.Style = [fsBold]
       Anchors = [akTop, akRight]
       ParentFont = False
+      ReadOnly = True
       TabOrder = 2
       OnChange = edtPrecoKgChange
     end
@@ -3483,6 +3615,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       Anchors = [akTop, akRight]
       ParentFont = False
       TabOrder = 1
+      OnChange = edtPrecoKgChange
     end
     object edtPeso: TCurrencyEdit
       Left = 9
@@ -3501,10 +3634,11 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       ParentFont = False
       TabOrder = 0
       OnChange = edtPrecoKgChange
+      OnEnter = edtPesoEnter
     end
     object edtDesconto: TCurrencyEdit
       Left = 9
-      Top = 439
+      Top = 379
       Width = 260
       Height = 45
       TabStop = False
@@ -3523,7 +3657,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   object cdsItens: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 256
+    Left = 264
     Top = 320
     object cdsItensCOD_PRODUTO: TIntegerField
       FieldName = 'COD_PRODUTO'
@@ -3556,6 +3690,7 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
     end
     object cdsItensPRECO_PECA: TFloatField
       FieldName = 'PRECO_PECA'
+      DisplayFormat = 'R$ ,0.00;R$ -,0.00'
     end
   end
   object dsItens: TDataSource

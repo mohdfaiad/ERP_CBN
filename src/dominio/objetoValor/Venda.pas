@@ -167,7 +167,7 @@ begin
 
       for nX := 0 to (Itens.Count-1) do begin
         try
-          if Itens.Items[nX].Produto.tipo = 'P' then
+//          if Itens.Items[nX].Produto.tipo = 'P' then
             result := result + Itens.Items[nX].CSOSN02.Base;
         except
           continue;
@@ -320,7 +320,7 @@ begin
       result := 0;
 
       for nX := 0 to (Itens.Count-1) do begin
-        if Itens.Items[nX].Produto.tipo = 'P' then
+        //if Itens.Items[nX].Produto.tipo = 'P' then
           result := result + Itens.Items[nX].Total;
       end;
    except
@@ -354,12 +354,10 @@ begin
       imposto_item  := 0;
 
       for nX := 0 to (Itens.Count-1) do begin
-        if Itens.Items[nX].Produto.tipo = 'P' then begin
-          imposto_item := ((32.09 * (Itens.Items[nX].Quantidade * Itens.Items[nX].ValorUnitario))/100);
+//        if Itens.Items[nX].Produto.tipo = 'P' then begin
+          imposto_item := ((Itens.Items[nX].Produto.AliqNcmIbpt * (Itens.Items[nX].Quantidade * Itens.Items[nX].ValorUnitario))/100);
           result := result + Arredonda( imposto_item );
-          showmessage('verificar qual a aliquota IBPT correta para o produto');
-
-        end;
+        //end;
       end;
 
    except
@@ -372,7 +370,7 @@ var
   nX :Integer;
 begin
    result := nil;
-   
+
    if not Assigned(Itens) then
     exit;
 

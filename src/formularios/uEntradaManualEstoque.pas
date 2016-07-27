@@ -272,22 +272,33 @@ end;
 function TfrmEntradaManualEstoque.salvar_estoque: Boolean;
 var Estoque     :TEstoque;
     repositorio :TRepositorio;
+    Especificacao :TEspecificacaoEstoquePorProdutoCorTamanho;
+    codigo_produto,
+    codigo_cor,
+    codigo_tamanho :integer;
 begin
   Result      := false;
   Estoque     := nil;
   repositorio := nil;
 
  try
+   codigo_produto := BuscaProduto1.CodigoProduto;
+   codigo_cor     := BuscaCor1.CodigoCor;
+   codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
+
    repositorio := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Estoque     := TEstoque( repositorio.Get( edtCodigoEstoque.AsInteger ) );
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(codigo_produto,
+                                                                      codigo_cor,
+                                                                      codigo_tamanho);
+
+   Estoque     := TEstoque( repositorio.GetPorEspecificacao( Especificacao, BuscaProduto1.codproduto) );
 
    if not assigned(Estoque) then
      Estoque := TEstoque.Create;
 
-   Estoque.codigo         := edtCodigoEstoque.AsInteger;
-   Estoque.codigo_produto := BuscaProduto1.CodigoProduto;
-   Estoque.codigo_cor     := BuscaCor1.CodigoCor;
-   Estoque.codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
+   Estoque.codigo_produto := codigo_produto;
+   Estoque.codigo_cor     := codigo_cor;
+   Estoque.codigo_tamanho := codigo_tamanho;
 
    Estoque.quantidade     := Estoque.quantidade + IfThen(chkSaida.Checked, (edtQtdEntrada.Value * -1), edtQtdEntrada.Value);
 

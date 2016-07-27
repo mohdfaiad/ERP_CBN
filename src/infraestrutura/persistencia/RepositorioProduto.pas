@@ -75,6 +75,7 @@ begin
    Produto.Tipo          := self.FQuery.fieldByName('TIPO').AsString;
    Produto.UnidadeMedida := self.FQuery.fieldByName('UNIDADE_MEDIDA').AsString;
    Produto.Kit           := (self.FQuery.fieldByName('KIT').AsString = 'S');
+   Produto.Codigo_ibpt   := self.FQuery.fieldByName('Codigo_ibpt').AsInteger;
 
    result := Produto;
 end;
@@ -196,6 +197,7 @@ begin
    Auditoria.AdicionaCampoExcluido('TIPO',           Produto.Tipo);
    Auditoria.AdicionaCampoExcluido('UNIDADE_MEDIDA', Produto.UnidadeMedida);
    Auditoria.AdicionaCampoExcluido('ativo',          IfThen(Produto.Ativo,'S','N'));
+   Auditoria.AdicionaCampoExcluido('Codigo_ibpt',    intToStr(Produto.Codigo_ibpt));
 
 end;
 
@@ -225,6 +227,7 @@ begin
    Auditoria.AdicionaCampoIncluido('REFERENCIA',     Produto.Referencia);
    Auditoria.AdicionaCampoIncluido('TIPO',           Produto.Tipo);
    Auditoria.AdicionaCampoIncluido('UNIDADE_MEDIDA', Produto.UnidadeMedida);
+   Auditoria.AdicionaCampoIncluido('Codigo_ibpt',    intToStr(Produto.Codigo_ibpt));
 
    if Produto.Ativo then Auditoria.AdicionaCampoIncluido('ativo',  'S')
    else                  Auditoria.AdicionaCampoIncluido('ativo',  'N');;
@@ -274,6 +277,9 @@ begin
    inherited SetParametro('ativo',          IfThen(Produto.Ativo,'S','N'));
    inherited SetParametro('KIT',            IfThen(Produto.Kit,'S','N'));
 
+   if Produto.Codigo_ibpt > 0 then
+     inherited SetParametro('Codigo_ibpt',     Produto.Codigo_ibpt);
+
 end;
 
 function TRepositorioProduto.SQLGet: String;
@@ -301,11 +307,11 @@ begin
    result := 'update or INSERT INTO PRODUTOS (CODIGO, DESCRICAO, COD_NCM, COD_TIPO, COD_GRUPO, COD_COLECAO, COD_GRADE,        '+
              '                                LINHA_ANO, ATIVO, PRECO_CUSTO, PRECO_VENDA, PRECO_ATACADO, PRECO_MEDIO,         '+
              '                                ESTOQUE_FIS, ESTOQUE_MIN, PESO_LIQ, PESO_BRU, QTD_PECAS, REFERENCIA,            '+
-             '                                TIPO, UNIDADE_MEDIDA, KIT)                                                      '+
+             '                                TIPO, UNIDADE_MEDIDA, KIT, CODIGO_IBPT)                                         '+
              '                        values (:CODIGO, :DESCRICAO, :COD_NCM, :COD_TIPO, :COD_GRUPO, :COD_COLECAO, :COD_GRADE, '+
              '                                :LINHA_ANO, :ATIVO, :PRECO_CUSTO, :PRECO_VENDA, :PRECO_ATACADO, :PRECO_MEDIO,   '+
              '                                :ESTOQUE_FIS, :ESTOQUE_MIN, :PESO_LIQ, :PESO_BRU, :QTD_PECAS, :REFERENCIA,      '+
-             '                                :TIPO, :UNIDADE_MEDIDA, :KIT)                                                   ';
+             '                                :TIPO, :UNIDADE_MEDIDA, :KIT, :CODIGO_IBPT)                                     ';
 
 end;
 

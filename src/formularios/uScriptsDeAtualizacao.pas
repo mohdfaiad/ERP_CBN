@@ -167,6 +167,10 @@ type
     versao156: TMemo;
     versao157: TMemo;
     versao158: TMemo;
+    versao159: TMemo;
+    versao160: TMemo;
+    versao161: TMemo;
+    versao162: TMemo;
 
   private
 

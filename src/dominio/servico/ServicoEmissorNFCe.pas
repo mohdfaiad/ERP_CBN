@@ -129,7 +129,7 @@ begin
    // FACBrNFeDANFe.ImprimirDANFEResumido();
 
    FACBrNFeDANFe.ProdutosPorPagina := 30;
-   FACBrNFeDANFe.Sistema           := 'Smart Chef';
+   FACBrNFeDANFe.Sistema           := 'Baby Duck Store';
 
    {if not TStringUtilitario.EstaVazia(CaminhoLogo) then
      FACBrNFeDANFE.Logo := CaminhoLogo;}
@@ -321,7 +321,7 @@ begin
    NFCe.NFe.Ide.tpNF     := tnSaida;
    NFCe.NFe.Ide.tpEmis   := teNormal; //TpcnTipoEmissao(Configuracoes.NFCe.FormaEmissao); SEGUNDA_CONFIGURACAO
    NFCe.NFe.Ide.tpAmb    := TpcnTipoAmbiente( IfThen( copy(Configuracoes.NFCe.Ambiente,1,1) = 'P',0,1) );
-   NFCe.NFe.Ide.cUF      := 17;
+   NFCe.NFe.Ide.cUF      := UF_TO_CODUF(Configuracoes.Empresa.Endereco.Cidade.estado.sigla);
    NFCe.NFe.Ide.cMunFG   := Configuracoes.Empresa.Endereco.Cidade.codibge;
    NFCe.NFe.Ide.finNFe   := fnNormal;
    NFCe.NFe.Ide.tpImp    := tiNFCe;

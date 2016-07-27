@@ -584,17 +584,7 @@ function TfrmConferenciaPedido.busca_codigo_barras(codigo_produto, codigo_cor: i
 var codigo_tamanho :Integer;
 begin
   codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS','CODIGO','DESCRICAO',tamanho) );
-
-  fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := 'select cb.numeracao from codigo_barras cb                                         '+
-                              'where cb.codproduto = :codpro and cb.codcor = :codcor and cb.codtamanho = :codtam ';
-  fdm.qryGenerica.ParamByName('codpro').AsInteger := codigo_produto;
-  fdm.qryGenerica.ParamByName('codcor').AsInteger := codigo_cor;
-  fdm.qryGenerica.ParamByName('codtam').AsInteger := codigo_tamanho;
-  fdm.qryGenerica.Open;
-
-  result := fdm.qryGenerica.fieldByName('numeracao').AsString;
-
+  result := buscaCodigoBarras(codigo_produto, codigo_cor, codigo_tamanho);
 end;
 
 procedure TfrmConferenciaPedido.edtCodigoBarrasEnter(Sender: TObject);

@@ -3197,6 +3197,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     TabStop = False
     object TabSheet1: TTabSheet
       Caption = 'Itens '#224' conferir'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         1076
         394)
@@ -6517,7 +6521,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 289
     Bitmap = {
-      494C010104000900540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

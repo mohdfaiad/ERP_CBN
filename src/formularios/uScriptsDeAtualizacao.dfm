@@ -5661,4 +5661,118 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 158
     WordWrap = False
   end
+  object versao159: TMemo
+    Left = 441
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE IBPT ('
+      '    CODIGO                  INTEGER NOT NULL,'
+      '    NCM_IBPT                VARCHAR(10),'
+      '    EX_IBPT                 VARCHAR(3),'
+      '    TABELA_IBPT             VARCHAR(3),'
+      '    ALIQNACIONAL_IBPT       NUMERIC(15,2),'
+      '    ALIQINTERNACIONAL_IBPT  NUMERIC(15,2)'
+      ')'
+      '^'
+      'ALTER TABLE IBPT ADD CONSTRAINT PK_IBPT PRIMARY KEY (CODIGO)'
+      '^'
+      'ALTER TABLE PRODUTOS'
+      'ADD CODIGO_IBPT INTEGER'
+      '^'
+      'alter table PRODUTOS'
+      'add constraint FK_PRODUTOS_1'
+      'foreign key (CODIGO_IBPT)'
+      'references IBPT(CODIGO)'
+      '^')
+    TabOrder = 159
+    WordWrap = False
+  end
+  object versao160: TMemo
+    Left = 465
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ORDEM_SERVICO'
+      'ADD IMPRESSO CHAR(1)'
+      '^')
+    TabOrder = 160
+    WordWrap = False
+  end
+  object versao161: TMemo
+    Left = 489
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_CAIXA_ID'
+      '^'
+      'CREATE TABLE CAIXA ('
+      '    CODIGO            INTEGER NOT NULL,'
+      '    DATA_ABERTURA     TIMESTAMP,'
+      '    VALOR_ABERTURA    NUMERIC(15,2),'
+      '    DATA_FECHAMENTO   TIMESTAMP,'
+      '    VALOR_FECHAMENTO  NUMERIC(15,2)'
+      ')'
+      '^'
+      'ALTER TABLE CAIXA ADD CONSTRAINT PK_CAIXA PRIMARY KEY (CODIGO)'
+      '^'
+      'CREATE TRIGGER CAIXA_BI FOR CAIXA'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0))THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_CAIXA_ID,1);'
+      'END'
+      '^'
+      'ALTER TABLE MOVIMENTOS'
+      'ADD CODIGO_CAIXA INTEGER'
+      '^'
+      'alter table MOVIMENTOS'
+      'add constraint FK_MOVIMENTOS_1'
+      'foreign key (CODIGO_CAIXA)'
+      'references CAIXA(CODIGO)'
+      '^')
+    TabOrder = 161
+    WordWrap = False
+  end
+  object versao162: TMemo
+    Left = 513
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_ENTRADA_SAIDA_MOEDA_ID'
+      '^'
+      'CREATE TABLE ENTRADA_SAIDA_MOEDA ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_CAIXA INTEGER,'
+      '    TIPO CHAR(1),'
+      '    VALOR NUMERIC(15,2),'
+      '    DESCRICAO VARCHAR(150),'
+      '    HORA TIME,'
+      '    TIPO_MOEDA SMALLINT)'
+      '^'
+      'alter table ENTRADA_SAIDA_MOEDA'
+      'add constraint PK_ENTRADA_SAIDA_MOEDA'
+      'primary key (CODIGO)'
+      '^'
+      'alter table ENTRADA_SAIDA_MOEDA'
+      'add constraint FK_ENTRADA_SAIDA_MOEDA_1'
+      'foreign key (CODIGO_CAIXA)'
+      'references CAIXA(CODIGO)'
+      '^'
+      'CREATE TRIGGER ENTRADA_SAIDA_MOEDA_BI FOR ENTRADA_SAIDA_MOEDA'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL)or(NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_ENTRADA_SAIDA_MOEDA_ID,1);'
+      'END'
+      '^')
+    TabOrder = 162
+    WordWrap = False
+  end
 end

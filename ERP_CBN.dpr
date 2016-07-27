@@ -405,7 +405,21 @@ uses
   uRecebimentoPedido in 'src\formularios\uRecebimentoPedido.pas' {frmRecebimentoPedido},
   uRelatorioMovimentos in 'src\formularios\relatorios\uRelatorioMovimentos.pas' {frmRelatorioMovimentos},
   OrdemServico in 'src\dominio\entidade\OrdemServico.pas',
-  RepositorioOrdemServico in 'src\infraestrutura\persistencia\RepositorioOrdemServico.pas';
+  RepositorioOrdemServico in 'src\infraestrutura\persistencia\RepositorioOrdemServico.pas',
+  RepositorioNcmIBPT in 'src\infraestrutura\persistencia\RepositorioNcmIBPT.pas',
+  frameBuscaNCMIbpt in 'src\formularios\frameBuscaNCMIbpt.pas' {BuscaNCMIbpt: TFrame},
+  uImportadorOrdemServico in 'src\formularios\uImportadorOrdemServico.pas' {frmImportadorOrdemServico},
+  frameBuscaOS in 'src\formularios\frameBuscaOS.pas' {BuscaOS: TFrame},
+  EspecificacaoCaixaPorData in 'src\dominio\objetoValor\especificacao\EspecificacaoCaixaPorData.pas',
+  uCaixa in 'src\formularios\uCaixa.pas' {frmCaixa},
+  EspecificacaoMovimentosPorCodigoCaixa in 'src\dominio\objetoValor\especificacao\EspecificacaoMovimentosPorCodigoCaixa.pas',
+  EspecificacaoMovimentosCaixa in 'src\dominio\objetoValor\especificacao\EspecificacaoMovimentosCaixa.pas',
+  RepositorioCaixa in 'src\infraestrutura\persistencia\RepositorioCaixa.pas',
+  Caixa in 'src\dominio\entidade\Caixa.pas',
+  EntradaSaidaMoeda in 'src\dominio\entidade\EntradaSaidaMoeda.pas',
+  RepositorioEntradaSaidaMoeda in 'src\infraestrutura\persistencia\RepositorioEntradaSaidaMoeda.pas',
+  uEntradaSaidaMoeda in 'uEntradaSaidaMoeda.pas' {frmEntradaSaidaMoeda},
+  uRelatorioCaixa in 'src\formularios\relatorios\uRelatorioCaixa.pas' {frmRelatorioCaixa};
 
 {$R *.res}
 {$R win7810.res}
@@ -422,6 +436,10 @@ begin
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrmRelatorioMovimentos, frmRelatorioMovimentos);
+  Application.CreateForm(TfrmImportadorOrdemServico, frmImportadorOrdemServico);
+  Application.CreateForm(TfrmCaixa, frmCaixa);
+  Application.CreateForm(TfrmEntradaSaidaMoeda, frmEntradaSaidaMoeda);
+  Application.CreateForm(TfrmRelatorioCaixa, frmRelatorioCaixa);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

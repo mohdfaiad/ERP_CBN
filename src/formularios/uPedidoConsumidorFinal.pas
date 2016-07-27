@@ -9,7 +9,7 @@ uses
   frameBuscaProduto, Datasnap.DBClient, Vcl.Mask, RxToolEdit, RxCurrEdit,
   frameBuscaFormaPagamento, frameBuscaPessoa, Printers, Pedido, RLReport,
   RLParser, System.StrUtils, Vcl.Imaging.pngimage, ConfiguracoesNFCe,
-  frameBuscaPedido;
+  frameBuscaPedido, uCaixa, PermissoesAcesso;
 
 type
   TEstadoItem = (teInserindo, teAlterando);
@@ -58,11 +58,9 @@ type
     RLLabel7: TRLLabel;
     RLLabel8: TRLLabel;
     RLLabel9: TRLLabel;
-    RLLabel10: TRLLabel;
     RLDBResult1: TRLDBResult;
     RLDBResult2: TRLDBResult;
     RLDBResult3: TRLDBResult;
-    RLDBResult4: TRLDBResult;
     RLDraw2: TRLDraw;
     RLExpressionParser1: TRLExpressionParser;
     RLLabel11: TRLLabel;
@@ -91,6 +89,12 @@ type
     edtPeso: TCurrencyEdit;
     edtDesconto: TCurrencyEdit;
     cdsItensPRECO_PECA: TFloatField;
+    rlbTotal: TRLLabel;
+    RLDBText6: TRLDBText;
+    RLLabel15: TRLLabel;
+    RLLabel10: TRLLabel;
+    rlbDesconto: TRLLabel;
+    btnCaixa: TBitBtn;
     procedure btnAddItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAlteraItemClick(Sender: TObject);
@@ -107,12 +111,16 @@ type
     procedure BuscaPedido1edtNumPedidoEnter(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
+    procedure edtPesoEnter(Sender: TObject);
+    procedure BuscaProduto1Exit(Sender: TObject);
+    procedure btnCaixaClick(Sender: TObject);
   private
     FEstadoItem           :TEstadoItem;
 
     FTotalPedido          :Real;
     Configuracoes         :TConfiguracoesNFCe;
     cupomPendente         :Boolean;
+    CPF_Cliente           :String;
 
     procedure adicionaItem;
     procedure limpaCampos;
@@ -122,15 +130,18 @@ type
     procedure finalizaPedido;
     procedure imprimePedido(pedido :TPedido);
     procedure limparDados;
-    function tabelaPrecoProduto :integer;
+    procedure iniciaTipoProduto;
+    function tabelaLoja :integer;
+    function tabelaPrecoProdutoNormal :integer;
     function buscaCorProduto :integer;
     function verificaObrigatorios :Boolean;
     function verificaObrigatoriosItem :Boolean;
     function efetuaRecebimento :Boolean;
+    function produtoKG :Boolean;
 
     procedure atualizaEstoque(pedido :TPedido);
     procedure habilitaDesabilita(habilita_desabilita :String);
-    function geraCupomEletronico(codigoPedido :integer) :Boolean;
+    function geraCupomEletronico(codigoPedido :integer; CPF_Cliente :String) :Boolean;
     procedure carregaPedido(Pedido :TPedido);
     procedure calculaTotal;
 
@@ -180,8 +191,9 @@ begin
   FTotalPedido                     := edtTotalPedido.Value + edtDesconto.Value;
 
   limpaCampos;
-  //BuscaProduto1.edtReferencia.SetFocus;
+  BuscaProduto1.Enabled := true;
   edtPeso.SetFocus;
+
 end;
 
 procedure TfrmPedidoConsumidorFinal.btnVoltarClick(Sender: TObject);
@@ -195,6 +207,9 @@ end;
 function TfrmPedidoConsumidorFinal.buscaCorProduto: integer;
 begin
    result := StrToIntDef( Campo_por_campo('PRODUTO_CORES', 'CODCOR', 'CODPRODUTO', BuscaProduto1.codproduto),0);
+
+   if result = 0 then
+     raise Exception.Create('Produto sem cor associada');
 end;
 
 procedure TfrmPedidoConsumidorFinal.BuscaPedido1btnBuscarClick(Sender: TObject);
@@ -223,7 +238,31 @@ procedure TfrmPedidoConsumidorFinal.BuscaPedido1Exit(Sender: TObject);
 begin
   inherited;
   if assigned(BuscaPedido1.Ped) then
+  begin
     carregaPedido(BuscaPedido1.Ped);
+    habilitaDesabilita('H');
+  end;
+end;
+
+procedure TfrmPedidoConsumidorFinal.BuscaProduto1Exit(Sender: TObject);
+begin
+  inherited;
+  BuscaProduto1.FrameExit(Sender);
+
+  if not assigned(BuscaProduto1.Prod) then
+  begin
+    avisar('Favor informar o produto desejado');
+    BuscaProduto1.edtReferencia.SetFocus;
+    exit;
+  end;
+
+  BuscaProduto1.codTabela  := IntToStr(tabelaPrecoProdutoNormal);
+  BuscaProduto1.codproduto := BuscaProduto1.edtReferencia.Text;
+  edtPrecoKg.Value         := BuscaProduto1.preco;
+  edtPeso.ReadOnly         := not produtoKG;
+  label4.Caption           := IfThen(produtoKG, 'Peso x Valor Unitário', 'Peças x Valor Unitário');
+  limpaCampos;
+  edtPeso.SetFocus;
 end;
 
 procedure TfrmPedidoConsumidorFinal.btnAlteraItemClick(Sender: TObject);
@@ -304,6 +343,12 @@ begin
  end;
 end;
 
+procedure TfrmPedidoConsumidorFinal.btnCaixaClick(Sender: TObject);
+begin
+  self.AbreForm(TFrmCaixa, paTelaCaixaLoja);
+  habilitaDesabilita('D');
+end;
+
 procedure TfrmPedidoConsumidorFinal.btnCancelarClick(Sender: TObject);
 begin
   limparDados;
@@ -339,12 +384,12 @@ end;
 
 procedure TfrmPedidoConsumidorFinal.carregaItem;
 begin
-//  BuscaProduto1.codproduto := cdsItensREFPRO.AsString;
+  BuscaProduto1.codproduto := cdsItensREFPRO.AsString;
   edtPeso.Value            := cdsItensPESO.AsFloat;
   edtPecas.AsInteger       := cdsItensPECAS.AsInteger;
   edtPrecoKg.Value         := cdsItensPRECO_KG.AsFloat;
   edtValorItem.Value       := cdsItensVALOR_ITEM.AsFloat;
- // BuscaProduto1.Enabled    := false;
+  BuscaProduto1.Enabled    := false;
   gridItens.Enabled        := false;
   edtPeso.SetFocus;
 end;
@@ -352,31 +397,34 @@ end;
 procedure TfrmPedidoConsumidorFinal.carregaPedido(Pedido: TPedido);
 var i :integer;
 begin
+  edtDesconto.OnChange := nil;
   limparDados;
 
   for i := 0 to Pedido.Itens.Count - 1 do
   begin
     cdsItens.Append;
     cdsItensCOD_PRODUTO.AsInteger := (Pedido.Itens[i] as TItem).cod_produto;
+    cdsItensPRODUTO.AsString      := (Pedido.Itens[i] as TItem).Produto.Descricao;
     cdsItensPRECO_KG.AsFloat      := (Pedido.Itens[i] as TItem).preco;
     cdsItensVALOR_ITEM.AsFloat    := (Pedido.Itens[i] as TItem).valor_total;
     cdsItensPECAS.AsFloat         := (Pedido.Itens[i] as TItem).qtd_UNICA;
     cdsItensPECAS.AsFloat         := (Pedido.Itens[i] as TItem).qtd_total;
     cdsItensPESO.AsFloat          := (Pedido.Itens[i] as TItem).peso;
     cdsItensCODIGO_ITEM.AsInteger := (Pedido.Itens[i] as TItem).codigo;
+    cdsItensPRECO_PECA.AsFloat    := cdsItensVALOR_ITEM.AsFloat / cdsItensPECAS.AsFloat;
     cdsItens.Post;
   end;
 
   edtDesconto.Value := Pedido.desconto;
-
   calculaTotal;
 
   habilitaDesabilita('D');
-  btnFinalizaPedido.SetFocus;
+  gridItens.SetFocus;
   edtCodigoPedido.AsInteger := Pedido.Codigo;
   cupomPendente := true;
 
   btnFinalizaPedido.Caption := '[ F6 ] Enviar Cupom';
+  edtDesconto.OnChange := edtDescontoChange;
 end;
 
 procedure TfrmPedidoConsumidorFinal.edtDescontoChange(Sender: TObject);
@@ -385,10 +433,19 @@ begin
   edtTotalPedido.Value := FTotalPedido - edtDesconto.Value;
 end;
 
-procedure TfrmPedidoConsumidorFinal.edtPrecoKgChange(Sender: TObject);
+procedure TfrmPedidoConsumidorFinal.edtPesoEnter(Sender: TObject);
 begin
-  if (edtPrecoKg.Value > 0) and (edtPeso.Value > 0) then
-    edtValorItem.Value := RoundTo( edtPrecoKg.Value * edtPeso.Value ,-2);
+  if edtPeso.ReadOnly then
+    edtPecas.SetFocus;
+end;
+
+procedure TfrmPedidoConsumidorFinal.edtPrecoKgChange(Sender: TObject);
+var multiplicador :Real;
+begin
+  multiplicador := IfThen(produtoKG, edtPeso.Value, edtPecas.Value);
+
+  if (edtPrecoKg.Value > 0) and (multiplicador > 0) then
+    edtValorItem.Value := RoundTo( edtPrecoKg.Value * multiplicador ,-2);
 end;
 
 function TfrmPedidoConsumidorFinal.efetuaRecebimento: Boolean;
@@ -401,7 +458,7 @@ end;
 procedure TfrmPedidoConsumidorFinal.finalizaPedido;
 var repositorio :TRepositorio;
     pedido      :TPedido;
-    item        :TItem; 
+    item        :TItem;
 begin
   if not verificaObrigatorios then
     Exit;
@@ -426,7 +483,7 @@ begin
        pedido.numpedido  := 'L'+ IntToStr(dm.GetValorGenerator('GEN_PEDIDOS_LOJA_ID', 1));
      end;
 
-     pedido.cod_tab_preco := tabelaPrecoProduto;
+     pedido.cod_tab_preco := tabelaLoja;
      pedido.cod_forma_pag := StrToIntDef(BuscaFormaPagamento1.codFormaPagamento ,0);
      pedido.cod_filial    := 3;
      pedido.cod_cliente   := StrToIntDef(BuscaPessoa1.cod_pessoa ,0);
@@ -466,8 +523,6 @@ begin
        Pedido.AdicionarItem(Pedido.Item);
 
        cdsItens.Next;
-       Pedido.Item.Free;
-       Pedido.Item := nil;
      end;
 
      Pedido.salvar;
@@ -486,8 +541,11 @@ begin
      try
        if (cupomPendente) or (assigned(frmRecebimentoPedido) and (frmRecebimentoPedido.cc)) then
        begin
+         if assigned(frmRecebimentoPedido) then
+           CPF_Cliente := frmRecebimentoPedido.edtCpf.Text;
+
          cupomPendente := true;
-         cupomPendente :=  not geraCupomEletronico(Pedido.Codigo);
+         cupomPendente := not geraCupomEletronico(Pedido.Codigo, CPF_Cliente);
        end;
 
      Except
@@ -526,7 +584,8 @@ procedure TfrmPedidoConsumidorFinal.FormCreate(Sender: TObject);
 begin
   FEstadoItem := teInserindo;
   cdsItens.CreateDataSet;
-  Configuracoes       := TConfiguracoesNFCe.Create;
+  Configuracoes                  := TConfiguracoesNFCe.Create;
+  BuscaProduto1.ProdutosLoja     := true;
 end;
 
 procedure TfrmPedidoConsumidorFinal.FormKeyDown(Sender: TObject; var Key: Word;
@@ -549,10 +608,7 @@ end;
 procedure TfrmPedidoConsumidorFinal.FormShow(Sender: TObject);
 var codigoCliente, codFPagamento :String;
 begin
-  BuscaProduto1.codproduto := 'KGLOJA';
-  BuscaProduto1.codTabela  := intToStr(tabelaPrecoProduto);
-  BuscaProduto1.codproduto := 'KGLOJA';
-  edtPrecoKg.Value         := BuscaProduto1.preco;
+  iniciaTipoProduto;
   BuscaPessoa1.TipoPessoa  := tpCliente;
   BuscaPedido1.pedidosLoja := true;
 
@@ -564,9 +620,14 @@ begin
 
   BuscaFormaPagamento1.codFormaPagamento := IfThen(codFPagamento = '', '0', codFPagamento);
   habilitaDesabilita('D');
+
+  if not dm.caixaAberto then
+    avisar('Atenção. O caixa está fechado.')
+  else if dm.caixaAberto and (dm.CaixaLoja.data_abertura < date) then
+    avisar('Atenção. O Caixa do dia '+formatDateTime('dd/mm/yyyy',dm.CaixaLoja.data_abertura)+' ainda não foi fechado.');
 end;
 
-function TfrmPedidoConsumidorFinal.geraCupomEletronico(codigoPedido :integer) :boolean;
+function TfrmPedidoConsumidorFinal.geraCupomEletronico(codigoPedido :integer; CPF_Cliente :String) :boolean;
 var i                  :Integer;
     repositorio :TRepositorio;
     Venda              :TVenda;
@@ -594,14 +655,14 @@ begin
    Venda.Codigo_pedido := Pedido.codigo;
    Venda.NumeroNFe     := dm.GetValorGenerator('gen_nrnota_nfce',1);//StrToInt(Maior_Valor_Cadastrado('NFCE_RETORNO', 'CODIGO'))+1; // criar tab. de retorno da nf p/ poder pegar tb o cod. da nf
    Venda.Desconto      := Pedido.desconto;
-   Venda.Cpf_cliente   := Pedido.Cliente.CPF_CNPJ;
+   Venda.Cpf_cliente   := CPF_Cliente;
    Venda.nome_cliente  := Pedido.Cliente.Razao;
 
    for i := 0 to Pedido.Itens.Count - 1 do begin
 
      Venda.AdicionarItem( (Pedido.Itens[i] as TItem).Produto.Codigo,
                           ((Pedido.Itens[i] as TItem).preco),
-                          (Pedido.Itens[i] as TItem).qtd_total );
+                          IfThen((Pedido.Itens[i] as TItem).peso > 0, (Pedido.Itens[i] as TItem).peso, (Pedido.Itens[i] as TItem).qtd_total ));
    end;
 
    NFCe.Emitir(Venda, dm.GetValorGenerator('gen_lote_nfce',1));
@@ -625,8 +686,12 @@ begin
   btnAlteraItem.Enabled := (habilita_desabilita = 'H');
   btnDeletaItem.Enabled := (habilita_desabilita = 'H');
 
-  btnnovo.Enabled       := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped);
-  BuscaPedido1.Enabled  := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped);
+  btnCancelar.Enabled            := dm.caixaAberto and not (dm.CaixaLoja.data_abertura < date);
+
+  btnnovo.Enabled       := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped) and (dm.caixaAberto and not (dm.CaixaLoja.data_abertura < date));
+  BuscaPedido1.Enabled  := (habilita_desabilita = 'D') and not cupomPendente and not assigned(BuscaPedido1.Ped) and (dm.caixaAberto and not (dm.CaixaLoja.data_abertura < date));
+  BuscaProduto1.Enabled := (habilita_desabilita = 'H');
+  btnCaixa.Enabled      := (habilita_desabilita = 'D');
 end;
 
 procedure TfrmPedidoConsumidorFinal.imprimePedido(pedido :TPedido);
@@ -635,9 +700,20 @@ var Arq   :TextFile;
     qtd, peso, valor :String;
     qtdTot, pesoTot, valorTot :Real;
 begin
-  rlPedido.Caption  := pedido.numpedido;
+  rlPedido.Caption    := pedido.numpedido;
+  rlbDesconto.Caption := FormatFloat(' ,0.00; -,0.00', pedido.desconto);
+  rlbTotal.Caption    := FormatFloat(' ,0.00; -,0.00', pedido.valor_total);
 
   RLReport1.PreviewModal;
+end;
+
+procedure TfrmPedidoConsumidorFinal.iniciaTipoProduto;
+begin
+  BuscaProduto1.codproduto := 'KGLOJA';
+  BuscaProduto1.codTabela  := intToStr(tabelaLoja);
+  BuscaProduto1.codproduto := 'KGLOJA';
+  edtPrecoKg.Value         := BuscaProduto1.preco;
+  label4.Caption           := IfThen(produtoKG, 'Peso x Valor Unitário', 'Peças x Valor Unitário');
 end;
 
 procedure TfrmPedidoConsumidorFinal.limpaCampos;
@@ -659,11 +735,29 @@ begin
   cupomPendente := false;
   habilitaDesabilita('H');
   btnFinalizaPedido.Caption := '[ F6 ] Finalizar Pedido';
+  CPF_Cliente := '';
+  iniciaTipoProduto;
+  edtPeso.ReadOnly := false;
 end;
 
-function TfrmPedidoConsumidorFinal.tabelaPrecoProduto: integer;
+function TfrmPedidoConsumidorFinal.produtoKG: Boolean;
 begin
-  result := StrToIntDef( Campo_por_campo('PRODUTO_TABELA_PRECO', 'CODTABELA', 'CODPRODUTO', BuscaProduto1.codproduto),0);
+  result := pos('KGLOJA', BuscaProduto1.edtReferencia.Text) > 0;
+end;
+
+function TfrmPedidoConsumidorFinal.tabelaLoja: integer;
+begin
+  result := StrToIntDef( Campo_por_campo('TABELAS_PRECO', 'CODIGO', 'DESCRICAO', 'TABELA LOJA'),0);
+end;
+
+function TfrmPedidoConsumidorFinal.tabelaPrecoProdutoNormal: integer;
+var codigo_tabela :Integer;
+begin
+  codigo_tabela := tabelaLoja;
+  result := StrToIntDef( Campo_por_campo('PRODUTO_TABELA_PRECO', 'CODTABELA', 'CODPRODUTO',
+                                                                              BuscaProduto1.codproduto,
+                                                                              'CODTABELA',
+                                                                              intToStr(codigo_tabela)),0);
 end;
 
 function TfrmPedidoConsumidorFinal.verificaObrigatorios: Boolean;
@@ -699,12 +793,12 @@ begin
     avisar('Favor selecionar o produto desejado.');
     BuscaProduto1.edtReferencia.SetFocus;
   end
-  else if tabelaPrecoProduto = 0 then
+  else if ((produtoKG) and (tabelaLoja = 0)) or (not(produtoKG)and(tabelaPrecoProdutoNormal = 0)) then
   begin
     avisar('Inclusão cancelada. Não há um preço cadastrado no produto selecionado.');
     BuscaProduto1.edtReferencia.SetFocus;
   end
-  else if edtPeso.Value = 0 then
+  else if not(edtPeso.ReadOnly) and (edtPeso.Value = 0) then
   begin
     avisar('Favor informar o peso.');
     edtPeso.SetFocus;

@@ -98,7 +98,10 @@ uses
   RepositorioNFCe,
   RepositorioParametrosNFCe,
   RepositorioMovimento,
-  RepositorioOrdemServico;
+  RepositorioOrdemServico,
+  RepositorioNcmIBPT,
+  RepositorioCaixa,
+  RepositorioEntradaSaidaMoeda;
 
 
 { TFabricaRepositorio }
@@ -189,6 +192,9 @@ begin
    else if (NomeDaEntidade  = 'TParametrosNFCe')            then result := TRepositorioParametrosNFCe.Create
    else if (NomeDaEntidade  = 'TMovimento')                 then result := TRepositorioMovimento.Create
    else if (NomeDaEntidade  = 'TOrdemServico')              then result := TRepositorioOrdemServico.Create
+   else if (NomeDaEntidade  = 'TNcmIBPT')                   then result := TRepositorioNcmIBPT.Create
+   else if (NomeDaEntidade  = 'TCaixa')                     then result := TRepositorioCaixa.Create
+   else if (NomeDaEntidade  = 'TEntradaSaidaMoeda')         then result := TRepositorioEntradaSaidaMoeda.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

@@ -5,7 +5,7 @@ interface
 uses
   SysUtils,
   Contnrs,
-  Grade;
+  Grade, NcmIbpt;
 
 type
   TProduto = class
@@ -59,8 +59,12 @@ type
     procedure SetUnidadeMedida(const Value: String);
 
   private
+    FNcmIbpt: TNcmIbpt;
+    FCodigo_ibpt: integer;
     function GetGrade: TGrade;
-    function GetProdutosKit: TObjectList;    
+    function GetProdutosKit: TObjectList;
+    function GetNcmIbpt: TNcmIbpt;
+    function GetAliqNcmIbpt: Real;
 
   public
     property Codigo       :integer read FCodigo       write setCodigo;
@@ -84,9 +88,13 @@ type
     property Referencia   :String  read FReferencia   write SetReferencia;
     property Tipo         :String  read FTipo         write SetTipo;
     property UnidadeMedida:String  read FUnidadeMedida write SetUnidadeMedida;
+    property Codigo_ibpt  :integer read FCodigo_ibpt  write FCodigo_ibpt;
+
+  public
     property Kit          :Boolean read FKit          write FKit;
 
     property ProdutosKit  :TObjectList read GetProdutosKit;
+    property AliqNcmIbpt  :Real    read GetAliqNcmIbpt;
 
   public
     constructor Create;
@@ -98,7 +106,7 @@ end;
 
 implementation
 
-uses FabricaRepositorio, Repositorio, EspecificacaoProdutosKit, ProdutosKit;
+uses FabricaRepositorio, Repositorio, EspecificacaoProdutosKit, ProdutosKit, funcoes;
 
 { TProduto }
 
@@ -197,6 +205,11 @@ begin
   FReferencia := Value;
 end;
 
+function TProduto.GetAliqNcmIbpt: Real;
+begin
+  result := StrToFloatDef(Campo_por_campo('IBPT','ALIQNACIONAL_IBPT','NCM_IBPT',intToStr(self.Cod_Ncm)) ,0);
+end;
+
 function TProduto.GetGrade: TGrade;
 var
   Repositorio :TRepositorio;
@@ -213,6 +226,27 @@ begin
    end;
 
    result := self.FGrade;
+end;
+
+function TProduto.GetNcmIbpt: TNcmIbpt;
+var
+  Repositorio   :TRepositorio;
+begin
+   Repositorio    := nil;
+
+   {serviço nao tributa imposto}
+  // if self.tipo = 'S' then exit;
+
+   try
+      if not Assigned(self.FNcmIBPT) then begin
+        Repositorio           := TFabricaRepositorio.GetRepositorio(TNcmIBPT.ClassName);
+        self.FNcmIBPT         := TNcmIBPT( Repositorio.Get(self.Fcodigo_ibpt) );
+      end;
+
+      result := self.FNcmIBPT;
+   finally
+     FreeAndNil(Repositorio);
+   end;
 end;
 
 constructor TProduto.Create;

@@ -30,6 +30,9 @@ function RemoveAcento(Str: string): string;
 procedure executa_SQL(SQL :STring);
 procedure EmiteSomErro;
 function impressoraPadrao:String;
+function Valida_CPF_CNPJ(Nr_CGC:String):boolean;
+function UF_TO_CODUF(UF :String) :integer;
+function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer = 0) :String;
 
 
 implementation
@@ -48,6 +51,25 @@ begin
   Result := Str;
 end;
 
+function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer) :String;
+begin
+  dm.qryGenerica.Close;
+  dm.qryGenerica.SQL.Text := 'select cb.numeracao from codigo_barras cb                                         '+
+                             'where cb.codproduto = :codpro '+
+                             '  and cb.codcor = :codcor '+
+                             '  and cb.codtamanho = :codtam '+
+                             IfThen(codigoGrade > 0, ' and c.codgrade = :codgrade ','');
+
+  dm.qryGenerica.ParamByName('codpro').AsInteger := codigoProduto;
+  dm.qryGenerica.ParamByName('codcor').AsInteger := codigoCor;
+  dm.qryGenerica.ParamByName('codtam').AsInteger := codigoTamanho;
+  if codigoGrade > 0 then
+    dm.qryGenerica.ParamByName('codgrade').AsInteger := codigoGrade;
+  dm.qryGenerica.Open;
+
+  result := dm.qryGenerica.fieldByName('numeracao').AsString;
+end;
+
 function impressoraPadrao:String;
 begin
   Result := IfThen(pos('\\',Printer.Printers[Printer.PrinterIndex]) > 0,'','\\localhost\' )+ Printer.Printers[Printer.PrinterIndex];
@@ -58,6 +80,115 @@ begin
   dm.qryGenerica.Close;
   dm.qryGenerica.SQL.Text := SQL;
   dm.qryGenerica.ExecSQL;
+end;
+
+function Valida_CPF_CNPJ(Nr_CGC:String):boolean;
+var
+  Digito1,Digito2: String;
+  S,Cont,Digito,Soma: Integer;
+begin
+  // length - retorna o tamanho da string (CPF é um número formado por 11 dígitos)
+    if ((Nr_CGC = '00000000000') or (Nr_CGC = '11111111111') or (Nr_CGC = '22222222222') or
+        (Nr_CGC = '33333333333') or (Nr_CGC = '44444444444') or (Nr_CGC = '55555555555') or
+        (Nr_CGC = '66666666666') or (Nr_CGC = '77777777777') or (Nr_CGC = '88888888888') or
+        (Nr_CGC = '99999999999')) then begin
+      Valida_CPF_CNPJ := false;
+      exit;
+    end;
+
+  if Length(Nr_Cgc)=11 then begin
+    {Primeiro Dígito }
+    Cont:=1;
+    Soma:=0;
+    for S:=9 Downto 1 do begin
+      Inc(Cont);
+      Soma:=Soma + StrToInt(Nr_Cgc[S]) * Cont;
+    end;
+    Soma:=Soma * 10;
+    Digito1:=IntToStr(Soma Mod 11);
+    if StrToInt(Digito1)>=10 then
+      Digito1:='0';
+    // Segundo Dígito
+    Cont:=1;
+    Soma:=0;
+    for S:=10 Downto 1 do begin
+      Inc(Cont);
+      Soma:=Soma + StrToInt(Nr_Cgc[S]) * Cont;
+    end;
+    Soma:=Soma * 10;
+    Digito2:=IntToStr(Soma Mod 11);
+    if StrToInt(Digito2)>=10 then
+      Digito2:='0';
+
+  end else if Length(Nr_Cgc) = 14 then begin
+    Soma:=5 * StrToInt(Nr_Cgc[1]) + 4 * StrToInt(Nr_Cgc[2]) + 3 * StrToInt(Nr_Cgc[3])+
+          2 * StrToInt(Nr_Cgc[4]) + 9 * StrToInt(Nr_Cgc[5]) + 8 * StrToInt(Nr_Cgc[6])+
+          7 * StrToInt(Nr_Cgc[7]) + 6 * StrToInt(Nr_Cgc[8]) + 5 * StrToInt(Nr_Cgc[9])+
+          4 * StrToInt(Nr_Cgc[10])+ 3 * StrToInt(Nr_Cgc[11])+ 2 * StrToInt(Nr_Cgc[12]);
+    Digito:=Soma Mod 11;
+
+    if Digito>1 then
+      Digito:=11-Digito
+    else
+      Digito:=0;
+    Digito1:=IntToStr(Digito);
+
+    Soma:=6 * StrToInt(Nr_Cgc[1]) + 5 * StrToInt(Nr_Cgc[2]) + 4 * StrToInt(Nr_Cgc[3])+
+          3 * StrToInt(Nr_Cgc[4]) + 2 * StrToInt(Nr_Cgc[5]) + 9 * StrToInt(Nr_Cgc[6])+
+          8 * StrToInt(Nr_Cgc[7]) + 7 * StrToInt(Nr_Cgc[8]) + 6 * StrToInt(Nr_Cgc[9])+
+          5 * StrToInt(Nr_Cgc[10])+ 4 * StrToInt(Nr_Cgc[11])+ 3 * StrToInt(Nr_Cgc[12])+
+          2 * StrToInt(Digito1);
+    Digito:=Soma Mod 11;
+
+    if Digito>1 then
+      Digito:=11-Digito
+    else
+      Digito:=0;
+
+    Digito2:=IntToStr(Digito);
+  end else begin
+    Result:= false;
+    Exit;
+  end;
+
+  if Copy(Nr_Cgc,Length(Nr_Cgc)-1,2) <> Digito1+Digito2 then
+    Result := false
+  else
+    Result := true;
+end;
+
+function UF_TO_CODUF(UF :String) :integer;
+begin
+  result := 0;
+
+      if UF = 'RO' then result := 11
+ else if UF = 'AC' then result := 12
+ else if UF = 'AM' then result := 13
+ else if UF = 'RR' then result := 14
+ else if UF = 'PA' then result := 15
+ else if UF = 'AP' then result := 16
+ else if UF = 'TC' then result := 17
+ else if UF = 'MR' then result := 21
+ else if UF = 'PI' then result := 22
+ else if UF = 'CE' then result := 23
+ else if UF = 'RN' then result := 24
+ else if UF = 'PB' then result := 25
+ else if UF = 'PE' then result := 26
+ else if UF = 'AL' then result := 27
+ else if UF = 'SG' then result := 28
+ else if UF = 'BH' then result := 29
+ else if UF = 'MG' then result := 31
+ else if UF = 'ES' then result := 32
+ else if UF = 'RJ' then result := 33
+ else if UF = 'SP' then result := 35
+ else if UF = 'PR' then result := 41
+ else if UF = 'SC' then result := 42
+ else if UF = 'RS' then result := 43
+ else if UF = 'MS' then result := 50
+ else if UF = 'MT' then result := 51
+ else if UF = 'GO' then result := 52
+ else if UF = 'DF' then result := 53;
+
 end;
 
 function Codigo_natureza_por_CFOP(CFOP :String) :String;

@@ -411,7 +411,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 797
     Height = 438
-    ActivePage = TabSheet5
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -711,6 +711,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'F2 - Dados'
       ImageIndex = 1
       OnEnter = TabSheet2Enter
+      ExplicitLeft = 8
+      ExplicitTop = 22
       DesignSize = (
         789
         410)
@@ -3543,6 +3545,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       FixedChar = True
       Size = 1
     end
+    object cdsCODIGO_IBPT: TIntegerField
+      FieldName = 'CODIGO_IBPT'
+    end
   end
   object dsp: TDataSetProvider
     Left = 668
@@ -3764,7 +3769,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 695
     Top = 201
     Bitmap = {
-      494C010106000900280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060009002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
