@@ -173,6 +173,15 @@ type
     Label7: TLabel;
     dtpInicio: TDateTimePicker;
     dtpLimite: TDateTimePicker;
+    cdsEstoqueTam10: TIntegerField;
+    cdsEstoqueTam12: TIntegerField;
+    cdsEstoqueTam14: TIntegerField;
+    cdsTam10: TIntegerField;
+    cdsTam12: TIntegerField;
+    cdsTam14: TIntegerField;
+    cdsItensTam10: TIntegerField;
+    cdsItensTam12: TIntegerField;
+    cdsItensTam14: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure cbAprovacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -429,9 +438,10 @@ begin
   for i :=0 to cds.FieldCount - 1 do  cds.Fields[i].ReadOnly := false;
 
   cds.Append;
-  cdsTamRN.AsInteger := 0; cdsTamP.AsInteger := 0; cdsTamM.AsInteger     := 0; cdsTamG.AsInteger  := 0;
-  cdsTam1.AsInteger  := 0; cdsTam2.AsInteger := 0; cdsTam3.AsInteger     := 0; cdsTam4.AsInteger  := 0;
-  cdsTam6.AsInteger  := 0; cdsTam8.AsInteger := 0; cdsTamUNICA.AsFloat   := 0; cdsTOTAL.AsFLoat   := 0;
+  cdsTamRN.AsInteger := 0; cdsTamP.AsInteger   := 0; cdsTamM.AsInteger     := 0; cdsTamG.AsInteger  := 0;
+  cdsTam1.AsInteger  := 0; cdsTam2.AsInteger   := 0; cdsTam3.AsInteger     := 0; cdsTam4.AsInteger  := 0;
+  cdsTam6.AsInteger  := 0; cdsTam8.AsInteger   := 0; cdsTam10.AsInteger    := 0; cdsTam12.AsInteger := 0;
+  cdsTam14.AsInteger := 0; cdsTamUNICA.AsFloat := 0; cdsTOTAL.AsFLoat      := 0;
   cds.Post;
 
   cds.AfterScroll := Proc;
@@ -543,9 +553,12 @@ begin
   cdsItensTam4.AsInteger         := cdsTam4.AsInteger;
   cdsItensTam6.AsInteger         := cdsTam6.AsInteger;
   cdsItensTam8.AsInteger         := cdsTam8.AsInteger;
-  cdsItensDesconto.AsFloat       := edtDesconto.Value;
+  cdsItensTam10.AsInteger        := cdsTam10.AsInteger;
+  cdsItensTam12.AsInteger        := cdsTam12.AsInteger;
+  cdsItensTam14.AsInteger        := cdsTam14.AsInteger;
   cdsItensTamUNICA.AsFloat       := cdsTamUNICA.AsFloat;
   cdsItensTOTAL.AsFloat          := cdsTOTAL.AsFloat;
+  cdsItensDesconto.AsFloat       := edtDesconto.Value;
   cdsItensValorUnit.AsFloat      := edtPreco.Value;
   cdsItensValorTotalItem.AsFloat := edtValorItens.Value;
   cdsItensObsItem.AsString       := TRIM(copy(edtObservacoes.Text,1,200));
@@ -709,6 +722,9 @@ begin
     if cdsItensTam4.AsInteger      > 0 then  cdsTam4.AsInteger        := cdsItensTam4.AsInteger;
     if cdsItensTam6.AsInteger      > 0 then  cdsTam6.AsInteger        := cdsItensTam6.AsInteger;
     if cdsItensTam8.AsInteger      > 0 then  cdsTam8.AsInteger        := cdsItensTam8.AsInteger;
+    if cdsItensTam10.AsInteger     > 0 then  cdsTam10.AsInteger       := cdsItensTam10.AsInteger;
+    if cdsItensTam12.AsInteger     > 0 then  cdsTam12.AsInteger       := cdsItensTam12.AsInteger;
+    if cdsItensTam14.AsInteger     > 0 then  cdsTam14.AsInteger       := cdsItensTam14.AsInteger;
     if cdsItensTamUNICA.AsFloat    > 0 then  cdsTamUNICA.AsFloat      := cdsItensTamUNICA.AsFloat;
     if cdsItensTOTAL.AsFloat       > 0 then  cdsTOTAL.AsFloat         := cdsItensTOTAL.AsFloat;
 
@@ -906,6 +922,9 @@ begin
          Pedido.Item.qtd_4             := cdsItensTam4.AsInteger;
          Pedido.Item.qtd_6             := cdsItensTam6.AsInteger;
          Pedido.Item.qtd_8             := cdsItensTam8.AsInteger;
+         Pedido.Item.qtd_10            := cdsItensTam10.AsInteger;
+         Pedido.Item.qtd_12            := cdsItensTam12.AsInteger;
+         Pedido.Item.qtd_14            := cdsItensTam14.AsInteger;
          Pedido.Item.qtd_UNICA         := cdsItensTamUnica.AsFloat;
          Pedido.Item.qtd_total         := cdsItensTOTAL.AsFloat;
          Pedido.Item.observacao        := cdsItensObsItem.AsString;
@@ -1004,6 +1023,9 @@ begin
     cdsItensTam4.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_4;
     cdsItensTam6.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_6;
     cdsItensTam8.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_8;
+    cdsItensTam10.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_10;
+    cdsItensTam12.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_12;
+    cdsItensTam14.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_14;
     cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Itens[i]).qtd_UNICA;
     cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Itens[i]).qtd_total;
     cdsItensObsItem.AsString       := TItem(BuscaPedido1.Itens[i]).observacao;
@@ -1552,7 +1574,7 @@ end;
 procedure TfrmPedido.BuscaCor1Enter(Sender: TObject);
 begin
   BuscaCor1.FiltroProduto := BuscaProduto1.codproduto;
-  BuscaCor1.FiltroKit     := BuscaProduto1.Kit;
+  BuscaCor1.ApareceKits   := IfThen(BuscaProduto1.Kit,'S','N');
 end;
 
 procedure TfrmPedido.edtDescComissExit(Sender: TObject);
@@ -1707,20 +1729,21 @@ begin
 
   dm.qryGenerica.Close;
   dm.qryGenerica.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,    '+
-                                  ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,            '+
-                                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_unica) QTD_unica,                         '+
-                                  ' pro.referencia REFPRODUTO , cor.referencia REFCOR                       from ITENS i           '+
+                                  ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,       '+
+                                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_10) QTD_8, sum(ci.qtd_8) QTD_12,     '+
+                                  ' sum(ci.qtd_14) QTD_14, sum(ci.qtd_unica) QTD_unica,                                       '+
+                                  ' pro.referencia REFPRODUTO , cor.referencia REFCOR                       from ITENS i      '+
 
-                                  ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                                   '+
-                                  ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                           '+
-                                  ' left join cores              cor on cor.codigo = i.cod_cor                                     '+
-                                  ' left join produtos           pro on pro.codigo = i.cod_produto                                 '+
+                                  ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                              '+
+                                  ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                      '+
+                                  ' left join cores              cor on cor.codigo = i.cod_cor                                '+
+                                  ' left join produtos           pro on pro.codigo = i.cod_produto                            '+
 
                                   ' where cp.fim < ''01.01.1900'' and i.cod_produto = ' +IntToStr(BuscaProduto1.CodigoProduto) +
                                   '   and cor.codigo = ' +IntToStr(BuscaCor1.CodigoCor) +
 
-                                  ' group by pro.referencia, cor.referencia                                                        '+
-                                  ' order by pro.referencia, cor.referencia                                                        ';
+                                  ' group by pro.referencia, cor.referencia                                                   '+
+                                  ' order by pro.referencia, cor.referencia                                                   ';
 
   dm.qryGenerica.Open;
 

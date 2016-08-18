@@ -108,6 +108,17 @@ type
     RLPDFFilter1: TRLPDFFilter;
     cdsItensQTD_UNICA: TIntegerField;
     cdsItensQTD_UNICA_O: TBCDField;
+    RLDraw13: TRLDraw;
+    RLDraw14: TRLDraw;
+    cdsItensQTD_10: TIntegerField;
+    cdsItensQTD_12: TIntegerField;
+    cdsItensQTD_14: TIntegerField;
+    cdsItensQTD_10_O: TIntegerField;
+    cdsItensQTD_12_O: TIntegerField;
+    cdsItensQTD_14_O: TIntegerField;
+    RLDBText15: TRLDBText;
+    RLDBText18: TRLDBText;
+    RLDBText19: TRLDBText;
     procedure RLDBText14BeforePrint(Sender: TObject; var Text: String;
       var PrintIt: Boolean);
   private

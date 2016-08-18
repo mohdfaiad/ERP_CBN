@@ -14,8 +14,8 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
-    Left = 48
-    Top = 82
+    Left = 8
+    Top = 18
     Width = 794
     Height = 1123
     Margins.LeftMargin = 2.000000000000000000
@@ -564,13 +564,13 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           ParentFont = False
         end
         object RLLabel10: TRLLabel
-          Left = 319
+          Left = 287
           Top = 5
-          Width = 315
+          Width = 393
           Height = 14
           Caption = 
             'RN       P       M       G       1       2       3       4      ' +
-            ' 6       8     UNICA'
+            ' 6       8      10     12     14   UNICA'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -603,7 +603,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Visible = False
         end
         object RLDraw6: TRLDraw
-          Left = 609
+          Left = 563
           Top = -5
           Width = 28
           Height = 31
@@ -620,7 +620,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Transparent = False
         end
         object RLDraw5: TRLDraw
-          Left = 547
+          Left = 507
           Top = -5
           Width = 28
           Height = 31
@@ -637,7 +637,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Transparent = False
         end
         object RLDraw4: TRLDraw
-          Left = 493
+          Left = 453
           Top = -5
           Width = 28
           Height = 31
@@ -654,7 +654,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Transparent = False
         end
         object RLDraw3: TRLDraw
-          Left = 438
+          Left = 398
           Top = -6
           Width = 28
           Height = 31
@@ -671,7 +671,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Transparent = False
         end
         object RLDraw1: TRLDraw
-          Left = 381
+          Left = 341
           Top = -6
           Width = 28
           Height = 31
@@ -692,6 +692,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Top = 3
           Width = 37
           Height = 13
+          AutoSize = False
           DataField = 'REFPRO'
           DataSource = DataSource2
           Font.Charset = ANSI_CHARSET
@@ -703,7 +704,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText4: TRLDBText
-          Left = 347
+          Left = 307
           Top = 3
           Width = 38
           Height = 14
@@ -719,7 +720,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText5: TRLDBText
-          Left = 374
+          Left = 334
           Top = 3
           Width = 42
           Height = 14
@@ -735,7 +736,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText6: TRLDBText
-          Left = 405
+          Left = 365
           Top = 3
           Width = 40
           Height = 14
@@ -751,7 +752,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText7: TRLDBText
-          Left = 434
+          Left = 394
           Top = 3
           Width = 38
           Height = 14
@@ -767,7 +768,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText8: TRLDBText
-          Left = 461
+          Left = 421
           Top = 3
           Width = 38
           Height = 14
@@ -783,7 +784,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText9: TRLDBText
-          Left = 489
+          Left = 449
           Top = 3
           Width = 38
           Height = 14
@@ -799,7 +800,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText10: TRLDBText
-          Left = 517
+          Left = 477
           Top = 3
           Width = 38
           Height = 14
@@ -815,7 +816,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText11: TRLDBText
-          Left = 544
+          Left = 504
           Top = 3
           Width = 38
           Height = 14
@@ -831,7 +832,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText12: TRLDBText
-          Left = 571
+          Left = 531
           Top = 3
           Width = 38
           Height = 14
@@ -847,7 +848,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText13: TRLDBText
-          Left = 603
+          Left = 640
           Top = 3
           Width = 41
           Height = 14
@@ -863,7 +864,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText14: TRLDBText
-          Left = 641
+          Left = 661
           Top = 3
           Width = 44
           Height = 14
@@ -895,11 +896,12 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText17: TRLDBText
-          Left = 49
+          Left = 48
           Top = 3
           Width = 26
           Height = 13
           Alignment = taCenter
+          AutoSize = False
           DataField = 'REFCOR'
           DataSource = DataSource2
           Font.Charset = ANSI_CHARSET
@@ -911,7 +913,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDraw2: TRLDraw
-          Left = 320
+          Left = 280
           Top = -5
           Width = 28
           Height = 31
@@ -928,7 +930,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Transparent = False
         end
         object RLDBText3: TRLDBText
-          Left = 311
+          Left = 271
           Top = 3
           Width = 46
           Height = 14
@@ -944,9 +946,9 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText1: TRLDBText
-          Left = 76
+          Left = 74
           Top = 3
-          Width = 241
+          Width = 199
           Height = 13
           AutoSize = False
           DataField = 'PRODUTO'
@@ -960,12 +962,77 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBText18: TRLDBText
-          Left = 682
+          Left = 694
           Top = 3
           Width = 44
           Height = 14
           Alignment = taCenter
           DataField = 'PRECO'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDraw10: TRLDraw
+          Left = 617
+          Top = -6
+          Width = 28
+          Height = 31
+          Brush.Style = bsClear
+          Color = 14869218
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDBText25: TRLDBText
+          Left = 555
+          Top = 3
+          Width = 44
+          Height = 14
+          Alignment = taCenter
+          DataField = 'QTD_10'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText26: TRLDBText
+          Left = 583
+          Top = 3
+          Width = 44
+          Height = 14
+          Alignment = taCenter
+          DataField = 'QTD_12'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText27: TRLDBText
+          Left = 608
+          Top = 3
+          Width = 44
+          Height = 14
+          Alignment = taCenter
+          DataField = 'QTD_14'
           DataSource = DataSource2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1010,7 +1077,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           ParentFont = False
         end
         object RLDBResult1: TRLDBResult
-          Left = 266
+          Left = 226
           Top = 4
           Width = 136
           Height = 14
@@ -1026,7 +1093,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult2: TRLDBResult
-          Left = 304
+          Left = 264
           Top = 4
           Width = 126
           Height = 14
@@ -1042,7 +1109,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult3: TRLDBResult
-          Left = 330
+          Left = 290
           Top = 4
           Width = 130
           Height = 14
@@ -1058,7 +1125,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult4: TRLDBResult
-          Left = 361
+          Left = 321
           Top = 4
           Width = 128
           Height = 14
@@ -1074,7 +1141,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult5: TRLDBResult
-          Left = 390
+          Left = 350
           Top = 4
           Width = 126
           Height = 14
@@ -1090,7 +1157,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult6: TRLDBResult
-          Left = 417
+          Left = 377
           Top = 4
           Width = 126
           Height = 14
@@ -1106,7 +1173,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult7: TRLDBResult
-          Left = 444
+          Left = 404
           Top = 4
           Width = 126
           Height = 14
@@ -1122,7 +1189,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult8: TRLDBResult
-          Left = 473
+          Left = 433
           Top = 4
           Width = 126
           Height = 14
@@ -1151,7 +1218,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           ParentFont = False
         end
         object RLDBResult9: TRLDBResult
-          Left = 500
+          Left = 460
           Top = 4
           Width = 126
           Height = 14
@@ -1167,7 +1234,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult10: TRLDBResult
-          Left = 527
+          Left = 487
           Top = 4
           Width = 126
           Height = 14
@@ -1183,7 +1250,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult11: TRLDBResult
-          Left = 546
+          Left = 586
           Top = 4
           Width = 154
           Height = 14
@@ -1199,7 +1266,7 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
         end
         object RLDBResult12: TRLDBResult
-          Left = 641
+          Left = 661
           Top = 4
           Width = 44
           Height = 14
@@ -1250,6 +1317,54 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
           Text = ''
           Visible = False
         end
+        object RLDBResult17: TRLDBResult
+          Left = 511
+          Top = 4
+          Width = 132
+          Height = 14
+          Alignment = taCenter
+          DataFormula = 'SUM(QTD_10)'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBResult18: TRLDBResult
+          Left = 539
+          Top = 4
+          Width = 132
+          Height = 14
+          Alignment = taCenter
+          DataFormula = 'SUM(QTD_12)'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBResult19: TRLDBResult
+          Left = 565
+          Top = 4
+          Width = 132
+          Height = 14
+          Alignment = taCenter
+          DataFormula = 'SUM(QTD_14)'
+          DataSource = DataSource2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
       end
     end
     object RLBand4: TRLBand
@@ -1258,23 +1373,8 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
       Width = 776
       Height = 24
       BandType = btHeader
-      object RLLabel32: TRLLabel
-        Left = 679
-        Top = 5
-        Width = 44
-        Height = 14
-        Alignment = taCenter
-        Caption = 'Desc.'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        Visible = False
-      end
       object RLLabel11: TRLLabel
-        Left = 682
+        Left = 694
         Top = 5
         Width = 44
         Height = 14
@@ -1340,21 +1440,8 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object RLLabel26: TRLLabel
-        Left = 272
-        Top = 5
-        Width = 37
-        Height = 15
-        Caption = 'Grade'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
       object RLLabel27: TRLLabel
-        Left = 636
+        Left = 656
         Top = 5
         Width = 44
         Height = 14
@@ -1647,8 +1734,8 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
     end
   end
   object RLReport2: TRLReport
-    Left = 608
-    Top = 80
+    Left = 837
+    Top = 74
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2216,6 +2303,18 @@ object frmRelatorioPedidoVenda: TfrmRelatorioPedidoVenda
       FieldName = 'QTD_8'
       Origin = 'QTD_8'
       DisplayFormat = '0'
+    end
+    object qryItensQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+      Origin = 'QTD_10'
+    end
+    object qryItensQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+      Origin = 'QTD_12'
+    end
+    object qryItensQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+      Origin = 'QTD_14'
     end
     object qryItensQTD_UNICA: TBCDField
       FieldName = 'QTD_UNICA'

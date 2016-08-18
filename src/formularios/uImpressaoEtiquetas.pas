@@ -365,7 +365,7 @@ begin
   if not cdsImp.Active then
     cdsImp.CreateDataSet;
 
-  if cdsImp.Locate('OS',os,[]) then
+  if (os > 0) and cdsImp.Locate('OS',os,[]) then
     cdsImp.Edit
   else
     cdsImp.Append;

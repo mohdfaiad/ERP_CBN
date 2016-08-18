@@ -15,7 +15,7 @@ type
     TfrmRelatorioTotalizarEstoque = class(TfrmPadrao)
     Panel1: TPanel;
     btnImprimir: TBitBtn;
-    frmBuscaProduto2: TBuscaProduto2;
+    BuscaProduto2: TBuscaProduto2;
     RLTotalizarEstoque: TRLReport;
     dsTotalizarEstoque: TDataSource;
     RLBand1: TRLBand;
@@ -148,12 +148,32 @@ type
     qryEstoqueReservadoREFPRODUTO: TStringField;
     qryEstoqueReservadoREFCOR: TStringField;
     RLPDFFilter1: TRLPDFFilter;
+    chkSomenteLoja: TCheckBox;
+    cdsEstoqueQTD_10: TIntegerField;
+    cdsEstoqueQTD_12: TIntegerField;
+    cdsEstoqueQTD_14: TIntegerField;
+    qryEstoqueReservadoQTD_10: TLargeintField;
+    qryEstoqueReservadoQTD_12: TLargeintField;
+    qryEstoqueReservadoQTD_14: TLargeintField;
+    RLLabel23: TRLLabel;
+    RLLabel24: TRLLabel;
+    RLLabel25: TRLLabel;
+    RLDBText17: TRLDBText;
+    RLDBText18: TRLDBText;
+    RLDBText19: TRLDBText;
+    RLDBResult28: TRLDBResult;
+    RLDBResult29: TRLDBResult;
+    RLDBResult30: TRLDBResult;
+    RLDBResult31: TRLDBResult;
+    RLDBResult32: TRLDBResult;
+    RLDBResult33: TRLDBResult;
     procedure FormShow(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure RLDBResult4BeforePrint(Sender: TObject; var Text: String;
       var PrintIt: Boolean);
     procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure chkSomenteLojaClick(Sender: TObject);
 
   private
     Valor: Currency;
@@ -173,11 +193,20 @@ uses PermissoesAcesso, RxCurrEdit, StrUtils;
 
 {$R *.dfm}
 
+procedure TfrmRelatorioTotalizarEstoque.chkSomenteLojaClick(Sender: TObject);
+begin
+  if chkSomenteLoja.Checked then
+  begin
+    BuscaProduto2.Limpar;
+    BuscaProduto2.produtosLoja := true;
+  end;
+end;
+
 procedure TfrmRelatorioTotalizarEstoque.FormShow(Sender: TObject);
 begin
   //inherited;
   Valor:= 0;
-  frmBuscaProduto2.edtCodColecao.SetFocus;
+  BuscaProduto2.edtCodColecao.SetFocus;
   if TPermissoesAcesso.ExibirComPermissao(49) then
   begin
     BuscaTabelaPreco1.Visible := False;
@@ -210,19 +239,23 @@ begin
   Produto := '';
   Cor:= '';
 
-  if frmBuscaProduto2.edtCodColecao.AsInteger > 0 then
-    cWhere:= 'WHERE CORES.codigo_colecao = '+frmBuscaProduto2.edtCodColecao.Text+' ';
+  if BuscaProduto2.edtCodColecao.AsInteger > 0 then
+    cWhere:= 'WHERE CORES.codigo_colecao = '+BuscaProduto2.edtCodColecao.Text+' ';
 
-  if frmBuscaProduto2.edtReferencia.Text <> '' then
-    cWhere:= cWhere + IfThen(cWhere <> '', 'AND', 'WHERE')+' PRODUTOS.REFERENCIA = '+QuotedStr(frmBuscaProduto2.edtReferencia.Text)+' ';
-  if frmBuscaProduto2.edtRefCor.Text <> '' then
-    cWhere:= cWhere+'AND CORES.REFERENCIA = '+QuotedStr(frmBuscaProduto2.edtRefCor.Text)+' ';
-  if frmBuscaProduto2.edtCodTamanho.Text <> '' then
-    cWhere:= cWhere+'AND ESTOQUE.CODIGO_TAMANHO = '+frmBuscaProduto2.edtCodTamanho.Text+' ';
+  if BuscaProduto2.edtReferencia.Text <> '' then
+    cWhere:= cWhere + IfThen(cWhere <> '', 'AND', 'WHERE')+' PRODUTOS.REFERENCIA = '+QuotedStr(BuscaProduto2.edtReferencia.Text)+' ';
+  if BuscaProduto2.edtRefCor.Text <> '' then
+    cWhere:= cWhere+'AND CORES.REFERENCIA = '+QuotedStr(BuscaProduto2.edtRefCor.Text)+' ';
+  if BuscaProduto2.edtCodTamanho.Text <> '' then
+    cWhere:= cWhere+'AND ESTOQUE.CODIGO_TAMANHO = '+BuscaProduto2.edtCodTamanho.Text+' ';
   if cWhere <> '' then
     cWhere := cWhere+'AND PRODUTOS.REFERENCIA IS NOT NULL '
   else
     cWhere := 'WHERE PRODUTOS.REFERENCIA IS NOT NULL ';
+
+  if chkSomenteLoja.Checked then
+    cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or produtos.referencia = ''KGLOJA'')';
+
 
   Qry.Close;
   Qry.SQL.Clear;
@@ -241,7 +274,7 @@ begin
   if Qry.IsEmpty then
   begin
     Self.avisar('Não há dados para a impressão. Por favor, verifique.');
-    frmBuscaProduto2.edtReferencia.SetFocus;
+    BuscaProduto2.edtReferencia.SetFocus;
     Exit;
   end;
 
@@ -359,17 +392,18 @@ procedure TfrmRelatorioTotalizarEstoque.subtrai_estoque_reservado;
 var condicoes :String;
 begin
 
-  if frmBuscaProduto2.edtReferencia.Text <> '' then
-    condicoes := ' and i.cod_produto = '+IntToStr(frmBuscaProduto2.CodigoProduto);
+  if BuscaProduto2.edtReferencia.Text <> '' then
+    condicoes := ' and i.cod_produto = '+IntToStr(BuscaProduto2.CodigoProduto);
 
-  if frmBuscaProduto2.edtRefCor.Text <> '' then
-    condicoes := condicoes + ' and cor.codigo = '+IntToStr(frmBuscaProduto2.CodigoCor);
+  if BuscaProduto2.edtRefCor.Text <> '' then
+    condicoes := condicoes + ' and cor.codigo = '+IntToStr(BuscaProduto2.CodigoCor);
 
 
   qryEstoqueReservado.Close;
   qryEstoqueReservado.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,    '+
                                   ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,            '+
-                                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_unica) QTD_unica,                         '+
+                                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_10) QTD_10, sum(ci.qtd_12) QTD_12,        '+
+                                  ' sum(ci.qtd_14) QTD_14, sum(ci.qtd_unica) QTD_unica,                                            '+
                                   ' pro.referencia REFPRODUTO , cor.referencia REFCOR                       from ITENS i           '+
 
                                   ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                                   '+
@@ -444,6 +478,21 @@ begin
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_8.AsInteger;
       end;
 
+      if cdsEstoqueQTD_10.AsInteger > 0 then begin
+        cdsEstoqueQTD_10.AsInteger := cdsEstoqueQTD_10.AsInteger - qryEstoqueReservadoQTD_10.AsInteger;
+        cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_10.AsInteger;
+      end;
+
+      if cdsEstoqueQTD_12.AsInteger > 0 then begin
+        cdsEstoqueQTD_12.AsInteger := cdsEstoqueQTD_8.AsInteger - qryEstoqueReservadoQTD_12.AsInteger;
+        cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_12.AsInteger;
+      end;
+
+      if cdsEstoqueQTD_14.AsInteger > 0 then begin
+        cdsEstoqueQTD_14.AsInteger := cdsEstoqueQTD_14.AsInteger - qryEstoqueReservadoQTD_14.AsInteger;
+        cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_14.AsInteger;
+      end;
+
       if cdsEstoqueQTD_UNICA.AsInteger > 0 then begin
         cdsEstoqueQTD_UNICA.AsInteger := cdsEstoqueQTD_UNICA.AsInteger - qryEstoqueReservadoQTD_UNICA.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_UNICA.AsInteger;
@@ -470,6 +519,9 @@ begin
   RLDBResult13.Visible := RLDBResult13.Value > 0;
   RLDBResult14.Visible := RLDBResult14.Value > 0;
   RLDBResult15.Visible := RLDBResult15.Value > 0;
+  RLDBResult31.Visible := RLDBResult31.Value > 0;
+  RLDBResult32.Visible := RLDBResult32.Value > 0;
+  RLDBResult33.Visible := RLDBResult33.Value > 0;
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
@@ -485,6 +537,9 @@ begin
   RLDBResult24.Visible := RLDBResult24.Value > 0;
   RLDBResult25.Visible := RLDBResult25.Value > 0;
   RLDBResult26.Visible := RLDBResult26.Value > 0;
+  RLDBResult28.Visible := RLDBResult28.Value > 0;
+  RLDBResult29.Visible := RLDBResult29.Value > 0;
+  RLDBResult30.Visible := RLDBResult30.Value > 0;
 end;
 
 end.

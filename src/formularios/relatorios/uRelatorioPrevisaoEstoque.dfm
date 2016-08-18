@@ -2,16 +2,16 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
   Left = 381
   Top = 211
   Caption = 'Relat'#243'rio de previs'#227'o de estoque'
-  ClientHeight = 309
-  ClientWidth = 628
+  ClientHeight = 323
+  ClientWidth = 630
   OnShow = FormShow
-  ExplicitWidth = 644
-  ExplicitHeight = 347
+  ExplicitWidth = 646
+  ExplicitHeight = 361
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
-    Left = 363
-    Top = 261
+    Left = 20
+    Top = 279
     Width = 1123
     Height = 794
     Margins.LeftMargin = 5.000000000000000000
@@ -158,7 +158,7 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           Left = -294
           Top = -180
           Width = 755
-          Height = 204
+          Height = 203
           Brush.Color = 13158600
           Color = clWhite
           DrawKind = dkTriangle
@@ -200,11 +200,11 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
         object RLLabel2: TRLLabel
           Left = 496
           Top = 5
-          Width = 554
+          Width = 564
           Height = 16
           Caption = 
-            'RN          P           M           G           1           2   ' +
-            '        3           4           6           8       UNICA'
+            'RN       P        M        G        1        2        3        4' +
+            '        6        8        10       12       14    UNICA'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -249,9 +249,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           Transparent = False
         end
         object RLDBText9: TRLDBText
-          Left = 477
+          Left = 482
           Top = 5
-          Width = 59
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_RN'
@@ -261,7 +261,7 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText10: TRLDBText
-          Left = 535
+          Left = 524
           Top = 5
           Width = 50
           Height = 16
@@ -273,9 +273,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText11: TRLDBText
-          Left = 644
+          Left = 609
           Top = 5
-          Width = 51
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_G'
@@ -285,9 +285,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText12: TRLDBText
-          Left = 589
+          Left = 567
           Top = 5
-          Width = 52
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_M'
@@ -297,9 +297,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText14: TRLDBText
-          Left = 800
+          Left = 728
           Top = 5
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_3'
@@ -309,9 +309,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText15: TRLDBText
-          Left = 699
+          Left = 651
           Top = 5
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_1'
@@ -321,9 +321,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText16: TRLDBText
-          Left = 749
+          Left = 690
           Top = 5
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_2'
@@ -333,9 +333,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText13: TRLDBText
-          Left = 852
+          Left = 768
           Top = 6
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_4'
@@ -345,9 +345,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText17: TRLDBText
-          Left = 903
+          Left = 807
           Top = 6
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_6'
@@ -357,9 +357,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText18: TRLDBText
-          Left = 953
+          Left = 845
           Top = 6
-          Width = 48
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_8'
@@ -369,12 +369,48 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
           BeforePrint = RLDBText9BeforePrint
         end
         object RLDBText19: TRLDBText
-          Left = 989
+          Left = 1015
           Top = 6
-          Width = 80
+          Width = 50
           Height = 16
           Alignment = taCenter
           DataField = 'DIAS_UNICA'
+          DataSource = dsPrevisao
+          Text = ''
+          Transparent = False
+          BeforePrint = RLDBText9BeforePrint
+        end
+        object RLDBText1: TRLDBText
+          Left = 969
+          Top = 6
+          Width = 56
+          Height = 16
+          Alignment = taCenter
+          DataField = 'DIAS_14'
+          DataSource = dsPrevisao
+          Text = ''
+          Transparent = False
+          BeforePrint = RLDBText9BeforePrint
+        end
+        object RLDBText2: TRLDBText
+          Left = 928
+          Top = 6
+          Width = 56
+          Height = 16
+          Alignment = taCenter
+          DataField = 'DIAS_12'
+          DataSource = dsPrevisao
+          Text = ''
+          Transparent = False
+          BeforePrint = RLDBText9BeforePrint
+        end
+        object RLDBText3: TRLDBText
+          Left = 885
+          Top = 6
+          Width = 56
+          Height = 16
+          Alignment = taCenter
+          DataField = 'DIAS_10'
           DataSource = dsPrevisao
           Text = ''
           Transparent = False
@@ -385,16 +421,18 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
   end
   object Panel1: TPanel
     Left = 0
-    Top = 270
-    Width = 628
+    Top = 284
+    Width = 630
     Height = 39
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 270
+    ExplicitWidth = 628
     DesignSize = (
-      628
+      630
       39)
     object btnImprimir: TSpeedButton
-      Left = 448
+      Left = 450
       Top = 5
       Width = 169
       Height = 30
@@ -469,9 +507,10 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
+      ExplicitLeft = 448
     end
     object SpeedButton1: TSpeedButton
-      Left = 267
+      Left = 269
       Top = 5
       Width = 169
       Height = 30
@@ -545,6 +584,7 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
         9B009B9B9B009B9B9B009B9B9B009B9B9B0086550400784400006C3900006130
         0000562600004F1E00006B3600007B48000085550000804F0000}
       NumGlyphs = 2
+      ExplicitLeft = 267
     end
   end
   object GroupBox1: TGroupBox
@@ -764,7 +804,8 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
         '.dias_3) dias_3, TRUNC(prev.dias_4) dias_4,  '
       
         'TRUNC(prev.dias_6) dias_6, TRUNC(prev.dias_8) dias_8, TRUNC(prev' +
-        '.dias_unica) dias_unica                      '
+        '.dias_10) dias_10, TRUNC(prev.dias_12) dias_12,'
+      'TRUNC(prev.dias_14) dias_14, TRUNC(prev.dias_unica) dias_unica'
       ''
       'from produtos pro'
       ''
@@ -779,10 +820,9 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
         '      ((prev.dias_rn+ prev.dias_p+ prev.dias_m+ prev.dias_g+ pre' +
         'v.dias_1+ prev.dias_2+'
       
-        '       prev.dias_3+ prev.dias_4+ prev.dias_6+ prev.dias_8+ prev.' +
-        'dias_unica) > 0)'
-      'order by cor.descricao'
-      '')
+        '       prev.dias_3+ prev.dias_4+ prev.dias_6+ prev.dias_8+prev.d' +
+        'ias_10+prev.dias_12+prev.dias_14+ prev.dias_unica) > 0)'
+      'order by cor.descricao')
     Left = 8
     Top = 8
     ParamData = <
@@ -907,6 +947,27 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
       AutoGenerateValue = arDefault
       FieldName = 'DIAS_UNICA'
       Origin = 'DIAS_UNICA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryPrevisaoDIAS_10: TLargeintField
+      AutoGenerateValue = arDefault
+      FieldName = 'DIAS_10'
+      Origin = 'DIAS_10'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryPrevisaoDIAS_12: TLargeintField
+      AutoGenerateValue = arDefault
+      FieldName = 'DIAS_12'
+      Origin = 'DIAS_12'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryPrevisaoDIAS_14: TLargeintField
+      AutoGenerateValue = arDefault
+      FieldName = 'DIAS_14'
+      Origin = 'DIAS_14'
       ProviderFlags = []
       ReadOnly = True
     end

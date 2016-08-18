@@ -2,7 +2,7 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
   Left = 351
   Top = 216
   Caption = 'frmScriptsDeAtualizacao'
-  ClientHeight = 232
+  ClientHeight = 295
   ClientWidth = 605
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -5773,6 +5773,1550 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
       'END'
       '^')
     TabOrder = 162
+    WordWrap = False
+  end
+  object versao163: TMemo
+    Left = 537
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable cod_cor_kit integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      'begin'
+      
+        'for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ci.qtd' +
+        '_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3,'
+      
+        '           ci.qtd_4, ci.qtd_6, ci.qtd_8, ci.qtd_unica, pro.kit, ' +
+        'cor.kit'
+      '    from conferencia_itens ci'
+      
+        '      inner join itens i               on ci.codigo_item = i.cod' +
+        'igo'
+      
+        '      inner join pedidos p             on p.codigo = i.cod_pedid' +
+        'o'
+      
+        '      inner join produtos pro          on pro.codigo = i.cod_pro' +
+        'duto'
+      '      inner join cores cor             on cor.codigo = i.cod_cor'
+      '    where (p.codigo = :codped)'
+      '    order by i.cod_produto, i.cod_cor   into'
+      
+        '    :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2,' +
+        ' :q_3, :q_4, :q_6, :q_8, :q_unica, :prokit, :corkit   do'
+      '    begin'
+      '      if (:prokit = '#39'S'#39') then'
+      '      begin'
+      '        for select pk.codigo_produto from produtos_kit pk'
+      '        where pk.codigo_kit = :cod_produto'
+      '          into          :cod_produto_kit        do'
+      '        begin'
+      '          if (:corkit = '#39'S'#39') then'
+      '          begin'
+      '            for select ck.codigo_cor from cores_kit ck'
+      '            where ck.codigo_kit = :cod_cor'
+      '              into'
+      '            :cod_cor_kit             do'
+      
+        '              execute procedure altera_estoque(:cod_produto_kit,' +
+        ' :cod_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4' +
+        ', :q_6, :q_8, :q_unica, :multiplicador);'
+      '          end'
+      '          else'
+      
+        '            execute procedure altera_estoque(:cod_produto_kit, :' +
+        'cod_cor, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6' +
+        ', :q_8, :q_unica, :multiplicador);'
+      '        end'
+      '      end'
+      '      else'
+      
+        '        execute procedure altera_estoque(:cod_produto, :cod_cor,' +
+        ' :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, ' +
+        ':q_unica, :multiplicador);'
+      '    end'
+      'suspend;'
+      'end'
+      '^')
+    TabOrder = 163
+    WordWrap = False
+  end
+  object versao164: TMemo
+    Left = 561
+    Top = 196
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ITENS'
+      'ADD QTD_10 INTEGER'
+      '^'
+      'ALTER TABLE ITENS'
+      'ADD QTD_12 INTEGER'
+      '^'
+      'ALTER TABLE ITENS'
+      'ADD QTD_14 INTEGER'
+      '^'
+      'ALTER TABLE CONFERENCIA_ITENS'
+      'ADD QTD_10 INTEGER'
+      '^'
+      'ALTER TABLE CONFERENCIA_ITENS'
+      'ADD QTD_12 INTEGER'
+      '^'
+      'ALTER TABLE CONFERENCIA_ITENS'
+      'ADD QTD_14 INTEGER'
+      '^')
+    TabOrder = 164
+    WordWrap = False
+  end
+  object versao165: TMemo
+    Left = 9
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE ALTERA_ESTOQUE ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    qtd_rn integer,'
+      '    qtd_p integer,'
+      '    qtd_m integer,'
+      '    qtd_g integer,'
+      '    qtd_1 integer,'
+      '    qtd_2 integer,'
+      '    qtd_3 integer,'
+      '    qtd_4 integer,'
+      '    qtd_6 integer,'
+      '    qtd_8 integer,'
+      '    qtd_10 integer,'
+      '    qtd_12 integer,'
+      '    qtd_14 integer,'
+      '    qtd_unica integer,'
+      '    multiplicador integer)'
+      'as'
+      'begin'
+      
+        '  if (:qtd_rn > 0) then begin   UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_rn * :multiplicador))   where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 1;   end'
+      
+        '  if (:qtd_p > 0) then begin    UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_p * :multiplicador))    where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 2;     end'
+      
+        '  if (:qtd_m > 0) then begin    UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_m * :multiplicador))    where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 3;     end'
+      
+        '  if (:qtd_g > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_g * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 4;     end'
+      
+        '  if (:qtd_1 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_1 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 5;     end'
+      
+        '  if (:qtd_2 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_2 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 6;     end'
+      
+        '  if (:qtd_3 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_3 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 7;     end'
+      
+        '  if (:qtd_4 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_4 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 8 ;     end'
+      
+        '  if (:qtd_6 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_6 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 9;     end'
+      
+        '  if (:qtd_8 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_8 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 10 ;     end'
+      ''
+      '  if (:qtd_10 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_10 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 16 ;     end'
+      '  if (:qtd_12 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_12 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 17 ;     end'
+      '  if (:qtd_14 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_14 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 18 ;     end'
+      '  if (:qtd_unica > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_unica * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 11;     end'
+      'end'#11
+      ''
+      ''
+      ''
+      '^'
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_cor_kit integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      
+        'begin for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ' +
+        'ci.qtd_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3,'
+      
+        'ci.qtd_4, ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qtd_14, c' +
+        'i.qtd_unica, pro.kit, cor.kit     from conferencia_itens ci'
+      
+        'inner join itens i               on ci.codigo_item = i.codigo   ' +
+        '    inner join pedidos p             on p.codigo = i.cod_pedido'
+      
+        'inner join produtos pro          on pro.codigo = i.cod_produto  ' +
+        '     inner join cores cor             on cor.codigo = i.cod_cor'
+      ''
+      'where (p.codigo = :codped)     order by i.cod_produto, i.cod_cor'
+      
+        'into     :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, ' +
+        ':q_2, :q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :pr' +
+        'okit, :corkit   do'
+      'begin'
+      '  if (:prokit = '#39'S'#39') then       begin'
+      '    for select pk.codigo_produto from produtos_kit pk'
+      '    where pk.codigo_kit = :cod_produto'
+      '    into          :cod_produto_kit        do'
+      '    begin           if (:corkit = '#39'S'#39') then'
+      '      begin'
+      '      for select ck.codigo_cor from cores_kit ck'
+      
+        '      where ck.codigo_kit = :cod_cor               into         ' +
+        '    :cod_cor_kit             do'
+      
+        '         execute procedure altera_estoque(:cod_produto_kit, :cod' +
+        '_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_' +
+        '6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '         end'
+      '         else'
+      
+        '          execute procedure altera_estoque(:cod_produto_kit, :co' +
+        'd_cor, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, ' +
+        ':q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '          end'
+      '          end'
+      '          else'
+      
+        '            execute procedure altera_estoque(:cod_produto, :cod_' +
+        'cor, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q' +
+        '_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '          end '
+      ' end'
+      '^')
+    TabOrder = 165
+    WordWrap = False
+  end
+  object versao166: TMemo
+    Left = 32
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE ATUALIZA_ESTOQUE '
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'begin'
+      ''
+      '  for select i.cod_produto, i.cod_cor,'
+      
+        '       sum(i.qtd_rn) RN, sum(i.qtd_p) P, sum(i.qtd_m) M, sum(i.q' +
+        'td_g) G, sum(i.qtd_1) , sum(i.qtd_2) , sum(i.qtd_3),'
+      
+        '       sum(i.qtd_4) , sum(i.qtd_6) , sum(i.qtd_8) , sum(i.qtd_un' +
+        'ica) UNICA  from itens i'
+      ''
+      '    left join pedidos p             on p.codigo = i.cod_pedido'
+      
+        '    left join conferencia_pedido cp on cp.codigo_pedido = p.codi' +
+        'go'
+      
+        '    where not (p.cancelado = '#39'S'#39') and not (cp.codigo is null) an' +
+        'd (cp.fim > '#39'17.02.2015'#39')'
+      '    group by 1, 2'
+      '    order by i.cod_produto, i.cod_cor'
+      '  into'
+      
+        '    :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2,' +
+        ' :q_3, :q_4, :q_6, :q_8, :q_unica'
+      '  do'
+      '  begin'
+      '    if (:q_rn > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_rn)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 1;'
+      '    end'
+      ''
+      '    if (:q_p > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_p)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 2;'
+      '    end'
+      '    if (:q_m > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_m)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 3;'
+      '    end'
+      '    if (:q_g > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_g)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 4;'
+      '    end'
+      '    if (:q_1 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_1)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 5;'
+      '    end'
+      '    if (:q_2 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_2)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 6;'
+      '    end'
+      '    if (:q_3 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_3)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 7;'
+      '    end'
+      '    if (:q_4 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_4)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 8 ;'
+      '    end'
+      '    if (:q_6 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_6)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 9;'
+      '    end'
+      '    if (:q_8 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_8)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 10 ;'
+      '    end'
+      '    if (:q_10 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_10)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 16 ;'
+      '    end'
+      '    if (:q_12 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_12)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 17 ;'
+      '    end'
+      '    if (:q_14 > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_14)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 18 ;'
+      '    end'
+      '    if (:q_unica > 0) then begin'
+      
+        '        UPDATE ESTOQUE est set est.quantidade = (est.quantidade ' +
+        '- :q_unica)'
+      
+        '        where est.codigo_produto = :cod_produto and est.codigo_c' +
+        'or = :cod_cor and est.codigo_tamanho = 11;'
+      '    end'
+      ''
+      '  end'
+      ''
+      '  suspend;'
+      'end'
+      '^'
+      'ALTER PROCEDURE CALCULA_SALDO ('
+      '    codigo_item integer)'
+      'returns ('
+      '    qtd_14 integer,'
+      '    qtd_12 integer,'
+      '    qtd_10 integer,'
+      '    qtd_rn integer,'
+      '    qtd_p integer,'
+      '    qtd_m integer,'
+      '    qtd_g integer,'
+      '    qtd_1 integer,'
+      '    qtd_2 integer,'
+      '    qtd_3 integer,'
+      '    qtd_4 integer,'
+      '    qtd_6 integer,'
+      '    qtd_8 integer,'
+      '    qtd_unica integer)'
+      'as'
+      
+        'begin   for select CAST( (i.qtd_rn - iif(ci.qtd_rn is null, 0, c' +
+        'i.qtd_rn)) as integer) qtd_rn,'
+      
+        '                   CAST( (i.qtd_p - iif(ci.qtd_p is null, 0, ci.' +
+        'qtd_p))  as integer) qtd_p,'
+      
+        '                   CAST( (i.qtd_m - iif(ci.qtd_m is null, 0, ci.' +
+        'qtd_m))  as integer) qtd_m,'
+      
+        '                   CAST( (i.qtd_g - iif(ci.qtd_g is null, 0, ci.' +
+        'qtd_g))  as integer) qtd_g,'
+      
+        '                   CAST( (i.qtd_1 - iif(ci.qtd_1 is null, 0, ci.' +
+        'qtd_1))  as integer) qtd_1,'
+      
+        '                   CAST( (i.qtd_2 - iif(ci.qtd_2 is null, 0, ci.' +
+        'qtd_2))  as integer) qtd_2,'
+      
+        '                   CAST( (i.qtd_3 - iif(ci.qtd_3 is null, 0, ci.' +
+        'qtd_3))  as integer) qtd_3,'
+      
+        '                   CAST( (i.qtd_4 - iif(ci.qtd_4 is null, 0, ci.' +
+        'qtd_4))  as integer) qtd_4,'
+      
+        '                   CAST( (i.qtd_6 - iif(ci.qtd_6 is null, 0, ci.' +
+        'qtd_6))  as integer) qtd_6,'
+      
+        '                   CAST( (i.qtd_8 - iif(ci.qtd_8 is null, 0, ci.' +
+        'qtd_8))  as integer) qtd_8,'
+      
+        '                   CAST( (i.qtd_10 - iif(ci.qtd_10 is null, 0, c' +
+        'i.qtd_10))  as integer) qtd_10,'
+      
+        '                   CAST( (i.qtd_12 - iif(ci.qtd_12 is null, 0, c' +
+        'i.qtd_12))  as integer) qtd_12,'
+      
+        '                   CAST( (i.qtd_14 - iif(ci.qtd_14 is null, 0, c' +
+        'i.qtd_14))  as integer) qtd_12,'
+      
+        '                   CAST( (trunc(i.qtd_unica) - iif(ci.qtd_unica ' +
+        'is null, 0, ci.qtd_unica))  as float) qtd_unica               fr' +
+        'om itens i'
+      '   left join conferencia_itens ci on ci.codigo_item = i.codigo'
+      '   where i.codigo = :codigo_item'
+      
+        '   into :qtd_rn, :qtd_p, :qtd_m, :qtd_g, :qtd_1, :qtd_2,:qtd_3, ' +
+        ':qtd_4, :qtd_6, :qtd_8, :qtd_10, :qtd_12, :qtd_14, :qtd_unica'
+      '   do begin'
+      '   end'
+      '   suspend;'
+      '   end'
+      '^'
+      'ALTER PROCEDURE ESTOQUE_POR_REFERENCIA ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    cor_pai char(1))'
+      'returns ('
+      '    q_14 integer,'
+      '    q_12 integer,'
+      '    q_10 integer,'
+      '    q_rn integer,'
+      '    q_p integer,'
+      '    q_m integer,'
+      '    q_g integer,'
+      '    q_1 integer,'
+      '    q_2 integer,'
+      '    q_3 integer,'
+      '    q_4 integer,'
+      '    q_6 integer,'
+      '    q_8 integer,'
+      '    q_unica integer)'
+      'as'
+      'declare variable quantidade integer;'
+      'declare variable cod_tamanho integer;'
+      
+        'begin   q_rn = 0;   q_p  = 0;   q_m  = 0;   q_g  = 0;    q_1  = ' +
+        '0;    q_2  = 0;    q_3  = 0;'
+      
+        '        q_4  = 0;   q_6  = 0;   q_8  = 0;   q_10  = 0;   q_12  =' +
+        ' 0;   q_14  = 0;   q_unica  = 0;'
+      '    if (:cor_pai = '#39'S'#39') then begin'
+      
+        '      FOR SELECT SUM( CAST(E.QUANTIDADE as INTEGER)) quantidade,' +
+        ' E.CODIGO_TAMANHO FROM ESTOQUE E'
+      
+        '        left join cores cor       on cor.codigo = e.codigo_cor  ' +
+        '   left join cores_filhas cf on cf.codigo_cor_pai = cor.codigo'
+      
+        '        WHERE E.CODIGO_PRODUTO = :cod_produto     AND cf.codigo_' +
+        'cor_pai = :cod_cor     group by 2'
+      '        INTO       :quantidade, :cod_tamanho     DO   BEGIN'
+      ''
+      '        if (:cod_tamanho = 1) then      q_rn    = :quantidade;'
+      
+        '        else if (:cod_tamanho = 2) then      q_p     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 3) then      q_m     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 4) then      q_g     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 5) then      q_1     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 6) then      q_2     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 7) then      q_3     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 8) then      q_4     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 9) then      q_6     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 10) then     q_8     = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 11) then     q_unica = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 16) then     q_10    = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 17) then     q_12    = :quantida' +
+        'de;'
+      
+        '        else if (:cod_tamanho = 18) then     q_14    = :quantida' +
+        'de;'
+      '        END'
+      '        end     else begin'
+      
+        '          FOR SELECT E.QUANTIDADE, E.CODIGO_TAMANHO FROM ESTOQUE' +
+        ' E'
+      
+        '          WHERE E.CODIGO_PRODUTO = :cod_produto        AND E.COD' +
+        'IGO_COR = :cod_cor'
+      '          INTO     :quantidade, :cod_tamanho'
+      '        DO   BEGIN'
+      '          if (:cod_tamanho = 1) then      q_rn    = :quantidade;'
+      
+        '          else if (:cod_tamanho = 2) then      q_p     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 3) then      q_m     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 4) then      q_g     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 5) then      q_1     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 6) then      q_2     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 7) then      q_3     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 8) then      q_4     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 9) then      q_6     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 10) then     q_8     = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 11) then     q_unica = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 16) then     q_10    = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 17) then     q_12    = :quanti' +
+        'dade;'
+      
+        '          else if (:cod_tamanho = 18) then     q_14    = :quanti' +
+        'dade;'
+      '        END   end     suspend;   end'
+      '^')
+    TabOrder = 166
+    WordWrap = False
+  end
+  object versao167: TMemo
+    Left = 57
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE PERCENT_ESTOQUE_DISPONIVEL ('
+      '    codigo_pedido integer)'
+      'returns ('
+      '    q_caixas integer,'
+      '    percent_disponivel numeric(15,2))'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica numeric(15,2);'
+      'declare variable codigo_produto integer;'
+      'declare variable codigo_cor integer;'
+      'declare variable q_estoque numeric(15,2);'
+      'declare variable percent_negativa numeric(15,2);'
+      'declare variable q_negativa numeric(15,2);'
+      'declare variable q_total numeric(15,2);'
+      'declare variable tipo_produto integer;'
+      'declare variable peso numeric(15,2);'
+      'declare variable peso_total numeric(15,2);'
+      'begin'
+      '  q_negativa = 0;'
+      '  q_total    = 0;'
+      '  peso_total = 0;'
+      '  q_caixas   = 0;'
+      '  percent_negativa = 0;'
+      ''
+      
+        '  for select i.qtd_rn, i.qtd_p, i.qtd_m, i.qtd_g, i.qtd_1, i.qtd' +
+        '_2, i.qtd_3, i.qtd_4, i.qtd_6, i.qtd_8, i.qtd_10, i.qtd_12, i.qt' +
+        'd_14, i.qtd_unica,'
+      '  i.cod_produto, i.cod_cor, pro.cod_tipo, pro.peso_liq'
+      '   from itens i'
+      '   left join produtos pro on pro.codigo = i.cod_produto'
+      '   where i.cod_pedido = :codigo_pedido'
+      '  into'
+      
+        '    :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2, :q_3, :q_4, :q_6, :q_8,' +
+        ' :q_10, :q_12, :q_14, :q_unica, :codigo_produto, :codigo_cor, :t' +
+        'ipo_produto, :peso'
+      '  do'
+      '  begin'
+      ''
+      '    if ((:tipo_produto = 2) and (:codigo_cor in (55,66))) then'
+      '      codigo_cor = 0;'
+      ''
+      '    if (:q_rn > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 1 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_rn;'
+      '      peso_total = peso_total + (:q_rn * :peso);'
+      ''
+      '      if (:q_rn > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_rn - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_p > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 2 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_p;'
+      '      peso_total = peso_total + (:q_p * :peso);'
+      ''
+      '      if (:q_p > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_p - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_m > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 3 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_m;'
+      '      peso_total = peso_total + (:q_m * :peso);'
+      ''
+      '      if (:q_m > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_m - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_g > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 4 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_g;'
+      '      peso_total = peso_total + (:q_g * :peso);'
+      ''
+      '      if (:q_g > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_g - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_1 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 5 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_1;'
+      '      peso_total = peso_total + (:q_1 * :peso);'
+      ''
+      '      if (:q_1 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_1 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_2 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 6 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_2;'
+      '      peso_total = peso_total + (:q_2 * :peso);'
+      ''
+      '      if (:q_2 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_2 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_3 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 7 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_3;'
+      '      peso_total = peso_total + (:q_3 * :peso);'
+      ''
+      '      if (:q_3 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_3 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_4 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 8 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_4;'
+      '      peso_total = peso_total + (:q_4 * :peso);'
+      ''
+      '      if (:q_4 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_4 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_6 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 9 AND ((:codigo_co' +
+        'r = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_6;'
+      '      peso_total = peso_total + (:q_6 * :peso);'
+      ''
+      '      if (:q_6 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_6 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_8 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 10 AND ((:codigo_c' +
+        'or = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_8;'
+      '      peso_total = peso_total + (:q_8 * :peso);'
+      ''
+      '      if (:q_8 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_8 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_unica > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 11 AND ((:codigo_c' +
+        'or = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_unica;'
+      '      peso_total = peso_total + (:q_unica * :peso);'
+      ''
+      '      if (:q_unica > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_unica - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_10 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 16 AND ((:codigo_c' +
+        'or = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_10;'
+      '      peso_total = peso_total + (:q_10 * :peso);'
+      ''
+      '      if (:q_10 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_10 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_12 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 17 AND ((:codigo_c' +
+        'or = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_12;'
+      '      peso_total = peso_total + (:q_12 * :peso);'
+      ''
+      '      if (:q_12 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_12 - :q_estoque);'
+      '      end'
+      '    end'
+      ''
+      '    if (:q_14 > 0) then begin'
+      
+        '      SELECT SUM(E.QUANTIDADE) FROM ESTOQUE E WHERE E.codigo_pro' +
+        'duto = :codigo_produto AND E.codigo_tamanho = 18 AND ((:codigo_c' +
+        'or = 0) or (E.codigo_cor = :codigo_cor))'
+      '      into :q_estoque;'
+      ''
+      '      if (:q_estoque is null ) then q_estoque = 0;'
+      ''
+      '      q_total = :q_total + :q_14;'
+      '      peso_total = peso_total + (:q_14 * :peso);'
+      ''
+      '      if (:q_14 > :q_estoque) then begin'
+      '        q_negativa = :q_negativa + (:q_14 - :q_estoque);'
+      '      end'
+      '    end'
+      '  end'
+      ''
+      '  if (:peso_total > 18) then'
+      '    q_caixas = TRUNC(peso_total / 18);'
+      ''
+      '  if (:q_negativa > 0) then'
+      '    percent_negativa = (:q_negativa * 100) / :q_total;'
+      ''
+      '  percent_disponivel = (100 - :percent_negativa);'
+      ''
+      '  suspend;'
+      ''
+      'end'
+      '^'
+      'ALTER PROCEDURE PREVISAO_ESTOQUE ('
+      '    codigo_cor integer,'
+      '    codigo_produto integer,'
+      '    dt_ini date,'
+      '    dt_fim date,'
+      '    inclui_nfaturado char(1))'
+      'returns ('
+      '    dias_14 integer,'
+      '    dias_12 integer,'
+      '    dias_10 integer,'
+      '    data_inicial date,'
+      '    dias_rn numeric(15,4),'
+      '    dias_p numeric(15,4),'
+      '    dias_m numeric(15,4),'
+      '    dias_g numeric(15,4),'
+      '    dias_1 numeric(15,4),'
+      '    dias_2 numeric(15,4),'
+      '    dias_3 numeric(15,4),'
+      '    dias_4 numeric(15,4),'
+      '    dias_6 numeric(15,4),'
+      '    dias_8 numeric(15,4),'
+      '    dias_unica numeric(15,4))'
+      'as'
+      'declare variable mes_inicial integer;'
+      'declare variable codigo_tamanho integer;'
+      'declare variable dias_ativo integer;'
+      'declare variable quantidade numeric(15,2);'
+      
+        'begin   for select SUM(it.qtd_rn), SUM(it.qtd_p), SUM(it.qtd_m),' +
+        ' SUM(it.qtd_g), SUM(it.qtd_1), SUM(it.qtd_2), SUM(it.qtd_3),'
+      
+        '                   SUM(it.qtd_4), SUM(it.qtd_6), SUM(it.qtd_8), ' +
+        'SUM(it.qtd_unica), SUM(it.qtd_10), SUM(it.qtd_12), SUM(it.qtd_14' +
+        '),  MIN(ped.dt_cadastro)'
+      
+        '  from itens it        left join pedidos  ped on ped.codigo = it' +
+        '.cod_pedido'
+      
+        '  left join pedidos_faturados pf on pf.codigo_pedido = ped.codig' +
+        'o'
+      
+        '  left join notas_fiscais nf on nf.codigo = pf.codigo_nota_fisca' +
+        'l'
+      
+        '  where it.cod_produto = :codigo_produto and it.cod_cor = :codig' +
+        'o_cor and'
+      
+        '       ( (not (pf.codigo is null) or (ped.despachado = '#39'S'#39') ) or' +
+        ' ('#39'S'#39' = :inclui_nfaturado)  )'
+      
+        '       and not (ped.cancelado = '#39'S'#39') and ped.dt_cadastro between' +
+        ' :dt_ini and :dt_fim'
+      
+        '  into     :dias_rn, :dias_p, :dias_m, :dias_g, :dias_1, :dias_2' +
+        ', :dias_3, :dias_4, :dias_6, :dias_8, :dias_unica, :dias_10, :di' +
+        'as_12, :dias_14, :data_inicial   do'
+      '  begin'
+      '    dias_ativo = dt_fim - dt_ini;'
+      '  for select e.codigo_tamanho, e.quantidade from estoque e'
+      
+        '      where e.codigo_produto = :codigo_produto and e.codigo_cor ' +
+        '= :codigo_cor      into      :codigo_tamanho, :quantidade      d' +
+        'o'
+      '  begin'
+      '    if (:codigo_tamanho = 1) then begin'
+      '      if (dias_rn = 0) then           dias_rn = 999999;'
+      '      else begin             dias_rn = dias_rn / dias_ativo;'
+      '      dias_rn = :quantidade / dias_rn;'
+      '      end'
+      '    end'
+      '    else if (:codigo_tamanho = 2) then begin'
+      '      if (dias_p = 0) then           dias_p = 999999;'
+      '      else begin'
+      '        dias_p  = dias_p  / dias_ativo;'
+      '        dias_p = :quantidade / dias_p;'
+      '      end'
+      '    end'
+      '    else if (:codigo_tamanho = 3) then begin'
+      '      if (dias_m = 0) then'
+      '        dias_m = 999999;'
+      '      else begin'
+      '        dias_m = dias_m  / dias_ativo;'
+      '        dias_m = :quantidade / dias_m;'
+      '      end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 4) then begin         if (dias_g ' +
+        '= 0) then           dias_g = 999999;         else begin'
+      
+        '    dias_g  = dias_g  / dias_ativo;             dias_g = :quanti' +
+        'dade / dias_g;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 5) then begin         if (dias_1 ' +
+        '= 0) then           dias_1 = 999999;         else begin'
+      
+        '    dias_1  = dias_1  / dias_ativo;             dias_1 = :quanti' +
+        'dade / dias_1;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 6) then begin         if (dias_2 ' +
+        '= 0) then           dias_2 = 999999;         else begin'
+      
+        '    dias_2  = dias_2  / dias_ativo;             dias_2 = :quanti' +
+        'dade / dias_2;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 7) then begin         if (dias_3 ' +
+        '= 0) then           dias_3 = 999999;         else begin'
+      
+        '    dias_3  = dias_3  / dias_ativo;             dias_3 = :quanti' +
+        'dade / dias_3;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 8) then begin         if (dias_4 ' +
+        '= 0) then           dias_4 = 999999;         else begin'
+      
+        '    dias_4  = dias_4  / dias_ativo;             dias_4 = :quanti' +
+        'dade / dias_4;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 9) then begin         if (dias_6 ' +
+        '= 0) then           dias_6 = 999999;         else begin'
+      
+        '    dias_6  = dias_6  / dias_ativo;             dias_6 = :quanti' +
+        'dade / dias_6;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 10) then begin         if (dias_8' +
+        ' = 0) then           dias_8 = 999999;         else begin'
+      
+        '    dias_8  = dias_8  / dias_ativo;             dias_8 = :quanti' +
+        'dade / dias_8;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 11) then begin         if (dias_u' +
+        'nica = 0) then           dias_unica = 999999;          else begi' +
+        'n'
+      
+        '    dias_unica  = dias_unica  / dias_ativo;             dias_uni' +
+        'ca = :quantidade / dias_unica;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 16) then begin         if (dias_1' +
+        '0 = 0) then           dias_10 = 999999;         else begin'
+      
+        '    dias_10  = dias_10  / dias_ativo;             dias_10 = :qua' +
+        'ntidade / dias_10;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 17) then begin         if (dias_1' +
+        '2 = 0) then           dias_12 = 999999;         else begin'
+      
+        '    dias_12  = dias_12  / dias_ativo;             dias_12 = :qua' +
+        'ntidade / dias_12;         end'
+      '    end'
+      
+        '    else if (:codigo_tamanho = 18) then begin         if (dias_1' +
+        '4 = 0) then           dias_14 = 999999;         else begin'
+      
+        '    dias_14  = dias_14  / dias_ativo;             dias_14 = :qua' +
+        'ntidade / dias_14;         end'
+      '    end'
+      '  end'
+      'end'
+      'suspend;'
+      'end'
+      '^'
+      'ALTER PROCEDURE PROC_ESTOQUE ('
+      '    cod_pro integer,'
+      '    cod_cor integer)'
+      'returns ('
+      '    est_14 numeric(15,2),'
+      '    est_12 numeric(15,2),'
+      '    est_10 numeric(15,2),'
+      '    est_rn numeric(15,2),'
+      '    est_p numeric(15,2),'
+      '    est_m numeric(15,2),'
+      '    est_g numeric(15,2),'
+      '    est_1 numeric(15,2),'
+      '    est_2 numeric(15,2),'
+      '    est_3 numeric(15,2),'
+      '    est_4 numeric(15,2),'
+      '    est_6 numeric(15,2),'
+      '    est_8 numeric(15,2),'
+      '    est_unica numeric(15,2))'
+      'as'
+      'declare variable cod_tam integer;'
+      'declare variable quantidade numeric(15,2);'
+      'begin'
+      '      est_rn = 0;'
+      '      est_p = 0;'
+      '      est_m = 0;'
+      '      est_g = 0;'
+      '      est_1 = 0;'
+      '      est_2 = 0;'
+      '      est_3 = 0;'
+      '      est_4 = 0;'
+      '      est_6 = 0;'
+      '      est_8 = 0;'
+      '      est_10 = 0;'
+      '      est_12 = 0;'
+      '      est_14 = 0;'
+      '      est_unica = 0;'
+      ''
+      '  for select e.codigo_tamanho, e.quantidade from estoque e'
+      
+        '      where e.codigo_produto = :cod_pro and e.codigo_cor = :cod_' +
+        'cor'
+      '  into'
+      '    :cod_tam, :quantidade'
+      '  do'
+      '  begin'
+      ''
+      '         if (:cod_tam = 1) then'
+      '      est_rn = :quantidade;'
+      '    else if (:cod_tam = 2) then'
+      '      est_p = :quantidade;'
+      '    else if (:cod_tam = 3) then'
+      '      est_m = :quantidade;'
+      '    else if (:cod_tam = 4) then'
+      '      est_g = :quantidade;'
+      '    else if (:cod_tam = 5) then'
+      '      est_1 = :quantidade;'
+      '    else if (:cod_tam = 6) then'
+      '      est_2 = :quantidade;'
+      '    else if (:cod_tam = 7) then'
+      '      est_3 = :quantidade;'
+      '    else if (:cod_tam = 8) then'
+      '      est_4 = :quantidade;'
+      '    else if (:cod_tam = 9) then'
+      '      est_6 = :quantidade;'
+      '    else if (:cod_tam = 10) then'
+      '      est_8 = :quantidade;'
+      '    else if (:cod_tam = 16) then'
+      '      est_10 = :quantidade;'
+      '    else if (:cod_tam = 17) then'
+      '      est_12 = :quantidade;'
+      '    else if (:cod_tam = 18) then'
+      '      est_14 = :quantidade;'
+      '    else if (:cod_tam = 11) then'
+      '      est_unica = :quantidade;'
+      ''
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 167
+    WordWrap = False
+  end
+  object versao168: TMemo
+    Left = 81
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CAIXAS'
+      'ADD QTD_10 INTEGER'
+      '^'
+      'ALTER TABLE CAIXAS'
+      'ADD QTD_12 INTEGER'
+      '^'
+      'ALTER TABLE CAIXAS'
+      'ADD QTD_14 INTEGER'
+      '^')
+    TabOrder = 168
+    WordWrap = False
+  end
+  object versao169: TMemo
+    Left = 105
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PRODUTOS_KIT'
+      'ADD CODIGO_COR INTEGER'
+      '^'
+      'alter table PRODUTOS_KIT'
+      'add constraint FK_PRODUTOS_KIT_3'
+      'foreign key (CODIGO_COR)'
+      'references CORES(CODIGO)'
+      '^'
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_cor_kit integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      
+        'begin for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ' +
+        'ci.qtd_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3, ci.qtd_4,'
+      
+        '                 ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qt' +
+        'd_14, ci.qtd_unica, pro.kit, cor.kit'
+      '  from conferencia_itens ci'
+      '  inner join itens i        on ci.codigo_item = i.codigo'
+      '  inner join pedidos p      on p.codigo = i.cod_pedido'
+      '  inner join produtos pro   on pro.codigo = i.cod_produto'
+      '  inner join cores cor      on cor.codigo = i.cod_cor'
+      ''
+      '  where (p.codigo = :codped)'
+      ''
+      '  order by i.cod_produto, i.cod_cor'
+      '  into'
+      
+        '  :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2, :' +
+        'q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :prokit, :' +
+        'corkit'
+      '  do begin'
+      '    if (:prokit = '#39'S'#39') then'
+      '    begin'
+      
+        '      for select pk.codigo_produto, pk.codigo_cor from produtos_' +
+        'kit pk'
+      '        where pk.codigo_kit = :cod_produto'
+      '      into'
+      '        :cod_produto_kit, :cod_cor_kit do'
+      '      begin'
+      
+        '         execute procedure altera_estoque(:cod_produto_kit, :cod' +
+        '_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_' +
+        '6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '      end'
+      ''
+      '    end'
+      '    else'
+      
+        '      execute procedure altera_estoque(:cod_produto, :cod_cor, :' +
+        'q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, :q' +
+        '_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '  end'
+      'end'
+      '^')
+    TabOrder = 169
+    WordWrap = False
+  end
+  object versao170: TMemo
+    Left = 129
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE ALTERA_ESTOQUE ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    qtd_rn integer,'
+      '    qtd_p integer,'
+      '    qtd_m integer,'
+      '    qtd_g integer,'
+      '    qtd_1 integer,'
+      '    qtd_2 integer,'
+      '    qtd_3 integer,'
+      '    qtd_4 integer,'
+      '    qtd_6 integer,'
+      '    qtd_8 integer,'
+      '    qtd_10 integer,'
+      '    qtd_12 integer,'
+      '    qtd_14 integer,'
+      '    qtd_unica integer,'
+      '    multiplicador integer)'
+      'as'
+      'begin'
+      
+        '  if (:qtd_rn > 0) then begin   UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_rn * :multiplicador))   where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 1;   end'
+      
+        '  if (:qtd_p > 0) then begin    UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_p * :multiplicador))    where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 2;     end'
+      
+        '  if (:qtd_m > 0) then begin    UPDATE ESTOQUE est set est.quant' +
+        'idade = (est.quantidade + (:qtd_m * :multiplicador))    where es' +
+        't.codigo_produto = :cod_produto and est.codigo_cor = :cod_cor an' +
+        'd est.codigo_tamanho = 3;     end'
+      
+        '  if (:qtd_g > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_g * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 4;     end'
+      
+        '  if (:qtd_1 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_1 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 5;     end'
+      
+        '  if (:qtd_2 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_2 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 6;     end'
+      
+        '  if (:qtd_3 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_3 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 7;     end'
+      
+        '  if (:qtd_4 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_4 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 8 ;     end'
+      
+        '  if (:qtd_6 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_6 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 9;     end'
+      
+        '  if (:qtd_8 > 0) then begin       UPDATE ESTOQUE est set est.qu' +
+        'antidade = (est.quantidade + (:qtd_8 * :multiplicador))       wh' +
+        'ere est.codigo_produto = :cod_produto and est.codigo_cor = :cod_' +
+        'cor and est.codigo_tamanho = 10 ;     end'
+      ''
+      '  if (:qtd_10 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_10 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 16 ;     end'
+      '  if (:qtd_12 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_12 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 17 ;     end'
+      '  if (:qtd_14 > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_14 * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 18 ;     end'
+      '  if (:qtd_unica > 0) then begin'
+      
+        '     UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (' +
+        ':qtd_unica * :multiplicador))'
+      
+        '     where est.codigo_produto = :cod_produto and est.codigo_cor ' +
+        '= :cod_cor and est.codigo_tamanho = 11;'
+      '  end'
+      '  suspend;'
+      'end'
+      '^'
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      'declare variable cod_cor_kit integer;'
+      
+        'begin for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ' +
+        'ci.qtd_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3, ci.qtd_4,'
+      
+        '                 ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qt' +
+        'd_14, ci.qtd_unica, pro.kit, cor.kit'
+      '  from conferencia_itens ci'
+      '  inner join itens i        on ci.codigo_item = i.codigo'
+      '  inner join pedidos p      on p.codigo = i.cod_pedido'
+      '  inner join produtos pro   on pro.codigo = i.cod_produto'
+      '  inner join cores cor      on cor.codigo = i.cod_cor'
+      ''
+      '  where (p.codigo = :codped)'
+      ''
+      '  order by i.cod_produto, i.cod_cor'
+      '  into'
+      
+        '  :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2, :' +
+        'q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :prokit, :' +
+        'corkit'
+      '  do begin'
+      '    if (:prokit = '#39'S'#39') then'
+      '    begin'
+      
+        '      for select ck.codigo_cor from cores_kit ck   where ck.codi' +
+        'go_kit = :cod_cor'
+      '      into'
+      '        :cod_cor_kit do'
+      '      begin'
+      '        for select pk.codigo_produto from produtos_kit pk'
+      
+        '         where pk.codigo_kit = :cod_produto and pk.codigo_cor = ' +
+        ':cod_cor_kit'
+      '        into'
+      '          :cod_produto_kit do'
+      '        begin'
+      
+        '          execute procedure altera_estoque(:cod_produto_kit, :co' +
+        'd_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q' +
+        '_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '        end'
+      '      end'
+      ''
+      '    end'
+      '    else'
+      
+        '      execute procedure altera_estoque(:cod_produto, :cod_cor, :' +
+        'q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, :q' +
+        '_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '  end'
+      'end'
+      '^')
+    TabOrder = 170
+    WordWrap = False
+  end
+  object versao171: TMemo
+    Left = 153
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PRODUTOS'
+      'ADD DESC_TIPO_COR VARCHAR(30)'
+      '^')
+    TabOrder = 171
     WordWrap = False
   end
 end

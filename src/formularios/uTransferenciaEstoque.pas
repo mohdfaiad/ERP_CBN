@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.StdCtrls, Vcl.Mask,
   RxToolEdit, RxCurrEdit, Vcl.ExtCtrls, frameBuscaCor, frameBuscaProduto,
-  Vcl.Buttons, Grade;
+  Vcl.Buttons, Grade, System.StrUtils;
 
 type
   TfrmTransferenciaEstoque = class(TfrmPadrao)
@@ -138,7 +138,7 @@ end;
 procedure TfrmTransferenciaEstoque.BuscaCor1Enter(Sender: TObject);
 begin
   BuscaCor1.FiltroProduto := BuscaProduto1.codproduto;
-  BuscaCor1.FiltroKit     := BuscaProduto1.Kit;
+  BuscaCor1.ApareceKits   := IfThen(BuscaProduto1.Kit,'S','N');
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaCor1Exit(Sender: TObject);
@@ -160,7 +160,7 @@ end;
 procedure TfrmTransferenciaEstoque.BuscaCor2Enter(Sender: TObject);
 begin
   BuscaCor2.FiltroProduto := BuscaProduto2.codproduto;
-  BuscaCor2.FiltroKit     := BuscaProduto2.Kit;
+  BuscaCor2.ApareceKits   := IfThen(BuscaProduto2.Kit,'S','N');
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaProduto1edtDescricaoChange(

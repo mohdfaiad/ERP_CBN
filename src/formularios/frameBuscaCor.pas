@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls, Buttons, Mask, RxToolEdit, RxCurrEdit, ObjetoGenerico,
-  ExtCtrls;
+  ExtCtrls, System.StrUtils;
 
 type
   TBuscaCor = class(TFrame)
@@ -27,8 +27,8 @@ type
     FFiltroTipo :String;
     FFiltroProduto: String;
     Ftipo: String;
-    FFiltroKit: Boolean;
     FTamanho: String;
+    FApareceKits: String;
 
     procedure buscaCor(codigo:String);
     procedure SetcodCor(const Value: String);
@@ -49,8 +49,7 @@ type
     property tamanho          :String write FTamanho;
     property FiltroTipo       :String read FFiltroTipo write SetFiltroTipo;
     property FiltroProduto    :String read FFiltroProduto write SetFiltroProduto;
-    property FiltroKit        :Boolean read FFiltroKit write FFiltroKit;
-
+    property ApareceKits      :String read FApareceKits write FApareceKits;
 
   end;
 
@@ -81,8 +80,11 @@ begin
   end;
 
 
-  if FFiltroKit then
-    condicao := condicao + ' and c.kit = ''S'' ';
+  if FApareceKits = 'S' then
+    condicao := condicao + IfThen(condicao <> '',' and ', ' where ')+' c.kit = ''S'' '
+  else if FApareceKits = 'N' then
+    condicao := condicao + IfThen(condicao <> '',' and ', ' where ')+' ((c.kit = ''N'') or (c.kit is null)) ';
+
 
   frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select c.referencia, c.descricao '+campoEstoque+', c.codigo from cores c '+
                                                         ' left join produto_cores pc  on pc.codcor = c.codigo    '+
@@ -109,8 +111,10 @@ begin
        if (self.FFiltroTipo <> '')    then  condicao := ' and c.tipo = '''+self.FFiltroTipo+''' '
   else if (self.FFiltroProduto <> '') then  condicao := ' and pc.codproduto = '''+self.FFiltroProduto+''' ';
 
-  if FFiltroKit then
-    condicao := condicao + ' and c.kit = ''S'' ';
+  if FApareceKits = 'S' then
+    condicao := condicao + ' and c.kit = ''S'' '
+  else if FApareceKits = 'N' then
+    condicao := condicao + ' and ((c.kit = ''N'') or (c.kit is null))  ';
     
   if cor = nil then
     cor := TObjetoGenerico.Create;

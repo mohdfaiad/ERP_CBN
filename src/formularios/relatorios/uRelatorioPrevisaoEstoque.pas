@@ -79,6 +79,12 @@ type
     qryPrevisaoDIAS_6: TLargeintField;
     qryPrevisaoDIAS_8: TLargeintField;
     qryPrevisaoDIAS_UNICA: TLargeintField;
+    RLDBText1: TRLDBText;
+    RLDBText2: TRLDBText;
+    RLDBText3: TRLDBText;
+    qryPrevisaoDIAS_10: TLargeintField;
+    qryPrevisaoDIAS_12: TLargeintField;
+    qryPrevisaoDIAS_14: TLargeintField;
     procedure btnImprimirClick(Sender: TObject);
     procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure dtpInicioChange(Sender: TObject);
@@ -156,9 +162,10 @@ begin
   condicao_pedido := IfThen(chkNF.Checked, '''S''', '''N''');
 
   Result := 'Select pro.codigo codpro, pro.referencia refpro, pro.descricao produto, cor.referencia refcor, cor.descricao cor, prev.data_inicial, '+
-            ' TRUNC(prev.dias_rn) dias_rn, TRUNC(prev.dias_p) dias_p, TRUNC(prev.dias_m) dias_m, TRUNC(prev.dias_g) dias_g, '+
-            ' TRUNC(prev.dias_1) dias_1, TRUNC(prev.dias_2) dias_2, TRUNC(prev.dias_3) dias_3, TRUNC(prev.dias_4) dias_4,   '+
-            ' TRUNC(prev.dias_6) dias_6, TRUNC(prev.dias_8) dias_8, TRUNC(prev.dias_unica) dias_unica                       '+
+            ' TRUNC(prev.dias_rn) dias_rn, TRUNC(prev.dias_p) dias_p, TRUNC(prev.dias_m) dias_m, TRUNC(prev.dias_g) dias_g,   '+
+            ' TRUNC(prev.dias_1) dias_1, TRUNC(prev.dias_2) dias_2, TRUNC(prev.dias_3) dias_3, TRUNC(prev.dias_4) dias_4,     '+
+            ' TRUNC(prev.dias_6) dias_6, TRUNC(prev.dias_8) dias_8, TRUNC(prev.dias_10) dias_10, TRUNC(prev.dias_12) dias_12, '+
+            ' TRUNC(prev.dias_14) dias_14, TRUNC(prev.dias_unica) dias_unica                                                  '+
 
             ' from produtos pro                                                                                        '+
 
@@ -168,7 +175,7 @@ begin
 
             ' where pro.codigo = :cod_pro and                                                                          '+
             '       ((prev.dias_rn+ prev.dias_p+ prev.dias_m+ prev.dias_g+ prev.dias_1+ prev.dias_2+                   '+
-            '        prev.dias_3+ prev.dias_4+ prev.dias_6+ prev.dias_8+ prev.dias_unica) > 0)                         '+
+            '        prev.dias_3+ prev.dias_4+ prev.dias_6+ prev.dias_8+prev.dias_10+prev.dias_12+prev.dias_14+ prev.dias_unica) > 0)                         '+
             condicao_inclui_cores +
             IfThen(rgpOrdem.itemIndex = 0, ' order by cor.referencia ', ' order by cor.descricao ');
 end;

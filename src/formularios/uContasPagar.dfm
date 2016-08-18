@@ -14,7 +14,7 @@ inherited frmContasPagar: TfrmContasPagar
     Top = 562
     Width = 998
     ExplicitTop = 562
-    ExplicitWidth = 792
+    ExplicitWidth = 998
     object btnCancelaConta: TSpeedButton [2]
       Left = 654
       Top = 6
@@ -97,10 +97,10 @@ inherited frmContasPagar: TfrmContasPagar
     Width = 998
     Height = 562
     ActivePage = tsConsulta
-    ExplicitWidth = 792
+    ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
-      ExplicitWidth = 784
+      ExplicitWidth = 990
       ExplicitHeight = 534
       DesignSize = (
         990
@@ -210,7 +210,6 @@ inherited frmContasPagar: TfrmContasPagar
         Top = 517
         Width = 990
         ExplicitTop = 517
-        ExplicitWidth = 784
       end
       object gpbPeriodo: TGroupBox
         Left = 184
@@ -618,12 +617,12 @@ inherited frmContasPagar: TfrmContasPagar
       Enabled = False
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 784
+      ExplicitWidth = 990
       ExplicitHeight = 534
       inherited pnlDados: TPanel
         Width = 990
         Height = 534
-        ExplicitWidth = 784
+        ExplicitWidth = 990
         ExplicitHeight = 534
         inherited lblCamposObrigatorios: TLabel
           Visible = False
@@ -639,7 +638,6 @@ inherited frmContasPagar: TfrmContasPagar
           Align = alTop
           Caption = ' Dados da Nota '
           TabOrder = 0
-          ExplicitWidth = 782
           object Label2: TLabel
             Left = 302
             Top = 24
@@ -841,7 +839,6 @@ inherited frmContasPagar: TfrmContasPagar
           Align = alBottom
           Caption = ' Itens da Nota '
           TabOrder = 1
-          ExplicitWidth = 782
           object Label6: TLabel
             Left = 515
             Top = 19
@@ -1093,7 +1090,6 @@ inherited frmContasPagar: TfrmContasPagar
           Align = alTop
           Caption = ' '
           TabOrder = 2
-          ExplicitWidth = 782
           object Shape2: TShape
             Left = 174
             Top = 7
@@ -1173,7 +1169,6 @@ inherited frmContasPagar: TfrmContasPagar
     object TabSheet1: TTabSheet
       Caption = 'Parcelas'
       ImageIndex = 2
-      ExplicitWidth = 784
       object pnlParcelas: TPanel
         Left = 0
         Top = 0
@@ -1181,7 +1176,6 @@ inherited frmContasPagar: TfrmContasPagar
         Height = 534
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 784
         object lbParcelas: TLabel
           Left = 170
           Top = 14

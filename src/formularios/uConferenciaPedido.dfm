@@ -3191,22 +3191,18 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Top = 111
     Width = 1084
     Height = 422
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 2
     TabStop = False
     object TabSheet1: TTabSheet
       Caption = 'Itens '#224' conferir'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1076
         394)
       object gridItens: TDBGridCBN
-        Left = 6
-        Top = 5
+        Left = 9
+        Top = 3
         Width = 1064
         Height = 311
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -3294,12 +3290,22 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           item
             Expanded = False
             FieldName = 'REFPRO'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Calibri'
+            Font.Style = []
             Width = 80
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'PRODUTO'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Calibri'
+            Font.Style = []
             Width = 231
             Visible = True
           end
@@ -3311,6 +3317,11 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           item
             Expanded = False
             FieldName = 'COR'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Calibri'
+            Font.Style = []
             Width = 165
             Visible = True
           end
@@ -3323,143 +3334,182 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
             Expanded = False
             FieldName = 'QTD_RN'
             Title.Caption = 'RN'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_RN_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_P'
             Title.Caption = 'P'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_P_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_M'
             Title.Caption = 'M'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_M_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_G'
             Title.Caption = 'G'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_G_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_1'
             Title.Caption = '1'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_1_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_2'
             Title.Caption = '2'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_2_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_3'
             Title.Caption = '3'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_3_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_4'
             Title.Caption = '4'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_4_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_6'
             Title.Caption = '6'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_6_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_8'
             Title.Caption = '8'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_8_O'
-            Width = 30
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_10'
+            Title.Caption = '10'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_10_O'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_12'
+            Title.Caption = '12'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_12_O'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_14'
+            Title.Caption = '14'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_14_O'
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_UNICA'
             Title.Caption = 'UNICA'
-            Width = 40
+            Width = 38
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_UNICA_O'
-            Width = 37
+            Width = 38
             Visible = True
           end
           item
@@ -3496,6 +3546,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Align = alBottom
           Brush.Color = 14079702
           Pen.Style = psClear
+          ExplicitLeft = -8
         end
         object Shape2: TShape
           Left = -5
@@ -3567,166 +3618,166 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object Label12: TLabel
-          Left = 955
+          Left = 984
           Top = 4
-          Width = 48
+          Width = 44
           Height = 15
           Anchors = [akTop, akRight]
           Caption = #218'NICA >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label15: TLabel
-          Left = 873
+          Left = 695
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '8 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label18: TLabel
-          Left = 791
+          Left = 629
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '6 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label19: TLabel
-          Left = 709
+          Left = 563
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '4 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label20: TLabel
-          Left = 627
+          Left = 497
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '3 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label21: TLabel
-          Left = 546
+          Left = 432
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '2 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label22: TLabel
-          Left = 464
+          Left = 366
           Top = 4
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = '1 >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label23: TLabel
-          Left = 379
+          Left = 297
           Top = 4
-          Width = 20
+          Width = 17
           Height = 15
           Anchors = [akTop, akRight]
           Caption = 'G >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label24: TLabel
-          Left = 293
+          Left = 227
           Top = 3
-          Width = 22
+          Width = 20
           Height = 15
           Anchors = [akTop, akRight]
           Caption = 'M >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label25: TLabel
-          Left = 202
+          Left = 160
           Top = 3
-          Width = 18
+          Width = 16
           Height = 15
           Anchors = [akTop, akRight]
           Caption = 'P >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object Label26: TLabel
-          Left = 106
+          Left = 83
           Top = 3
-          Width = 28
+          Width = 25
           Height = 15
           Anchors = [akTop, akRight]
           Caption = 'RN >'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clPurple
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
+          Font.Height = -13
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
@@ -3734,20 +3785,65 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         object Label27: TLabel
           Left = -59
           Top = 0
-          Width = 145
-          Height = 21
+          Width = 118
+          Height = 19
           Anchors = [akTop, akRight]
-          Caption = 'ESTOQUE ATUAL >>'
+          Caption = 'ESTOQUE ATUAL -'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
           Transparent = True
         end
+        object Label32: TLabel
+          Left = 907
+          Top = 4
+          Width = 23
+          Height = 15
+          Anchors = [akTop, akRight]
+          Caption = '14 >'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clPurple
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object Label33: TLabel
+          Left = 835
+          Top = 4
+          Width = 23
+          Height = 15
+          Anchors = [akTop, akRight]
+          Caption = '12 >'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clPurple
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object Label34: TLabel
+          Left = 763
+          Top = 4
+          Width = 23
+          Height = 15
+          Anchors = [akTop, akRight]
+          Caption = '10 >'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clPurple
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
         object pnlinfoPedido: TPanel
-          Left = 14
+          Left = 18
           Top = 27
           Width = 743
           Height = 32
@@ -3882,10 +3978,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           end
         end
         object edtRN: TCurrencyEdit
-          Left = 134
+          Left = 111
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3894,7 +3990,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -3902,10 +3998,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 1
         end
         object edtP: TCurrencyEdit
-          Left = 221
+          Left = 179
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3914,7 +4010,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -3922,10 +4018,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 2
         end
         object edtM: TCurrencyEdit
-          Left = 314
+          Left = 248
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3934,7 +4030,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -3942,10 +4038,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 3
         end
         object edtG: TCurrencyEdit
-          Left = 399
+          Left = 317
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3954,7 +4050,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -3962,10 +4058,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 4
         end
         object edt1: TCurrencyEdit
-          Left = 482
+          Left = 384
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3974,7 +4070,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -3982,10 +4078,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 5
         end
         object edt2: TCurrencyEdit
-          Left = 564
+          Left = 450
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -3994,7 +4090,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -4002,10 +4098,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 6
         end
         object edt3: TCurrencyEdit
-          Left = 645
+          Left = 515
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -4014,7 +4110,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -4022,10 +4118,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 7
         end
         object edt4: TCurrencyEdit
-          Left = 728
+          Left = 582
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -4034,7 +4130,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -4042,10 +4138,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 8
         end
         object edt6: TCurrencyEdit
-          Left = 809
+          Left = 647
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -4054,7 +4150,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -4062,10 +4158,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 9
         end
         object edt8: TCurrencyEdit
-          Left = 891
+          Left = 713
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -4074,7 +4170,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
@@ -4082,10 +4178,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 10
         end
         object edtUnica: TCurrencyEdit
-          Left = 1007
+          Left = 1031
           Top = 2
-          Width = 57
-          Height = 22
+          Width = 45
+          Height = 20
           Alignment = taLeftJustify
           AutoSize = False
           BorderStyle = bsNone
@@ -4094,20 +4190,79 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = 'Calibri'
           Font.Style = [fsBold]
           Anchors = [akTop, akRight]
           ParentFont = False
           ReadOnly = True
           TabOrder = 11
         end
+        object edt14: TCurrencyEdit
+          Left = 933
+          Top = 2
+          Width = 45
+          Height = 20
+          Alignment = taLeftJustify
+          AutoSize = False
+          BorderStyle = bsNone
+          Color = 14079702
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          Anchors = [akTop, akRight]
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 12
+        end
+        object edt12: TCurrencyEdit
+          Left = 859
+          Top = 2
+          Width = 45
+          Height = 20
+          Alignment = taLeftJustify
+          AutoSize = False
+          BorderStyle = bsNone
+          Color = 14079702
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          Anchors = [akTop, akRight]
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 13
+        end
+        object edt10: TCurrencyEdit
+          Left = 788
+          Top = 2
+          Width = 45
+          Height = 20
+          Alignment = taLeftJustify
+          AutoSize = False
+          BorderStyle = bsNone
+          Color = 14079702
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Calibri'
+          Font.Style = [fsBold]
+          Anchors = [akTop, akRight]
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 14
+        end
       end
       object pnlSubstituicao: TPanel
         Left = 0
-        Top = 0
+        Top = 64
         Width = 1076
         Height = 124
-        Align = alTop
         BevelInner = bvLowered
         TabOrder = 2
         Visible = False
@@ -4297,7 +4452,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           OnClick = btnCancelaSubClick
         end
         object lbRN: TLabel
-          Left = 223
+          Left = 159
           Top = 31
           Width = 80
           Height = 17
@@ -4312,7 +4467,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lbP: TLabel
-          Left = 335
+          Left = 268
           Top = 31
           Width = 70
           Height = 17
@@ -4327,7 +4482,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lbM: TLabel
-          Left = 447
+          Left = 377
           Top = 31
           Width = 74
           Height = 17
@@ -4342,7 +4497,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lbG: TLabel
-          Left = 559
+          Left = 486
           Top = 31
           Width = 71
           Height = 17
@@ -4357,8 +4512,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb1: TLabel
-          Left = 223
-          Top = 77
+          Left = 704
+          Top = 31
           Width = 69
           Height = 17
           Anchors = [akTop, akRight]
@@ -4372,8 +4527,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb2: TLabel
-          Left = 335
-          Top = 77
+          Left = 813
+          Top = 31
           Width = 69
           Height = 17
           Anchors = [akTop, akRight]
@@ -4387,7 +4542,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb3: TLabel
-          Left = 447
+          Left = 158
           Top = 77
           Width = 69
           Height = 17
@@ -4402,7 +4557,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb4: TLabel
-          Left = 559
+          Left = 267
           Top = 77
           Width = 69
           Height = 17
@@ -4417,7 +4572,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb6: TLabel
-          Left = 671
+          Left = 376
           Top = 77
           Width = 69
           Height = 17
@@ -4432,7 +4587,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lb8: TLabel
-          Left = 783
+          Left = 485
           Top = 77
           Width = 69
           Height = 17
@@ -4447,15 +4602,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object lbUNICA: TLabel
-          Left = 783
+          Left = 595
           Top = 31
-          Width = 102
-          Height = 17
+          Width = 92
+          Height = 15
           Anchors = [akTop, akRight]
           Caption = 'M'#225'xima - '#218'NICA'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 3618615
-          Font.Height = -13
+          Font.Height = -12
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
@@ -4469,10 +4624,55 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Anchors = [akTop, akRight]
           Pen.Color = 12040119
         end
+        object Label29: TLabel
+          Left = 595
+          Top = 77
+          Width = 76
+          Height = 17
+          Anchors = [akTop, akRight]
+          Caption = 'M'#225'xima - 10'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3618615
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object Label30: TLabel
+          Left = 704
+          Top = 77
+          Width = 76
+          Height = 17
+          Anchors = [akTop, akRight]
+          Caption = 'M'#225'xima - 12'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3618615
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object Label31: TLabel
+          Left = 813
+          Top = 77
+          Width = 76
+          Height = 17
+          Anchors = [akTop, akRight]
+          Caption = 'M'#225'xima - 14'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3618615
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
         object edtSubsRN: TCurrencyEdit
-          Left = 280
-          Top = 48
-          Width = 45
+          Left = 208
+          Top = 49
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 16243669
@@ -4489,9 +4689,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 0
         end
         object edtMaxRN: TCurrencyEdit
-          Left = 224
-          Top = 48
-          Width = 51
+          Left = 159
+          Top = 49
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4510,9 +4710,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 1
         end
         object edtSubsP: TCurrencyEdit
-          Left = 392
+          Left = 317
           Top = 48
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4529,9 +4729,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 2
         end
         object edtMaxP: TCurrencyEdit
-          Left = 336
+          Left = 269
           Top = 48
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4550,9 +4750,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 3
         end
         object edtSubsM: TCurrencyEdit
-          Left = 504
+          Left = 426
           Top = 48
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4569,9 +4769,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 4
         end
         object edtMaxM: TCurrencyEdit
-          Left = 448
+          Left = 378
           Top = 48
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4590,9 +4790,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 5
         end
         object edtSubsG: TCurrencyEdit
-          Left = 616
+          Left = 535
           Top = 48
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4609,9 +4809,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 6
         end
         object edtMaxG: TCurrencyEdit
-          Left = 560
+          Left = 487
           Top = 48
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4630,9 +4830,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 7
         end
         object edtSubs1: TCurrencyEdit
-          Left = 280
-          Top = 94
-          Width = 45
+          Left = 753
+          Top = 48
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4649,9 +4849,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 8
         end
         object edtMax1: TCurrencyEdit
-          Left = 224
-          Top = 94
-          Width = 51
+          Left = 705
+          Top = 48
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4670,9 +4870,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 9
         end
         object edtSubs2: TCurrencyEdit
-          Left = 392
-          Top = 94
-          Width = 45
+          Left = 862
+          Top = 48
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4689,9 +4889,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 10
         end
         object edtMax2: TCurrencyEdit
-          Left = 336
-          Top = 94
-          Width = 51
+          Left = 814
+          Top = 48
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4710,9 +4910,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 11
         end
         object edtSubs3: TCurrencyEdit
-          Left = 504
+          Left = 207
           Top = 94
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4729,9 +4929,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 12
         end
         object edtMax3: TCurrencyEdit
-          Left = 448
+          Left = 159
           Top = 94
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4750,9 +4950,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 13
         end
         object edtSubs4: TCurrencyEdit
-          Left = 616
+          Left = 316
           Top = 94
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4769,9 +4969,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 14
         end
         object edtMax4: TCurrencyEdit
-          Left = 560
+          Left = 268
           Top = 94
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4790,9 +4990,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 15
         end
         object edtSubs6: TCurrencyEdit
-          Left = 728
+          Left = 425
           Top = 94
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4809,9 +5009,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 16
         end
         object edtMax6: TCurrencyEdit
-          Left = 672
+          Left = 377
           Top = 94
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4830,9 +5030,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 17
         end
         object edtSubs8: TCurrencyEdit
-          Left = 840
+          Left = 534
           Top = 94
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4849,9 +5049,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 18
         end
         object edtMax8: TCurrencyEdit
-          Left = 784
+          Left = 486
           Top = 94
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4870,9 +5070,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 19
         end
         object edtSubsUNICA: TCurrencyEdit
-          Left = 840
+          Left = 644
           Top = 48
-          Width = 45
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 15066597
@@ -4889,9 +5089,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           TabOrder = 20
         end
         object edtMaxUNICA: TCurrencyEdit
-          Left = 784
+          Left = 596
           Top = 48
-          Width = 51
+          Width = 40
           Height = 22
           AutoSize = False
           Color = 12369084
@@ -4908,6 +5108,126 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           ParentFont = False
           ReadOnly = True
           TabOrder = 21
+        end
+        object edtSubs10: TCurrencyEdit
+          Left = 644
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 15066597
+          Ctl3D = False
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 22
+        end
+        object edtMax10: TCurrencyEdit
+          Left = 596
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 12369084
+          Ctl3D = False
+          DisplayFormat = '0'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 23
+        end
+        object edtSubs12: TCurrencyEdit
+          Left = 753
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 15066597
+          Ctl3D = False
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 24
+        end
+        object edtMax12: TCurrencyEdit
+          Left = 705
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 12369084
+          Ctl3D = False
+          DisplayFormat = '0'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 25
+        end
+        object edtSubs14: TCurrencyEdit
+          Left = 862
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 15066597
+          Ctl3D = False
+          DisplayFormat = '0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 26
+        end
+        object edtMax14: TCurrencyEdit
+          Left = 814
+          Top = 94
+          Width = 40
+          Height = 22
+          AutoSize = False
+          Color = 12369084
+          Ctl3D = False
+          DisplayFormat = '0'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          Anchors = [akTop, akRight]
+          ParentCtl3D = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 27
         end
       end
       object chkNaoConferidos: TCheckBox
@@ -5039,13 +5359,13 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
             Expanded = False
             FieldName = 'REFPRO'
             Title.Alignment = taCenter
-            Width = 80
+            Width = 73
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'PRODUTO'
-            Width = 227
+            Width = 200
             Visible = True
           end
           item
@@ -5056,7 +5376,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           item
             Expanded = False
             FieldName = 'COR'
-            Width = 163
+            Width = 146
             Visible = True
           end
           item
@@ -5068,143 +5388,182 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
             Expanded = False
             FieldName = 'QTD_RN'
             Title.Caption = 'RN'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_RN_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_P'
             Title.Caption = 'P'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_P_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_M'
             Title.Caption = 'M'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_M_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_G'
             Title.Caption = 'G'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_G_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_1'
             Title.Caption = '1'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_1_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_2'
             Title.Caption = '2'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_2_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_3'
             Title.Caption = '3'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_3_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_4'
             Title.Caption = '4'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_4_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_6'
             Title.Caption = '6'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_6_O'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_8'
             Title.Caption = '8'
-            Width = 30
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_8_O'
-            Width = 30
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_10'
+            Title.Caption = '10'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_10_O'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_12'
+            Title.Caption = '12'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_12_O'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_14'
+            Title.Caption = '14'
+            Width = 28
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QTD_14_O'
+            Width = 28
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_UNICA'
             Title.Caption = 'UNICA'
-            Width = 40
+            Width = 38
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'QTD_UNICA_O'
-            Width = 37
+            Width = 38
             Visible = True
           end>
       end
@@ -5222,9 +5581,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         object Shape1: TShape
           Left = 8
           Top = 14
-          Width = 1719
+          Width = 1062
           Height = 39
-          Anchors = [akLeft]
+          Anchors = [akLeft, akRight]
           Brush.Color = clSilver
           Pen.Style = psClear
           Shape = stRoundRect
@@ -6179,18 +6538,27 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     TabStop = False
     OnClick = btnExcluirClick
   end
+  object Button1: TButton
+    Left = 906
+    Top = 70
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 9
+    OnClick = Button1Click
+  end
   object dsItens: TDataSource
     DataSet = cdsItens
-    Left = 55
-    Top = 178
+    Left = 175
+    Top = 294
   end
   object cdsItensConferidos: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspItensConferidos'
     OnCalcFields = cdsItensConferidosCalcFields
-    Left = 193
-    Top = 154
+    Left = 161
+    Top = 378
     object cdsItensConferidosCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -6248,6 +6616,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensConferidosQTD_8_O: TIntegerField
       FieldName = 'QTD_8_O'
     end
+    object cdsItensConferidosQTD_10_O: TIntegerField
+      FieldName = 'QTD_10_O'
+    end
+    object cdsItensConferidosQTD_12_O: TIntegerField
+      FieldName = 'QTD_12_O'
+    end
+    object cdsItensConferidosQTD_14_O: TIntegerField
+      FieldName = 'QTD_14_O'
+    end
     object cdsItensConferidosQTD_UNICA_O: TBCDField
       FieldName = 'QTD_UNICA_O'
       Precision = 18
@@ -6283,6 +6660,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensConferidosQTD_8: TIntegerField
       FieldName = 'QTD_8'
     end
+    object cdsItensConferidosQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+    end
+    object cdsItensConferidosQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+    end
+    object cdsItensConferidosQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+    end
     object cdsItensConferidosQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
     end
@@ -6299,21 +6685,21 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   end
   object dsItensConferidos: TDataSource
     DataSet = cdsItensConferidos
-    Left = 225
-    Top = 154
+    Left = 207
+    Top = 378
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 40
     OnTimer = Timer1Timer
-    Left = 288
-    Top = 104
+    Left = 992
+    Top = 16
   end
   object cdsCX: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 313
-    Top = 66
+    Left = 337
+    Top = 90
     object cdsCXCODIGO: TIntegerField
       FieldName = 'CODIGO'
     end
@@ -6379,14 +6765,14 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   end
   object dsCX: TDataSource
     DataSet = cdsCX
-    Left = 417
-    Top = 98
+    Left = 377
+    Top = 90
   end
   object cdsSubstitutos: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 729
-    Top = 482
+    Left = 713
+    Top = 385
     object cdsSubstitutosCODIGO_ITEM: TIntegerField
       FieldName = 'CODIGO_ITEM'
     end
@@ -6423,6 +6809,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsSubstitutosTAM_8: TIntegerField
       FieldName = 'TAM_8'
     end
+    object cdsSubstitutosTAM_10: TIntegerField
+      FieldName = 'TAM_10'
+    end
+    object cdsSubstitutosTAM_12: TIntegerField
+      FieldName = 'TAM_12'
+    end
+    object cdsSubstitutosTAM_14: TIntegerField
+      FieldName = 'TAM_14'
+    end
     object cdsSubstitutosTAM_UNICA: TIntegerField
       FieldName = 'TAM_UNICA'
     end
@@ -6443,7 +6838,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Params = <>
     ProviderName = 'dspCaixas'
     Left = 892
-    Top = 480
+    Top = 385
     object cdsCaixasCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -6488,6 +6883,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsCaixasQTD_8: TIntegerField
       FieldName = 'QTD_8'
     end
+    object cdsCaixasQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+    end
+    object cdsCaixasQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+    end
+    object cdsCaixasQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+    end
     object cdsCaixasQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
     end
@@ -6497,17 +6901,17 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   end
   object dsCaixas: TDataSource
     DataSet = cdsCaixas
-    Left = 924
-    Top = 479
+    Left = 932
+    Top = 385
   end
   object dspCaixas: TDataSetProvider
     DataSet = qryCaixas
-    Left = 860
-    Top = 479
+    Left = 852
+    Top = 385
   end
   object PopupMenu1: TPopupMenu
-    Left = 260
-    Top = 255
+    Left = 340
+    Top = 303
     object BuscaCdigodeBarras1: TMenuItem
       Caption = 'Busca C'#243'digo de Barras'
       OnClick = BuscaCdigodeBarras1Click
@@ -6519,9 +6923,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   end
   object ImageList1: TImageList
     Left = 495
-    Top = 289
+    Top = 313
     Bitmap = {
-      494C010104000900580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040009006C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6794,14 +7198,14 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   end
   object dspItens: TDataSetProvider
     DataSet = qryItens
-    Left = 28
-    Top = 215
+    Left = 84
+    Top = 295
   end
   object dspItensConferidos: TDataSetProvider
     DataSet = qryItensConferidos
     Constraints = False
-    Left = 196
-    Top = 191
+    Left = 116
+    Top = 378
   end
   object cdsItens: TClientDataSet
     Aggregates = <>
@@ -6809,8 +7213,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     ProviderName = 'dspItens'
     AfterScroll = cdsItensAfterScroll
     OnCalcFields = cdsItensCalcFields
-    Left = 26
-    Top = 179
+    Left = 130
+    Top = 295
     object cdsItensCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -6888,6 +7292,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensQTD_8_O: TIntegerField
       FieldName = 'QTD_8_O'
     end
+    object cdsItensQTD_10_O: TIntegerField
+      FieldName = 'QTD_10_O'
+    end
+    object cdsItensQTD_12_O: TIntegerField
+      FieldName = 'QTD_12_O'
+    end
+    object cdsItensQTD_14_O: TIntegerField
+      FieldName = 'QTD_14_O'
+    end
     object cdsItensQTD_UNICA_O: TBCDField
       FieldName = 'QTD_UNICA_O'
       Precision = 18
@@ -6923,6 +7336,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensQTD_8: TIntegerField
       FieldName = 'QTD_8'
     end
+    object cdsItensQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+    end
+    object cdsItensQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+    end
+    object cdsItensQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+    end
     object cdsItensQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
     end
@@ -6938,8 +7360,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Enabled = False
     Interval = 250
     OnTimer = Timer3Timer
-    Left = 344
-    Top = 104
+    Left = 1048
+    Top = 16
   end
   object qryItens: TFDQuery
     CachedUpdates = True
@@ -6965,6 +7387,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       '       i.qtd_4 qtd_4_o,'
       '       i.qtd_6 qtd_6_o,'
       '       i.qtd_8 qtd_8_o,'
+      '       i.qtd_10 qtd_10_o,'
+      '       i.qtd_12 qtd_12_o,'
+      '       i.qtd_14 qtd_14_o,'
       '       i.qtd_unica qtd_unica_o,'
       ''
       '      cs.qtd_rn,'
@@ -6977,6 +7402,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       '      cs.qtd_4,'
       '      cs.qtd_6,'
       '      cs.qtd_8,'
+      '      cs.qtd_10,'
+      '      cs.qtd_12,'
+      '      cs.qtd_14,'
       '      cs.qtd_unica,'
       '      pro.tipo C_I'
       ''
@@ -6999,8 +7427,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       ''
       '       where i.cod_pedido = :codpedido'
       '       order by refpro, cor')
-    Left = 24
-    Top = 272
+    Left = 40
+    Top = 295
     ParamData = <
       item
         Name = 'CODPEDIDO'
@@ -7016,8 +7444,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         'left join conferencia_pedido cp on cp.codigo = ci.codigo_confere' +
         'ncia'
       'where cp.codigo_pedido = :codigo')
-    Left = 232
-    Top = 80
+    Left = 298
+    Top = 90
     ParamData = <
       item
         Name = 'CODIGO'
@@ -7032,8 +7460,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         'left join conferencia_pedido cp on cp.codigo = c.codigo_conferen' +
         'cia'
       'where cp.codigo_pedido = :cod_pedido')
-    Left = 824
-    Top = 480
+    Left = 808
+    Top = 385
     ParamData = <
       item
         Name = 'COD_PEDIDO'
@@ -7103,6 +7531,18 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       FieldName = 'QTD_8'
       Origin = 'QTD_8'
     end
+    object qryCaixasQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+      Origin = 'QTD_10'
+    end
+    object qryCaixasQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+      Origin = 'QTD_12'
+    end
+    object qryCaixasQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+      Origin = 'QTD_14'
+    end
     object qryCaixasQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
       Origin = 'QTD_UNICA'
@@ -7138,6 +7578,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       '       i.qtd_4 qtd_4_o,'
       '       i.qtd_6 qtd_6_o,'
       '       i.qtd_8 qtd_8_o,'
+      '       i.qtd_10 qtd_10_o,'
+      '       i.qtd_12 qtd_12_o,'
+      '       i.qtd_14 qtd_14_o,'
       '       i.qtd_unica qtd_unica_o,'
       ''
       '       ci.qtd_rn,'
@@ -7150,6 +7593,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       '       ci.qtd_4,'
       '       ci.qtd_6,'
       '       ci.qtd_8,'
+      '       ci.qtd_10,'
+      '       ci.qtd_12,'
+      '       ci.qtd_14,'
       '       ci.qtd_unica'
       ''
       '       from itens i'
@@ -7173,11 +7619,12 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       '       where i.cod_pedido = :codpedido'
       '       order by refpro, cor'
       '')
-    Left = 197
-    Top = 237
+    Left = 70
+    Top = 378
     ParamData = <
       item
         Name = 'CODPEDIDO'
+        DataType = ftInteger
         ParamType = ptInput
       end>
   end

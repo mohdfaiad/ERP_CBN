@@ -46,16 +46,10 @@ type
     RLDBText15: TRLDBText;
     RLDBText16: TRLDBText;
     RLDBText17: TRLDBText;
-    RLDraw2: TRLDraw;
     RLBand4: TRLBand;
     RLLabel10: TRLLabel;
     RLLabel11: TRLLabel;
     RLLabel12: TRLLabel;
-    RLDraw1: TRLDraw;
-    RLDraw3: TRLDraw;
-    RLDraw4: TRLDraw;
-    RLDraw5: TRLDraw;
-    RLDraw6: TRLDraw;
     lblCliente: TRLLabel;
     lblRepresentante: TRLLabel;
     lblpedido: TRLLabel;
@@ -157,6 +151,20 @@ type
     RLBand9: TRLBand;
     RLLabel4: TRLLabel;
     RLMemo1: TRLMemo;
+    RLDraw14: TRLDraw;
+    RLDraw1: TRLDraw;
+    RLDraw2: TRLDraw;
+    RLDraw3: TRLDraw;
+    RLDraw4: TRLDraw;
+    RLDraw5: TRLDraw;
+    RLDraw6: TRLDraw;
+    RLDraw15: TRLDraw;
+    RLDBText18: TRLDBText;
+    RLDBText19: TRLDBText;
+    RLDBText20: TRLDBText;
+    qryItensQTD_10: TIntegerField;
+    qryItensQTD_12: TIntegerField;
+    qryItensQTD_14: TIntegerField;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLMemo1BeforePrint(Sender: TObject; var Text: String;
@@ -243,6 +251,9 @@ begin
   RLDBText11.Visible := true;
   RLDBText12.Visible := true;
   RLDBText13.Visible := true;
+  RLDBText18.Visible := true;
+  RLDBText19.Visible := true;
+  RLDBText20.Visible := true;
 
   if qryItensQTD_RN.AsInteger    <= 0  then  RLDBText3.Visible := false;
   if qryItensQTD_P.AsInteger     <= 0  then  RLDBText4.Visible := false;
@@ -254,6 +265,9 @@ begin
   if qryItensQTD_4.AsInteger     <= 0  then  RLDBText10.Visible := false;
   if qryItensQTD_6.AsInteger     <= 0  then  RLDBText11.Visible := false;
   if qryItensQTD_8.AsInteger     <= 0  then  RLDBText12.Visible := false;
+  if qryItensQTD_10.AsInteger    <= 0  then  RLDBText18.Visible := false;
+  if qryItensQTD_12.AsInteger    <= 0  then  RLDBText19.Visible := false;
+  if qryItensQTD_14.AsInteger    <= 0  then  RLDBText20.Visible := false;
   if qryItensQTD_UNICA.AsInteger <= 0  then  RLDBText13.Visible := false;
 
 end;

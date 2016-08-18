@@ -70,7 +70,7 @@ type
     Label12: TLabel;
     gridCoresKit: TDBGridCBN;
     BuscaCor2: TBuscaCor;
-    BitBtn2: TBitBtn;
+    btnAddCorKit: TBitBtn;
     dsCoresKit: TDataSource;
     cdsCoresKit: TClientDataSet;
     cdsCoresKitCODIGO: TIntegerField;
@@ -91,13 +91,13 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtReferenciaEnter(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
+    procedure btnAddCorFilha(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridCoresFilhasKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure gridCoresKitKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure BitBtn2Click(Sender: TObject);
+    procedure btnAddCorKitClick(Sender: TObject);
     procedure cbPaiChange(Sender: TObject);
     procedure cmbKitChange(Sender: TObject);
   private
@@ -171,7 +171,7 @@ begin
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
   edtReferencia.SetFocus;
-  cmbKit.Clear;
+  cmbKit.ItemIndex := -1;
 end;
 
 procedure TfrmCadastroCores.btnAlterarClick(Sender: TObject);
@@ -291,7 +291,7 @@ begin
       if cdsCoresFilhasCODIGO.AsInteger > 0 then Break;
 
       CorFilha := TCorFilha.Create;
-      CorFilha.codigo_cor_pai   := cdsCoresFilhasCOD_COR_PAI.AsInteger;
+      CorFilha.codigo_cor_pai   := Cor.codigo;
       CorFilha.codigo_cor_filha := cdsCoresFilhasCOD_COR_FILHA.AsInteger;
 
       rep.Salvar(CorFilha);
@@ -312,7 +312,7 @@ begin
       if cdsCoresKitCODIGO.AsInteger > 0 then Break;
 
       CoresKit := TCoresKit.Create;
-      CoresKit.codigo_kit  := cdsCoresKitCODIGO_KIT.AsInteger;
+      CoresKit.codigo_kit  := Cor.codigo;
       CoresKit.codigo_cor  := cdsCoresKitCODIGO_COR.AsInteger;
 
       rep.Salvar(CoresKit);
@@ -389,11 +389,9 @@ begin
         cdsCoresKitCODIGO_KIT.AsInteger   := TCoresKit(Cor.CoresKit.Items[i]).codigo_kit;
         cdsCoresKitCODIGO_COR.AsInteger   := TCoresKit(Cor.CoresKit.Items[i]).codigo_cor;
         cdsCoresKitREF_COR.AsString       := TCoresKit(Cor.CoresKit.Items[i]).Cor.Referencia;
-        cdsCoresKitDESCRICAO.AsString     := TCoresKit(Cor.CoresKit.Items[i]).Cor.Desc_producao;
+        cdsCoresKitDESCRICAO.AsString     := IfThen(TCoresKit(Cor.CoresKit.Items[i]).Cor.Desc_producao='',TCoresKit(Cor.CoresKit.Items[i]).Cor.Descricao,TCoresKit(Cor.CoresKit.Items[i]).Cor.Desc_producao);
         cdsCoresKit.Post;
       end;
-
-      cmbKit.Enabled := not cdsCoresKit.IsEmpty;
     end;
 
   Finally
@@ -402,7 +400,7 @@ begin
   end;
 end;
 
-procedure TfrmCadastroCores.BitBtn1Click(Sender: TObject);
+procedure TfrmCadastroCores.btnAddCorFilha(Sender: TObject);
 begin
   if verifica_vinculo(BuscaCor1.CodigoCor) then begin
     avisar('Já existe um vínculo criado para esta cor');
@@ -416,7 +414,7 @@ begin
     cdsCoresFilhasDESC_COR_FILHA.AsString := BuscaCor1.edtDescricao.Text;
     cdsCoresFilhas.Post;
 
-    cbPai.Enabled := not cdsCoresFilhas.IsEmpty;
+//    cbPai.Enabled := not cdsCoresFilhas.IsEmpty;
   end;
 
   BuscaCor1.limpa;
@@ -460,7 +458,7 @@ var i :integer;
 begin
   if not assigned( lista ) then exit;
 
-  for i := 0 to CoresFilhasDeletadas.Count - 1 do begin
+  for i := 0 to lista.Count - 1 do begin
     repositorio.RemoverPorIdentificador( StrToInt( lista[i] ) );
   end;
 end;
@@ -489,7 +487,7 @@ begin
   cmbKit.Enabled := not cdsCoresKit.IsEmpty;
 end;
 
-procedure TfrmCadastroCores.BitBtn2Click(Sender: TObject);
+procedure TfrmCadastroCores.btnAddCorKitClick(Sender: TObject);
 begin
   if not cdsCoresKit.Locate('CODIGO_COR', BuscaCor2.edtCodigo.AsInteger, []) then
   begin

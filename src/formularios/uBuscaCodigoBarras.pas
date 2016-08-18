@@ -249,7 +249,7 @@ begin
   for I := 0 to self.FCDS.Fields.Count - 1 do begin
     nomeCampo := self.FCDS.Fields[I].FieldName;
 
-    if AnsiMatchStr(nomeCampo, ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_UNICA']) then begin
+    if AnsiMatchStr(nomeCampo, ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_10','QTD_12','QTD_14','QTD_UNICA']) then begin
       if self.FCDS.FieldByName( nomeCampo ).AsInteger > 0 then begin
         rgTamanhos.Items.Add( copy(nomeCampo, pos('_',nomeCampo)+1, 5) );
       end;

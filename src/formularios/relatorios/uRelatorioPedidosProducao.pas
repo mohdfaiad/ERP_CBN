@@ -217,14 +217,8 @@ type
     RLDBResult14: TRLDBResult;
     RLDBResult15: TRLDBResult;
     RLBand12: TRLBand;
-    RLDraw23: TRLDraw;
-    RLDraw24: TRLDraw;
-    RLDraw25: TRLDraw;
-    RLDraw26: TRLDraw;
-    RLDraw27: TRLDraw;
     RLDBText1: TRLDBText;
     RLDBText31: TRLDBText;
-    RLDraw28: TRLDraw;
     RLDBText16: TRLDBText;
     RLDBText20: TRLDBText;
     RLDBText21: TRLDBText;
@@ -259,6 +253,37 @@ type
     qryItensCOR: TStringField;
     qryItensPRODUTO: TStringField;
     qryItensPEDIDO: TStringField;
+    RLDraw29: TRLDraw;
+    RLDraw23: TRLDraw;
+    RLDraw24: TRLDraw;
+    RLDraw25: TRLDraw;
+    RLDraw26: TRLDraw;
+    RLDraw27: TRLDraw;
+    RLDraw28: TRLDraw;
+    RLDraw30: TRLDraw;
+    RLDBText30: TRLDBText;
+    RLDBText32: TRLDBText;
+    RLDBText35: TRLDBText;
+    cdsItens2SALDO_10: TLargeintField;
+    cdsItens2SALDO_12: TLargeintField;
+    cdsItens2SALDO_14: TLargeintField;
+    qryItensQTD_10: TLargeintField;
+    qryItensQTD_12: TLargeintField;
+    qryItensQTD_14: TLargeintField;
+    RLDBResult27: TRLDBResult;
+    RLDBResult28: TRLDBResult;
+    RLDBResult29: TRLDBResult;
+    cdsItens2TOT_12: TFloatField;
+    cdsItens2TOT_14: TFloatField;
+    cdsItens2TOT_10: TFloatField;
+    RLDBResult30: TRLDBResult;
+    RLDBResult31: TRLDBResult;
+    RLDBResult32: TRLDBResult;
+    RLDraw31: TRLDraw;
+    RLDraw32: TRLDraw;
+    RLDBText36: TRLDBText;
+    RLDBText37: TRLDBText;
+    RLDBText38: TRLDBText;
     procedure btnAddPedidoClick(Sender: TObject);
     procedure btnAddReferenciaClick(Sender: TObject);
     procedure gridPedidosKeyDown(Sender: TObject; var Key: Word;
@@ -514,14 +539,15 @@ begin
   qryItens.Close;
   qryItens.SQL.Text := 'select p.referencia Ref_produto,c.referencia Ref_cor, sum(i.qtd_rn) qtd_rn, sum(i.qtd_p) qtd_p, sum(i.qtd_m) qtd_m,            '+
                        'sum(i.qtd_g) qtd_g, sum(i.qtd_1) qtd_1, sum(i.qtd_2) qtd_2, sum(i.qtd_3) qtd_3, sum(i.qtd_4) qtd_4, sum(i.qtd_6) qtd_6,        '+
-                       'sum(i.qtd_8) qtd_8, sum(i.qtd_unica) qtd_unica, sum(i.qtd_total) qtd_total, sum( (p.qtd_pecas * i.qtd_total) ) pecas,          '+
+                       'sum(i.qtd_8) qtd_8, sum(i.qtd_10) qtd_10, sum(i.qtd_12) qtd_12, sum(i.qtd_14) qtd_14, sum(i.qtd_unica) qtd_unica,              '+
+                       'sum(i.qtd_total) qtd_total, sum( (p.qtd_pecas * i.qtd_total) ) pecas,                                                          '+
                        'iif(c.desc_producao <> '''',(c.desc_producao || '' '' || c.cor),max(c.descricao)) cor, max(p.descricao) produto,               '+
                        'max(ped.numpedido) pedido                                 from itens i                                                         '+
-                       'inner join produtos p           on ( p.codigo   = i.cod_produto )                                                               '+
-                       'inner join cores c              on ( c.codigo   = i.cod_cor     )                                                               '+
-                       'inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )                                                               '+
+                       'inner join produtos p           on ( p.codigo   = i.cod_produto )                                                              '+
+                       'inner join cores c              on ( c.codigo   = i.cod_cor     )                                                              '+
+                       'inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )                                                              '+
                        'left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)                                                              '+
-                       'where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + E + condicaoFaturado                                         +
+                       'where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + E + condicaoFaturado                         +
                        'group by p.referencia, c.desc_producao, c.referencia, c.cor, pf.codigo                                                         '+
                        'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'p.referencia, cor', 'cor, p.referencia') ;
 
@@ -795,6 +821,9 @@ begin
                         '       (sum(i.qtd_4 - iif(not ci.qtd_4 is null,ci.qtd_4,0))- MAX(er.q_4)) saldo_4,             '+
                         '       (sum(i.qtd_6 - iif(not ci.qtd_6 is null,ci.qtd_6,0))- MAX(er.q_6)) saldo_6,             '+
                         '       (sum(i.qtd_8 - iif(not ci.qtd_8 is null,ci.qtd_8,0))- MAX(er.q_8)) saldo_8,             '+
+                        '       (sum(i.qtd_10 - iif(not ci.qtd_10 is null,ci.qtd_10,0))- MAX(er.q_10)) saldo_10,        '+
+                        '       (sum(i.qtd_12 - iif(not ci.qtd_12 is null,ci.qtd_12,0))- MAX(er.q_12)) saldo_12,        '+
+                        '       (sum(i.qtd_14 - iif(not ci.qtd_14 is null,ci.qtd_14,0))- MAX(er.q_14)) saldo_14,        '+
                         '       (sum(trunc(i.qtd_unica - iif(not ci.qtd_unica is null,ci.qtd_unica,0)))- MAX(er.q_unica)) saldo_unica '+
                         '  from itens i                                                                                 '+
                         'left join conferencia_itens  ci  on ci.codigo_item = i.codigo                                  '+
@@ -817,6 +846,9 @@ begin
                         '           (sum(i.qtd_4 - iif(not ci.qtd_4 is null,ci.qtd_4,0))- MAX(er.q_4)) > 0 or            '+
                         '           (sum(i.qtd_6 - iif(not ci.qtd_6 is null,ci.qtd_6,0))- MAX(er.q_6)) > 0 or            '+
                         '           (sum(i.qtd_8 - iif(not ci.qtd_8 is null,ci.qtd_8,0))- MAX(er.q_8)) > 0 or            '+
+                        '           (sum(i.qtd_10 - iif(not ci.qtd_10 is null,ci.qtd_10,0))- MAX(er.q_10)) > 0 or            '+
+                        '           (sum(i.qtd_12 - iif(not ci.qtd_12 is null,ci.qtd_12,0))- MAX(er.q_12)) > 0 or            '+
+                        '           (sum(i.qtd_14 - iif(not ci.qtd_14 is null,ci.qtd_14,0))- MAX(er.q_14)) > 0 or            '+
                         '           (sum(trunc(i.qtd_unica - iif(not ci.qtd_unica is null,ci.qtd_unica,0)))- MAX(er.q_unica))  > 0 )     '+
                         'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'refpro, cor', 'cor, refpro') );
 
@@ -1055,6 +1087,15 @@ begin
 
   if TClientDataSet(DataSet).FieldByName('SALDO_8').AsFloat > 0 then
     cdsItens2TOT_8.AsFloat := cdsItens2TOT_8.AsFloat + TClientDataSet(DataSet).FieldByName('SALDO_8').AsFloat;
+
+  if TClientDataSet(DataSet).FieldByName('SALDO_10').AsFloat > 0 then
+    cdsItens2TOT_10.AsFloat := cdsItens2TOT_10.AsFloat + TClientDataSet(DataSet).FieldByName('SALDO_10').AsFloat;
+
+  if TClientDataSet(DataSet).FieldByName('SALDO_12').AsFloat > 0 then
+    cdsItens2TOT_12.AsFloat := cdsItens2TOT_12.AsFloat + TClientDataSet(DataSet).FieldByName('SALDO_12').AsFloat;
+
+  if TClientDataSet(DataSet).FieldByName('SALDO_14').AsFloat > 0 then
+    cdsItens2TOT_14.AsFloat := cdsItens2TOT_14.AsFloat + TClientDataSet(DataSet).FieldByName('SALDO_14').AsFloat;
     
   if TClientDataSet(DataSet).FieldByName('SALDO_UNICA').AsFloat > 0 then
     cdsItens2TOT_UNICA.AsFloat := cdsItens2TOT_UNICA.AsFloat + TClientDataSet(DataSet).FieldByName('SALDO_UNICA').AsFloat;
@@ -1122,6 +1163,9 @@ begin
                       '         (sum(i.qtd_4 - iif(ci.qtd_4 is not null,ci.qtd_4,0))) saldo_4,                           '+
                       '         (sum(i.qtd_6 - iif(ci.qtd_6 is not null,ci.qtd_6,0))) saldo_6,                           '+
                       '         (sum(i.qtd_8 - iif(ci.qtd_8 is not null,ci.qtd_8,0))) saldo_8,                           '+
+                      '         (sum(i.qtd_10 - iif(ci.qtd_10 is not null,ci.qtd_10,0))) saldo_10,                       '+
+                      '         (sum(i.qtd_12 - iif(ci.qtd_12 is not null,ci.qtd_12,0))) saldo_12,                       '+
+                      '         (sum(i.qtd_14 - iif(ci.qtd_14 is not null,ci.qtd_14,0))) saldo_14,                       '+
                       '         (sum(trunc(i.qtd_unica - iif(ci.qtd_unica is not null,ci.qtd_unica,0)))) saldo_unica     '+
                       '    from itens i                                                                                  '+
                       '  left join conferencia_itens  ci  on ci.codigo_item = i.codigo                                   '+
@@ -1143,6 +1187,9 @@ begin
                       '             (sum(i.qtd_4 - iif(ci.qtd_4 is not null,ci.qtd_4,0))) > 0 or                         '+
                       '             (sum(i.qtd_6 - iif(ci.qtd_6 is not null,ci.qtd_6,0))) > 0 or                         '+
                       '             (sum(i.qtd_8 - iif(ci.qtd_8 is not null,ci.qtd_8,0))) > 0 or                         '+
+                      '             (sum(i.qtd_10 - iif(ci.qtd_10 is not null,ci.qtd_10,0))) > 0 or                     '+
+                      '             (sum(i.qtd_12 - iif(ci.qtd_12 is not null,ci.qtd_12,0))) > 0 or                     '+
+                      '             (sum(i.qtd_14 - iif(ci.qtd_14 is not null,ci.qtd_14,0))) > 0 or                     '+
                       '             (sum(trunc(i.qtd_unica - iif(ci.qtd_unica is not null,ci.qtd_unica,0))))  > 0 )      '+
                       'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'refpro, cor', 'cor, refpro') );
 

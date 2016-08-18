@@ -617,6 +617,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 0
         Width = 1369
         Height = 51
+        Anchors = [akLeft, akTop, akRight]
         Brush.Color = 5460819
         Pen.Style = psClear
       end
@@ -1483,90 +1484,10 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       TipoBusca.ListarApenasEncontrados = False
       TipoBusca.QualquerParte = False
       SalvaConfiguracoes = False
-      Columns = <
-        item
-          Expanded = False
-          FieldName = 'FATURADO'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'NUMPEDIDO'
-          Width = 82
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'COD_REPRES'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'REPRESENTANTE'
-          Width = 328
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'CLIENTE'
-          Width = 336
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'CODCLI'
-          Width = 51
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'DT_DESPACHO'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'DT_RECEBIMENTO'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'DT_CADASTRO'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'DT_REPRESENTANTE'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'DT_LIMITE_ENTREGA'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'TOTAL_DESCONTOS'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'TOTAL_LIQUIDO'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'PERC_ESTOQUE'
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'STATUS'
-          Visible = True
-        end>
     end
     object RLReport1: TRLReport
-      Left = 173
-      Top = 462
+      Left = 160
+      Top = 470
       Width = 1123
       Height = 794
       Margins.LeftMargin = 5.000000000000000000
@@ -2294,8 +2215,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     end
   end
   object RLReport2: TRLReport
-    Left = 181
-    Top = 662
+    Left = 42
+    Top = 238
     Width = 1123
     Height = 794
     Margins.LeftMargin = 5.000000000000000000
@@ -2569,42 +2490,17 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Borders.DrawTop = False
         Borders.DrawRight = False
         Borders.DrawBottom = True
-        object RLDraw5: TRLDraw
-          Left = -2
-          Top = 0
-          Width = 1087
-          Height = 23
-          Brush.Color = 15461355
+        object RLDraw20: TRLDraw
+          Left = 730
+          Top = 18
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
           Pen.Style = psClear
-        end
-        object RLDBText14: TRLDBText
-          Left = 180
-          Top = 5
-          Width = 67
-          Height = 16
-          DataField = 'PRODUTO'
-          DataSource = DataSource2
-          Text = ''
-        end
-        object RLLabel29: TRLLabel
-          Left = 171
-          Top = 5
-          Width = 8
-          Height = 16
-          Caption = '-'
-        end
-        object RLLabel30: TRLLabel
-          Left = -2
-          Top = 5
-          Width = 72
-          Height = 16
-          Caption = 'PRODUTO:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
+          Transparent = False
         end
         object RLLabel31: TRLLabel
           Left = 3
@@ -2619,19 +2515,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object RLDBText13: TRLDBText
-          Left = 73
-          Top = 5
-          Width = 98
-          Height = 16
-          Alignment = taRightJustify
-          AutoSize = False
-          DataField = 'REFPRO'
-          DataSource = DataSource2
-          Text = ''
-        end
         object RLDraw13: TRLDraw
-          Left = 452
+          Left = 388
           Top = 17
           Width = 28
           Height = 27
@@ -2643,7 +2528,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw14: TRLDraw
-          Left = 513
+          Left = 449
           Top = 17
           Width = 28
           Height = 27
@@ -2655,7 +2540,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw15: TRLDraw
-          Left = 570
+          Left = 506
           Top = 17
           Width = 28
           Height = 27
@@ -2667,7 +2552,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw16: TRLDraw
-          Left = 627
+          Left = 563
           Top = 17
           Width = 28
           Height = 27
@@ -2679,7 +2564,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw17: TRLDraw
-          Left = 680
+          Left = 616
           Top = 17
           Width = 28
           Height = 27
@@ -2691,7 +2576,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw18: TRLDraw
-          Left = 736
+          Left = 672
           Top = 17
           Width = 28
           Height = 27
@@ -2703,13 +2588,13 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLLabel33: TRLLabel
-          Left = 456
+          Left = 392
           Top = 25
-          Width = 312
+          Width = 405
           Height = 14
           Caption = 
             'RN       P       M       G       1       2       3       4      ' +
-            ' 6       8    UNICA'
+            ' 6       8       10      12      14    UNICA'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -2756,6 +2641,54 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
         end
+        object RLDraw5: TRLDraw
+          Left = -2
+          Top = 0
+          Width = 1087
+          Height = 23
+          Brush.Color = 15461355
+          Pen.Style = psClear
+        end
+        object RLDBText14: TRLDBText
+          Left = 180
+          Top = 5
+          Width = 67
+          Height = 16
+          DataField = 'PRODUTO'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLLabel29: TRLLabel
+          Left = 171
+          Top = 5
+          Width = 8
+          Height = 16
+          Caption = '-'
+        end
+        object RLDBText13: TRLDBText
+          Left = 73
+          Top = 5
+          Width = 98
+          Height = 16
+          Alignment = taRightJustify
+          AutoSize = False
+          DataField = 'REFPRO'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLLabel30: TRLLabel
+          Left = -2
+          Top = 5
+          Width = 72
+          Height = 16
+          Caption = 'PRODUTO:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
       end
       object RLBand9: TRLBand
         Left = 0
@@ -2769,38 +2702,39 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Borders.DrawBottom = True
         BeforePrint = RLBand9BeforePrint
         object RLDBText16: TRLDBText
-          Left = 2
+          Left = 38
           Top = 4
-          Width = 95
-          Height = 15
+          Width = 43
+          Height = 14
           Alignment = taRightJustify
           DataField = 'REFCOR'
           DataSource = DataSource2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
           Text = ''
         end
         object RLDBText23: TRLDBText
-          Left = 100
+          Left = 84
           Top = 4
-          Width = 325
-          Height = 15
+          Width = 297
+          Height = 14
+          AutoSize = False
           DataField = 'COR'
           DataSource = DataSource2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
           Text = ''
         end
         object RLDraw7: TRLDraw
-          Left = 736
+          Left = 672
           Top = -4
           Width = 28
           Height = 26
@@ -2812,7 +2746,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw8: TRLDraw
-          Left = 680
+          Left = 616
           Top = -4
           Width = 28
           Height = 26
@@ -2824,7 +2758,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw9: TRLDraw
-          Left = 627
+          Left = 563
           Top = -4
           Width = 28
           Height = 26
@@ -2836,7 +2770,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw10: TRLDraw
-          Left = 570
+          Left = 506
           Top = -4
           Width = 28
           Height = 26
@@ -2848,7 +2782,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDraw11: TRLDraw
-          Left = 513
+          Left = 449
           Top = -4
           Width = 28
           Height = 26
@@ -2860,7 +2794,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDBText15: TRLDBText
-          Left = 474
+          Left = 410
           Top = 3
           Width = 46
           Height = 16
@@ -2870,7 +2804,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText17: TRLDBText
-          Left = 503
+          Left = 439
           Top = 3
           Width = 48
           Height = 16
@@ -2880,7 +2814,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText18: TRLDBText
-          Left = 534
+          Left = 470
           Top = 3
           Width = 48
           Height = 16
@@ -2890,7 +2824,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText19: TRLDBText
-          Left = 564
+          Left = 500
           Top = 3
           Width = 44
           Height = 16
@@ -2900,7 +2834,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText20: TRLDBText
-          Left = 590
+          Left = 526
           Top = 3
           Width = 44
           Height = 16
@@ -2910,7 +2844,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText21: TRLDBText
-          Left = 619
+          Left = 555
           Top = 3
           Width = 44
           Height = 16
@@ -2920,7 +2854,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText22: TRLDBText
-          Left = 646
+          Left = 582
           Top = 3
           Width = 44
           Height = 16
@@ -2930,7 +2864,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText24: TRLDBText
-          Left = 672
+          Left = 608
           Top = 3
           Width = 44
           Height = 16
@@ -2940,7 +2874,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText25: TRLDBText
-          Left = 699
+          Left = 635
           Top = 3
           Width = 44
           Height = 16
@@ -2950,7 +2884,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBText26: TRLDBText
-          Left = 710
+          Left = 740
           Top = 3
           Width = 76
           Height = 16
@@ -2980,7 +2914,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDraw12: TRLDraw
-          Left = 452
+          Left = 388
           Top = -4
           Width = 28
           Height = 26
@@ -2992,7 +2926,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Transparent = False
         end
         object RLDBText30: TRLDBText
-          Left = 438
+          Left = 374
           Top = 3
           Width = 56
           Height = 16
@@ -3009,6 +2943,48 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Height = 16
           Alignment = taRightJustify
           DataField = 'VALOR_TOTAL'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDraw19: TRLDraw
+          Left = 730
+          Top = -4
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDBText31: TRLDBText
+          Left = 719
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_14'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDBText32: TRLDBText
+          Left = 689
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_12'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDBText33: TRLDBText
+          Left = 660
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_10'
           DataSource = DataSource2
           Text = ''
         end
@@ -3107,7 +3083,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010105000900300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000900380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3597,6 +3573,18 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       ReadOnly = True
       DisplayFormat = '0'
     end
+    object ClientDataSet1QTD_10: TLargeintField
+      FieldName = 'QTD_10'
+      ReadOnly = True
+    end
+    object ClientDataSet1QTD_12: TLargeintField
+      FieldName = 'QTD_12'
+      ReadOnly = True
+    end
+    object ClientDataSet1QTD_14: TLargeintField
+      FieldName = 'QTD_14'
+      ReadOnly = True
+    end
     object ClientDataSet1QTD_UNICA: TBCDField
       FieldName = 'QTD_UNICA'
       ReadOnly = True
@@ -3719,6 +3707,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         '       SUM(itens.qtd_1) qtd_1, SUM(itens.qtd_2) qtd_2, SUM(itens' +
         '.qtd_3) qtd_3, SUM(itens.qtd_4) qtd_4, SUM(itens.qtd_6) qtd_6, S' +
         'UM(itens.qtd_8) qtd_8,'
+      
+        '       SUM(itens.qtd_10) qtd_10, SUM(itens.qtd_12) qtd_12, SUM(i' +
+        'tens.qtd_14) qtd_14,'
       
         '       SUM(itens.qtd_unica) qtd_unica, SUM(itens.qtd_total) qtd_' +
         'total, SUM((itens.qtd_total * pro.qtd_pecas)) qtd_pecas, SUM(ite' +

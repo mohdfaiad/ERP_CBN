@@ -61,6 +61,9 @@ begin
    ConferenciaItem.QTD_4               := self.FQuery.FieldByName('QTD_4'  ).AsInteger;
    ConferenciaItem.QTD_6               := self.FQuery.FieldByName('QTD_6'  ).AsInteger;
    ConferenciaItem.QTD_8               := self.FQuery.FieldByName('QTD_8'  ).AsInteger;
+   ConferenciaItem.qtd_10              := self.FQuery.FieldByName('qtd_10' ).AsInteger;
+   ConferenciaItem.qtd_12              := self.FQuery.FieldByName('qtd_12' ).AsInteger;
+   ConferenciaItem.qtd_14              := self.FQuery.FieldByName('qtd_14' ).AsInteger;
    ConferenciaItem.QTD_UNICA           := self.FQuery.FieldByName('QTD_UNICA'  ).AsInteger;
    ConferenciaItem.Numero_caixa        := self.FQuery.FieldByName('NUMERO_CAIXA').AsInteger;
   // ConferenciaItem.Novo                := self.FQuery.FieldByName('NOVO').AsString;
@@ -132,6 +135,13 @@ begin
    if (ConferenciaItemAntigo.QTD_8 <> ConferenciaItemNovo.QTD_8) then
    Auditoria.AdicionaCampoAlterado('QTD_8', intToStr(ConferenciaItemAntigo.QTD_8), intToStr(ConferenciaItemNovo.QTD_8));
 
+   if (ConferenciaItemAntigo.qtd_10 <> ConferenciaItemNovo.qtd_10) then
+    Auditoria.AdicionaCampoAlterado('qtd_10', IntToStr(ConferenciaItemAntigo.qtd_10), IntToStr(ConferenciaItemNovo.qtd_10));
+   if (ConferenciaItemAntigo.qtd_12 <> ConferenciaItemNovo.qtd_12) then
+    Auditoria.AdicionaCampoAlterado('qtd_12', IntToStr(ConferenciaItemAntigo.qtd_12), IntToStr(ConferenciaItemNovo.qtd_12));
+   if (ConferenciaItemAntigo.qtd_14 <> ConferenciaItemNovo.qtd_14) then
+    Auditoria.AdicionaCampoAlterado('qtd_14', IntToStr(ConferenciaItemAntigo.qtd_14), IntToStr(ConferenciaItemNovo.qtd_14));
+
    if (ConferenciaItemAntigo.QTD_UNICA <> ConferenciaItemNovo.QTD_UNICA) then
    Auditoria.AdicionaCampoAlterado('QTD_UNICA', intToStr(ConferenciaItemAntigo.QTD_UNICA), intToStr(ConferenciaItemNovo.QTD_UNICA));
 
@@ -162,6 +172,9 @@ begin
    Auditoria.AdicionaCampoExcluido('QTD_4' , intToStr(ConferenciaItem.QTD_4));
    Auditoria.AdicionaCampoExcluido('QTD_6' , intToStr(ConferenciaItem.QTD_6));
    Auditoria.AdicionaCampoExcluido('QTD_8' , intToStr(ConferenciaItem.QTD_8));
+   Auditoria.AdicionaCampoExcluido('qtd_10', intToStr(ConferenciaItem.qtd_10    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_12', intToStr(ConferenciaItem.qtd_12    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_14', intToStr(ConferenciaItem.qtd_14    )          );
    Auditoria.AdicionaCampoExcluido('QTD_UNICA' , intToStr(ConferenciaItem.QTD_UNICA));
    Auditoria.AdicionaCampoExcluido('NUMERO_CAIXA' , intToStr(ConferenciaItem.Numero_caixa));
  //  Auditoria.AdicionaCampoExcluido('NOVO' , ConferenciaItem.Novo);
@@ -187,6 +200,9 @@ begin
    Auditoria.AdicionaCampoIncluido('QTD_4' , intToStr(ConferenciaItem.QTD_4));
    Auditoria.AdicionaCampoIncluido('QTD_6' , intToStr(ConferenciaItem.QTD_6));
    Auditoria.AdicionaCampoIncluido('QTD_8' , intToStr(ConferenciaItem.QTD_8));
+   Auditoria.AdicionaCampoIncluido('qtd_10', intToStr(ConferenciaItem.qtd_10));
+   Auditoria.AdicionaCampoIncluido('qtd_12', intToStr(ConferenciaItem.qtd_12));
+   Auditoria.AdicionaCampoIncluido('qtd_14', intToStr(ConferenciaItem.qtd_14));
    Auditoria.AdicionaCampoIncluido('QTD_UNICA' , intToStr(ConferenciaItem.QTD_UNICA));
    Auditoria.AdicionaCampoIncluido('NUMERO_CAIXA' , intToStr(ConferenciaItem.Numero_caixa));
   // Auditoria.AdicionaCampoIncluido('NOVO' , ConferenciaItem.Novo);
@@ -216,9 +232,12 @@ begin
    self.FQuery.ParamByName('QTD_1').AsInteger        := ConferenciaItem.QTD_1; 
    self.FQuery.ParamByName('QTD_2').AsInteger        := ConferenciaItem.QTD_2; 
    self.FQuery.ParamByName('QTD_3').AsInteger        := ConferenciaItem.QTD_3; 
-   self.FQuery.ParamByName('QTD_4').AsInteger        := ConferenciaItem.QTD_4; 
+   self.FQuery.ParamByName('QTD_4').AsInteger        := ConferenciaItem.QTD_4;
    self.FQuery.ParamByName('QTD_6').AsInteger        := ConferenciaItem.QTD_6; 
-   self.FQuery.ParamByName('QTD_8').AsInteger        := ConferenciaItem.QTD_8; 
+   self.FQuery.ParamByName('QTD_8').AsInteger        := ConferenciaItem.QTD_8;
+   inherited SetParametro('qtd_10'           , ConferenciaItem.qtd_10    );
+   inherited SetParametro('qtd_12'           , ConferenciaItem.qtd_12    );
+   inherited SetParametro('qtd_14'           , ConferenciaItem.qtd_14    );
    self.FQuery.ParamByName('QTD_UNICA').AsInteger        := ConferenciaItem.QTD_UNICA; 
    self.FQuery.ParamByName('NUMERO_CAIXA').AsInteger        := ConferenciaItem.Numero_caixa;
  //  self.FQuery.ParamByName('NOVO').AsString          := ConferenciaItem.Novo;
@@ -248,9 +267,9 @@ function TRepositorioConferenciaItem.SQLSalvar: String;
 begin                                                                                              
   result := 'update or insert into CONFERENCIA_ITENS                                  '+
             '        ( CODIGO, CODIGO_CONFERENCIA, CODIGO_ITEM, QTD_RN, QTD_P, QTD_M, QTD_G, QTD_1, QTD_2, QTD_3,   '+
-            '          QTD_4, QTD_6, QTD_8, QTD_UNICA, NUMERO_CAIXA)                                          '+
+            '          QTD_4, QTD_6, QTD_8, QTD_10, QTD_12, QTD_14, QTD_UNICA, NUMERO_CAIXA)                        '+
             ' Values ( :CODIGO, :CODIGO_CONFERENCIA, :CODIGO_ITEM, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, '+
-            '          :QTD_3, :QTD_4, :QTD_6, :QTD_8, :QTD_UNICA, :NUMERO_CAIXA)                            ';
+            '          :QTD_3, :QTD_4, :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :NUMERO_CAIXA)        ';
 end;                                                                                               
 
 end.                                                                                               

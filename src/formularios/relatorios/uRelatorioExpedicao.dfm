@@ -469,9 +469,21 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
         Width = 754
         Height = 24
         BeforePrint = RLBand5BeforePrint
+        object RLDraw15: TRLDraw
+          Left = 602
+          Top = -7
+          Width = 28
+          Height = 31
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
         object RLDraw6: TRLDraw
-          Left = 542
-          Top = -5
+          Left = 546
+          Top = -7
           Width = 28
           Height = 31
           Brush.Style = bsClear
@@ -483,7 +495,7 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
         end
         object RLDraw5: TRLDraw
           Left = 488
-          Top = -5
+          Top = -7
           Width = 28
           Height = 31
           Brush.Style = bsClear
@@ -495,7 +507,7 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
         end
         object RLDraw4: TRLDraw
           Left = 435
-          Top = -5
+          Top = -7
           Width = 28
           Height = 31
           Brush.Style = bsClear
@@ -507,7 +519,19 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
         end
         object RLDraw3: TRLDraw
           Left = 378
-          Top = -6
+          Top = -7
+          Width = 28
+          Height = 31
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw2: TRLDraw
+          Left = 321
+          Top = -7
           Width = 28
           Height = 31
           Brush.Style = bsClear
@@ -518,8 +542,8 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           Transparent = False
         end
         object RLDraw1: TRLDraw
-          Left = 321
-          Top = -6
+          Left = 260
+          Top = -7
           Width = 28
           Height = 31
           Brush.Style = bsClear
@@ -635,7 +659,7 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           Text = ''
         end
         object RLDBText13: TRLDBText
-          Left = 518
+          Left = 614
           Top = 3
           Width = 76
           Height = 16
@@ -645,7 +669,7 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           Text = ''
         end
         object RLDBText14: TRLDBText
-          Left = 612
+          Left = 656
           Top = 3
           Width = 78
           Height = 16
@@ -655,17 +679,17 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           Text = ''
         end
         object RLDBText15: TRLDBText
-          Left = 698
+          Left = 702
           Top = 3
           Width = 50
           Height = 16
-          Alignment = taCenter
+          Alignment = taRightJustify
           DataField = 'PECAS'
           DataSource = DataSource2
           Text = ''
         end
         object RLDBText17: TRLDBText
-          Left = 51
+          Left = 52
           Top = 3
           Width = 204
           Height = 15
@@ -680,18 +704,6 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           ParentFont = False
           Text = ''
         end
-        object RLDraw2: TRLDraw
-          Left = 260
-          Top = -5
-          Width = 28
-          Height = 31
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
         object RLDBText3: TRLDBText
           Left = 246
           Top = 3
@@ -699,6 +711,36 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
           Height = 16
           Alignment = taCenter
           DataField = 'QTD_RN'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDBText18: TRLDBText
+          Left = 534
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_10'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDBText19: TRLDBText
+          Left = 563
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_12'
+          DataSource = DataSource2
+          Text = ''
+        end
+        object RLDBText20: TRLDBText
+          Left = 592
+          Top = 3
+          Width = 52
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_14'
           DataSource = DataSource2
           Text = ''
         end
@@ -745,12 +787,24 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
       Width = 754
       Height = 24
       BandType = btColumnHeader
+      object RLDraw14: TRLDraw
+        Left = 602
+        Top = -7
+        Width = 28
+        Height = 31
+        Brush.Style = bsClear
+        Color = 15132390
+        ParentColor = False
+        Pen.Color = 12895428
+        Pen.Style = psClear
+        Transparent = False
+      end
       object RLLabel11: TRLLabel
-        Left = 617
+        Left = 681
         Top = 5
-        Width = 69
+        Width = 24
         Height = 14
-        Caption = 'Refer'#234'ncias'
+        Caption = 'Ref.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -759,7 +813,7 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
         ParentFont = False
       end
       object RLLabel12: TRLLabel
-        Left = 705
+        Left = 713
         Top = 5
         Width = 36
         Height = 14
@@ -846,11 +900,11 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
       object RLLabel10: TRLLabel
         Left = 264
         Top = 5
-        Width = 312
+        Width = 405
         Height = 14
         Caption = 
           'RN       P       M       G       1       2       3       4      ' +
-          ' 6       8    UNICA'
+          ' 6        8      10      12      14    UNICA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1311,6 +1365,18 @@ object frmRelatorioExpedicao: TfrmRelatorioExpedicao
       FieldName = 'QTD_8'
       Origin = 'QTD_8'
       DisplayFormat = '0'
+    end
+    object qryItensQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+      Origin = 'QTD_10'
+    end
+    object qryItensQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+      Origin = 'QTD_12'
+    end
+    object qryItensQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+      Origin = 'QTD_14'
     end
     object qryItensQTD_UNICA: TBCDField
       FieldName = 'QTD_UNICA'

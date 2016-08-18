@@ -27,6 +27,9 @@ type
     FQTD_M: integer;
     FNumero_caixa: integer;
     FItem: TItem;
+    FQTD_12: integer;
+    FQTD_10: integer;
+    FQTD_14: integer;
   //  FNovo :String;
 
     procedure Setcodigo(const Value: integer);
@@ -46,6 +49,9 @@ type
     procedure SetNumero_caixa(const Value: integer);
     function GetQTD_TOTAL: integer;
     function GetItem: TItem;
+    procedure SetQTD_10(const Value: integer);
+    procedure SetQTD_12(const Value: integer);
+    procedure SetQTD_14(const Value: integer);
 
   public
     property codigo             :integer read Fcodigo write Setcodigo;
@@ -61,6 +67,9 @@ type
     property QTD_4              :integer read FQTD_4 write SetQTD_4;
     property QTD_6              :integer read FQTD_6 write SetQTD_6;
     property QTD_8              :integer read FQTD_8 write SetQTD_8;
+    property QTD_10              :integer read FQTD_10 write SetQTD_10;
+    property QTD_12              :integer read FQTD_12 write SetQTD_12;
+    property QTD_14              :integer read FQTD_14 write SetQTD_14;
     property QTD_UNICA          :integer read FQTD_UNICA write SetQTD_UNICA;
     property Numero_caixa       :integer read FNumero_caixa write SetNumero_caixa;
     property QTD_TOTAL          :integer read GetQTD_TOTAL;
@@ -126,6 +135,21 @@ end;
 procedure TConferenciaItem.SetQTD_1(const Value: integer);
 begin
   FQTD_1 := Value;
+end;
+
+procedure TConferenciaItem.SetQTD_10(const Value: integer);
+begin
+  FQTD_10 := Value;
+end;
+
+procedure TConferenciaItem.SetQTD_12(const Value: integer);
+begin
+  FQTD_12 := Value;
+end;
+
+procedure TConferenciaItem.SetQTD_14(const Value: integer);
+begin
+  FQTD_14 := Value;
 end;
 
 procedure TConferenciaItem.SetQTD_2(const Value: integer);

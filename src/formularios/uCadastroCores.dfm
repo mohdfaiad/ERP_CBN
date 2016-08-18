@@ -333,15 +333,11 @@ inherited frmCadastroCores: TfrmCadastroCores
     Top = 0
     Width = 491
     Height = 519
-    ActivePage = tsCoresFilhas
+    ActivePage = tsCoresKit
     Align = alClient
     TabOrder = 1
     object tsDados: TTabSheet
       Caption = 'Cores'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         483
         491)
@@ -906,16 +902,12 @@ inherited frmCadastroCores: TfrmCadastroCores
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
-        OnClick = BitBtn1Click
+        OnClick = btnAddCorFilha
       end
     end
     object tsCoresKit: TTabSheet
       Caption = 'Cores do Kit'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         483
         491)
@@ -993,7 +985,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 1
+        TabOrder = 2
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -11
@@ -1101,7 +1093,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           ExplicitWidth = 93
         end
       end
-      object BitBtn2: TBitBtn
+      object btnAddCorKit: TBitBtn
         Left = 439
         Top = 79
         Width = 29
@@ -1177,8 +1169,8 @@ inherited frmCadastroCores: TfrmCadastroCores
         NumGlyphs = 2
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 2
-        OnClick = BitBtn2Click
+        TabOrder = 1
+        OnClick = btnAddCorKitClick
       end
     end
   end

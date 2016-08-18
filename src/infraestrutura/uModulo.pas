@@ -219,8 +219,9 @@ end;
 
 function Tdm.GetConsulta: TFDQuery;
 begin
-   result            := TFDQuery.Create(nil);
-   result.Connection := self.FConexaoBancoDeDados;
+   result               := TFDQuery.Create(nil);
+   result.Connection    := self.FConexaoBancoDeDados;
+   result.CachedUpdates := true;
    result.SQL.Clear;
 end;
 

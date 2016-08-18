@@ -201,12 +201,7 @@ type
     dsKits: TDataSource;
     btnAddKit: TBitBtn;
     DSPKits: TDataSetProvider;
-    CDSKitsCODIGO_PRODUTO: TIntegerField;
-    CDSKitsREFERENCIA: TStringField;
-    CDSKitsDESCRICAO: TStringField;
-    CDSKitsCODIGO: TIntegerField;
     edtCodigoKit: TCurrencyEdit;
-    CDSKitsREMOVE: TStringField;
     qry: TFDQuery;
     cdsCODIGO: TIntegerField;
     cdsDESCRICAO: TStringField;
@@ -264,6 +259,24 @@ type
     cdsCorREFERENCIA: TStringField;
     cdsCorGENERO: TStringField;
     cdsCODIGO_IBPT: TIntegerField;
+    cdsEstoqueQTD_10: TIntegerField;
+    cdsEstoqueQTD_12: TIntegerField;
+    cdsEstoqueQTD_14: TIntegerField;
+    BuscaCor2: TBuscaCor;
+    CDSKitsREFPRO: TStringField;
+    CDSKitsPRODUTO: TStringField;
+    CDSKitsCODIGO: TIntegerField;
+    CDSKitsCODIGO_KIT: TIntegerField;
+    CDSKitsCODIGO_PRODUTO: TIntegerField;
+    CDSKitsCODIGO_COR: TIntegerField;
+    CDSKitsCOR: TStringField;
+    CDSKitsREFCOR: TStringField;
+    CDSKitsREMOVE: TStringField;
+    FDQuery2: TFDQuery;
+    CDSKitsINSERINDO: TStringField;
+    edtDescricaoTipoCor: TEdit;
+    Label29: TLabel;
+    cdsDESC_TIPO_COR: TStringField;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -363,7 +376,7 @@ uses Math, FabricaRepositorio, StrUtils, uModulo, ProdutosKit;
 procedure TfrmCadastroProduto.btnIncluirClick(Sender: TObject);
 begin
   inherited;
-  
+
   posicaoGrid := cds.RecNo;
   self.Tag := 1;
   limpaCampos;
@@ -459,7 +472,6 @@ begin
   BuscaNcm1.edtDescricao.Clear;
   edtReferencia.Clear;
   comAtivo.ItemIndex                   := 0;
-  comAtivo.ItemIndex                   := 1;
   BuscaNcm1.edtCodigo.Value            := 0;
   edtPrecoVenda.Value                  := 0;
   edtPrecoCusto.Value                  := 0;
@@ -477,12 +489,19 @@ begin
   cbGenero.ItemIndex                   := -1;
   rgTipoProduto.ItemIndex              := -1;
   cbUnidadeMedida.ItemIndex            := -1;
+  comKit.Itemindex                     := 1;
+  comKitChange(nil);
+  comKit.Enabled                       := true;
 
   if cdsCodBar.Active       then  cdsCodBar.EmptyDataSet;
   if cdsCodPossiveis.Active then  cdsCodPossiveis.EmptyDataSet;
   if cdsTabela.Active       then  cdsTabela.EmptyDataSet;
   if cdsCor.Active          then  cdsCor.EmptyDataSet;
+  if CDSKits.Active         then  CDSKits.EmptyDataSet;
+  if cdsEstoque.Active      then  cdsEstoque.EmptyDataSet;
 
+  BuscaProduto1.limpa;
+  BuscaCor2.limpa;
 end;
 
 procedure TfrmCadastroProduto.mostraDados;
@@ -514,6 +533,7 @@ begin
   cbUnidadeMedida.ItemIndex := cbUnidadeMedida.Items.IndexOf( cdsUNIDADE_MEDIDA.AsString );
   comKit.ItemIndex          := IfThen((cdsKIT.AsString = 'S'),0,1);
   comKitChange(nil);
+  edtDescricaoTipoCor.Text  := cdsDESC_TIPO_COR.AsString;
 
   if CDSKits.active then
     CDSKits.EmptyDataSet;
@@ -523,19 +543,18 @@ begin
     CDSKits.Close;
     TFDQuery(DSPKits.DataSet).ParamByName('cod_kit').AsInteger := cdsCODIGO.AsInteger;
     CDSKits.Open;
-
-    comKit.Enabled := CDSKits.isEmpty;
   end;
+
+  comKit.Enabled := CDSKits.isEmpty;
 
 end;
 
 procedure TfrmCadastroProduto.FormShow(Sender: TObject);
 begin
   inherited;
-  CDSKits.CreateDataSet;
-  CDSKits.Filtered := false;
-  CDSKits.Filter   := 'not (REMOVE = ''S'') ';
-  CDSKits.Filtered := true;
+  BuscaCor2.ApareceKits := 'N';
+//  CDSKits.CreateDataSet;
+
 
   pagProdutos.ActivePageIndex := 0;
 
@@ -570,9 +589,12 @@ begin
   dspCodPossiveis.DataSet := FDM.GetConsulta(SQL_CODIGO_BARRAS);
 
   CDSKits.Close;
-  DSPKits.DataSet := FDM.GetConsulta('SELECT pk.*, pro.referencia, pro.descricao, pro.tipo REMOVE FROM PRODUTOS_KIT pk'+
-                                     ' left join produtos pro on pro.codigo = pk.codigo_produto                 '+
-                                     ' where codigo_kit = :cod_kit                                              ');
+  DSPKits.DataSet := FDM.GetConsulta('SELECT pro.referencia refpro, pro.descricao produto, pk.*,  '+
+                                     ' cor.descricao cor, cor.referencia refcor                   '+
+                                     ' FROM PRODUTOS_KIT pk                                       '+
+                                     ' left join produtos pro on pro.codigo = pk.codigo_produto   '+
+                                     ' left join cores cor on cor.codigo = pk.codigo_cor          '+
+                                     ' where codigo_kit = :cod_kit                                ');
 
   ListaTipo.setValores('select * from tipo_produto', 'descricao','Tipo');
   ListaTipo.executa;
@@ -594,7 +616,7 @@ begin
   inherited;
   self.habilita(false);
   self.Tag := 0;
-  if cdsEstoque.Active then cdsEstoque.EmptyDataSet;
+  limpaCampos;
 
   gridProdutos.SetFocus;
   FreeAndNil(Produto);
@@ -639,6 +661,7 @@ begin
   Produto.Tipo          := copy(rgTipoProduto.Items[rgTipoProduto.ItemIndex],1,1);
   Produto.UnidadeMedida := cbUnidadeMedida.Items[cbUnidadeMedida.ItemIndex];
   Produto.Kit           := (comKit.ItemIndex = 0);
+  Produto.descricaoTipoCor := edtDescricaoTipoCor.Text;
 
   rep.Salvar(Produto);
 
@@ -1263,6 +1286,7 @@ begin
     rgTipoProduto.OnClick := rgTipoProdutoClick;  
   end;
 
+  edtDescricaoTipoCor.SetFocus;
   inherited;
 end;
 
@@ -1354,22 +1378,36 @@ end;
 procedure TfrmCadastroProduto.btnAddKitClick(Sender: TObject);
 begin
   if BuscaProduto1.edtReferencia.Text = '' then
+  begin
+    avisar('O produdo não foi informado');
+    BuscaProduto1.edtReferencia.SetFocus;
     exit;
+  end
+  else if BuscaCor2.edtReferencia.Text = '' then
+  begin
+    avisar('A cor não foi informada');
+    BuscaCor2.edtReferencia.SetFocus;
+    exit;
+  end;
 
   if not CDSKits.active then
     CDSKits.CreateDataSet;
 
-  if (CDSKits.isEmpty) or not CDSKits.Locate('CODIGO_PRODUTO', BuscaProduto1.CodigoProduto, []) then
+  if (CDSKits.isEmpty) or not CDSKits.Locate('CODIGO_PRODUTO;CODIGO_COR', varArrayOf([BuscaProduto1.CodigoProduto, BuscaCor2.codCor]), []) then
   begin
     CDSKits.Append;
-    CDSKitsCODIGO.AsInteger         := edtCodigoKit.AsInteger;
+    CDSKitsCODIGO.AsInteger         := (CDSKits.RecordCount + 1)*-1;
     CDSKitsCODIGO_PRODUTO.AsInteger := BuscaProduto1.CodigoProduto;
-    CDSKitsREFERENCIA.AsString      := BuscaProduto1.edtReferencia.Text;
-    CDSKitsDESCRICAO.AsString       := BuscaProduto1.edtDescricao.Text;
+    CDSKitsREFPRO.AsString          := BuscaProduto1.edtReferencia.Text;
+    CDSKitsPRODUTO.AsString         := BuscaProduto1.edtDescricao.Text;
+    CDSKitsCODIGO_COR.AsInteger     := BuscaCor2.CodigoCor;
+    CDSKitsREFCOR.AsString          := BuscaCor2.edtReferencia.Text;
+    CDSKitsCOR.AsString             := BuscaCor2.edtDescricao.Text;
     CDSKits.Post;
   end;
 
   BuscaProduto1.limpa;
+  BuscaCor2.limpa;
   BuscaProduto1.edtReferencia.SetFocus;
 
   comKit.Enabled := CDSKits.isEmpty;
@@ -1407,6 +1445,7 @@ begin
           Kits.codigo_kit     := cdsCODIGO.AsInteger;
 
         Kits.codigo_produto := CDSKitsCODIGO_PRODUTO.AsInteger;
+        Kits.codigo_cor     := CDSKitsCODIGO_COR.AsInteger;
 
         repositorio.Salvar(Kits);
       end;
@@ -1441,6 +1480,10 @@ begin
     CDSKits.Edit;
     CDSKitsREMOVE.AsString := 'S';
     CDSKits.Post;
+
+    CDSKits.Filtered := false;
+    CDSKits.Filter   := 'not (REMOVE = ''S'') ';
+    CDSKits.Filtered := true;
   end;
 
   comKit.Enabled := CDSKits.isEmpty;
@@ -1449,6 +1492,7 @@ end;
 procedure TfrmCadastroProduto.comKitChange(Sender: TObject);
 begin
   BuscaProduto1.visible := comKit.ItemIndex = 0;
+  BuscaCor2.Visible     := comKit.ItemIndex = 0;
   btnAddKit.visible     := comKit.ItemIndex = 0;
   gridKits.visible      := comKit.ItemIndex = 0;
 end;

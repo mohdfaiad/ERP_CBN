@@ -5,9 +5,11 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   BorderStyle = bsSingle
   Caption = 'Entrada/Sa'#237'da Manual de Estoque'
   ClientHeight = 529
-  ClientWidth = 624
+  ClientWidth = 691
   OldCreateOrder = True
   OnShow = FormShow
+  ExplicitWidth = 697
+  ExplicitHeight = 557
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -26,14 +28,15 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object Shape1: TShape
     Left = -8
     Top = 26
-    Width = 636
+    Width = 703
     Height = 52
     Anchors = [akLeft, akTop, akRight]
     Brush.Color = 15395562
     Pen.Color = 14211288
+    ExplicitWidth = 636
   end
   object Label2: TLabel
-    Left = 224
+    Left = 288
     Top = 43
     Width = 117
     Height = 17
@@ -109,7 +112,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
   end
   object edtCodigoBarras: TEdit
-    Left = 360
+    Left = 424
     Top = 34
     Width = 241
     Height = 38
@@ -125,15 +128,15 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object rgTamanhos: TRadioGroup
     Left = -1
     Top = 240
-    Width = 628
+    Width = 695
     Height = 57
     Anchors = [akLeft, akTop, akRight]
     Caption = ' Tamanhos '
-    Columns = 11
+    Columns = 14
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
+    Font.Height = -12
+    Font.Name = 'Calibri'
     Font.Style = [fsBold]
     Items.Strings = (
       'RN'
@@ -146,25 +149,30 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       '4'
       '6'
       '8'
+      '10'
+      '12'
+      '14'
       'UNICA')
     ParentFont = False
     TabOrder = 3
     TabStop = True
     OnClick = rgTamanhosClick
     OnEnter = rgTamanhosEnter
+    ExplicitWidth = 720
   end
   object pnlRodape: TPanel
     Left = 0
     Top = 478
-    Width = 624
+    Width = 691
     Height = 51
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
+    ExplicitWidth = 624
     object btnSalvar: TBitBtn
-      Left = 480
+      Left = 531
       Top = 8
-      Width = 129
+      Width = 140
       Height = 33
       Caption = ' Salvar'
       Glyph.Data = {
@@ -239,9 +247,9 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       OnClick = btnSalvarClick
     end
     object btnLimpar: TBitBtn
-      Left = 336
+      Left = 368
       Top = 8
-      Width = 129
+      Width = 140
       Height = 33
       Caption = ' Limpar'
       Glyph.Data = {
@@ -319,21 +327,23 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object pnlQuantidades: TPanel
     Left = 0
     Top = 373
-    Width = 624
+    Width = 691
     Height = 105
     Align = alBottom
     TabOrder = 4
+    ExplicitWidth = 624
     DesignSize = (
-      624
+      691
       105)
     object Shape2: TShape
       Left = -3
       Top = 20
-      Width = 630
+      Width = 697
       Height = 52
       Anchors = [akLeft, akTop, akRight]
       Brush.Color = 15395562
       Pen.Color = 14211288
+      ExplicitWidth = 630
     end
     object Label3: TLabel
       Left = 8

@@ -67,10 +67,16 @@ type
     procedure Setobservacao(const Value: String);
 
   private
+    Fqtd_12: integer;
+    Fqtd_10: integer;
+    Fqtd_14: integer;
     function GetCor              :TCor;
     function GetPesoBrutoTotal   :Real;
     function GetPesoLiquidoTotal :Real;
     function GetProduto          :TProduto;
+    procedure Setqtd_10(const Value: integer);
+    procedure Setqtd_12(const Value: integer);
+    procedure Setqtd_14(const Value: integer);
 
   public
     constructor Create(const zera_codigo :boolean = true);
@@ -96,6 +102,9 @@ type
     property qtd_4             :integer   read Fqtd_4             write Setqtd_4;
     property qtd_6             :integer   read Fqtd_6             write Setqtd_6;
     property qtd_8             :integer   read Fqtd_8             write Setqtd_8;
+    property qtd_10            :integer   read Fqtd_10            write Setqtd_10;
+    property qtd_12            :integer   read Fqtd_12            write Setqtd_12;
+    property qtd_14            :integer   read Fqtd_14            write Setqtd_14;
     property qtd_UNICA         :Real      read Fqtd_UNICA         write Setqtd_UNICA;
     property qtd_total         :Double    read GetQtd_total       write Setqtd_total;
     property observacao        :String read Fobservacao write Setobservacao;
@@ -165,6 +174,21 @@ end;
 procedure TItem.Setqtd_1(const Value: integer);
 begin
   Fqtd_1 := Value;
+end;
+
+procedure TItem.Setqtd_10(const Value: integer);
+begin
+  Fqtd_10 := Value;
+end;
+
+procedure TItem.Setqtd_12(const Value: integer);
+begin
+  Fqtd_12 := Value;
+end;
+
+procedure TItem.Setqtd_14(const Value: integer);
+begin
+  Fqtd_14 := Value;
 end;
 
 procedure TItem.Setqtd_2(const Value: integer);
@@ -306,7 +330,7 @@ end;
 function TItem.GetQtd_total: Double;
 begin
   Result := ( self.Fqtd_RN + self.qtd_P + self.qtd_M + self.qtd_G + self.qtd_1 + self.qtd_2 + self.qtd_3 + self.qtd_4 +
-              self.qtd_6   + self.qtd_8 + self.qtd_UNICA );
+              self.qtd_6   + self.qtd_8 + self.qtd_10 + self.qtd_12 + self.qtd_14 + self.qtd_UNICA );
 end;
 
 function TItem.GetValor_total: Real;
@@ -315,3 +339,4 @@ begin
 end;
 
 end.
+

@@ -3,7 +3,7 @@ unit EspecificacaoContaPorPeriodoTipo;
 interface
 
 uses
-  Especificacao;
+  Especificacao, system.SysUtils;
 
 type
   TEspecificacaoContaPorPeriodoTipo = class(TEspecificacao)
@@ -25,7 +25,7 @@ end;
 implementation
 
 uses
-  ContasPagar, Classes, Parcela, Contnrs;
+  ContasPagar, Classes, Parcela, Contnrs, dialogs;
 
 { TEspecificacaoContaPorPeriodoTipo }
 
@@ -50,14 +50,16 @@ begin
   end;
 
   if FDti > 0 then
+  begin
     for i := 0 to TContasPagar(Objeto).Parcelas.Count - 1 do
     begin
       result := (TParcela(TContasPagar(Objeto).Parcelas.Items[i]).dt_vencimento >= FDti) and
                 (TParcela(TContasPagar(Objeto).Parcelas.Items[i]).dt_vencimento <= FDtf);
 
       if result then
-        break;          
+        break;
     end;
+  end;
 
   if not result then
     exit;

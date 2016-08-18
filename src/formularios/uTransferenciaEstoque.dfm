@@ -3,7 +3,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   Top = 0
   Caption = 'frmTransferenciaEstoque'
   ClientHeight = 562
-  ClientWidth = 619
+  ClientWidth = 694
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,18 +12,19 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   Font.Style = []
   OldCreateOrder = False
   DesignSize = (
-    619
+    694
     562)
   PixelsPerInch = 96
   TextHeight = 13
   object Shape2: TShape
     Left = -11
     Top = 408
-    Width = 630
+    Width = 705
     Height = 80
     Anchors = [akLeft, akTop, akRight]
     Brush.Color = 15395562
     Pen.Color = 14211288
+    ExplicitWidth = 630
   end
   object Label1: TLabel
     Left = 8
@@ -52,7 +53,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 26
+    Left = 66
     Top = 414
     Width = 97
     Height = 17
@@ -66,7 +67,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Transparent = True
   end
   object Label3: TLabel
-    Left = 488
+    Left = 528
     Top = 412
     Width = 99
     Height = 17
@@ -80,7 +81,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Transparent = True
   end
   object Label5: TLabel
-    Left = 254
+    Left = 294
     Top = 414
     Width = 92
     Height = 17
@@ -94,7 +95,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Transparent = True
   end
   object Label6: TLabel
-    Left = 179
+    Left = 219
     Top = 438
     Width = 27
     Height = 17
@@ -108,7 +109,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Transparent = True
   end
   object Label7: TLabel
-    Left = 408
+    Left = 448
     Top = 438
     Width = 27
     Height = 17
@@ -182,16 +183,17 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     end
   end
   object rgTamanhos1: TRadioGroup
-    Left = 18
-    Top = 141
-    Width = 581
-    Height = 44
+    Left = 0
+    Top = 140
+    Width = 694
+    Height = 50
+    Anchors = [akLeft, akTop, akRight]
     Caption = ' Tamanhos '
-    Columns = 11
+    Columns = 14
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
+    Font.Height = -12
+    Font.Name = 'Calibri'
     Font.Style = [fsBold]
     Items.Strings = (
       'RN'
@@ -204,11 +206,15 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
       '4'
       '6'
       '8'
+      '10'
+      '12'
+      '14'
       'UNICA')
     ParentFont = False
     TabOrder = 2
     TabStop = True
     OnClick = rgTamanhos1Click
+    ExplicitWidth = 733
   end
   inline BuscaProduto2: TBuscaProduto
     Left = 10
@@ -266,16 +272,17 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     end
   end
   object rgTamanhos2: TRadioGroup
-    Left = 18
-    Top = 349
-    Width = 579
-    Height = 44
+    Left = 0
+    Top = 343
+    Width = 694
+    Height = 50
+    Anchors = [akLeft, akTop, akRight]
     Caption = ' Tamanhos '
-    Columns = 11
+    Columns = 14
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
+    Font.Height = -12
+    Font.Name = 'Calibri'
     Font.Style = [fsBold]
     Items.Strings = (
       'RN'
@@ -288,14 +295,18 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
       '4'
       '6'
       '8'
+      '10'
+      '12'
+      '14'
       'UNICA')
     ParentFont = False
     TabOrder = 5
     TabStop = True
     OnClick = rgTamanhos2Click
+    ExplicitWidth = 733
   end
   object edtEstoqueDestino: TCurrencyEdit
-    Left = 488
+    Left = 528
     Top = 435
     Width = 109
     Height = 26
@@ -313,7 +324,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 6
   end
   object edtEstoqueOrigem: TCurrencyEdit
-    Left = 26
+    Left = 66
     Top = 435
     Width = 109
     Height = 26
@@ -332,7 +343,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 7
   end
   object edtQtdTransferir: TCurrencyEdit
-    Left = 255
+    Left = 295
     Top = 435
     Width = 109
     Height = 26
@@ -352,15 +363,16 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   object pnlRodape: TPanel
     Left = 0
     Top = 511
-    Width = 619
+    Width = 694
     Height = 51
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 9
+    ExplicitWidth = 619
     object btnSalvar: TBitBtn
-      Left = 471
+      Left = 527
       Top = 8
-      Width = 129
+      Width = 140
       Height = 33
       Caption = ' Salvar'
       Glyph.Data = {
@@ -435,9 +447,9 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
       OnClick = btnSalvarClick
     end
     object btnLimpar: TBitBtn
-      Left = 320
+      Left = 360
       Top = 8
-      Width = 129
+      Width = 140
       Height = 33
       Caption = ' Limpar'
       Glyph.Data = {

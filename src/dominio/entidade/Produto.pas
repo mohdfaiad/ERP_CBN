@@ -35,6 +35,7 @@ type
     FUnidadeMedida: String;
     FKit: Boolean;
     FProdutosKit :TObjectList;
+    FDescricaoTipoCor :String;
 
     procedure setCodigo       (const value:integer);
     procedure setDescricao    (const value:String);
@@ -89,6 +90,7 @@ type
     property Tipo         :String  read FTipo         write SetTipo;
     property UnidadeMedida:String  read FUnidadeMedida write SetUnidadeMedida;
     property Codigo_ibpt  :integer read FCodigo_ibpt  write FCodigo_ibpt;
+    property descricaoTipoCor :String read FDescricaoTipoCor write FDescricaoTipoCor;
 
   public
     property Kit          :Boolean read FKit          write FKit;

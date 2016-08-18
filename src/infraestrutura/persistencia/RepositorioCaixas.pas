@@ -75,6 +75,9 @@ begin
    Caixas.qtd_4              := self.FQuery.FieldByName('QTD_4'            ).AsInteger;
    Caixas.qtd_6              := self.FQuery.FieldByName('QTD_6'            ).AsInteger;
    Caixas.qtd_8              := self.FQuery.FieldByName('QTD_8'            ).AsInteger;
+   Caixas.qtd_10             := self.FQuery.FieldByName('QTD_10'           ).AsInteger;
+   Caixas.qtd_12             := self.FQuery.FieldByName('QTD_12'           ).AsInteger;
+   Caixas.qtd_14             := self.FQuery.FieldByName('QTD_14'           ).AsInteger;
    Caixas.qtd_UNICA          := self.FQuery.FieldByName('QTD_UNICA'        ).AsInteger;
 
    result := Caixas;
@@ -137,6 +140,12 @@ begin
     Auditoria.AdicionaCampoAlterado('qtd_6', IntToStr(CaixasAntigo.qtd_6), IntToStr(CaixasNovo.qtd_6));
    if (CaixasAntigo.qtd_8 <> CaixasNovo.qtd_8) then
     Auditoria.AdicionaCampoAlterado('qtd_8', IntToStr(CaixasAntigo.qtd_8), IntToStr(CaixasNovo.qtd_8));
+   if (CaixasAntigo.qtd_10 <> CaixasNovo.qtd_10) then
+    Auditoria.AdicionaCampoAlterado('qtd_10', IntToStr(CaixasAntigo.qtd_10), IntToStr(CaixasNovo.qtd_10));
+   if (CaixasAntigo.qtd_12 <> CaixasNovo.qtd_12) then
+    Auditoria.AdicionaCampoAlterado('qtd_12', IntToStr(CaixasAntigo.qtd_12), IntToStr(CaixasNovo.qtd_12));
+   if (CaixasAntigo.qtd_14 <> CaixasNovo.qtd_14) then
+    Auditoria.AdicionaCampoAlterado('qtd_14', IntToStr(CaixasAntigo.qtd_14), IntToStr(CaixasNovo.qtd_14));
    if (CaixasAntigo.qtd_UNICA <> CaixasNovo.qtd_UNICA) then
     Auditoria.AdicionaCampoAlterado('qtd_UNICA', IntToStr(CaixasAntigo.qtd_UNICA), IntToStr(CaixasNovo.qtd_UNICA));
 end;
@@ -163,6 +172,9 @@ begin
    Auditoria.AdicionaCampoExcluido('QTD_4'            , intToStr(Caixas.qtd_4    )          );
    Auditoria.AdicionaCampoExcluido('QTD_6'            , intToStr(Caixas.qtd_6    )          );
    Auditoria.AdicionaCampoExcluido('QTD_8'            , intToStr(Caixas.qtd_8    )          );
+   Auditoria.AdicionaCampoExcluido('QTD_10'           , intToStr(Caixas.QTD_10    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_12'           , intToStr(Caixas.qtd_12    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_14'           , intToStr(Caixas.qtd_14    )          );
    Auditoria.AdicionaCampoExcluido('QTD_UNICA'        , intToStr(Caixas.qtd_UNICA)          );
 
 end;
@@ -189,6 +201,9 @@ begin
    Auditoria.AdicionaCampoIncluido('QTD_4'            , intToStr(Caixas.qtd_4    )          );
    Auditoria.AdicionaCampoIncluido('QTD_6'            , intToStr(Caixas.qtd_6    )          );
    Auditoria.AdicionaCampoIncluido('QTD_8'            , intToStr(Caixas.qtd_8    )          );
+   Auditoria.AdicionaCampoIncluido('QTD_10'           , intToStr(Caixas.QTD_10    )          );
+   Auditoria.AdicionaCampoIncluido('qtd_12'           , intToStr(Caixas.qtd_12    )          );
+   Auditoria.AdicionaCampoIncluido('qtd_14'           , intToStr(Caixas.qtd_14    )          );
    Auditoria.AdicionaCampoIncluido('QTD_UNICA'        , intToStr(Caixas.qtd_UNICA)          );
 
 end;
@@ -222,6 +237,9 @@ begin
    inherited SetParametro('QTD_4'            , Caixas.qtd_4    );
    inherited SetParametro('QTD_6'            , Caixas.qtd_6    );
    inherited SetParametro('QTD_8'            , Caixas.qtd_8    );
+   inherited SetParametro('qtd_10'           , Caixas.qtd_10    );
+   inherited SetParametro('qtd_12'           , Caixas.qtd_12    );
+   inherited SetParametro('qtd_14'           , Caixas.qtd_14    );
    inherited SetParametro('QTD_UNICA'        , Caixas.qtd_UNICA);
 
 end;
@@ -250,9 +268,9 @@ function TRepositorioCaixas.SQLSalvar: String;
 begin
   result := 'UPDATE OR INSERT INTO CAIXAS (CODIGO, NUMERO_CAIXA, CODIGO_CONFERENCIA, CODIGO_ITEM,             '+
             '                              CODIGO_COR, QTD_RN, QTD_P, QTD_M, QTD_G, QTD_1, QTD_2, QTD_3,      '+
-            '                              QTD_4, QTD_6, QTD_8, QTD_UNICA )                                   '+
+            '                              QTD_4, QTD_6, QTD_8, QTD_10, QTD_12, QTD_14, QTD_UNICA )           '+
             'VALUES (:CODIGO, :NUMERO_CAIXA, :CODIGO_CONFERENCIA, :CODIGO_ITEM, :CODIGO_COR, :QTD_RN, :QTD_P, '+
-            '        :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, :QTD_6, :QTD_8, :QTD_UNICA )             ';
+            '        :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA ) ';
 
 end;
 

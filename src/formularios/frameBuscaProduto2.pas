@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ObjetoGenerico, Mask, RxToolEdit, RxCurrEdit;
+  Dialogs, StdCtrls, Buttons, ObjetoGenerico, Mask, RxToolEdit, RxCurrEdit,
+  system.StrUtils;
 
 type
     TBuscaProduto2 = class(TFrame)
@@ -54,6 +55,7 @@ type
     FRefCor: String;
     FCodTamanho: Integer;
     FCodigoColecao :integer;
+    FProdutosLoja: boolean;
 
     procedure SetRefProduto(const Value: String);
     procedure BuscaProduto2;
@@ -79,6 +81,8 @@ type
     property CodTamanho: Integer read FCodTamanho;
     procedure Limpar;
 
+  public
+    property produtosLoja :boolean read FProdutosLoja write FProdutosLoja;
   end;
 
 implementation
@@ -126,7 +130,7 @@ begin
 end;
 
 function TBuscaProduto2.SelecionaProduto: String;
-var condicao_colecao :String;
+var condicao_colecao, condicao_loja :String;
 begin
   Result:= '';
 
@@ -135,8 +139,11 @@ begin
                         ' left join cores on cores.codigo = produto_cores.codcor '+
                         ' WHERE CORES.codigo_colecao = '+edtCodColecao.Text;
 
+  if FProdutosLoja then
+    condicao_loja := IfThen(condicao_colecao <> '', ' AND ', ' WHERE ')+' (p.referencia like ''%L'' or p.referencia = ''KGLOJA'') ';
+
   frmPesquisaSimples:= TFrmPesquisaSimples.Create(Self,'SELECT distinct P.REFERENCIA,P.DESCRICAO,P.CODIGO,P.ATIVO FROM PRODUTOS P'+
-                                                       condicao_colecao,
+                                                       condicao_colecao+ condicao_loja,
                                                   'REFERENCIA','Selecione o Produto desejado...');
 
   if frmPesquisaSimples.ShowModal = mrOk then

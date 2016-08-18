@@ -267,6 +267,14 @@ type
     lbInfoSigep: TLabel;
     chkSelecionar: TCheckBox;
     cdsPERC_ESTOQUE: TBCDField;
+    ClientDataSet1QTD_10: TLargeintField;
+    ClientDataSet1QTD_12: TLargeintField;
+    ClientDataSet1QTD_14: TLargeintField;
+    RLDraw19: TRLDraw;
+    RLDraw20: TRLDraw;
+    RLDBText31: TRLDBText;
+    RLDBText32: TRLDBText;
+    RLDBText33: TRLDBText;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -396,6 +404,7 @@ begin
 
   campos_analitico := ' pro.referencia refpro, pro.descricao produto, cor.referencia refcor, cor.descricao cor, SUM(itens.qtd_rn) qtd_rn, SUM(itens.qtd_p) qtd_p, SUM(itens.qtd_m) qtd_m, SUM(itens.qtd_g) qtd_g, '+
                       ' SUM(itens.qtd_1) qtd_1, SUM(itens.qtd_2) qtd_2, SUM(itens.qtd_3) qtd_3, SUM(itens.qtd_4) qtd_4, SUM(itens.qtd_6) qtd_6, SUM(itens.qtd_8) qtd_8, '+
+                      ' SUM(itens.qtd_10) qtd_10, SUM(itens.qtd_12) qtd_12, SUM(itens.qtd_14) qtd_14,                                                                   '+
                       ' SUM(itens.qtd_unica) qtd_unica, SUM(itens.qtd_total) qtd_total, SUM((itens.qtd_total * pro.qtd_pecas)) qtd_pecas, SUM(itens.valor_total) valor_total ';
 
 
@@ -1000,8 +1009,11 @@ begin
    gridPedidos.Columns[12].Width  := 40;
    gridPedidos.Columns[13].Width  := 40;
    gridPedidos.Columns[14].Width  := 40;
-   gridPedidos.Columns[15].Width  := 50;
-   gridPedidos.Columns[16].Width  := 50;
+   gridPedidos.Columns[15].Width  := 40;
+   gridPedidos.Columns[16].Width  := 40;
+   gridPedidos.Columns[17].Width  := 40;
+   gridPedidos.Columns[18].Width  := 50;
+   gridPedidos.Columns[19].Width  := 50;
 
    gridPedidos.Columns[0].Title.Caption := 'Ref.Pro.';
    gridPedidos.Columns[1].Title.Caption := 'Produto';
@@ -1017,10 +1029,13 @@ begin
    gridPedidos.Columns[11].Title.Caption := '4';
    gridPedidos.Columns[12].Title.Caption := '6';
    gridPedidos.Columns[13].Title.Caption := '8';
-   gridPedidos.Columns[14].Title.Caption := 'UNICA';
-   gridPedidos.Columns[15].Title.Caption := 'Qtd.Itens';
-   gridPedidos.Columns[16].Title.Caption := 'Qtd.Peças';
-   gridPedidos.Columns[17].Title.Caption := 'Vlr.Total';
+   gridPedidos.Columns[14].Title.Caption := '10';
+   gridPedidos.Columns[15].Title.Caption := '12';
+   gridPedidos.Columns[16].Title.Caption := '14';
+   gridPedidos.Columns[17].Title.Caption := 'UNICA';
+   gridPedidos.Columns[18].Title.Caption := 'Qtd.Itens';
+   gridPedidos.Columns[19].Title.Caption := 'Qtd.Peças';
+   gridPedidos.Columns[20].Title.Caption := 'Vlr.Total';
 
    DBEdit3.Text := FormatFloat('##,###,##0.00',total_valor);
    DBEdit4.Text := FormatFloat('##,###,##0.00',total_descontos);
@@ -1117,7 +1132,7 @@ end;
 
 procedure TfrmRelatorioVendas.RLBand9BeforePrint(Sender: TObject;
   var PrintIt: Boolean);
-begin                                      
+begin
   RLDBText30.Visible  := true;
   RLDBText15.Visible  := true;
   RLDBText17.Visible  := true;
@@ -1129,6 +1144,9 @@ begin
   RLDBText24.Visible  := true;
   RLDBText25.Visible  := true;
   RLDBText26.Visible  := true;
+  RLDBText31.Visible  := true;
+  RLDBText32.Visible  := true;
+  RLDBText33.Visible  := true;
 
   if ClientDataSet1QTD_RN.AsInteger    <= 0  then  RLDBText30.Visible := false;
   if ClientDataSet1QTD_P.AsInteger     <= 0  then  RLDBText15.Visible := false;
@@ -1140,6 +1158,9 @@ begin
   if ClientDataSet1QTD_4.AsInteger     <= 0  then  RLDBText22.Visible := false;
   if ClientDataSet1QTD_6.AsInteger     <= 0  then  RLDBText24.Visible := false;
   if ClientDataSet1QTD_8.AsInteger     <= 0  then  RLDBText25.Visible := false;
+  if ClientDataSet1QTD_10.AsInteger    <= 0  then  RLDBText31.Visible := false;
+  if ClientDataSet1QTD_12.AsInteger    <= 0  then  RLDBText32.Visible := false;
+  if ClientDataSet1QTD_14.AsInteger    <= 0  then  RLDBText33.Visible := false;
   if ClientDataSet1QTD_UNICA.AsInteger <= 0  then  RLDBText26.Visible := false;
 end;
 

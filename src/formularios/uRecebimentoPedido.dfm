@@ -39,7 +39,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Height = 25
     Caption = 'Troco'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = 3684408
+    Font.Color = 16731983
     Font.Height = -19
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
@@ -156,13 +156,13 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Width = 200
     Height = 38
     TabStop = False
-    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -21
     Font.Name = 'Segoe UI'
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
+    ReadOnly = True
     TabOrder = 3
     OnChange = edtTrocoChange
   end

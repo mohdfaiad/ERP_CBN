@@ -389,8 +389,20 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
       Width = 754
       Height = 24
       BandType = btColumnHeader
+      object RLDraw13: TRLDraw
+        Left = 589
+        Top = -7
+        Width = 28
+        Height = 31
+        Brush.Style = bsClear
+        Color = 15132390
+        ParentColor = False
+        Pen.Color = 12895428
+        Pen.Style = psClear
+        Transparent = False
+      end
       object RLDraw7: TRLDraw
-        Left = 260
+        Left = 252
         Top = -7
         Width = 28
         Height = 31
@@ -402,7 +414,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLDraw8: TRLDraw
-        Left = 321
+        Left = 313
         Top = -7
         Width = 28
         Height = 31
@@ -414,7 +426,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLDraw9: TRLDraw
-        Left = 378
+        Left = 370
         Top = -7
         Width = 28
         Height = 31
@@ -426,7 +438,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLDraw10: TRLDraw
-        Left = 435
+        Left = 427
         Top = -7
         Width = 28
         Height = 31
@@ -438,7 +450,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLDraw11: TRLDraw
-        Left = 488
+        Left = 481
         Top = -7
         Width = 28
         Height = 31
@@ -450,7 +462,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLDraw12: TRLDraw
-        Left = 546
+        Left = 535
         Top = -7
         Width = 28
         Height = 31
@@ -462,13 +474,13 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Transparent = False
       end
       object RLLabel10: TRLLabel
-        Left = 264
+        Left = 256
         Top = 5
-        Width = 312
+        Width = 399
         Height = 14
         Caption = 
-          'RN       P       M       G       1       2       3       4      ' +
-          ' 6       8    UNICA'
+          'RN       P       M       G       1       2        3       4     ' +
+          '  6       8      10     12      14   UNICA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -477,11 +489,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         ParentFont = False
       end
       object RLLabel4: TRLLabel
-        Left = 633
+        Left = 661
         Top = 4
-        Width = 115
+        Width = 90
         Height = 15
-        Caption = 'Estoque suficiente?'
+        Caption = 'Est. suficiente?'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -525,7 +537,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText16: TRLDBText
-          Left = 70
+          Left = 54
           Top = 5
           Width = 54
           Height = 16
@@ -546,8 +558,20 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Top = 24
         Width = 754
         Height = 24
+        object RLDraw14: TRLDraw
+          Left = 590
+          Top = -7
+          Width = 28
+          Height = 31
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
         object RLDraw2: TRLDraw
-          Left = 260
+          Left = 252
           Top = -5
           Width = 28
           Height = 31
@@ -559,7 +583,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Transparent = False
         end
         object RLDBText3: TRLDBText
-          Left = 238
+          Left = 230
           Top = 3
           Width = 72
           Height = 16
@@ -569,7 +593,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDraw6: TRLDraw
-          Left = 546
+          Left = 538
           Top = -5
           Width = 28
           Height = 31
@@ -581,7 +605,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Transparent = False
         end
         object RLDraw5: TRLDraw
-          Left = 488
+          Left = 480
           Top = -5
           Width = 28
           Height = 31
@@ -593,7 +617,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Transparent = False
         end
         object RLDraw4: TRLDraw
-          Left = 435
+          Left = 427
           Top = -5
           Width = 28
           Height = 31
@@ -605,7 +629,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Transparent = False
         end
         object RLDraw3: TRLDraw
-          Left = 378
+          Left = 370
           Top = -6
           Width = 28
           Height = 31
@@ -617,7 +641,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Transparent = False
         end
         object RLDraw1: TRLDraw
-          Left = 321
+          Left = 313
           Top = -6
           Width = 28
           Height = 31
@@ -631,20 +655,20 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         object RLDBText2: TRLDBText
           Left = 1
           Top = 3
-          Width = 39
-          Height = 15
+          Width = 38
+          Height = 14
           DataField = 'RefCor'
           DataSource = dsItens
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
+          Font.Height = -12
           Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
           Text = ''
         end
         object RLDBText4: TRLDBText
-          Left = 273
+          Left = 265
           Top = 3
           Width = 64
           Height = 16
@@ -654,7 +678,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText5: TRLDBText
-          Left = 302
+          Left = 294
           Top = 3
           Width = 66
           Height = 16
@@ -664,7 +688,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText6: TRLDBText
-          Left = 334
+          Left = 326
           Top = 3
           Width = 64
           Height = 16
@@ -674,7 +698,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText7: TRLDBText
-          Left = 363
+          Left = 355
           Top = 3
           Width = 62
           Height = 16
@@ -684,7 +708,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText8: TRLDBText
-          Left = 389
+          Left = 381
           Top = 3
           Width = 62
           Height = 16
@@ -694,7 +718,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText9: TRLDBText
-          Left = 418
+          Left = 410
           Top = 3
           Width = 62
           Height = 16
@@ -704,7 +728,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText10: TRLDBText
-          Left = 445
+          Left = 437
           Top = 3
           Width = 62
           Height = 16
@@ -714,7 +738,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText11: TRLDBText
-          Left = 471
+          Left = 463
           Top = 3
           Width = 62
           Height = 16
@@ -724,7 +748,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText12: TRLDBText
-          Left = 498
+          Left = 491
           Top = 3
           Width = 62
           Height = 16
@@ -734,7 +758,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Text = ''
         end
         object RLDBText13: TRLDBText
-          Left = 513
+          Left = 590
           Top = 3
           Width = 94
           Height = 16
@@ -746,21 +770,21 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         object RLDBText17: TRLDBText
           Left = 51
           Top = 3
-          Width = 204
+          Width = 190
           Height = 15
           AutoSize = False
           DataField = 'Cor'
           DataSource = dsItens
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
+          Font.Height = -12
           Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
           Text = ''
         end
         object RLDBText14: TRLDBText
-          Left = 692
+          Left = 714
           Top = 3
           Width = 24
           Height = 16
@@ -771,9 +795,9 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           BeforePrint = RLDBText14BeforePrint
         end
         object lbindica: TRLLabel
-          Left = 621
+          Left = 663
           Top = 3
-          Width = 63
+          Width = 33
           Height = 14
           Caption = '<------------------'
           Font.Charset = DEFAULT_CHARSET
@@ -782,6 +806,36 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Font.Name = 'Britannic Bold'
           Font.Style = []
           ParentFont = False
+        end
+        object RLDBText15: TRLDBText
+          Left = 516
+          Top = 3
+          Width = 68
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_10_O'
+          DataSource = dsItens
+          Text = ''
+        end
+        object RLDBText18: TRLDBText
+          Left = 544
+          Top = 3
+          Width = 68
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_12_O'
+          DataSource = dsItens
+          Text = ''
+        end
+        object RLDBText19: TRLDBText
+          Left = 571
+          Top = 3
+          Width = 68
+          Height = 16
+          Alignment = taCenter
+          DataField = 'QTD_14_O'
+          DataSource = dsItens
+          Text = ''
         end
       end
     end
@@ -847,6 +901,15 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
     object cdsItensQTD_8: TIntegerField
       FieldName = 'QTD_8'
     end
+    object cdsItensQTD_10: TIntegerField
+      FieldName = 'QTD_10'
+    end
+    object cdsItensQTD_12: TIntegerField
+      FieldName = 'QTD_12'
+    end
+    object cdsItensQTD_14: TIntegerField
+      FieldName = 'QTD_14'
+    end
     object cdsItensQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
     end
@@ -879,6 +942,15 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
     end
     object cdsItensQTD_8_O: TIntegerField
       FieldName = 'QTD_8_O'
+    end
+    object cdsItensQTD_10_O: TIntegerField
+      FieldName = 'QTD_10_O'
+    end
+    object cdsItensQTD_12_O: TIntegerField
+      FieldName = 'QTD_12_O'
+    end
+    object cdsItensQTD_14_O: TIntegerField
+      FieldName = 'QTD_14_O'
     end
     object cdsItensQTD_UNICA_O: TBCDField
       FieldName = 'QTD_UNICA_O'

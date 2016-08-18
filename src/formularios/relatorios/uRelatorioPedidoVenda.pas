@@ -75,7 +75,6 @@ type
     RLLabel23: TRLLabel;
     RLLabel24: TRLLabel;
     RLLabel25: TRLLabel;
-    RLLabel26: TRLLabel;
     RLLabel27: TRLLabel;
     RLDBText1: TRLDBText;
     RLBand7: TRLBand;
@@ -116,7 +115,6 @@ type
     RLLabel31: TRLLabel;
     rlbCancelado: TRLLabel;
     RLPDFFilter1: TRLPDFFilter;
-    RLLabel32: TRLLabel;
     RLDBText19: TRLDBText;
     RLDBResult16: TRLDBResult;
     RLDBText20: TRLDBText;
@@ -215,6 +213,16 @@ type
     qryItensREFPRO: TStringField;
     qryItensPRODUTO: TStringField;
     qryItensGRUPO: TStringField;
+    RLDraw10: TRLDraw;
+    RLDBText25: TRLDBText;
+    qryItensQTD_10: TIntegerField;
+    qryItensQTD_12: TIntegerField;
+    qryItensQTD_14: TIntegerField;
+    RLDBText26: TRLDBText;
+    RLDBText27: TRLDBText;
+    RLDBResult17: TRLDBResult;
+    RLDBResult18: TRLDBResult;
+    RLDBResult19: TRLDBResult;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
@@ -307,6 +315,9 @@ begin
   RLDBText11.Visible := true;
   RLDBText12.Visible := true;
   RLDBText13.Visible := true;
+  RLDBText25.Visible := true;
+  RLDBText26.Visible := true;
+  RLDBText27.Visible := true;
 
   if qryItensQTD_RN.AsInteger    <= 0  then  RLDBText3.Visible := false;
   if qryItensQTD_P.AsInteger     <= 0  then  RLDBText4.Visible := false;
@@ -318,6 +329,9 @@ begin
   if qryItensQTD_4.AsInteger     <= 0  then  RLDBText10.Visible := false;
   if qryItensQTD_6.AsInteger     <= 0  then  RLDBText11.Visible := false;
   if qryItensQTD_8.AsInteger     <= 0  then  RLDBText12.Visible := false;
+  if qryItensQTD_10.AsInteger    <= 0  then  RLDBText25.Visible := false;
+  if qryItensQTD_12.AsInteger    <= 0  then  RLDBText26.Visible := false;
+  if qryItensQTD_14.AsInteger    <= 0  then  RLDBText27.Visible := false;
   if qryItensQTD_UNICA.AsInteger <= 0  then  RLDBText13.Visible := false;
 end;
 

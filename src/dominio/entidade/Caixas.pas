@@ -26,6 +26,9 @@ type
     Fcodigo_conferencia: integer;
     Fnumero_caixa: String;
     Fcodigo_cor: integer;
+    Fqtd_12: integer;
+    Fqtd_10: integer;
+    Fqtd_14: integer;
     procedure Setcodigo_conferencia(const Value: integer);
     procedure Setcodigo_item(const Value: integer);
     procedure Setcodigoo(const Value: integer);
@@ -42,6 +45,9 @@ type
     procedure Setqtd_RN(const Value: integer);
     procedure Setqtd_UNICA(const Value: integer);
     procedure Setcodigo_cor(const Value: integer);
+    procedure Setqtd_10(const Value: integer);
+    procedure Setqtd_12(const Value: integer);
+    procedure Setqtd_14(const Value: integer);
 
   public
     property codigo             :integer read Fcodigoo write Setcodigoo;
@@ -59,6 +65,9 @@ type
     property qtd_4              :integer read Fqtd_4 write Setqtd_4;
     property qtd_6              :integer read Fqtd_6 write Setqtd_6;
     property qtd_8              :integer read Fqtd_8 write Setqtd_8;
+    property qtd_10             :integer read Fqtd_10 write Setqtd_10;
+    property qtd_12             :integer read Fqtd_12 write Setqtd_12;
+    property qtd_14             :integer read Fqtd_14 write Setqtd_14;
     property qtd_UNICA          :integer read Fqtd_UNICA write Setqtd_UNICA;
 
 end;
@@ -90,6 +99,21 @@ end;
 procedure TCaixas.Setqtd_1(const Value: integer);
 begin
   Fqtd_1 := Value;
+end;
+
+procedure TCaixas.Setqtd_10(const Value: integer);
+begin
+  Fqtd_10 := Value;
+end;
+
+procedure TCaixas.Setqtd_12(const Value: integer);
+begin
+  Fqtd_12 := Value;
+end;
+
+procedure TCaixas.Setqtd_14(const Value: integer);
+begin
+  Fqtd_14 := Value;
 end;
 
 procedure TCaixas.Setqtd_2(const Value: integer);

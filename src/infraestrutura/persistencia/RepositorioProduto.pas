@@ -76,6 +76,7 @@ begin
    Produto.UnidadeMedida := self.FQuery.fieldByName('UNIDADE_MEDIDA').AsString;
    Produto.Kit           := (self.FQuery.fieldByName('KIT').AsString = 'S');
    Produto.Codigo_ibpt   := self.FQuery.fieldByName('Codigo_ibpt').AsInteger;
+   Produto.descricaoTipoCor := self.FQuery.fieldByName('desc_tipo_cor').AsString;
 
    result := Produto;
 end;
@@ -168,6 +169,9 @@ begin
 
    if (UAntigo.UnidadeMedida <> UNovo.UnidadeMedida) then
     Auditoria.AdicionaCampoAlterado('UNIDADE_MEDIDA', UAntigo.UnidadeMedida, UNovo.UnidadeMedida);
+
+   if (UAntigo.descricaoTipoCor <> UNovo.descricaoTipoCor) then
+    Auditoria.AdicionaCampoAlterado('desc_tipo_cor', UAntigo.descricaoTipoCor, UNovo.descricaoTipoCor);
 end;
 
 procedure TRepositorioProduto.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -198,6 +202,7 @@ begin
    Auditoria.AdicionaCampoExcluido('UNIDADE_MEDIDA', Produto.UnidadeMedida);
    Auditoria.AdicionaCampoExcluido('ativo',          IfThen(Produto.Ativo,'S','N'));
    Auditoria.AdicionaCampoExcluido('Codigo_ibpt',    intToStr(Produto.Codigo_ibpt));
+   Auditoria.AdicionaCampoExcluido('desc_tipo_cor',  Produto.descricaoTipoCor);
 
 end;
 
@@ -228,9 +233,10 @@ begin
    Auditoria.AdicionaCampoIncluido('TIPO',           Produto.Tipo);
    Auditoria.AdicionaCampoIncluido('UNIDADE_MEDIDA', Produto.UnidadeMedida);
    Auditoria.AdicionaCampoIncluido('Codigo_ibpt',    intToStr(Produto.Codigo_ibpt));
+   Auditoria.AdicionaCampoIncluido('desc_tipo_cor',  Produto.descricaoTipoCor);
 
    if Produto.Ativo then Auditoria.AdicionaCampoIncluido('ativo',  'S')
-   else                  Auditoria.AdicionaCampoIncluido('ativo',  'N');;
+   else                  Auditoria.AdicionaCampoIncluido('ativo',  'N');
 end;
 
 procedure TRepositorioProduto.SetIdentificador(Objeto: TObject;
@@ -276,6 +282,7 @@ begin
    inherited SetParametro('UNIDADE_MEDIDA', Produto.UnidadeMedida);
    inherited SetParametro('ativo',          IfThen(Produto.Ativo,'S','N'));
    inherited SetParametro('KIT',            IfThen(Produto.Kit,'S','N'));
+   inherited SetParametro('desc_tipo_cor',  Produto.descricaoTipoCor);
 
    if Produto.Codigo_ibpt > 0 then
      inherited SetParametro('Codigo_ibpt',     Produto.Codigo_ibpt);
@@ -307,11 +314,11 @@ begin
    result := 'update or INSERT INTO PRODUTOS (CODIGO, DESCRICAO, COD_NCM, COD_TIPO, COD_GRUPO, COD_COLECAO, COD_GRADE,        '+
              '                                LINHA_ANO, ATIVO, PRECO_CUSTO, PRECO_VENDA, PRECO_ATACADO, PRECO_MEDIO,         '+
              '                                ESTOQUE_FIS, ESTOQUE_MIN, PESO_LIQ, PESO_BRU, QTD_PECAS, REFERENCIA,            '+
-             '                                TIPO, UNIDADE_MEDIDA, KIT, CODIGO_IBPT)                                         '+
+             '                                TIPO, UNIDADE_MEDIDA, KIT, CODIGO_IBPT, DESC_TIPO_COR)                          '+
              '                        values (:CODIGO, :DESCRICAO, :COD_NCM, :COD_TIPO, :COD_GRUPO, :COD_COLECAO, :COD_GRADE, '+
              '                                :LINHA_ANO, :ATIVO, :PRECO_CUSTO, :PRECO_VENDA, :PRECO_ATACADO, :PRECO_MEDIO,   '+
              '                                :ESTOQUE_FIS, :ESTOQUE_MIN, :PESO_LIQ, :PESO_BRU, :QTD_PECAS, :REFERENCIA,      '+
-             '                                :TIPO, :UNIDADE_MEDIDA, :KIT, :CODIGO_IBPT)                                     ';
+             '                                :TIPO, :UNIDADE_MEDIDA, :KIT, :CODIGO_IBPT, :DESC_TIPO_COR)                     ';
 
 end;
 

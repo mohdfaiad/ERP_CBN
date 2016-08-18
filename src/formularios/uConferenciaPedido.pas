@@ -314,6 +314,43 @@ type
     chkNaoConferidos: TCheckBox;
     chkConferidos: TCheckBox;
     chkTodos: TCheckBox;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    edtSubs10: TCurrencyEdit;
+    edtMax10: TCurrencyEdit;
+    edtSubs12: TCurrencyEdit;
+    edtMax12: TCurrencyEdit;
+    edtSubs14: TCurrencyEdit;
+    edtMax14: TCurrencyEdit;
+    cdsItensQTD_10_O: TIntegerField;
+    cdsItensQTD_12_O: TIntegerField;
+    cdsItensQTD_14_O: TIntegerField;
+    cdsItensQTD_10: TIntegerField;
+    cdsItensQTD_12: TIntegerField;
+    cdsItensQTD_14: TIntegerField;
+    edt14: TCurrencyEdit;
+    Label32: TLabel;
+    edt12: TCurrencyEdit;
+    Label33: TLabel;
+    edt10: TCurrencyEdit;
+    Label34: TLabel;
+    cdsItensConferidosQTD_10_O: TIntegerField;
+    cdsItensConferidosQTD_12_O: TIntegerField;
+    cdsItensConferidosQTD_14_O: TIntegerField;
+    cdsItensConferidosQTD_10: TIntegerField;
+    cdsItensConferidosQTD_12: TIntegerField;
+    cdsItensConferidosQTD_14: TIntegerField;
+    cdsSubstitutosTAM_10: TIntegerField;
+    cdsSubstitutosTAM_12: TIntegerField;
+    cdsSubstitutosTAM_14: TIntegerField;
+    qryCaixasQTD_10: TIntegerField;
+    qryCaixasQTD_12: TIntegerField;
+    qryCaixasQTD_14: TIntegerField;
+    cdsCaixasQTD_10: TIntegerField;
+    cdsCaixasQTD_12: TIntegerField;
+    cdsCaixasQTD_14: TIntegerField;
+    Button1: TButton;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -359,6 +396,7 @@ type
     procedure Timer3Timer(Sender: TObject);
     procedure btnSubstituiClick(Sender: TObject);
     procedure chkTodosClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
 
   private
     hora_inicio :TTime;
@@ -406,7 +444,7 @@ type
     { vai armazenando os itens que vao substituindo os itens das cores genericas ('MASCULINO' e 'FEMININO')}
     procedure armazena_substituto(codigo_item, codigo_cor, quantidade :integer; tamanho, genero :String);
 
-    procedure AtualizaValoresConferenciaItem(Item :TConferenciaItem; Q_RN, Q_P, Q_M, Q_G, Q_1, Q_2, Q_3, Q_4, Q_6, Q_8, Q_unica :integer);
+    procedure AtualizaValoresConferenciaItem(Item :TConferenciaItem; Q_RN, Q_P, Q_M, Q_G, Q_1, Q_2, Q_3, Q_4, Q_6, Q_8, Q_10, Q_12, Q_14, Q_unica :integer);
     function item_conferido(codigo_item :integer) :Boolean;
 
     { atualiza o pedido, substituindo os itens genericos, por aqueles previamente armazenados na procedure "armazena_substituto"}
@@ -506,7 +544,8 @@ begin
   Conferido := Conferencia_finalizada;
 
   gridItens.Columns[0].Visible  := Conferido;
-  gridItens.Columns[30].Visible := Conferido;
+  //coluna Caixa
+  gridItens.Columns[36].Visible := Conferido;
 
   habilita_desabilita_caixas(Conferido and not FVisualizarConferencia);
 
@@ -875,6 +914,9 @@ begin
      ConferenciaItem.QTD_4              := cdsItensConferidosQTD_4.AsInteger;
      ConferenciaItem.QTD_6              := cdsItensConferidosQTD_6.AsInteger;
      ConferenciaItem.QTD_8              := cdsItensConferidosQTD_8.AsInteger;
+     ConferenciaItem.QTD_10             := cdsItensConferidosQTD_10.AsInteger;
+     ConferenciaItem.QTD_12             := cdsItensConferidosQTD_12.AsInteger;
+     ConferenciaItem.QTD_14             := cdsItensConferidosQTD_14.AsInteger;
      ConferenciaItem.QTD_UNICA          := cdsItensConferidosQTD_UNICA.AsInteger;
 
 
@@ -889,7 +931,8 @@ begin
    {if (cdsSubstitutos.Active) and not (cdsSubstitutos.IsEmpty) then
      substitui_produto_generico;}
 
-   if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then atualiza_estoque( BuscaPedido1.Ped.codigo, -1);
+   if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then
+     atualiza_estoque( BuscaPedido1.Ped.codigo, -1);
 
    result := true;
 
@@ -939,7 +982,8 @@ begin
 
   habilita_desabilita_caixas(false);
 
-  gridItens.columns[31].Visible := false;
+  //coluna Caixa
+  gridItens.columns[36].Visible := false;
 
   if cdsCaixas.Active         then  cdsCaixas.EmptyDataSet;
   if cdsSubstitutos.Active    then  cdsSubstitutos.EmptyDataSet;
@@ -999,11 +1043,11 @@ begin
     TDBGridCBN(Sender).Canvas.Brush.Color := $009E6C3A;
 
     if AnsiIndexStr(Column.FieldName,
-     ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_UNICA']) >= 0 then
+     ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_10','QTD_12','QTD_14','QTD_UNICA']) >= 0 then
      TDBGridCBN(Sender).Canvas.Font.Color  := IfThen( ((TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName).AsInteger = 0) and
                                                       ((TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName+'_O').AsInteger = 0), $009E6C3A, clwhite);
     if AnsiIndexStr(Column.FieldName,
-     ['QTD_RN_O','QTD_P_O','QTD_M_O','QTD_G_O','QTD_1_O','QTD_2_O','QTD_3_O','QTD_4_O','QTD_6_O','QTD_8_O','QTD_UNICA_O']) >= 0 then
+     ['QTD_RN_O','QTD_P_O','QTD_M_O','QTD_G_O','QTD_1_O','QTD_2_O','QTD_3_O','QTD_4_O','QTD_6_O','QTD_8_O','QTD_10_O','QTD_12_O','QTD_14_O','QTD_UNICA_O']) >= 0 then
      TDBGridCBN(Sender).Canvas.Font.Color  := IfThen( (TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName).AsInteger = 0, $009E6C3A, clwhite);
 
 
@@ -1015,7 +1059,7 @@ begin
     TDBGridCBN(Sender).Canvas.Brush.Color := $000080FF;
   end
   else if AnsiIndexStr(Column.FieldName,
-  ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_UNICA']) >= 0 then begin
+  ['QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_10','QTD_12','QTD_14','QTD_UNICA']) >= 0 then begin
 
     TDBGridCBN(Sender).Canvas.Font.Color  := IfThen( ((TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName).AsInteger = 0) and
                                                      ((TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName+'_O').AsInteger = 0), $00D6DACF, clGreen);
@@ -1025,14 +1069,18 @@ begin
     TDBGridCBN(Sender).Canvas.Brush.Color := $00D6DACF;
   end
   else if AnsiIndexStr(Column.FieldName,
-  ['QTD_RN_O','QTD_P_O','QTD_M_O','QTD_G_O','QTD_1_O','QTD_2_O','QTD_3_O','QTD_4_O','QTD_6_O','QTD_8_O','QTD_UNICA_O']) >= 0 then begin
-    Column.Title.Font.Color := clBtnFace;
+  ['QTD_RN_O','QTD_P_O','QTD_M_O','QTD_G_O','QTD_1_O','QTD_2_O','QTD_3_O','QTD_4_O','QTD_6_O','QTD_8_O','QTD_10_O','QTD_12_O','QTD_14_O','QTD_UNICA_O']) >= 0 then begin
+    Column.Title.Font.Color := $00F5F5F5;
 
     TDBGridCBN(Sender).Canvas.Font.Color  := IfThen( (TDBGridCbn(Sender).DataSource.DataSet).FieldByName(Column.FieldName).AsInteger > 0, clGray, clwhite);
     TDBGridCBN(Sender).Canvas.Font.Style  := [fsBold];
     TDBGridCBN(Sender).Canvas.Font.name   := 'Arial';
     TDBGridCBN(Sender).Canvas.Font.Size   := 11;
     TDBGridCBN(Sender).Canvas.Brush.Color := clwhite;
+  end
+  else if AnsiIndexStr(Column.FieldName, ['REFPRO','PRODUTO', 'COR']) >= 0 then begin
+    TDBGridCBN(Sender).Canvas.Font.name   := 'Calibri';
+    TDBGridCBN(Sender).Canvas.Font.Size   := 8;
   end
   else if TDBGridCBN(Sender).Fields[1].asString = 'S' then begin {se campo conferido = S}
     TDBGridCBN(Sender).Canvas.Brush.Color := $0086B98B;
@@ -1116,6 +1164,9 @@ begin
      ( cdsItensQTD_4.AsInteger ) +
      ( cdsItensQTD_6.AsInteger ) +
      ( cdsItensQTD_8.AsInteger ) +
+     ( cdsItensQTD_10.AsInteger ) +
+     ( cdsItensQTD_12.AsInteger ) +
+     ( cdsItensQTD_14.AsInteger ) +
      ( cdsItensQTD_UNICA.AsInteger )) = 1 then  Result := 'S';
 end;
 
@@ -1138,6 +1189,9 @@ begin
    total_pecas := total_pecas + cdsItensQTD_4_O.AsInteger;
    total_pecas := total_pecas + cdsItensQTD_6_O.AsInteger;
    total_pecas := total_pecas + cdsItensQTD_8_O.AsInteger;
+   total_pecas := total_pecas + cdsItensQTD_10_O.AsInteger;
+   total_pecas := total_pecas + cdsItensQTD_12_O.AsInteger;
+   total_pecas := total_pecas + cdsItensQTD_14_O.AsInteger;
    total_pecas := total_pecas + cdsItensQTD_UNICA_O.AsInteger;
 
    total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_RN_O.AsInteger - cdsItensQTD_RN.AsInteger);
@@ -1150,6 +1204,9 @@ begin
    total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_4_O.AsInteger - cdsItensQTD_4.AsInteger);
    total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_6_O.AsInteger - cdsItensQTD_6.AsInteger);
    total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_8_O.AsInteger - cdsItensQTD_8.AsInteger);
+   total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_10_O.AsInteger - cdsItensQTD_10.AsInteger);
+   total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_12_O.AsInteger - cdsItensQTD_12.AsInteger);
+   total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_14_O.AsInteger - cdsItensQTD_14.AsInteger);
    total_pecas_conferidas := total_pecas_conferidas + (cdsItensQTD_UNICA_O.AsInteger - cdsItensQTD_UNICA.AsInteger);
 
     cdsItens.Next;
@@ -1296,6 +1353,9 @@ begin
     else if cdsItensConferidosQTD_4.AsInteger < cdsItensConferidosQTD_4_O.AsInteger         then result := true
     else if cdsItensConferidosQTD_6.AsInteger < cdsItensConferidosQTD_6_O.AsInteger         then result := true
     else if cdsItensConferidosQTD_8.AsInteger < cdsItensConferidosQTD_8_O.AsInteger         then result := true
+    else if cdsItensConferidosQTD_10.AsInteger < cdsItensConferidosQTD_10_O.AsInteger       then result := true
+    else if cdsItensConferidosQTD_12.AsInteger < cdsItensConferidosQTD_12_O.AsInteger       then result := true
+    else if cdsItensConferidosQTD_14.AsInteger < cdsItensConferidosQTD_14_O.AsInteger       then result := true
     else if cdsItensConferidosQTD_UNICA.AsInteger < cdsItensConferidosQTD_UNICA_O.AsInteger then result := true;
 
     if result then begin
@@ -1521,7 +1581,8 @@ begin
     or (cdsItensConferidosQTD_1.AsInteger     > 0) or (cdsItensConferidosQTD_2.AsInteger > 0)
     or (cdsItensConferidosQTD_3.AsInteger     > 0) or (cdsItensConferidosQTD_4.AsInteger > 0)
     or (cdsItensConferidosQTD_6.AsInteger     > 0) or (cdsItensConferidosQTD_8.AsInteger > 0)
-    or (cdsItensConferidosQTD_UNICA.AsInteger > 0) then begin
+    or (cdsItensConferidosQTD_10.AsInteger    > 0) or (cdsItensConferidosQTD_12.AsInteger > 0)
+    or (cdsItensConferidosQTD_14.AsInteger    > 0) or (cdsItensConferidosQTD_UNICA.AsInteger > 0) then begin
 
       qtd_real        := Item.qtd_total;
       Item.qtd_RN     := cdsItensConferidosQTD_RN.AsInteger;
@@ -1534,6 +1595,9 @@ begin
       Item.qtd_4      := cdsItensConferidosQTD_4.AsInteger;
       Item.qtd_6      := cdsItensConferidosQTD_6.AsInteger;
       Item.qtd_8      := cdsItensConferidosQTD_8.AsInteger;
+      Item.qtd_10     := cdsItensConferidosQTD_10.AsInteger;
+      Item.qtd_12     := cdsItensConferidosQTD_12.AsInteger;
+      Item.qtd_14     := cdsItensConferidosQTD_14.AsInteger;
       Item.qtd_UNICA  := cdsItensConferidosQTD_UNICA.AsInteger;
 
                         { como o item.valor_total ja pega o total sem o desconto total, após isso se tem que tirar a diferença do
@@ -1564,7 +1628,8 @@ begin
   or (cdsItensConferidosQTD_1.AsInteger     > 0) or (cdsItensConferidosQTD_2.AsInteger > 0)
   or (cdsItensConferidosQTD_3.AsInteger     > 0) or (cdsItensConferidosQTD_4.AsInteger > 0)
   or (cdsItensConferidosQTD_6.AsInteger     > 0) or (cdsItensConferidosQTD_8.AsInteger > 0)
-  or (cdsItensConferidosQTD_UNICA.AsInteger > 0) then begin
+  or (cdsItensConferidosQTD_10.AsInteger    > 0) or (cdsItensConferidosQTD_12.AsInteger > 0)
+  or (cdsItensConferidosQTD_14.AsInteger    > 0) or (cdsItensConferidosQTD_UNICA.AsInteger > 0) then begin
 
     qtd_real        := Item.qtd_total;
     Item.qtd_RN     := IfThen(grades_inteiras, cdsItensQTD_RN_O.AsInteger, cdsItensQTD_RN.AsInteger);
@@ -1577,6 +1642,9 @@ begin
     Item.qtd_4      := IfThen(grades_inteiras, cdsItensQTD_4_O.AsInteger, cdsItensQTD_4.AsInteger);
     Item.qtd_6      := IfThen(grades_inteiras, cdsItensQTD_6_O.AsInteger, cdsItensQTD_6.AsInteger);
     Item.qtd_8      := IfThen(grades_inteiras, cdsItensQTD_8_O.AsInteger, cdsItensQTD_8.AsInteger);
+    Item.qtd_10     := IfThen(grades_inteiras, cdsItensQTD_10_O.AsInteger, cdsItensQTD_10.AsInteger);
+    Item.qtd_12     := IfThen(grades_inteiras, cdsItensQTD_12_O.AsInteger, cdsItensQTD_12.AsInteger);
+    Item.qtd_14     := IfThen(grades_inteiras, cdsItensQTD_14_O.AsInteger, cdsItensQTD_14.AsInteger);
     Item.qtd_UNICA  := IfThen(grades_inteiras, cdsItensQTD_UNICA_O.AsInteger, cdsItensQTD_UNICA.AsInteger);
 
                           { como o item.valor_total ja pega o total sem o desconto total, após isso se tem que tirar a diferença do
@@ -1674,6 +1742,9 @@ begin
       (BuscaPedido1.Ped.Itens[i] as TItem).qtd_4     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_4     - cdsSubstitutosTAM_4.AsInteger;
       (BuscaPedido1.Ped.Itens[i] as TItem).qtd_6     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_6     - cdsSubstitutosTAM_6.AsInteger;
       (BuscaPedido1.Ped.Itens[i] as TItem).qtd_8     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_8     - cdsSubstitutosTAM_8.AsInteger;
+      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_10    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_10    - cdsSubstitutosTAM_10.AsInteger;
+      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_12    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_12    - cdsSubstitutosTAM_12.AsInteger;
+      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_14    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_14    - cdsSubstitutosTAM_14.AsInteger;
       (BuscaPedido1.Ped.Itens[i] as TItem).qtd_UNICA := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_UNICA - cdsSubstitutosTAM_UNICA.AsInteger;
 
       perc_equivalente  := ( cdsSubstitutosQTD_TOTAL.AsFloat * 100 ) / total_itens;
@@ -1713,6 +1784,9 @@ begin
       Item.qtd_4          := Item.qtd_4     + cdsSubstitutosTAM_4.AsInteger;
       Item.qtd_6          := Item.qtd_6     + cdsSubstitutosTAM_6.AsInteger;
       Item.qtd_8          := Item.qtd_8     + cdsSubstitutosTAM_8.AsInteger;
+      Item.qtd_10         := Item.qtd_10    + cdsSubstitutosTAM_10.AsInteger;
+      Item.qtd_12         := Item.qtd_12    + cdsSubstitutosTAM_12.AsInteger;
+      Item.qtd_14         := Item.qtd_14    + cdsSubstitutosTAM_14.AsInteger;
       Item.qtd_UNICA      := Item.qtd_UNICA + cdsSubstitutosTAM_UNICA.AsInteger;
       Item.qtd_total      := Item.qtd_total;
       Item.valor_total    := Item.valor_total;
@@ -1745,6 +1819,9 @@ begin
         ConferenciaItem.QTD_4              := cdsSubstitutosTAM_4.AsInteger;
         ConferenciaItem.QTD_6              := cdsSubstitutosTAM_6.AsInteger;
         ConferenciaItem.QTD_8              := cdsSubstitutosTAM_8.AsInteger;
+        ConferenciaItem.QTD_10             := cdsSubstitutosTAM_10.AsInteger;
+        ConferenciaItem.QTD_12             := cdsSubstitutosTAM_12.AsInteger;
+        ConferenciaItem.QTD_14             := cdsSubstitutosTAM_14.AsInteger;
         ConferenciaItem.QTD_UNICA          := cdsSubstitutosTAM_UNICA.AsInteger;
 
         ConferenciaPedido.Itens.Add( ConferenciaItem );
@@ -1758,14 +1835,16 @@ begin
                                           cdsSubstitutosTAM_RN.AsInteger, cdsSubstitutosTAM_P.AsInteger, cdsSubstitutosTAM_M.AsInteger,
                                           cdsSubstitutosTAM_G.AsInteger, cdsSubstitutosTAM_1.AsInteger, cdsSubstitutosTAM_2.AsInteger,
                                           cdsSubstitutosTAM_3.AsInteger, cdsSubstitutosTAM_4.AsInteger, cdsSubstitutosTAM_6.AsInteger,
-                                          cdsSubstitutosTAM_8.AsInteger, cdsSubstitutosTAM_unica.AsInteger);
+                                          cdsSubstitutosTAM_8.AsInteger, cdsSubstitutosTAM_10.AsInteger, cdsSubstitutosTAM_12.AsInteger,
+                                          cdsSubstitutosTAM_14.AsInteger, cdsSubstitutosTAM_unica.AsInteger);
 
         if codigo_item_generico = (ConferenciaPedido.Itens[x] as TConferenciaItem).codigo_item then
           AtualizaValoresConferenciaItem((ConferenciaPedido.Itens[x] as TConferenciaItem),
                                          -cdsSubstitutosTAM_RN.AsInteger, -cdsSubstitutosTAM_P.AsInteger, -cdsSubstitutosTAM_M.AsInteger,
                                          -cdsSubstitutosTAM_G.AsInteger, -cdsSubstitutosTAM_1.AsInteger, -cdsSubstitutosTAM_2.AsInteger,
                                          -cdsSubstitutosTAM_3.AsInteger, -cdsSubstitutosTAM_4.AsInteger, -cdsSubstitutosTAM_6.AsInteger,
-                                         -cdsSubstitutosTAM_8.AsInteger, -cdsSubstitutosTAM_unica.AsInteger);
+                                         -cdsSubstitutosTAM_8.AsInteger, -cdsSubstitutosTAM_10.AsInteger, -cdsSubstitutosTAM_12.AsInteger,
+                                         -cdsSubstitutosTAM_14.AsInteger, -cdsSubstitutosTAM_unica.AsInteger);
 
           if ((ConferenciaPedido.Itens[x] as TConferenciaItem).QTD_TOTAL = 0)or
               (codigo_item_generico = (ConferenciaPedido.Itens[x] as TConferenciaItem).codigo_item) then
@@ -1811,7 +1890,7 @@ begin
 end;
 
 procedure TfrmConferenciaPedido.AtualizaValoresConferenciaItem(
-  Item: TConferenciaItem; Q_RN, Q_P, Q_M, Q_G, Q_1, Q_2, Q_3, Q_4, Q_6, Q_8, Q_unica :integer);
+  Item: TConferenciaItem; Q_RN, Q_P, Q_M, Q_G, Q_1, Q_2, Q_3, Q_4, Q_6, Q_8, Q_10, Q_12, Q_14, Q_unica :integer);
 begin
   Item.QTD_RN    := Item.QTD_RN    + Q_RN;
   Item.QTD_P     := Item.QTD_P     + Q_P;
@@ -1823,6 +1902,9 @@ begin
   Item.QTD_4     := Item.QTD_4     + Q_4;
   Item.QTD_6     := Item.QTD_6     + Q_6;
   Item.QTD_8     := Item.QTD_8     + Q_8;
+  Item.QTD_10    := Item.QTD_10    + Q_10;
+  Item.QTD_12    := Item.QTD_12    + Q_12;
+  Item.QTD_14    := Item.QTD_14    + Q_14;
   Item.QTD_UNICA := Item.QTD_UNICA + Q_UNICA;
 end;
 
@@ -1849,7 +1931,8 @@ begin
             (cdsItensQTD_1.AsInteger = 0)and(cdsItensQTD_2.AsInteger = 0)and
             (cdsItensQTD_3.AsInteger = 0)and(cdsItensQTD_4.AsInteger = 0)and
             (cdsItensQTD_6.AsInteger = 0)and(cdsItensQTD_8.AsInteger = 0)and
-            (cdsItensQTD_UNICA.AsInteger = 0);
+            (cdsItensQTD_10.AsInteger = 0)and(cdsItensQTD_12.AsInteger = 0)and
+            (cdsItensQTD_14.AsInteger = 0)and(cdsItensQTD_UNICA.AsInteger = 0);
 end;
 
 procedure TfrmConferenciaPedido.SalvarAtualizar_caixas;
@@ -1895,6 +1978,9 @@ begin
        caixas.qtd_4              := caixas.qtd_4     + cdsItensQTD_4_O.AsInteger;
        caixas.qtd_6              := caixas.qtd_6     + cdsItensQTD_6_O.AsInteger;
        caixas.qtd_8              := caixas.qtd_8     + cdsItensQTD_8_O.AsInteger;
+       caixas.qtd_10             := caixas.qtd_10    + cdsItensQTD_10_O.AsInteger;
+       caixas.qtd_12             := caixas.qtd_12    + cdsItensQTD_12_O.AsInteger;
+       caixas.qtd_14             := caixas.qtd_14    + cdsItensQTD_14_O.AsInteger;
        caixas.qtd_UNICA          := caixas.qtd_UNICA + cdsItensQTD_UNICA_O.AsInteger;
 
        repositorio.Salvar(Caixas);
@@ -2145,6 +2231,11 @@ begin
 
 end;
 
+procedure TfrmConferenciaPedido.Button1Click(Sender: TObject);
+begin
+  cdsItensQTD_12.AsInteger := 0;
+end;
+
 procedure TfrmConferenciaPedido.Salva_estoque(cod_produto, cod_cor : integer; descricao_tamanho :String;
 quantidade: Real);
 var
@@ -2345,6 +2436,12 @@ begin
                     dm.qryGenerica2.fieldByName('QTD_6').AsInteger;
   edt8.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '8') -
                     dm.qryGenerica2.fieldByName('QTD_8').AsInteger;
+  edt10.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '10') -
+                    dm.qryGenerica2.fieldByName('QTD_10').AsInteger;
+  edt12.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '12') -
+                    dm.qryGenerica2.fieldByName('QTD_12').AsInteger;
+  edt14.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '14') -
+                    dm.qryGenerica2.fieldByName('QTD_14').AsInteger;
   edtUNICA.Value := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'UNICA') -
                     dm.qryGenerica2.fieldByName('QTD_UNICA').AsInteger;
 
@@ -2442,7 +2539,7 @@ function TfrmConferenciaPedido.atualiza_qtd_item(Item: TItem; tamanho: String; q
 create_alter :String; desconto :Real) :TItem;
 begin
 
-   case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','UNICA']) of
+   case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','10','12','14','UNICA']) of
     0 : Item.qtd_RN    := Item.qtd_RN    + quantidade;
     1 : Item.qtd_P     := Item.qtd_P     + quantidade;
     2 : Item.qtd_M     := Item.qtd_M     + quantidade;
@@ -2453,7 +2550,10 @@ begin
     7 : Item.qtd_4     := Item.qtd_4     + quantidade;
     8 : Item.qtd_6     := Item.qtd_6     + quantidade;
     9 : Item.qtd_8     := Item.qtd_8     + quantidade;
-    10: Item.qtd_UNICA := Item.qtd_UNICA + quantidade;
+    10: Item.qtd_10    := Item.qtd_10    + quantidade;
+    11: Item.qtd_12    := Item.qtd_12    + quantidade;
+    12: Item.qtd_14    := Item.qtd_14    + quantidade;
+    13: Item.qtd_UNICA := Item.qtd_UNICA + quantidade;
    end;
 
    if create_alter = 'A' then
@@ -2501,6 +2601,9 @@ begin
   cdsItens.RecNo := linha;
 
   configura_campos_substituicao('UNICA', cdsItensQTD_UNICA.AsInteger);
+  configura_campos_substituicao('14'   , cdsItensQTD_14.AsInteger);
+  configura_campos_substituicao('12'   , cdsItensQTD_12.AsInteger);
+  configura_campos_substituicao('10'   , cdsItensQTD_10.AsInteger);
   configura_campos_substituicao('8'    , cdsItensQTD_8.AsInteger);
   configura_campos_substituicao('6'    , cdsItensQTD_6.AsInteger);
   configura_campos_substituicao('4'    , cdsItensQTD_4.AsInteger);
@@ -2549,6 +2652,9 @@ begin
   Item.qtd_4     := Item.qtd_4 - edtSubs4.AsInteger;
   Item.qtd_6     := Item.qtd_6 - edtSubs6.AsInteger;
   Item.qtd_8     := Item.qtd_8 - edtSubs8.AsInteger;
+  Item.qtd_10    := Item.qtd_10 - edtSubs10.AsInteger;
+  Item.qtd_12    := Item.qtd_12 - edtSubs12.AsInteger;
+  Item.qtd_14    := Item.qtd_14 - edtSubs14.AsInteger;
   Item.qtd_UNICA := Item.qtd_UNICA - edtSubsUNICA.AsInteger;
 
   repositorio.Salvar(Item);
@@ -2570,6 +2676,9 @@ begin
   Item.qtd_4     := Item.qtd_4 + edtSubs4.AsInteger;
   Item.qtd_6     := Item.qtd_6 + edtSubs6.AsInteger;
   Item.qtd_8     := Item.qtd_8 + edtSubs8.AsInteger;
+  Item.qtd_10    := Item.qtd_10 + edtSubs10.AsInteger;
+  Item.qtd_12    := Item.qtd_12 + edtSubs12.AsInteger;
+  Item.qtd_14    := Item.qtd_14 + edtSubs14.AsInteger;
   Item.qtd_UNICA := Item.qtd_UNICA + edtSubsUNICA.AsInteger;
 
   repositorio.Salvar(Item);
@@ -2617,7 +2726,8 @@ begin
   dm.qryGenerica2.Close;
   dm.qryGenerica2.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G, '+
                               ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,         '+
-                              ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_unica) QTD_unica                       '+
+                              ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_8) QTD_10, sum(ci.qtd_8) QTD_12,      '+
+                              ' sum(ci.qtd_8) QTD_14, sum(ci.qtd_unica) QTD_unica                                           '+
                               ' from ITENS i                                                                                '+
                               ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                                '+
                               ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                        '+
@@ -2687,10 +2797,10 @@ var Qtd_estoque :Real;
     i, linha :integer;
     tamanho :String;
 const
-    Tamanhos : array[1..11] of string=('QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_UNICA');
+    Tamanhos : array[1..14] of string=('QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_10','QTD_12','QTD_14','QTD_UNICA');
 begin
 
-    for i := 1 to 11 do begin
+    for i := 1 to 14 do begin
 
       tamanho := copy(cdsitens.FieldByName(Tamanhos[i]).FieldName, 5, 5);
 
@@ -2731,6 +2841,9 @@ begin
                                                   or (FieldByName('QTD_4').AsInteger <> FieldByName('QTD_4_O').AsInteger)
                                                   or (FieldByName('QTD_6').AsInteger <> FieldByName('QTD_6_O').AsInteger)
                                                   or (FieldByName('QTD_8').AsInteger <> FieldByName('QTD_8_O').AsInteger)
+                                                  or (FieldByName('QTD_10').AsInteger <> FieldByName('QTD_10_O').AsInteger)
+                                                  or (FieldByName('QTD_12').AsInteger <> FieldByName('QTD_12_O').AsInteger)
+                                                  or (FieldByName('QTD_14').AsInteger <> FieldByName('QTD_14_O').AsInteger)
                                                   or (FieldByName('QTD_unica').AsInteger <> FieldByName('QTD_unica_O').AsInteger), 'N', 'S');
     end;
   end;
@@ -2758,7 +2871,8 @@ begin
       FieldByName('CONFERIDO').AsString := IfThen((FieldByName('QTD_RN').AsInteger > 0) or (FieldByName('QTD_P').AsInteger > 0) or (FieldByName('QTD_M').AsInteger > 0)
                                                or (FieldByName('QTD_G').AsInteger > 0) or (FieldByName('QTD_1').AsInteger > 0) or (FieldByName('QTD_2').AsInteger > 0)
                                                or (FieldByName('QTD_3').AsInteger > 0) or (FieldByName('QTD_4').AsInteger > 0) or (FieldByName('QTD_6').AsInteger > 0)
-                                               or (FieldByName('QTD_8').AsInteger > 0) or (FieldByName('QTD_unica').AsInteger > 0), 'N', 'S');
+                                               or (FieldByName('QTD_8').AsInteger > 0) or (FieldByName('QTD_10').AsInteger > 0) or (FieldByName('QTD_12').AsInteger > 0)
+                                               or (FieldByName('QTD_14').AsInteger > 0) or (FieldByName('QTD_unica').AsInteger > 0), 'N', 'S');
     end;
   end;
 end;
@@ -2851,7 +2965,10 @@ begin
      7  : Item.qtd_4     := Item.qtd_4     + quantidade;
      8  : Item.qtd_6     := Item.qtd_6     + quantidade;
      9  : Item.qtd_8     := Item.qtd_8     + quantidade;
-     10 : Item.qtd_UNICA := Item.qtd_UNICA + quantidade;
+     10 : Item.qtd_10    := Item.qtd_10    + quantidade;
+     11 : Item.qtd_12    := Item.qtd_12    + quantidade;
+     12 : Item.qtd_14    := Item.qtd_14    + quantidade;
+     13 : Item.qtd_UNICA := Item.qtd_UNICA + quantidade;
     end;
 
     Item.qtd_total   := Item.qtd_total;
@@ -2886,7 +3003,10 @@ begin
      7  : Item.qtd_4     := Item.qtd_4     - quantidade;
      8  : Item.qtd_6     := Item.qtd_6     - quantidade;
      9  : Item.qtd_8     := Item.qtd_8     - quantidade;
-     10 : Item.qtd_UNICA := Item.qtd_UNICA - quantidade;
+     10 : Item.qtd_10    := Item.qtd_10     - quantidade;
+     11 : Item.qtd_12    := Item.qtd_12     - quantidade;
+     12 : Item.qtd_14    := Item.qtd_14     - quantidade;
+     13 : Item.qtd_UNICA := Item.qtd_UNICA - quantidade;
     end;
 
     if Item.qtd_total = 0 then

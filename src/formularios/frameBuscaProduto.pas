@@ -152,7 +152,7 @@ begin
 
        produto.SQL := 'Select first 1 p.referencia, p.descricao, p.codigo, g.codigo grade, g.descricao descgrade, pt.preco, p.tipo, p.kit    from produtos p '+
                       'inner join grades g on g.codigo = p.cod_grade                                                                                  '+
-                      'left join produto_tabela_preco pt on (pt.codproduto = p.codigo and pt.codtabela = '+ codTabela +')                             '+
+                      'left join produto_tabela_preco pt on ((pt.codproduto = p.codigo) and (pt.codtabela = '+ codTabela +'))                             '+
                       'where p.' + campo + ' = ''' + referencia + ''' '+condicao_loja;
 
        if not produto.BuscaVazia then begin

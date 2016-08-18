@@ -206,7 +206,7 @@ begin
    self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.xMotivo  := self.FACBrNFe.WebServices.Consulta.xMotivo;
    self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.verAplic := self.FACBrNFe.WebServices.Consulta.verAplic;
 
-   self.FACBrNFe.NotasFiscais.Items[0].XMLOriginal := '';
+ //  self.FACBrNFe.NotasFiscais.Items[0].XMLOriginal := '';
    self.GerarXML(NotaFiscal);
 end;
 

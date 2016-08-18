@@ -86,6 +86,9 @@ begin
    Item.qtd_4             := self.FQuery.FieldByName('QTD_4'            ).AsInteger;
    Item.qtd_6             := self.FQuery.FieldByName('QTD_6'            ).AsInteger;
    Item.qtd_8             := self.FQuery.FieldByName('QTD_8'            ).AsInteger;
+   Item.qtd_10            := self.FQuery.FieldByName('qtd_10'            ).AsInteger;
+   Item.qtd_12            := self.FQuery.FieldByName('qtd_12'            ).AsInteger;
+   Item.qtd_14            := self.FQuery.FieldByName('qtd_14'            ).AsInteger;
    Item.qtd_UNICA         := self.FQuery.FieldByName('QTD_UNICA'        ).AsFloat;
    Item.qtd_total         := self.FQuery.FieldByName('QTD_TOTAL'        ).AsFloat;
    Item.observacao        := self.FQuery.FieldByName('OBSERVACAO'       ).AsString;
@@ -155,6 +158,12 @@ begin
     Auditoria.AdicionaCampoAlterado('qtd_6', IntToStr(ItemAntigo.qtd_6), IntToStr(ItemNovo.qtd_6));
    if (ItemAntigo.qtd_8 <> ItemNovo.qtd_8) then
     Auditoria.AdicionaCampoAlterado('qtd_8', IntToStr(ItemAntigo.qtd_8), IntToStr(ItemNovo.qtd_8));
+   if (ItemAntigo.qtd_10 <> ItemNovo.qtd_10) then
+    Auditoria.AdicionaCampoAlterado('qtd_10', IntToStr(ItemAntigo.qtd_10), IntToStr(ItemNovo.qtd_10));
+   if (ItemAntigo.qtd_12 <> ItemNovo.qtd_12) then
+    Auditoria.AdicionaCampoAlterado('qtd_12', IntToStr(ItemAntigo.qtd_12), IntToStr(ItemNovo.qtd_12));
+   if (ItemAntigo.qtd_14 <> ItemNovo.qtd_14) then
+    Auditoria.AdicionaCampoAlterado('qtd_14', IntToStr(ItemAntigo.qtd_14), IntToStr(ItemNovo.qtd_14));
    if (ItemAntigo.qtd_UNICA <> ItemNovo.qtd_UNICA) then
     Auditoria.AdicionaCampoAlterado('qtd_UNICA', FloatToStr(ItemAntigo.qtd_UNICA), FloatToStr(ItemNovo.qtd_UNICA));
    if (ItemAntigo.qtd_total <> ItemNovo.qtd_total) then
@@ -189,6 +198,9 @@ begin
    Auditoria.AdicionaCampoExcluido('QTD_4'            , intToStr(Item.qtd_4    )          );
    Auditoria.AdicionaCampoExcluido('QTD_6'            , intToStr(Item.qtd_6    )          );
    Auditoria.AdicionaCampoExcluido('QTD_8'            , intToStr(Item.qtd_8    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_10'           , intToStr(Item.qtd_10    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_12'           , intToStr(Item.qtd_12    )          );
+   Auditoria.AdicionaCampoExcluido('qtd_14'           , intToStr(Item.qtd_14    )          );
    Auditoria.AdicionaCampoExcluido('QTD_UNICA'        , FloatToStr(Item.qtd_UNICA)        );
    Auditoria.AdicionaCampoExcluido('QTD_TOTAL'        , FloatToStr(Item.qtd_total)        );
    Auditoria.AdicionaCampoExcluido('OBSERVACAO'       , Item.observacao                   );
@@ -219,6 +231,9 @@ begin
    Auditoria.AdicionaCampoIncluido('QTD_4'            , intToStr(Item.qtd_4    )          );
    Auditoria.AdicionaCampoIncluido('QTD_6'            , intToStr(Item.qtd_6    )          );
    Auditoria.AdicionaCampoIncluido('QTD_8'            , intToStr(Item.qtd_8    )          );
+   Auditoria.AdicionaCampoIncluido('qtd_10'           , intToStr(Item.qtd_10    )         );
+   Auditoria.AdicionaCampoIncluido('qtd_12'           , intToStr(Item.qtd_12    )         );
+   Auditoria.AdicionaCampoIncluido('qtd_14'           , intToStr(Item.qtd_14    )         );
    Auditoria.AdicionaCampoIncluido('QTD_UNICA'        , FloatToStr(Item.qtd_UNICA)        );
    Auditoria.AdicionaCampoIncluido('QTD_TOTAL'        , FloatToStr(Item.qtd_total)        );
    Auditoria.AdicionaCampoIncluido('OBSERVACAO'       , Item.observacao                   );
@@ -260,6 +275,9 @@ begin
    inherited SetParametro('QTD_4'            , Item.qtd_4    );
    inherited SetParametro('QTD_6'            , Item.qtd_6    );
    inherited SetParametro('QTD_8'            , Item.qtd_8    );
+   inherited SetParametro('qtd_10'           , Item.qtd_10    );
+   inherited SetParametro('qtd_12'           , Item.qtd_12    );
+   inherited SetParametro('qtd_14'           , Item.qtd_14    );
    inherited SetParametro('QTD_UNICA'        , Item.qtd_UNICA);
    inherited SetParametro('QTD_TOTAL'        , Item.qtd_total);
    inherited SetParametro('OBSERVACAO'       , Item.observacao);
@@ -288,13 +306,13 @@ end;
 
 function TRepositorioItem.SQLSalvar: String;
 begin
-  result := 'UPDATE OR INSERT INTO ITENS (CODIGO, COD_PEDIDO, COD_PRODUTO, COD_COR,       '+
-            '                             QTD_TOTAL, PRECO, DESCONTO,VALOR_TOTAL, QTD_RN, '+
-            '                             QTD_P, QTD_M, QTD_G, QTD_1, QTD_2, QTD_3,       '+
-            '                             QTD_4, QTD_6, QTD_8, QTD_UNICA, OBSERVACAO, PESO)     '+
-            'VALUES (:CODIGO, :COD_PEDIDO, :COD_PRODUTO, :COD_COR, :QTD_TOTAL, :PRECO,    '+
-            '        :DESCONTO, :VALOR_TOTAL, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1,    '+
-            '        :QTD_2, :QTD_3, :QTD_4, :QTD_6, :QTD_8, :QTD_UNICA, :OBSERVACAO, :PESO)     ';
+  result := 'UPDATE OR INSERT INTO ITENS (CODIGO, COD_PEDIDO, COD_PRODUTO, COD_COR, QTD_TOTAL,      '+
+            '                             PRECO, DESCONTO,VALOR_TOTAL, QTD_RN, QTD_P, QTD_M,        '+
+            '                             QTD_G, QTD_1, QTD_2, QTD_3,QTD_4, QTD_6, QTD_8,           '+
+            '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO)      '+
+            'VALUES (:CODIGO, :COD_PEDIDO, :COD_PRODUTO, :COD_COR, :QTD_TOTAL, :PRECO, :DESCONTO,   '+
+            '        :VALOR_TOTAL, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, '+
+            '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO)     ';
 
 end;
 
