@@ -190,7 +190,8 @@ type
                         Natureza      :TNaturezaOperacao;
                         Serie         :String;
                         Emitente      :TPessoa;
-                        Destinatario  :TPessoa
+                        Destinatario  :TPessoa;
+                        const Entrada :Boolean = false
                       );
 
     // Para o repositorio
@@ -447,15 +448,18 @@ end;
 
 procedure TNotaFiscal.SetSerie(Serie: String);
 begin
-   if ((TTipoSerieUtilitario.DeStringParaEnumerado(Serie) <> tsNormal) and
+  if not (self.Entrada_saida = 'E') then
+  begin
+    if ((TTipoSerieUtilitario.DeStringParaEnumerado(Serie) <> tsNormal) and
        (TTipoSerieUtilitario.DeStringParaEnumerado(Serie) <> tsSCAN)) then
-     raise TExcecaoParametroInvalido.Create('TNotaFiscal', 'SetSerie(Serie: TTipoSerie)', 'Serie');
+      raise TExcecaoParametroInvalido.Create('TNotaFiscal', 'SetSerie(Serie: TTipoSerie)', 'Serie');
+  end;
 
    self.FSerie := Serie;
 end;
 
 constructor TNotaFiscal.Create(Natureza: TNaturezaOperacao;
-  Serie: String; Emitente, Destinatario: TPessoa);
+  Serie: String; Emitente, Destinatario: TPessoa; const Entrada :Boolean);
 var
   ParametrosInvalidos :TStrings;
   Erro                :String;
@@ -479,6 +483,7 @@ begin
    self.FNFe                     := nil;
    self.FEmpresa                 := nil;
    self.FItensAvulsos            := nil;
+   self.Entrada_saida            := IfThen(Entrada,'E','');
 
    ParametrosInvalidos           := TStringList.Create;
    ParametrosInvalidos.Delimiter := #13;

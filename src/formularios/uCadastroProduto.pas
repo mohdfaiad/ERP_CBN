@@ -195,13 +195,9 @@ type
     cdsCodPossiveisTAG: TStringField;
     comKit: TComboBox;
     Label14: TLabel;
-    BuscaProduto1: TBuscaProduto;
-    gridKits: TDBGrid;
     CDSKits: TClientDataSet;
     dsKits: TDataSource;
-    btnAddKit: TBitBtn;
     DSPKits: TDataSetProvider;
-    edtCodigoKit: TCurrencyEdit;
     qry: TFDQuery;
     cdsCODIGO: TIntegerField;
     cdsDESCRICAO: TStringField;
@@ -262,7 +258,6 @@ type
     cdsEstoqueQTD_10: TIntegerField;
     cdsEstoqueQTD_12: TIntegerField;
     cdsEstoqueQTD_14: TIntegerField;
-    BuscaCor2: TBuscaCor;
     CDSKitsREFPRO: TStringField;
     CDSKitsPRODUTO: TStringField;
     CDSKitsCODIGO: TIntegerField;
@@ -277,6 +272,33 @@ type
     edtDescricaoTipoCor: TEdit;
     Label29: TLabel;
     cdsDESC_TIPO_COR: TStringField;
+    tbsKits: TTabSheet;
+    BuscaProduto1: TBuscaProduto;
+    BuscaCor2: TBuscaCor;
+    btnAddKit: TBitBtn;
+    gridKits: TDBGrid;
+    edtCodigoKit: TCurrencyEdit;
+    DBGrid2: TDBGrid;
+    DBGrid3: TDBGrid;
+    Label30: TLabel;
+    dsCoresKit: TDataSource;
+    cdsCoresKit: TClientDataSet;
+    dsProdsKit: TDataSource;
+    cdsProdsKit: TClientDataSet;
+    cdsProdsKitCODIGO: TIntegerField;
+    cdsProdsKitREFPRO: TStringField;
+    cdsProdsKitPRODUTO: TStringField;
+    cdsCoresKitCODIGO: TIntegerField;
+    cdsCoresKitREFCOR: TStringField;
+    cdsCoresKitCOR: TStringField;
+    btnAddProd: TBitBtn;
+    btnAddCor: TBitBtn;
+    CDSKitsCODIGO_COR_KIT: TIntegerField;
+    CDSKitsREF_COR_KIT: TStringField;
+    cdsCoresKitREFPRO: TStringField;
+    btnCriaVinculo: TBitBtn;
+    btnDeletaVinculo: TSpeedButton;
+    btnCancelaAss: TBitBtn;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -326,6 +348,18 @@ type
       Shift: TShiftState);
     procedure gridReferenciasKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure btnAddProdClick(Sender: TObject);
+    procedure btnAddCorClick(Sender: TObject);
+    procedure btnCriaVinculoClick(Sender: TObject);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure btnDeletaVinculoClick(Sender: TObject);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid2Exit(Sender: TObject);
+    procedure DBGrid2Enter(Sender: TObject);
+    procedure cdsProdsKitAfterScroll(DataSet: TDataSet);
+    procedure btnCancelaAssClick(Sender: TObject);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
@@ -369,7 +403,7 @@ const SQL_CODIGO_BARRAS = 'select p.codigo, pc.codcor, c.descricao cor, gt.codgr
 
 implementation
 
-uses Math, FabricaRepositorio, StrUtils, uModulo, ProdutosKit;
+uses Math, FabricaRepositorio, StrUtils, uModulo, ProdutosKit, CoresKit;
 
 {$R *.dfm}
 
@@ -492,6 +526,8 @@ begin
   comKit.Itemindex                     := 1;
   comKitChange(nil);
   comKit.Enabled                       := true;
+  btnCancelaAss.Click;
+  cdsProdsKit.EmptyDataSet;
 
   if cdsCodBar.Active       then  cdsCodBar.EmptyDataSet;
   if cdsCodPossiveis.Active then  cdsCodPossiveis.EmptyDataSet;
@@ -543,6 +579,21 @@ begin
     CDSKits.Close;
     TFDQuery(DSPKits.DataSet).ParamByName('cod_kit').AsInteger := cdsCODIGO.AsInteger;
     CDSKits.Open;
+
+    CDSKits.First;
+    while not CDSKits.Eof do
+    begin
+      if not cdsProdsKit.Locate('CODIGO',CDSKitsCODIGO_PRODUTO.AsInteger,[]) then
+      begin
+        cdsProdsKit.Append;
+        cdsProdsKitCODIGO.AsInteger := CDSKitsCODIGO_PRODUTO.AsInteger;
+        cdsProdsKitREFPRO.AsString  := CDSKitsREFPRO.AsString;
+        cdsProdsKitPRODUTO.AsString := CDSKitsPRODUTO.AsString;
+        cdsProdsKit.Post;
+      end;
+
+      CDSKits.Next;
+    end;
   end;
 
   comKit.Enabled := CDSKits.isEmpty;
@@ -552,7 +603,7 @@ end;
 procedure TfrmCadastroProduto.FormShow(Sender: TObject);
 begin
   inherited;
-  BuscaCor2.ApareceKits := 'N';
+  BuscaCor2.ApareceKits := 'S';
 //  CDSKits.CreateDataSet;
 
 
@@ -589,12 +640,14 @@ begin
   dspCodPossiveis.DataSet := FDM.GetConsulta(SQL_CODIGO_BARRAS);
 
   CDSKits.Close;
-  DSPKits.DataSet := FDM.GetConsulta('SELECT pro.referencia refpro, pro.descricao produto, pk.*,  '+
-                                     ' cor.descricao cor, cor.referencia refcor                   '+
-                                     ' FROM PRODUTOS_KIT pk                                       '+
-                                     ' left join produtos pro on pro.codigo = pk.codigo_produto   '+
-                                     ' left join cores cor on cor.codigo = pk.codigo_cor          '+
-                                     ' where codigo_kit = :cod_kit                                ');
+  DSPKits.DataSet := FDM.GetConsulta('SELECT pro.referencia refpro, pro.descricao produto, pk.*,   '+
+                                     ' corKit.referencia ref_cor_kit,                              '+
+                                     ' cor.descricao cor, cor.referencia refcor                    '+
+                                     ' FROM PRODUTOS_KIT pk                                        '+
+                                     ' left join produtos pro on pro.codigo = pk.codigo_produto    '+
+                                     ' left join cores cor on cor.codigo = pk.codigo_cor           '+
+                                     ' left join cores corKit on corkit.codigo = pk.codigo_cor_kit '+
+                                     ' where codigo_kit = :cod_kit                                 ');
 
   ListaTipo.setValores('select * from tipo_produto', 'descricao','Tipo');
   ListaTipo.executa;
@@ -903,9 +956,21 @@ end;
 
 procedure TfrmCadastroProduto.selecionaDeseleciona;
 begin
+  if cdsCodPossiveisSTATUS.asString = 'C' then
+    exit;
+
   cdsCodPossiveis.Edit;
   cdsCodPossiveisTAG.AsString := IfThen(cdsCodPossiveisTAG.AsString = '', 'x','');
   cdsCodPossiveis.Post;
+end;
+
+procedure TfrmCadastroProduto.btnDeletaVinculoClick(Sender: TObject);
+begin
+  cdsCoresKit.Edit;
+  cdsCoresKitREFPRO.AsString := '0';
+  cdsCoresKit.Post;
+  DBGrid2.Repaint;
+  cdsProdsKitAfterScroll(nil);
 end;
 
 procedure TfrmCadastroProduto.TabSheet4Exit(Sender: TObject);
@@ -951,6 +1016,13 @@ procedure TfrmCadastroProduto.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   verificaAlterouInseriuTabela;
+end;
+
+procedure TfrmCadastroProduto.FormCreate(Sender: TObject);
+begin
+  inherited;
+  cdsCoresKit.CreateDataSet;
+  cdsProdsKit.CreateDataSet;
 end;
 
 procedure TfrmCadastroProduto.TabSheet5Enter(Sender: TObject);
@@ -1092,6 +1164,7 @@ begin
   finally
     cdsCodPossiveis.Filtered := false;
     cdsCodPossiveis.RecNo    := linha;
+    radFiltro.ItemIndex      := 0;
   end;
 end;
 
@@ -1186,6 +1259,20 @@ begin
   self.Caption := 'Cadastro de Produtos              '+ cdsREFERENCIA.AsString + ' - ' + cdsDESCRICAO.AsString;
 end;
 
+procedure TfrmCadastroProduto.cdsProdsKitAfterScroll(DataSet: TDataSet);
+begin
+  if not cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]) then
+  begin
+    btnDeletaVinculo.Enabled := false;
+    btnCriaVinculo.Enabled   := true;
+  end
+  else
+  begin
+    btnDeletaVinculo.Enabled := true;
+    btnCriaVinculo.Enabled   := false;
+  end;
+end;
+
 procedure TfrmCadastroProduto.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -1212,6 +1299,27 @@ begin
   Rep.RemoverPorIdentificador(cdsCodBarCODIGO.AsInteger);
 
   TabSheet5Enter(nil);
+end;
+
+procedure TfrmCadastroProduto.btnCancelaAssClick(Sender: TObject);
+begin
+  BuscaCor2.Enabled := true;
+  cdsCoresKit.EmptyDataSet;
+  btnAddCor.Enabled := true;
+  BuscaCor2.limpa;
+  if (tbsKits.Enabled) and (pagProdutos.ActivePage = tbsKits) then
+    BuscaCor2.edtReferencia.SetFocus;
+  DBGrid2.Repaint;
+end;
+
+procedure TfrmCadastroProduto.btnCriaVinculoClick(Sender: TObject);
+begin
+  cdsCoresKit.Edit;
+  cdsCoresKitREFPRO.AsString := cdsProdsKitREFPRO.AsString;
+  cdsCoresKit.Post;
+  DBGrid2.SetFocus;
+  cdsProdsKitAfterScroll(nil);
+  DBGrid2.Repaint;
 end;
 
 procedure TfrmCadastroProduto.BuscaCor1Enter(Sender: TObject);
@@ -1375,42 +1483,92 @@ begin
   selecionaDeseleciona;
 end;
 
-procedure TfrmCadastroProduto.btnAddKitClick(Sender: TObject);
+procedure TfrmCadastroProduto.btnAddCorClick(Sender: TObject);
+var i :integer;
 begin
-  if BuscaProduto1.edtReferencia.Text = '' then
+  if CDSKits.Locate('CODIGO_COR_KIT',BuscaCor2.CodigoCor,[]) then
   begin
-    avisar('O produdo não foi informado');
-    BuscaProduto1.edtReferencia.SetFocus;
-    exit;
-  end
-  else if BuscaCor2.edtReferencia.Text = '' then
-  begin
-    avisar('A cor não foi informada');
-    BuscaCor2.edtReferencia.SetFocus;
+    avisar('Cor "'+BuscaCor2.edtReferencia.Text+'-'+BuscaCor2.edtDescricao.Text+'", já foi associada ao produto.');
+    btnCancelaAss.Click;
     exit;
   end;
 
-  if not CDSKits.active then
-    CDSKits.CreateDataSet;
-
-  if (CDSKits.isEmpty) or not CDSKits.Locate('CODIGO_PRODUTO;CODIGO_COR', varArrayOf([BuscaProduto1.CodigoProduto, BuscaCor2.codCor]), []) then
+  if not (BuscaCor2.edtDescricao.Text = '') then
   begin
+    cdsCoresKit.EmptyDataSet;
+    for i := 0 to BuscaCor2.ObjCor.CoresKit.Count-1 do
+    begin
+      cdsCoresKit.Append;
+      cdsCoresKitCODIGO.AsInteger  := TCoresKit(BuscaCor2.ObjCor.CoresKit.Items[i]).codigo_cor;
+      cdsCoresKitREFCOR.AsString   := TCoresKit(BuscaCor2.ObjCor.CoresKit.Items[i]).Cor.Referencia;
+      cdsCoresKitCOR.AsString      := TCoresKit(BuscaCor2.ObjCor.CoresKit.Items[i]).Cor.Descricao;
+      cdsCoresKitREFPRO.AsString   := '0';
+      cdsCoresKit.Post;
+    end;
+    cdsCoresKit.First;
+  end;
+  dbgrid3.SetFocus;
+  buscacor2.Enabled := false;
+  btnAddCor.Enabled := false;
+end;
+
+procedure TfrmCadastroProduto.btnAddKitClick(Sender: TObject);
+var associacoesPendentes :Boolean;
+begin
+  cdsCoresKit.Filtered := false;
+  cdsCoresKit.Filter   := 'REFPRO = ''0'' ';
+  cdsCoresKit.Filtered := true;
+
+  associacoesPendentes := not cdsCoresKit.IsEmpty;
+
+  cdsCoresKit.Filtered := false;
+
+  if associacoesPendentes then
+  begin
+    avisar('Ainda existem associações a serem feitas');
+    exit;
+  end;
+
+  cdsProdsKit.First;
+  while not cdsProdsKit.Eof do
+  begin
+    if not CDSKits.active then
+      CDSKits.CreateDataSet;
+
     CDSKits.Append;
     CDSKitsCODIGO.AsInteger         := (CDSKits.RecordCount + 1)*-1;
-    CDSKitsCODIGO_PRODUTO.AsInteger := BuscaProduto1.CodigoProduto;
-    CDSKitsREFPRO.AsString          := BuscaProduto1.edtReferencia.Text;
-    CDSKitsPRODUTO.AsString         := BuscaProduto1.edtDescricao.Text;
-    CDSKitsCODIGO_COR.AsInteger     := BuscaCor2.CodigoCor;
-    CDSKitsREFCOR.AsString          := BuscaCor2.edtReferencia.Text;
-    CDSKitsCOR.AsString             := BuscaCor2.edtDescricao.Text;
+    CDSKitsCODIGO_PRODUTO.AsInteger := cdsProdsKitCODIGO.AsInteger;
+    CDSKitsREFPRO.AsString          := cdsProdsKitREFPRO.AsString;
+    CDSKitsPRODUTO.AsString         := cdsProdsKitPRODUTO.AsString;
+    cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]);
+
+    CDSKitsCODIGO_COR.AsInteger     := cdsCoresKitCODIGO.AsInteger;
+    CDSKitsREFCOR.AsString          := cdsCoresKitREFCOR.AsString;
+    CDSKitsCOR.AsString             := cdsCoresKitCOR.AsString;
+    CDSKitsCODIGO_COR_KIT.AsInteger := BuscaCor2.CodigoCor;
+    CDSKitsREF_COR_KIT.AsString     := BuscaCor2.edtReferencia.Text;
     CDSKits.Post;
+
+    cdsProdsKit.Next;
+  end;
+
+  comKit.Enabled := CDSKits.isEmpty;
+  btnCancelaAss.Click;
+end;
+
+procedure TfrmCadastroProduto.btnAddProdClick(Sender: TObject);
+begin
+  if not (BuscaProduto1.edtDescricao.Text = '') and not cdsProdsKit.Locate('CODIGO',BuscaProduto1.CodigoProduto,[]) then
+  begin
+    cdsProdsKit.Append;
+    cdsProdsKitCODIGO.AsInteger  := BuscaProduto1.CodigoProduto;
+    cdsProdsKitREFPRO.AsString   := BuscaProduto1.edtReferencia.Text;
+    cdsProdsKitPRODUTO.AsString  := BuscaProduto1.edtDescricao.Text;
+    cdsProdsKit.Post;
   end;
 
   BuscaProduto1.limpa;
-  BuscaCor2.limpa;
   BuscaProduto1.edtReferencia.SetFocus;
-
-  comKit.Enabled := CDSKits.isEmpty;
 end;
 
 procedure TfrmCadastroProduto.salvaKit;
@@ -1446,6 +1604,7 @@ begin
 
         Kits.codigo_produto := CDSKitsCODIGO_PRODUTO.AsInteger;
         Kits.codigo_cor     := CDSKitsCODIGO_COR.AsInteger;
+        Kits.codigo_cor_kit := CDSKitsCODIGO_COR_KIT.AsInteger;
 
         repositorio.Salvar(Kits);
       end;
@@ -1491,10 +1650,61 @@ end;
 
 procedure TfrmCadastroProduto.comKitChange(Sender: TObject);
 begin
-  BuscaProduto1.visible := comKit.ItemIndex = 0;
+  {BuscaProduto1.visible := comKit.ItemIndex = 0;
   BuscaCor2.Visible     := comKit.ItemIndex = 0;
   btnAddKit.visible     := comKit.ItemIndex = 0;
-  gridKits.visible      := comKit.ItemIndex = 0;
+  gridKits.visible      := comKit.ItemIndex = 0;}
+  tbsKits.TabVisible    := comKit.ItemIndex = 0;
+end;
+
+procedure TfrmCadastroProduto.DBGrid2CellClick(Column: TColumn);
+begin
+  cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]);
+end;
+
+procedure TfrmCadastroProduto.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  if cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]) then
+  begin
+    if Column.FieldName = 'REFPRO' then
+      TDBGrid(Sender).Canvas.Brush.Color := $00AADDB1
+    else
+      TDBGrid(Sender).Canvas.Brush.Color := $0086B98B;
+
+    TDBGrid(Sender).Canvas.FillRect(Rect);
+    TDBGrid(Sender).DefaultDrawDataCell(Rect, TDBGridCBN(Sender).columns[datacol].field, State);
+  end;
+
+  TDBGrid(Sender).DefaultDrawColumnCell( Rect, DataCol, Column, state);
+end;
+
+procedure TfrmCadastroProduto.DBGrid2Enter(Sender: TObject);
+begin
+  btnDeletaVinculo.Enabled := true;
+  cdsProdsKitAfterScroll(nil);
+end;
+
+procedure TfrmCadastroProduto.DBGrid2Exit(Sender: TObject);
+begin
+  btnDeletaVinculo.Enabled := false;
+end;
+
+procedure TfrmCadastroProduto.DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  if cdsCoresKitREFPRO.AsString <> '0' then
+  begin
+    if Column.FieldName = 'REFPRO' then
+      TDBGrid(Sender).Canvas.Brush.Color := $00AADDB1
+    else
+      TDBGrid(Sender).Canvas.Brush.Color := $0086B98B;
+
+    TDBGrid(Sender).Canvas.FillRect(Rect);
+    TDBGrid(Sender).DefaultDrawDataCell(Rect, TDBGridCBN(Sender).columns[datacol].field, State);
+  end;
+
+  TDBGrid(Sender).DefaultDrawColumnCell( Rect, DataCol, Column, state);
 end;
 
 end.

@@ -4,47 +4,45 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
   Caption = 'Cadastro de Empresas'
   ClientHeight = 562
   ClientWidth = 1168
-  ExplicitLeft = -315
   ExplicitWidth = 1184
   ExplicitHeight = 600
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 17
   inherited pnlBotoes: TPanel
-    Top = 520
+    Top = 510
     Width = 1168
-    ExplicitTop = 520
+    ExplicitTop = 510
     ExplicitWidth = 1168
   end
   inherited pgGeral: TPageControl
     Width = 1168
-    Height = 520
+    Height = 510
     ExplicitWidth = 1168
-    ExplicitHeight = 520
+    ExplicitHeight = 510
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 1160
-      ExplicitHeight = 492
+      ExplicitHeight = 474
       inherited gridConsulta: TDBGridCBN
         Width = 1142
         Height = 476
-        SalvaConfiguracoes = False
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 475
+        Top = 449
         Width = 1160
-        ExplicitTop = 475
+        ExplicitTop = 449
         ExplicitWidth = 1160
       end
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitTop = 32
       ExplicitWidth = 1160
-      ExplicitHeight = 492
+      ExplicitHeight = 474
       inherited pnlDados: TPanel
         Width = 1160
-        Height = 492
+        Height = 474
         ExplicitWidth = 1160
-        ExplicitHeight = 492
+        ExplicitHeight = 474
         object lblRazao: TLabel [0]
           Left = 17
           Top = 17
@@ -166,7 +164,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 17
           Top = 33
           Width = 449
-          Height = 21
+          Height = 29
           CharCase = ecUpperCase
           TabOrder = 0
         end
@@ -174,7 +172,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 473
           Top = 33
           Width = 113
-          Height = 21
+          Height = 29
           EditMask = '99\.999\.999/9999\-99;0; '
           MaxLength = 18
           TabOrder = 1
@@ -184,7 +182,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 609
           Top = 33
           Width = 99
-          Height = 21
+          Height = 29
           MaxLength = 12
           TabOrder = 2
           Text = ''
@@ -193,7 +191,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 720
           Top = 33
           Width = 88
-          Height = 21
+          Height = 29
           Enabled = False
           EditMask = '!99/99/9999;1; '
           MaxLength = 10
@@ -500,45 +498,6 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 6
-          object lblFone1: TLabel
-            Left = 16
-            Top = 27
-            Width = 35
-            Height = 13
-            Caption = 'Fone 1'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 3355443
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object lblFone2: TLabel
-            Left = 144
-            Top = 27
-            Width = 35
-            Height = 13
-            Caption = 'Fone 2'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 3355443
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object lblFax: TLabel
-            Left = 272
-            Top = 27
-            Width = 18
-            Height = 13
-            Caption = 'Fax'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 3355443
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
           object lblEmail: TLabel
             Left = 400
             Top = 27
@@ -565,54 +524,6 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
             Font.Style = [fsBold]
             ParentFont = False
           end
-          object edtFone1: TMaskEdit
-            Left = 15
-            Top = 43
-            Width = 111
-            Height = 21
-            EditMask = '!\(99\)9999-9999;1; '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            MaxLength = 13
-            ParentFont = False
-            TabOrder = 0
-            Text = '(  )    -    '
-          end
-          object edtFone2: TMaskEdit
-            Left = 143
-            Top = 43
-            Width = 107
-            Height = 21
-            EditMask = '!\(99\)9999-9999;1; '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            MaxLength = 13
-            ParentFont = False
-            TabOrder = 1
-            Text = '(  )    -    '
-          end
-          object edtFax: TMaskEdit
-            Left = 271
-            Top = 43
-            Width = 107
-            Height = 21
-            EditMask = '!\(99\)9999-9999;1; '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            MaxLength = 13
-            ParentFont = False
-            TabOrder = 2
-            Text = '(  )    -    '
-          end
           object edtEmail: TEdit
             Left = 400
             Top = 43
@@ -625,7 +536,50 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
+            TabOrder = 0
+          end
+          inline Fone1: TFone
+            Left = 15
+            Top = 24
+            Width = 132
+            Height = 47
+            TabOrder = 1
+            ExplicitLeft = 15
+            ExplicitTop = 24
+            inherited Label12: TLabel
+              Width = 35
+              Caption = 'Fone 1'
+              ExplicitWidth = 35
+            end
+          end
+          inline Fone2: TFone
+            Left = 141
+            Top = 24
+            Width = 132
+            Height = 47
+            TabOrder = 2
+            ExplicitLeft = 141
+            ExplicitTop = 24
+            inherited Label12: TLabel
+              Width = 35
+              Caption = 'Fone 2'
+              ExplicitWidth = 35
+            end
+          end
+          inline FoneFax: TFone
+            Left = 267
+            Top = 24
+            Width = 118
+            Height = 47
             TabOrder = 3
+            ExplicitLeft = 267
+            ExplicitTop = 24
+            ExplicitWidth = 118
+            inherited Label12: TLabel
+              Width = 18
+              Caption = 'Fax'
+              ExplicitWidth = 18
+            end
           end
         end
         object memObs: TMemo
@@ -666,11 +620,11 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           TabStop = True
         end
         object pgcConfiguracoes: TPageControl
-          Left = 830
-          Top = 1
+          Left = 831
+          Top = 0
           Width = 329
-          Height = 490
-          ActivePage = tabConfiguracoesEmail
+          Height = 474
+          ActivePage = tabPrincipal
           Align = alRight
           TabOrder = 9
           TabStop = False
@@ -1169,9 +1123,9 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
               TabOrder = 6
               object memoMensagem: TMemo
                 Left = 2
-                Top = 15
+                Top = 23
                 Width = 300
-                Height = 179
+                Height = 171
                 Hint = 'Mensagem do e-mail enviado. Exemplo: SEGUE EM ANEXO NF-E.'
                 Align = alClient
                 ParentShowHint = False

@@ -80,6 +80,7 @@ type
     lblQtdNotas: TLabel;
     btnCartaCorrecao: TBitBtn;
     btnConsultaStatus: TBitBtn;
+    btnProtocoloEntrega: TBitBtn;
 
 
     // Eventos
@@ -104,6 +105,7 @@ type
     procedure mnuConsultarNFeClick(Sender: TObject);
     procedure btnCartaCorrecaoClick(Sender: TObject);
     procedure btnConsultaStatusClick(Sender: TObject);
+    procedure btnProtocoloEntregaClick(Sender: TObject);
 
 
   private
@@ -184,7 +186,7 @@ uses
   Tamanho,
   Estoque,
   ClipBrd,
-  ShellApi,
+  ShellApi, uProtocoloEntrega,
   EspecificacaoEstoquePorProdutoCorTamanho,
   uCCe, PermissoesAcesso, Pessoa;
 
@@ -455,6 +457,7 @@ begin
    self.btnEnviar.Enabled                 := self.ApenasAguardandoEnvioERejeitadasSelecionadas;
    self.btnCancelar.Enabled               := self.ApenasAutorizadasERejeitadasSelecionadas;
    self.btnImprimirDANFE.Enabled          := self.ApenasAguardandoEnvioRejeitadasEAutorizadasSelecionadas;
+   self.btnProtocoloEntrega.Enabled       := self.ApenasAguardandoEnvioRejeitadasEAutorizadasSelecionadas;
    self.btnEnviarEmails.Enabled           := self.ApenasAutorizadasSelecionadas;
    self.btnImprimirEtiquetaCaixas.Enabled := self.ApenasAguardandoEnvioRejeitadasEAutorizadasSelecionadas;
    self.btnGerarArqXML.Enabled            := self.ApenasAutorizadasECanceladasSelecionadas;
@@ -1403,6 +1406,14 @@ begin
     end;
 
   end;
+end;
+
+procedure TfrmMonitorControleNFe.btnProtocoloEntregaClick(Sender: TObject);
+begin
+  frmProtocoloEntrega := TfrmProtocoloEntrega.Create(nil);
+  frmProtocoloEntrega.geraProtocolo(self.FNotasSelecionadas);
+  frmProtocoloEntrega.Release;
+  frmProtocoloEntrega := nil;
 end;
 
 procedure TfrmMonitorControleNFe.Salva_estoque(cod_produto, cod_cor,

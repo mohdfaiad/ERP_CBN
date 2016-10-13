@@ -46,7 +46,7 @@ type
   end;
 
 CONST
-  prefixos : Array[1..3] of string = ('78992426','78991340','78996349');
+  prefixos : Array[1..4] of string = ('78992426','78991340','78996349','78999967');
 
 implementation
 

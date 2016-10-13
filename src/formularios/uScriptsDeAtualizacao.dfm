@@ -7319,4 +7319,230 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 171
     WordWrap = False
   end
+  object versao172: TMemo
+    Left = 177
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PRODUTOS ALTER REFERENCIA TYPE VARCHAR(35)'
+      '^'
+      'CREATE GENERATOR GEN_CIDADES_ID'
+      '^'
+      'CREATE TRIGGER CIDADES_BI FOR CIDADES'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL)or(NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_CIDADES_ID,1);'
+      'END'
+      '^'
+      'SET GENERATOR GEN_CIDADES_ID TO 5566'
+      '^      ')
+    TabOrder = 172
+    WordWrap = False
+  end
+  object versao173: TMemo
+    Left = 201
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PRODUTOS_KIT'
+      'ADD CODIGO_COR_KIT INTEGER'
+      '^'
+      'alter table PRODUTOS_KIT'
+      'add constraint FK_PRODUTOS_KIT_4'
+      'foreign key (CODIGO_COR_KIT)'
+      'references CORES(CODIGO)'
+      '^')
+    TabOrder = 173
+    WordWrap = False
+  end
+  object versao174: TMemo
+    Left = 225
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      'declare variable cod_cor_kit integer;'
+      'begin'
+      
+        '  for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ci.q' +
+        'td_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3, ci.qtd_4,'
+      
+        '             ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qtd_14' +
+        ', ci.qtd_unica, pro.kit, cor.kit'
+      '  from conferencia_itens ci'
+      '  inner join itens i        on ci.codigo_item = i.codigo'
+      '  inner join pedidos p      on p.codigo = i.cod_pedido'
+      '  inner join produtos pro   on pro.codigo = i.cod_produto'
+      '  inner join cores cor      on cor.codigo = i.cod_cor'
+      '  where (p.codigo = :codped)'
+      '  order by i.cod_produto, i.cod_cor'
+      '    into'
+      
+        '  :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2, :' +
+        'q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :prokit, :' +
+        'corkit   do'
+      '  begin'
+      '     if (:prokit = '#39'S'#39') then'
+      '     begin'
+      '        for select ck.codigo_cor from cores_kit ck'
+      '        where ck.codigo_kit = :cod_cor'
+      '          into         :cod_cor_kit do'
+      '        begin'
+      '           for select pk.codigo_produto from produtos_kit pk'
+      
+        '           where pk.codigo_kit = :cod_produto and pk.codigo_cor ' +
+        '= :cod_cor_kit and pk.codigo_cor_kit = :cod_cor'
+      '             into           :cod_produto_kit do'
+      '           begin'
+      
+        '              execute procedure altera_estoque(:cod_produto_kit,' +
+        ' :cod_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4' +
+        ', :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '           end'
+      '        end'
+      '     end'
+      '     else'
+      
+        '        execute procedure altera_estoque(:cod_produto, :cod_cor,' +
+        ' :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, ' +
+        ':q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '     end'
+      'end'
+      '^')
+    TabOrder = 174
+    WordWrap = False
+  end
+  object versao175: TMemo
+    Left = 249
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PEDIDOS'
+      'ADD VALOR_FRETE FLOAT'
+      '^'
+      'update pedidos set valor_frete = 0'
+      '^')
+    TabOrder = 175
+    WordWrap = False
+  end
+  object versao176: TMemo
+    Left = 273
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BUSCA_CODBAR_DISPONIVEL ('
+      '    prefixo varchar(10))'
+      'returns ('
+      '    cod_barras varchar(14))'
+      'as'
+      'declare variable numeracao_char varchar(4);'
+      'declare variable cont integer;'
+      'declare variable numeracao integer;'
+      'begin   numeracao = 0; cont = 0;   cod_barras = '#39#39';'
+      
+        ' for select CAST(substring(cb.numeracao from 9 for 4) as integer' +
+        '),'
+      '            lpad( substring(cb.numeracao from 9 for 4), 4, '#39'0'#39')'
+      '     from codigo_barras cb'
+      '     where numeracao like :prefixo||'#39'%'#39
+      '     order by 1'
+      '       into'
+      '     :numeracao, :numeracao_char'
+      ' do'
+      ' begin'
+      '   if (numeracao <> cont) then'
+      '   begin'
+      '     cod_barras = prefixo || CAST(cont as VARCHAR(4));'
+      '     break;'
+      '   end'
+      '   cont = :cont +1;'
+      ' end'
+      ''
+      ' if ((:cod_barras = '#39#39') and (cont < 9999)) then'
+      
+        '   cod_barras = prefixo || lpad( CAST((numeracao+1) as varchar(4' +
+        ')), 4, '#39'0'#39');'
+      ''
+      ' suspend;'
+      'end'
+      '^')
+    TabOrder = 176
+    WordWrap = False
+  end
+  object versao177: TMemo
+    Left = 297
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BUSCA_CODBAR_DISPONIVEL ('
+      '    prefixo varchar(10))'
+      'returns ('
+      '    cod_barras varchar(14))'
+      'as'
+      'declare variable numeracao_char varchar(4);'
+      'declare variable cont integer;'
+      'declare variable numeracao integer;'
+      'begin   numeracao = 0; cont = 0;   cod_barras = '#39#39';'
+      
+        '   for select CAST(substring(cb.numeracao from 9 for 4) as integ' +
+        'er),'
+      
+        '              lpad( substring(cb.numeracao from 9 for 4), 4, '#39'0'#39 +
+        ')'
+      '     from codigo_barras cb'
+      '   where numeracao like :prefixo||'#39'%'#39
+      '   order by 1'
+      '     into'
+      '   :numeracao, :numeracao_char  do'
+      '   begin'
+      '     if (numeracao <> cont) then'
+      '     begin'
+      
+        '       cod_barras = prefixo || lpad( CAST(cont  as varchar(4)), ' +
+        '4, '#39'0'#39');'
+      '        break;'
+      '     end'
+      '     cont = :cont +1;'
+      '   end'
+      '   if ((:cod_barras = '#39#39') and (cont < 9999)) then'
+      
+        '      cod_barras = prefixo || lpad( CAST((numeracao+1) as varcha' +
+        'r(4)), 4, '#39'0'#39');'
+      '   suspend;'
+      'end'
+      '^')
+    TabOrder = 177
+    WordWrap = False
+  end
 end

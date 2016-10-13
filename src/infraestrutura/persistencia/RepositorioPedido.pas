@@ -1,4 +1,4 @@
-unit RepositorioPedido;
+﻿unit RepositorioPedido;
 
 interface
 
@@ -69,6 +69,7 @@ begin
    Pedido.dt_limite_entrega := self.FQuery.FieldByName('DT_LIMITE_ENTREGA').AsDateTime;
    Pedido.desconto          := self.FQuery.FieldByName('DESCONTO'         ).AsFloat;
    Pedido.acrescimo         := self.FQuery.FieldByName('ACRESCIMO'        ).AsFloat;
+   Pedido.valor_frete       := self.FQuery.FieldByName('valor_frete'      ).AsFloat;
    Pedido.comissao          := self.FQuery.FieldByName('COMISSAO'         ).AsFloat;
    Pedido.valor_total       := self.FQuery.FieldByName('VALOR_TOTAL'      ).AsFloat;
    Pedido.aprovacao         := self.FQuery.FieldByName('APROVACAO'        ).AsString;
@@ -150,6 +151,8 @@ begin
     Auditoria.AdicionaCampoAlterado('acrescimo', FloatToStr(PedidoAntigo.acrescimo), floatToStr(PedidoNovo.acrescimo));
    if (PedidoAntigo.comissao <> PedidoNovo.comissao) then
     Auditoria.AdicionaCampoAlterado('comissao', floatToStr(PedidoAntigo.comissao), floatToStr(PedidoNovo.comissao));
+   if (PedidoAntigo.valor_frete <> PedidoNovo.valor_frete) then
+    Auditoria.AdicionaCampoAlterado('valor_frete', floatToStr(PedidoAntigo.valor_frete), floatToStr(PedidoNovo.valor_frete));
    if (PedidoAntigo.valor_total <> PedidoNovo.valor_total) then
     Auditoria.AdicionaCampoAlterado('valor_total', floatToStr(PedidoAntigo.valor_total), floatToStr(PedidoNovo.valor_total));
    if (PedidoAntigo.aprovacao <> PedidoNovo.aprovacao) then
@@ -206,6 +209,7 @@ begin
    Auditoria.AdicionaCampoExcluido('DT_LIMITE_ENTREGA', DateToStr(Pedido.dt_limite_entrega));
    Auditoria.AdicionaCampoExcluido('DESCONTO'         , FloatToStr(Pedido.desconto)       );
    Auditoria.AdicionaCampoExcluido('ACRESCIMO'        , FloatToStr(Pedido.acrescimo)      );
+   Auditoria.AdicionaCampoExcluido('VALOR_FRETE'      , FloatToStr(Pedido.valor_frete)    );
    Auditoria.AdicionaCampoExcluido('COMISSAO'         , FloatToStr(Pedido.comissao)       );
    Auditoria.AdicionaCampoExcluido('VALOR_TOTAL'      , FloatToStr(Pedido.valor_total)    );
    Auditoria.AdicionaCampoExcluido('APROVACAO'        , Pedido.aprovacao                  );
@@ -247,6 +251,7 @@ begin
    Auditoria.AdicionaCampoIncluido('DT_LIMITE_ENTREGA', DateToStr(Pedido.dt_limite_entrega));
    Auditoria.AdicionaCampoIncluido('DESCONTO'         , FloatToStr(Pedido.desconto)       );
    Auditoria.AdicionaCampoIncluido('ACRESCIMO'        , FloatToStr(Pedido.acrescimo)      );
+   Auditoria.AdicionaCampoIncluido('VALOR_FRETE'      , FloatToStr(Pedido.valor_frete)    );
    Auditoria.AdicionaCampoIncluido('COMISSAO'         , FloatToStr(Pedido.comissao)       );
    Auditoria.AdicionaCampoIncluido('VALOR_TOTAL'      , FloatToStr(Pedido.valor_total)    );
    Auditoria.AdicionaCampoIncluido('APROVACAO'        , Pedido.aprovacao                  );
@@ -304,6 +309,7 @@ begin
    inherited SetParametro('DT_LIMITE_ENTREGA', Pedido.dt_limite_entrega);
    inherited SetParametro('DESCONTO'         , Pedido.desconto);
    inherited SetParametro('ACRESCIMO'        , Pedido.acrescimo);
+   inherited SetParametro('VALOR_FRETE'      , Pedido.valor_frete);
    inherited SetParametro('COMISSAO'         , Pedido.comissao);
    inherited SetParametro('VALOR_TOTAL'      , Pedido.valor_total);
    inherited SetParametro('APROVACAO'        , Pedido.aprovacao);
@@ -346,10 +352,10 @@ function TRepositorioPedido.SQLSalvar: String;
 begin
   result := 'UPDATE OR INSERT INTO PEDIDOS (CODIGO, NUMPEDIDO, COD_TAB_PRECO, COD_FORMA_PAG, COD_FILIAL, COD_FILIAL_DIGI,                '+
             'COD_CLIENTE, COD_TRANSP, COD_REPRES, DT_cadastro, DT_representante, DT_RECEBIMENTO, DT_ENTREGA, DT_LIMITE_ENTREGA,          '+
-            'DESCONTO, ACRESCIMO, COMISSAO, VALOR_TOTAL, APROVACAO, APROVADO_POR, DT_APROVACAO, OBSERVACAO, TIPO_FRETE, DESCONTO_FPGTO,  '+
+            'DESCONTO, ACRESCIMO, VALOR_FRETE, COMISSAO, VALOR_TOTAL, APROVACAO, APROVADO_POR, DT_APROVACAO, OBSERVACAO, TIPO_FRETE, DESCONTO_FPGTO,  '+
             'DESPACHADO, DT_DESPACHO, DESCONTO_ITENS, COD_PEDIDO_MATRIZ, DESCONTO_COMISS, CANCELADO, PESO, VOLUMES)                       '+
             'VALUES (:CODIGO, :NUMPEDIDO, :COD_TAB_PRECO, :COD_FORMA_PAG, :COD_FILIAL, :COD_FILIAL_DIGI, :COD_CLIENTE, :COD_TRANSP,      '+
-            ':COD_REPRES, :DT_cadastro, :DT_representante, :DT_RECEBIMENTO, :DT_ENTREGA, :DT_LIMITE_ENTREGA, :DESCONTO, :ACRESCIMO,      '+
+            ':COD_REPRES, :DT_cadastro, :DT_representante, :DT_RECEBIMENTO, :DT_ENTREGA, :DT_LIMITE_ENTREGA, :DESCONTO, :ACRESCIMO, :VALOR_FRETE,     '+
             ':COMISSAO, :VALOR_TOTAL, :APROVACAO, :APROVADO_POR, :DT_APROVACAO, :OBSERVACAO, :TIPO_FRETE, :DESCONTO_FPGTO, :DESPACHADO,  '+
             ':DT_DESPACHO, :DESCONTO_ITENS, :COD_PEDIDO_MATRIZ, :DESCONTO_COMISS, :CANCELADO, :PESO, :VOLUMES)                            ';
 end;

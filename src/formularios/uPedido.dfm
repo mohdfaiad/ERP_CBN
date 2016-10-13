@@ -23,10 +23,6 @@ inherited frmPedido: TfrmPedido
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1037
         428)
@@ -342,10 +338,23 @@ inherited frmPedido: TfrmPedido
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 6
+          object Label20: TLabel
+            Left = 116
+            Top = 13
+            Width = 82
+            Height = 17
+            Caption = 'Valor do frete'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
           object cbTipoFrete: TComboBox
-            Left = 38
-            Top = 27
-            Width = 152
+            Left = 19
+            Top = 31
+            Width = 76
             Height = 23
             Style = csDropDownList
             Font.Charset = ANSI_CHARSET
@@ -361,6 +370,16 @@ inherited frmPedido: TfrmPedido
             Items.Strings = (
               'CIF'
               'FOB')
+          end
+          object edtValorFrete: TCurrencyEdit
+            Left = 116
+            Top = 33
+            Width = 89
+            Height = 21
+            AutoSize = False
+            DisplayFormat = ',0.00;-,0.00'
+            TabOrder = 1
+            OnExit = edtDescComissExit
           end
         end
         object gbAprovacao: TGroupBox
@@ -3755,10 +3774,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet2: TTabSheet
       Caption = 'F2 - Digita'#231#227'o'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbDadosItem: TGroupBox
         Left = 6
         Top = 11
@@ -4439,10 +4454,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet3: TTabSheet
       Caption = 'F3 - Itens'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Shape2: TShape
         Left = 4
         Top = 375
@@ -8317,17 +8328,18 @@ inherited frmPedido: TfrmPedido
       TabStop = False
       ReadOnly = True
       TabOrder = 1
+      OnChange = edtRepresentanteChange
     end
     inline BuscaCliente: TBuscaPessoa
       Left = 477
-      Top = 8
+      Top = 7
       Width = 516
       Height = 38
       AutoSize = True
       TabOrder = 2
       OnExit = BuscaClienteExit
       ExplicitLeft = 477
-      ExplicitTop = 8
+      ExplicitTop = 7
       ExplicitWidth = 516
       inherited StaticText1: TStaticText
         Color = clBtnFace
@@ -8994,8 +9006,8 @@ inherited frmPedido: TfrmPedido
     Aggregates = <>
     Params = <>
     AfterScroll = cdsAfterScroll
-    Left = 895
-    Top = 308
+    Left = 784
+    Top = 324
     object cdsItemDelCOD_ITEM: TIntegerField
       FieldName = 'COD_ITEM'
     end

@@ -419,7 +419,17 @@ uses
   EntradaSaidaMoeda in 'src\dominio\entidade\EntradaSaidaMoeda.pas',
   RepositorioEntradaSaidaMoeda in 'src\infraestrutura\persistencia\RepositorioEntradaSaidaMoeda.pas',
   uEntradaSaidaMoeda in 'uEntradaSaidaMoeda.pas' {frmEntradaSaidaMoeda},
-  uRelatorioCaixa in 'src\formularios\relatorios\uRelatorioCaixa.pas' {frmRelatorioCaixa};
+  uRelatorioCaixa in 'src\formularios\relatorios\uRelatorioCaixa.pas' {frmRelatorioCaixa},
+  uRelatorioTabelasPreco in 'src\formularios\relatorios\uRelatorioTabelasPreco.pas' {frmRelatorioTabelasPreco},
+  uCadastroGrupo in 'src\formularios\uCadastroGrupo.pas' {frmCadastroGrupo},
+  Grupo in 'src\dominio\entidade\Grupo.pas',
+  RepositorioGrupo in 'src\infraestrutura\persistencia\RepositorioGrupo.pas',
+  uCadastroCidade in 'src\formularios\uCadastroCidade.pas' {frmCadastroCidade},
+  uCadastroNCM in 'src\formularios\uCadastroNCM.pas' {frmCadastroNCM},
+  ClassificacaoFiscal in 'src\dominio\entidade\ClassificacaoFiscal.pas',
+  RepositorioClassificacaoFiscal in 'src\infraestrutura\persistencia\RepositorioClassificacaoFiscal.pas',
+  frameFone in 'src\formularios\frameFone.pas' {Fone: TFrame},
+  uProtocoloEntrega in 'src\formularios\uProtocoloEntrega.pas' {frmProtocoloEntrega};
 
 {$R *.res}
 {$R win7810.res}
@@ -435,11 +445,7 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-  Application.CreateForm(TfrmRelatorioMovimentos, frmRelatorioMovimentos);
-  Application.CreateForm(TfrmImportadorOrdemServico, frmImportadorOrdemServico);
-  Application.CreateForm(TfrmCaixa, frmCaixa);
-  Application.CreateForm(TfrmEntradaSaidaMoeda, frmEntradaSaidaMoeda);
-  Application.CreateForm(TfrmRelatorioCaixa, frmRelatorioCaixa);
+  Application.CreateForm(TfrmProtocoloEntrega, frmProtocoloEntrega);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

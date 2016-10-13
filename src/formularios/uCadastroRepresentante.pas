@@ -8,7 +8,7 @@ uses
   ExtCtrls, Mask, Pessoa, Repositorio, StrUtils, Endereco,
   DBCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, frameFone;
 
 type
   TfrmCadastroRepresentante = class(TfrmPadrao)
@@ -63,12 +63,6 @@ type
     edtCep: TMaskEdit;
     edtComplemento: TEdit;
     GroupBox2: TGroupBox;
-    Label12: TLabel;
-    Label13: TLabel;
-    Label14: TLabel;
-    edtFone1: TMaskEdit;
-    edtFone2: TMaskEdit;
-    edtFax: TMaskEdit;
     edtCodigo: TEdit;
     btnIncluir: TSpeedButton;
     btnAlterar: TSpeedButton;
@@ -101,6 +95,9 @@ type
     Label23: TLabel;
     Label24: TLabel;
     qry: TFDQuery;
+    Fone1: TFone;
+    Fone2: TFone;
+    FoneFax: TFone;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -202,9 +199,9 @@ begin
   edtCep.text 	        := cdsCEP.AsString;
   edtPais.text 	        := cdsPais.AsString;
   edtComplemento.text   := cdsCOMPLEMENTO.AsString;
-  edtFone1.text         := cdsFONE1.AsString;
-  edtFone2.text         := cdsFone2.AsString;
-  edtFax.text 	        := cdsFAX.AsString;
+  Fone1.Fone            := cdsFONE1.AsString;
+  Fone2.Fone            := cdsFone2.AsString;
+  FoneFax.Fone 	        := cdsFAX.AsString;
   carregaEmails(cdsEmail.AsString);
   memObs.text 	        := cdsObservacao.AsString;
 
@@ -255,9 +252,9 @@ begin
   edtCep.Clear;
   edtPais.Text := 'BRASIL';
   edtComplemento.Clear;
-  edtFone1.Clear;
-  edtFone2.Clear;
-  edtFax.Clear;
+  Fone1.limpa;
+  Fone2.limpa;
+  FoneFax.limpa;
   edtEmail.Clear;
   memObs.Clear;
   cdsEmails.EmptyDataSet;
@@ -318,11 +315,11 @@ begin
     cidade.edtCodCid.SetFocus;
     result := false;
   end
-  else if (trim(edtFone1.Text) = '(  )    -') and
-          (trim(edtFone2.Text) = '(  )    -') and
-          (trim(edtFax.Text)   = '(  )    -') then begin
+  else if (StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-') then begin
     avisar('Favor informar ao menos um telefone para contato');
-    edtFone1.SetFocus;
+    Fone1.edtFone.SetFocus;
     result := false;
   end;
 end;
@@ -337,9 +334,9 @@ begin
  Representante.CPF_CNPJ             := edtCpf.text;
  Representante.RG_IE                := edtRg.text;
  Representante.DtCadastro           := strToDate(edtDtCad.text);
- Representante.Fone1                := edtFone1.text;
- Representante.Fone2                := edtFone2.text;
- Representante.Fax                  := edtFax.text;
+ Representante.Fone1                := Fone1.edtFone.text;
+ Representante.Fone2                := Fone2.edtFone.text;
+ Representante.Fax                  := FoneFax.edtFone.text;
  Representante.Email                := concatenaEmails;
  Representante.Observacao           := memObs.text;
  Representante.Tipo                 := 'R';

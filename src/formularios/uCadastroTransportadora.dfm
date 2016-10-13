@@ -600,45 +600,6 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 5
-        object Label12: TLabel
-          Left = 16
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label13: TLabel
-          Left = 144
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 2'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label14: TLabel
-          Left = 272
-          Top = 27
-          Width = 18
-          Height = 13
-          Caption = 'Fax'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
         object Label15: TLabel
           Left = 400
           Top = 27
@@ -653,7 +614,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
           ParentFont = False
         end
         object Label22: TLabel
-          Left = 3
+          Left = 7
           Top = 17
           Width = 11
           Height = 32
@@ -664,54 +625,6 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
-        end
-        object edtFone1: TMaskEdit
-          Left = 15
-          Top = 43
-          Width = 111
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
-          TabOrder = 0
-          Text = '(  )    -    '
-        end
-        object edtFone2: TMaskEdit
-          Left = 143
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
-          TabOrder = 1
-          Text = '(  )    -    '
-        end
-        object edtFax: TMaskEdit
-          Left = 271
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
-          TabOrder = 2
-          Text = '(  )    -    '
         end
         object edtEmail: TEdit
           Left = 400
@@ -725,7 +638,64 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
+          TabOrder = 0
+        end
+        inline Fone2: TFone
+          Left = 141
+          Top = 24
+          Width = 125
+          Height = 47
+          TabOrder = 1
+          ExplicitLeft = 141
+          ExplicitTop = 24
+          ExplicitWidth = 125
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 2'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            ExplicitWidth = 99
+          end
+        end
+        inline Fone1: TFone
+          Left = 15
+          Top = 24
+          Width = 123
+          Height = 47
+          TabOrder = 2
+          ExplicitLeft = 15
+          ExplicitTop = 24
+          ExplicitWidth = 123
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 1'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            ExplicitWidth = 99
+          end
+        end
+        inline FoneFax: TFone
+          Left = 267
+          Top = 24
+          Width = 118
+          Height = 47
           TabOrder = 3
+          ExplicitLeft = 267
+          ExplicitTop = 24
+          ExplicitWidth = 118
+          inherited Label12: TLabel
+            Width = 18
+            Caption = 'Fax'
+            ExplicitWidth = 18
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            ExplicitWidth = 99
+          end
         end
       end
       object memObs: TMemo

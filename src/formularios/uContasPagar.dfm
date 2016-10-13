@@ -96,7 +96,7 @@ inherited frmContasPagar: TfrmContasPagar
   inherited pgGeral: TPageControl
     Width = 998
     Height = 562
-    ActivePage = tsConsulta
+    ActivePage = TabSheet1
     ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
@@ -138,7 +138,6 @@ inherited frmContasPagar: TfrmContasPagar
         OnDrawColumnCell = gridConsultaDrawColumnCell
         OnEnter = gridConsultaEnter
         OnExit = gridConsultaExit
-        SalvaConfiguracoes = False
         Columns = <
           item
             Expanded = False
@@ -210,6 +209,7 @@ inherited frmContasPagar: TfrmContasPagar
         Top = 517
         Width = 990
         ExplicitTop = 517
+        ExplicitWidth = 990
       end
       object gpbPeriodo: TGroupBox
         Left = 184

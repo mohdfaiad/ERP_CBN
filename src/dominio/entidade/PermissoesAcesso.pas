@@ -84,6 +84,10 @@ const
   paTelaCaixaLoja                = 67;
   paEntradaSaidaMoeda            = 68;
   paRelatorioCaixa               = 69;
+  paRelatorioTabelaPrecos        = 70;
+  paCadastroGrupo                = 71;
+  paCadastroCidade               = 72;
+  paCadastroNCM                  = 73;
 
 implementation
 

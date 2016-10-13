@@ -312,6 +312,8 @@ begin
 
  finally
    PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
+   Sheet := Unassigned;
+   objExcel.Quit;
  end;
 end;
 

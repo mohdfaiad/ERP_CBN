@@ -1,21 +1,22 @@
 inherited frmRelatorioVendas: TfrmRelatorioVendas
   Left = 155
   Top = 83
+  Align = alClient
   Caption = 'Relat'#243'rio de Vendas'
-  ClientHeight = 714
+  ClientHeight = 606
   ClientWidth = 1187
   OldCreateOrder = True
   WindowState = wsMaximized
   OnShow = FormShow
   ExplicitWidth = 1203
-  ExplicitHeight = 752
+  ExplicitHeight = 644
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter3: TSplitter
     Left = 0
     Top = 95
     Width = 8
-    Height = 486
+    Height = 375
     Cursor = crDefault
     ResizeStyle = rsNone
     ExplicitHeight = 484
@@ -24,12 +25,13 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 1179
     Top = 95
     Width = 8
-    Height = 486
+    Height = 375
     Cursor = crDefault
     Align = alRight
     ResizeStyle = rsNone
     ExplicitLeft = 1285
     ExplicitTop = 98
+    ExplicitHeight = 486
   end
   object pnlTopo: TPanel
     Left = 0
@@ -318,32 +320,30 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 581
+    Top = 470
     Width = 1187
-    Height = 133
+    Height = 136
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 578
     DesignSize = (
       1187
-      133)
+      136)
     object Splitter6: TSplitter
       Left = 1
       Top = 1
       Width = 1185
-      Height = 8
+      Height = 5
       Cursor = crDefault
       Align = alTop
       ResizeStyle = rsNone
-      ExplicitLeft = 2
-      ExplicitTop = -4
-      ExplicitWidth = 1302
     end
     object GroupBox2: TGroupBox
       Left = 408
       Top = 55
       Width = 160
       Height = 58
-      Caption = ' Status de Faturamento do Pedido '
+      Caption = ' Status de Faturamento '
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 3552822
       Font.Height = -11
@@ -603,7 +603,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     end
     object Panel2: TPanel
       Left = 1
-      Top = 9
+      Top = 6
       Width = 1185
       Height = 38
       Align = alTop
@@ -616,18 +616,18 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Left = -19
         Top = 0
         Width = 1369
-        Height = 51
+        Height = 54
         Anchors = [akLeft, akTop, akRight]
         Brush.Color = 5460819
         Pen.Style = psClear
       end
       object Label13: TLabel
-        Left = -66
-        Top = 3
-        Width = 103
+        Left = 10
+        Top = 9
+        Width = 84
         Height = 17
         Anchors = [akTop, akRight]
-        Caption = 'Quant. de Pe'#231'as:'
+        Caption = 'Quant. Pe'#231'as:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
         Font.Height = -13
@@ -635,15 +635,14 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = True
-        ExplicitLeft = 51
       end
       object Label19: TLabel
-        Left = 166
-        Top = 3
-        Width = 99
+        Left = 206
+        Top = 10
+        Width = 80
         Height = 17
         Anchors = [akTop, akRight]
-        Caption = 'Quant. de Itens:'
+        Caption = 'Quant. Itens:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
         Font.Height = -13
@@ -651,7 +650,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = True
-        ExplicitLeft = 283
       end
       object lbInfoSigep: TLabel
         Left = 801
@@ -671,7 +669,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       end
       object edtQuantidadePedidos: TEdit
         Left = 180
-        Top = 23
+        Top = 27
         Width = 185
         Height = 21
         BorderStyle = bsNone
@@ -686,18 +684,18 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Visible = False
       end
       object Panel3: TPanel
-        Left = 550
+        Left = 440
         Top = 0
-        Width = 635
+        Width = 745
         Height = 38
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          635
+          745
           38)
         object Label10: TLabel
-          Left = 45
+          Left = 3
           Top = 3
           Width = 153
           Height = 17
@@ -710,24 +708,26 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
+          ExplicitLeft = 24
         end
         object Label11: TLabel
-          Left = 339
-          Top = 3
-          Width = 138
-          Height = 17
+          Left = 520
+          Top = 5
+          Width = 143
+          Height = 23
           Anchors = [akTop, akRight]
-          Caption = 'Total dos Pedidos:  R$'
+          Caption = 'Total L'#237'quido:  R$'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 11447982
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
+          ExplicitLeft = 618
         end
         object Label4: TLabel
-          Left = 49
+          Left = 10
           Top = 21
           Width = 189
           Height = 13
@@ -740,26 +740,28 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = []
           ParentFont = False
           Transparent = True
+          ExplicitLeft = 31
         end
-        object Label12: TLabel
-          Left = 375
-          Top = 21
-          Width = 109
-          Height = 13
+        object Label20: TLabel
+          Left = 279
+          Top = 5
+          Width = 127
+          Height = 23
           Anchors = [akTop, akRight]
-          Caption = '( Valor Total L'#237'quido )'
+          Caption = 'Total Bruto:  R$'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 11447982
-          Font.Height = -11
+          Font.Height = -17
           Font.Name = 'Segoe UI'
-          Font.Style = []
+          Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
+          ExplicitLeft = 377
         end
         object DBEdit3: TDBEdit
-          Left = 482
-          Top = 2
-          Width = 147
+          Left = 640
+          Top = 4
+          Width = 95
           Height = 21
           Anchors = [akTop, akRight]
           BorderStyle = bsNone
@@ -768,14 +770,14 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 6930274
-          Font.Height = -15
+          Font.Height = -17
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 0
         end
         object DBEdit4: TDBEdit
-          Left = 203
+          Left = 161
           Top = 2
           Width = 117
           Height = 21
@@ -785,18 +787,36 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           DataField = 'TOT_DESCONTO'
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = 13487565
+          Font.Color = 14737632
           Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 1
         end
+        object DBEdit5: TDBEdit
+          Left = 383
+          Top = 4
+          Width = 95
+          Height = 21
+          Anchors = [akTop, akRight]
+          BorderStyle = bsNone
+          Color = 5460819
+          DataField = 'TOT_VALOR_BRUTO'
+          DataSource = DataSource1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 6930274
+          Font.Height = -17
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 2
+        end
       end
       object DBEdit1: TDBEdit
-        Left = 44
-        Top = 2
-        Width = 117
+        Left = 102
+        Top = 8
+        Width = 98
         Height = 21
         Anchors = [akTop, akRight]
         BorderStyle = bsNone
@@ -804,7 +824,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         DataField = 'TOTAL_PECAS'
         DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = 13487565
+        Font.Color = 14737632
         Font.Height = -15
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
@@ -812,9 +832,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         TabOrder = 2
       end
       object DBEdit2: TDBEdit
-        Left = 280
-        Top = 1
-        Width = 117
+        Left = 294
+        Top = 8
+        Width = 71
         Height = 21
         Anchors = [akTop, akRight]
         BorderStyle = bsNone
@@ -822,7 +842,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         DataField = 'TOTAL_ITENS'
         DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = 13487565
+        Font.Color = 14737632
         Font.Height = -15
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
@@ -830,8 +850,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         TabOrder = 3
       end
       object chkSelecionar: TCheckBox
-        Left = 905
-        Top = 20
+        Left = 881
+        Top = 18
         Width = 129
         Height = 17
         Anchors = [akTop, akRight]
@@ -1182,8 +1202,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       end
     end
     object pnlConfigEmail: TPanel
-      Left = 104
-      Top = 105
+      Left = 109
+      Top = 107
       Width = 1115
       Height = 110
       BevelInner = bvLowered
@@ -1305,10 +1325,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 8
     Top = 95
     Width = 1171
-    Height = 486
+    Height = 375
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 2
+    ExplicitHeight = 483
     object Splitter5: TSplitter
       Left = 1
       Top = 60
@@ -1318,6 +1339,74 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       Align = alTop
       ResizeStyle = rsNone
       ExplicitWidth = 1286
+    end
+    object gridPedidos: TDBGridCBN
+      Left = 1
+      Top = 68
+      Width = 1169
+      Height = 306
+      Align = alClient
+      Color = 14803425
+      DataSource = DataSource1
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
+      ParentShowHint = False
+      PopupMenu = PopupMenu1
+      ReadOnly = True
+      ShowHint = False
+      TabOrder = 2
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      OnDrawColumnCell = gridPedidosDrawColumnCell
+      OnDblClick = gridPedidosDblClick
+      BuscaHabilitada = True
+      ConfCores.Normal.CorFonte = clWindowText
+      ConfCores.Normal.CorFundo = 14803425
+      ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Normal.Tipo.Color = clWindowText
+      ConfCores.Normal.Tipo.Height = -11
+      ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Normal.Tipo.Style = []
+      ConfCores.Zebrada.CorFonte = clWindowText
+      ConfCores.Zebrada.CorFundo = clWhite
+      ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Zebrada.Tipo.Color = clWindowText
+      ConfCores.Zebrada.Tipo.Height = -11
+      ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Zebrada.Tipo.Style = []
+      ConfCores.Selecao.CorFonte = clWindowText
+      ConfCores.Selecao.CorFundo = 16037533
+      ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Selecao.Tipo.Color = clWindowText
+      ConfCores.Selecao.Tipo.Height = -11
+      ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Selecao.Tipo.Style = []
+      ConfCores.Destacado.CorFonte = 8650884
+      ConfCores.Destacado.CorFundo = clWhite
+      ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Destacado.Tipo.Color = 8650884
+      ConfCores.Destacado.Tipo.Height = -11
+      ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+      ConfCores.Destacado.Tipo.Style = [fsBold]
+      ConfCores.Titulo.CorFonte = clWindowText
+      ConfCores.Titulo.CorFundo = clBtnFace
+      ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Titulo.Tipo.Color = clWindowText
+      ConfCores.Titulo.Tipo.Height = -11
+      ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Titulo.Tipo.Style = []
+      Ordenavel = True
+      TipoBusca.ListarApenasEncontrados = False
+      TipoBusca.QualquerParte = False
+      SalvaConfiguracoes = False
     end
     object grpAnalitico: TGroupBox
       Left = 1
@@ -1335,7 +1424,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       TabOrder = 0
       Visible = False
       inline BuscaCor1: TBuscaCor
-        Left = 760
+        Left = 728
         Top = 6
         Width = 427
         Height = 47
@@ -1346,7 +1435,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Font.Style = []
         ParentFont = False
         TabOrder = 1
-        ExplicitLeft = 760
+        ExplicitLeft = 728
         ExplicitTop = 6
         ExplicitHeight = 47
         inherited edtCodigo: TCurrencyEdit
@@ -1418,76 +1507,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         end
       end
     end
-    object gridPedidos: TDBGridCBN
-      Left = 1
-      Top = 68
-      Width = 1169
-      Height = 417
-      Align = alClient
-      Color = 14803425
-      DataSource = DataSource1
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-      ParentFont = False
-      ParentShowHint = False
-      ReadOnly = True
-      ShowHint = False
-      TabOrder = 2
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'MS Sans Serif'
-      TitleFont.Style = []
-      OnDrawColumnCell = gridPedidosDrawColumnCell
-      OnDblClick = gridPedidosDblClick
-      BuscaHabilitada = True
-      ConfCores.Normal.CorFonte = clWindowText
-      ConfCores.Normal.CorFundo = 14803425
-      ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
-      ConfCores.Normal.Tipo.Color = clWindowText
-      ConfCores.Normal.Tipo.Height = -11
-      ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
-      ConfCores.Normal.Tipo.Style = []
-      ConfCores.Zebrada.CorFonte = clWindowText
-      ConfCores.Zebrada.CorFundo = clWhite
-      ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
-      ConfCores.Zebrada.Tipo.Color = clWindowText
-      ConfCores.Zebrada.Tipo.Height = -11
-      ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
-      ConfCores.Zebrada.Tipo.Style = []
-      ConfCores.Selecao.CorFonte = clWindowText
-      ConfCores.Selecao.CorFundo = 16037533
-      ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
-      ConfCores.Selecao.Tipo.Color = clWindowText
-      ConfCores.Selecao.Tipo.Height = -11
-      ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
-      ConfCores.Selecao.Tipo.Style = []
-      ConfCores.Destacado.CorFonte = 8650884
-      ConfCores.Destacado.CorFundo = clWhite
-      ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
-      ConfCores.Destacado.Tipo.Color = 8650884
-      ConfCores.Destacado.Tipo.Height = -11
-      ConfCores.Destacado.Tipo.Name = 'Lucida Console'
-      ConfCores.Destacado.Tipo.Style = [fsBold]
-      ConfCores.Titulo.CorFonte = clWindowText
-      ConfCores.Titulo.CorFundo = clBtnFace
-      ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
-      ConfCores.Titulo.Tipo.Color = clWindowText
-      ConfCores.Titulo.Tipo.Height = -11
-      ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
-      ConfCores.Titulo.Tipo.Style = []
-      Ordenavel = True
-      TipoBusca.ListarApenasEncontrados = False
-      TipoBusca.QualquerParte = False
-      SalvaConfiguracoes = False
-    end
     object RLReport1: TRLReport
-      Left = 160
-      Top = 470
+      Left = 652
+      Top = 457
       Width = 1123
       Height = 794
       Margins.LeftMargin = 5.000000000000000000
@@ -1646,9 +1668,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Borders.DrawRight = False
         Borders.DrawBottom = False
         object RLDraw4: TRLDraw
-          Left = 792
+          Left = 711
           Top = 1
-          Width = 293
+          Width = 374
           Height = 38
           Brush.Color = 15461355
           Pen.Style = psClear
@@ -1671,7 +1693,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLDBResult6: TRLDBResult
-          Left = 889
+          Left = 809
           Top = 21
           Width = 88
           Height = 16
@@ -1689,7 +1711,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Text = ''
         end
         object RLLabel18: TRLLabel
-          Left = 890
+          Left = 810
           Top = 3
           Width = 88
           Height = 15
@@ -1702,11 +1724,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           ParentFont = False
         end
         object RLLabel19: TRLLabel
-          Left = 1017
+          Left = 1005
           Top = 3
-          Width = 64
+          Width = 75
           Height = 15
-          Caption = 'Valor Total'
+          Caption = 'Total L'#237'quido'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -1715,8 +1737,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           ParentFont = False
         end
         object RLLabel16: TRLLabel
-          Left = 803
-          Top = 3
+          Left = 725
+          Top = 4
           Width = 70
           Height = 15
           Caption = 'Total Pe'#231'as'
@@ -1728,12 +1750,42 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           ParentFont = False
         end
         object RLDBResult4: TRLDBResult
-          Left = 802
+          Left = 723
           Top = 21
           Width = 70
           Height = 15
           Alignment = taRightJustify
           DataField = 'QTD_PECAS'
+          DataSource = DataSource1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Info = riSum
+          ParentFont = False
+          Text = ''
+        end
+        object RLLabel43: TRLLabel
+          Left = 923
+          Top = 3
+          Width = 65
+          Height = 15
+          Caption = 'Total Bruto'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object RLDBResult13: TRLDBResult
+          Left = 906
+          Top = 21
+          Width = 82
+          Height = 15
+          Alignment = taRightJustify
+          DataField = 'TOTAL_BRUTO'
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1837,7 +1889,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel4: TRLLabel
-            Left = 155
+            Left = 136
             Top = 27
             Width = 42
             Height = 15
@@ -1865,9 +1917,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           object RLLabel6: TRLLabel
             Left = 553
             Top = 27
-            Width = 105
+            Width = 79
             Height = 15
-            Caption = 'Dt. Representante'
+            Caption = 'Dt. Represen.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
@@ -1876,11 +1928,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel7: TRLLabel
-            Left = 666
+            Left = 641
             Top = 27
-            Width = 96
+            Width = 81
             Height = 15
-            Caption = 'Dt. Recebimento'
+            Caption = 'Dt. Recebime.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
@@ -1889,11 +1941,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel8: TRLLabel
-            Left = 890
+            Left = 833
             Top = 27
-            Width = 88
+            Width = 81
             Height = 15
-            Caption = 'Total Desconto'
+            Caption = 'Tot. Desconto'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
@@ -1902,11 +1954,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel9: TRLLabel
-            Left = 1016
+            Left = 1006
             Top = 27
-            Width = 64
+            Width = 75
             Height = 15
-            Caption = 'Valor Total'
+            Caption = 'Total L'#237'quido'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
@@ -1915,7 +1967,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel10: TRLLabel
-            Left = 75
+            Left = 64
             Top = 27
             Width = 64
             Height = 15
@@ -1928,7 +1980,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel11: TRLLabel
-            Left = 771
+            Left = 729
             Top = 27
             Width = 53
             Height = 15
@@ -1941,11 +1993,24 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
           end
           object RLLabel17: TRLLabel
-            Left = 834
+            Left = 790
             Top = 27
             Width = 39
             Height = 15
             Caption = 'Pe'#231'as'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object RLLabel42: TRLLabel
+            Left = 927
+            Top = 27
+            Width = 65
+            Height = 15
+            Caption = 'Total Bruto'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
@@ -1965,12 +2030,12 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Borders.DrawRight = False
           Borders.DrawBottom = True
           object rldbPercEstoque: TRLDBText
-            Left = 958
+            Left = 939
             Top = 5
-            Width = 64
+            Width = 102
             Height = 15
             Alignment = taCenter
-            DataField = '% Estoque'
+            DataField = 'PERC_ESTOQUE'
             DataSource = DataSource1
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -1996,7 +2061,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText4: TRLDBText
-            Left = 155
+            Left = 136
             Top = 4
             Width = 310
             Height = 15
@@ -2013,7 +2078,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           object RLDBText5: TRLDBText
             Left = 553
             Top = 4
-            Width = 105
+            Width = 79
             Height = 15
             Alignment = taCenter
             DataField = 'DT_REPRESENTANTE'
@@ -2043,9 +2108,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText7: TRLDBText
-            Left = 666
+            Left = 642
             Top = 4
-            Width = 96
+            Width = 80
             Height = 15
             Alignment = taCenter
             DataField = 'DT_RECEBIMENTO'
@@ -2059,8 +2124,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText8: TRLDBText
-            Left = 890
-            Top = 4
+            Left = 826
+            Top = 5
             Width = 88
             Height = 15
             Alignment = taRightJustify
@@ -2075,9 +2140,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText9: TRLDBText
-            Left = 992
-            Top = 3
-            Width = 88
+            Left = 1000
+            Top = 5
+            Width = 80
             Height = 15
             Alignment = taRightJustify
             DataField = 'TOTAL_LIQUIDO'
@@ -2091,7 +2156,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText10: TRLDBText
-            Left = 75
+            Left = 64
             Top = 4
             Width = 64
             Height = 15
@@ -2107,7 +2172,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText11: TRLDBText
-            Left = 771
+            Left = 729
             Top = 4
             Width = 53
             Height = 15
@@ -2123,12 +2188,28 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBText12: TRLDBText
-            Left = 834
+            Left = 790
             Top = 4
             Width = 39
             Height = 15
             Alignment = taRightJustify
             DataField = 'QTD_PECAS'
+            DataSource = DataSource1
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+          end
+          object RLDBText34: TRLDBText
+            Left = 904
+            Top = 5
+            Width = 90
+            Height = 15
+            Alignment = taRightJustify
+            DataField = 'TOTAL_BRUTO'
             DataSource = DataSource1
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -2152,9 +2233,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Borders.DrawBottom = True
           Options = [boOptimisticPageBreak]
           object RLDraw2: TRLDraw
-            Left = 824
+            Left = 784
             Top = 0
-            Width = 261
+            Width = 299
             Height = 25
             Brush.Color = 15461355
             Pen.Style = psClear
@@ -2177,7 +2258,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBResult2: TRLDBResult
-            Left = 890
+            Left = 826
             Top = 5
             Width = 88
             Height = 15
@@ -2194,7 +2275,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             Text = ''
           end
           object RLDBResult3: TRLDBResult
-            Left = 834
+            Left = 790
             Top = 5
             Width = 39
             Height = 15
@@ -2210,13 +2291,30 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
             ParentFont = False
             Text = ''
           end
+          object RLDBResult14: TRLDBResult
+            Left = 869
+            Top = 5
+            Width = 125
+            Height = 15
+            Alignment = taRightJustify
+            DataField = 'TOTAL_BRUTO'
+            DataSource = DataSource1
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
         end
       end
     end
   end
   object RLReport2: TRLReport
-    Left = 42
-    Top = 238
+    Left = -968
+    Top = 570
     Width = 1123
     Height = 794
     Margins.LeftMargin = 5.000000000000000000
@@ -3083,133 +3181,133 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010105000900380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000D7C39B00ECE3D600ECE3D600ECE3D600ECE3D600ECE3D600ECE3D600D7C3
+      9B00000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000F7EF
       E700D69A6600C3681600BF5F0200BF5F0100BF5F0100BF5F0200C3681600D69A
-      6600F7EFE7000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      6600F7EFE700000000000000000000000000B0ACAC00B1ACAC00A7A2A200726C
+      7300C4AB7F00EDE1D500EDE1D500EDE1D500EDE1D500EDE1D500EDE1D500C4AB
+      7F0076717700A49E9E00A9A4A400ABA5A5000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000F0DECC00C063
       1200BB530000C0600000BE590000BF5C0000C0610200C0600200C05F0000BB53
-      0000C0641200F0DECC0000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000C0641200F0DECC000000000000000000958F8F00C3C0BF00C3C0BF00837D
+      8400C6A87400E0CBAE00E0CBAE00E0CBAE00E0CBAE00E0CBAE00E0CBAE00C6A8
+      7400837D8400C3C0BF00C3C0BF00999292000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000F7F0E800C0640F00BD58
       0000C0610200BE590000CC823C00C46F1B00BE590000C0610200C0600200C061
-      0200BD580000C0640F00F7F0E800000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0200BD580000C0640F00F7F0E80000000000A49FA100D1CFCE00D1CFCE00D3D2
+      D100D2D2D300D0D0D200D0D0D200D0D0D200D0D0D200D0D0D200D0D0D200D2D2
+      D300D3D2D100BACAD7006E9BE300A49FA1000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000D69B6300BB530000C061
       0200BE5C0000C46D1E0000000000F3E5D900C0631000BD590000C0610200C060
-      0200C0610200BB530000D69B6300000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0200C0610200BB530000D69B630000000000AAA7A700D9D7D700D9D7D700D9D7
+      D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7
+      D700D9D7D7008AC3E900004BFB00ABA8A8000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000EEDBC900C3681100C05F0000C060
       0200C05F0200BD5A0400DCA97B0000000000F2E3D400C0631100BD590000C061
-      0200C0600200C05F0000C3681100EEDBC9000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0200C0600200C05F0000C3681100EEDBC900B7B3B300E6E8E900D6C5AF00BC6B
+      1000BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A
+      0F00BC6B1000D6C5AF00E6E8E900B8B5B5000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000D18D4E00C05F0000C0600200C060
       0200C0600200C0600100BA500000DBA7770000000000F2E3D400C0631100BE5A
-      0000C0600200C0600200C05F0000D18D4E000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000C0600200C0600200C05F0000D18D4E00BCB9BA00EEF2F500BA7B3E00E1A9
+      4200E1A84200E1A84200E1A84200E1A84200E1A84200E1A84200E1A84200E1A8
+      4200E1A94200BA7B3E00EEF2F500BFBBBC000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000C1630A00C0600200C0600200C060
       0200C0600200C0600200C0600100B94F0000D9A16D0000000000F5EADF00C268
-      1700BF5D0100C0600200C0600200C1630A000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      1700BF5D0100C0600200C0600200C1630A00CDC8C900F8FCFF00CD975300EEC6
+      7000EEC77100EEC77100EEC77100EEC77100EEC77100EEC77100EEC77100EEC7
+      7100EEC67000CD975300F8FCFF00CECBCC000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000C1630A00C0600100C0600200C060
       0200C0600200C0600200BF5E0000BB530000DFB38A0000000000EED7C000C062
-      1000BF5E0100C0600200C0600100C1630A000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      1000BF5E0100C0600200C0600100C1630A00D2D0D000FCFFFF00D7A55C00EDC9
+      7700E9BF6800E9BF6800E9BF6800E9BF6800E9BF6800E9BF6800E9BF6800E9BF
+      6800EDC97700D7A55C00FCFFFF00D4D1D0000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000CF8D4E00BF5F0000C0600200C060
       0200C0600200BF5E0000BB520000E3BB970000000000EBD1B800BC580100BF5C
-      0000C0600200C0600200BF5F0000CF8D4E000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000C0600200C0600200BF5F0000CF8D4E00DEDCDB0000000000E8C07000E0AC
+      5400B99D6B00D7BD9100D7BD9100D7BD9100D7BD9100D7BD9100D7BD9100B99D
+      6B00E0AC5400E8C0700000000000E3DFDF000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000EEDCC900C2681000C05F0100C060
       0200BF5F0100BF5E0A00E4BE9B0000000000EBD1B700BC580100BE5C0000C060
-      0200C0600200C05F0100C2681000EEDCC9000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0200C0600200C05F0100C2681000EEDCC900D1CBCD00BCBBC000DEB67300CF9E
+      5F00C4AB7F00DFCAAD00DFCAAD00DFCAAD00DFCAAD00DFCAAD00DFCAAD00C4AB
+      7F00CD995600DDB36E00BEBDC100D1CACC000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000D69B6300BB530000C061
       0200BE5C0000C56F2100FEFFFF00EDD4BD00BC580100BF5C0000C0600200C060
       0200C0610200BB530000D69B6300000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000D0BD9800ECDFD100ECDFD100ECDFD100ECDFD100ECDFD100ECDFD100D0BD
+      9800000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000F7F0E800C0641000BD59
       0000C0610200BE590000C7762900C1640A00BF5C0000C0600200C0600200C061
       0200BD590000C0641000F7F0E800000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000D5C4A400EFE4D800EFE4D800EFE4D800EFE4D800EFE4D800EFE4D800D5C4
+      A400000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000F0DECC00C163
       1300BB530000C0600000BE5B0000BF5E0000C0600200C0600200C05F0000BB53
       0000C1631300F0DECC0000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000DED0B800F5EDE400F5EDE400F5EDE400F5EDE400F5EDE400F5EDE400DED0
+      B800000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000F7EF
       E700D69A6600C3681600BF5F0200C0600200C0600200BF5F0200C3681600D69A
       6600F7EFE7000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000E2D6C100F8F3EA00F8F3EA00F8F3EA00F8F3EA00F8F3EA00F8F3EA00E2D6
+      C100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EED9C700D08D5400C1630F00C1630F00D08D5400EED9C7000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000E7DDCD00EFE8DB00EFE8DB00EFE8DB00EFE8DB00EFE8DB00EFE8DB00E8DF
+      D000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3343,11 +3441,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       000000000000FEFBF400FAEAD100F5D49700EECC8800F4D19800000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000040000000200000000100010000000000000100000000000000000000
-      000000000000000000000000FFFFFF00F81F000000000000E007000000000000
+      000000000000000000000000FFFFFF00F81FF00F00000000E007000000000000
       C003000000000000800100000000000082010000000000000100000000000000
-      0080000000000000004000000000000000400000000000000080000000000000
-      010000000000000080010000000000008001000000000000C003000000000000
-      E007000000000000F81F000000000000F00F8000FE1FFC3FC0030000FE1FF807
+      0080000000000000004000000000000000400000000000000080400200000000
+      01000000000000008001F00F000000008001F00F00000000C003F00F00000000
+      E007F00F00000000F81FF00F00000000F00F8000FE1FFC3FC0030000FE1FF807
       80010000FE1FF00180010000FE1FF00002000000FC1FE00601000000FC1FC000
       00800000F800C000004000000000800000200000000080000010000000000001
       00080000000000030000000000000407800100000000000F800100000000001F
@@ -3359,6 +3457,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     AggregatesActive = True
     Params = <>
     ProviderName = 'DataSetProvider1'
+    AfterScroll = cdsAfterScroll
     Left = 352
     Top = 192
     object cdsFATURADO: TStringField
@@ -3418,21 +3517,25 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       DisplayFormat = ' ,0.00; -,0.00'
       Precision = 18
     end
+    object cdsTOTAL_BRUTO: TFloatField
+      FieldName = 'TOTAL_BRUTO'
+      DisplayFormat = ' ,0.00; -,0.00'
+    end
     object cdsSTATUS: TStringField
       FieldName = 'STATUS'
       ReadOnly = True
       FixedChar = True
       Size = 10
     end
-    object cdsQTD_PECAS: TBCDField
-      FieldName = 'QTD_PECAS'
+    object cdsQTD_ITENS: TBCDField
+      FieldName = 'QTD_ITENS'
       ReadOnly = True
       DisplayFormat = '0'
       Precision = 18
       Size = 2
     end
-    object cdsQTD_ITENS: TBCDField
-      FieldName = 'QTD_ITENS'
+    object cdsQTD_PECAS: TBCDField
+      FieldName = 'QTD_PECAS'
       ReadOnly = True
       DisplayFormat = '0'
       Precision = 18
@@ -3454,6 +3557,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       FieldName = 'TAG'
       Visible = False
       Size = 1
+    end
+    object cdsCODIGO_NOTA_FISCAL: TIntegerField
+      FieldName = 'CODIGO_NOTA_FISCAL'
     end
     object cdsTOT_DESCONTO: TAggregateField
       FieldName = 'TOT_DESCONTO'
@@ -3484,6 +3590,14 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       DisplayName = ''
       DisplayFormat = '0'
       Expression = 'SUM(QTD_ITENS)'
+    end
+    object cdsTOT_VALOR_BRUTO: TAggregateField
+      FieldName = 'TOT_VALOR_BRUTO'
+      Active = True
+      currency = True
+      DisplayName = ''
+      DisplayFormat = ' ,0.00; -,0.00'
+      Expression = 'SUM(TOTAL_BRUTO)'
     end
   end
   object DataSetProvider1: TDataSetProvider
@@ -3792,5 +3906,15 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object PopupMenu1: TPopupMenu
+    Images = ImageList1
+    Left = 168
+    Top = 336
+    object ImprimirDanfe1: TMenuItem
+      Caption = 'Imprimir Danfe'
+      ImageIndex = 5
+      OnClick = ImprimirDanfe1Click
+    end
   end
 end

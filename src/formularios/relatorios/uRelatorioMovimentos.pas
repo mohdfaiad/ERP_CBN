@@ -132,6 +132,7 @@ type
     procedure rldbDescontoBeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
     procedure rldbTotalBeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure btnSairClick(Sender: TObject);
   private
     FTotalDinheiro :Real;
     FTotalConvenio :Real;
@@ -156,6 +157,12 @@ implementation
 procedure TfrmRelatorioMovimentos.btnImprimirClick(Sender: TObject);
 begin
   imprimir;
+end;
+
+procedure TfrmRelatorioMovimentos.btnSairClick(Sender: TObject);
+begin
+  inherited;
+  self.Close;
 end;
 
 procedure TfrmRelatorioMovimentos.chkPeriodoGeralClick(Sender: TObject);

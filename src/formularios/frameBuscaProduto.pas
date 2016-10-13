@@ -109,7 +109,7 @@ begin
   Result := '';
 
   if FProdutosLoja then
-    condicao_loja := ' Where (p.referencia like ''%L'' or p.referencia = ''KGLOJA'') ';
+    condicao_loja := ' Where (p.referencia like ''%L'' or p.referencia like ''%LOJA%'') ';
 
   frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select p.referencia, p.descricao, p.codigo, p.ativo from produtos p'+condicao_loja,
                                                        'REFERENCIA', 'Selecione o Produto desejado...',800);
@@ -148,7 +148,7 @@ begin
     if produto.verificaExiste('select codigo from produtos where referencia = '''+ referencia +'''') then begin
 
        if FProdutosLoja then
-         condicao_loja := ' and  (p.referencia like ''%L''  or p.referencia = ''KGLOJA'')';
+         condicao_loja := ' and  (p.referencia like ''%L''  or p.referencia like ''%LOJA%'')';
 
        produto.SQL := 'Select first 1 p.referencia, p.descricao, p.codigo, g.codigo grade, g.descricao descgrade, pt.preco, p.tipo, p.kit    from produtos p '+
                       'inner join grades g on g.codigo = p.cod_grade                                                                                  '+

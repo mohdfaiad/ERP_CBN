@@ -129,6 +129,7 @@ begin
     Fped.dt_despacho       := Pedido.getCampo('dt_despacho').AsDateTime;
     FPedido_Faturado       := (Pedido.getCampo('codigo_nota_fiscal').AsFloat > 0);
     FPed.cancelado         := Pedido.getCampo('cancelado').AsString;
+    FPed.valor_frete       := Pedido.getCampo('valor_frete').AsFloat;
 
     buscaItens;
     keybd_event(VK_TAB, 0, 0, 0);

@@ -18,7 +18,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
     Top = 0
     Width = 822
     Height = 518
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     TabStop = False
@@ -283,7 +283,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         Top = 56
         Width = 814
         Height = 417
-        ActivePage = TabSheet6
+        ActivePage = TabSheet3
         TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'Permiss'#245'es B'#225'sicas'
@@ -455,6 +455,30 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Cadastrar contas banc'#225'rias'
             TabOrder = 20
+          end
+          object chk71: TCheckBox
+            Left = 272
+            Top = 128
+            Width = 186
+            Height = 17
+            Caption = 'Cadastrar grupo do produto'
+            TabOrder = 21
+          end
+          object chk72: TCheckBox
+            Left = 272
+            Top = 152
+            Width = 186
+            Height = 17
+            Caption = 'Cadastrar cidade'
+            TabOrder = 22
+          end
+          object chk73: TCheckBox
+            Left = 272
+            Top = 176
+            Width = 186
+            Height = 17
+            Caption = 'Cadastrar NCM'
+            TabOrder = 23
           end
         end
         object TabSheet7: TTabSheet
@@ -859,6 +883,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Visualizar Relat'#243'rio de Caixa (Loja)'
             TabOrder = 18
+          end
+          object chk70: TCheckBox
+            Left = 385
+            Top = 80
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Relat'#243'rio de Tabela'
+            TabOrder = 19
           end
         end
       end

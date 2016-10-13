@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uCadastroPadrao, DB, DBClient, StdCtrls, Grids, DBGrids,
   DBGridCBN, ComCtrls, Buttons, ExtCtrls, frameBuscaCidade, Mask, RxToolEdit,
-  RxCurrEdit;
+  RxCurrEdit, frameFone;
 
 type
   TfrmCadastroEmpresa = class(TfrmCadastroPadrao)
@@ -34,13 +34,7 @@ type
     edtCep: TMaskEdit;
     edtComplemento: TEdit;
     gpbContato: TGroupBox;
-    lblFone1: TLabel;
-    lblFone2: TLabel;
-    lblFax: TLabel;
     lblEmail: TLabel;
-    edtFone1: TMaskEdit;
-    edtFone2: TMaskEdit;
-    edtFax: TMaskEdit;
     edtEmail: TEdit;
     memObs: TMemo;
     edtCodigo: TEdit;
@@ -92,6 +86,9 @@ type
     edtSMTPHost: TEdit;
     cbTipoEmissao: TComboBox;
     Label7: TLabel;
+    Fone1: TFone;
+    Fone2: TFone;
+    FoneFax: TFone;
     procedure BitBtn1Click(Sender: TObject);
 
   private
@@ -227,9 +224,9 @@ begin
      Empresa.CPF_CNPJ                 := self.edtCpf.Text;
      Empresa.RG_IE                    := self.edtRg.Text;
      Empresa.RegimeTributarioInteger  := self.rgrpRegimeTributario.ItemIndex;
-     Empresa.Fone1                    := self.edtFone1.Text;
-     Empresa.Fone2                    := self.edtFone2.Text;
-     Empresa.Fax                      := self.edtFax.Text;
+     Empresa.Fone1                    := Fone1.edtFone.Text;
+     Empresa.Fone2                    := Fone2.edtFone.Text;
+     Empresa.Fax                      := FoneFax.edtFone.Text;
      Empresa.Email                    := self.edtEmail.Text;
      Empresa.Observacao               := self.memObs.Lines.Text;
 
@@ -327,9 +324,9 @@ begin
   self.edtCep.Clear;
   self.edtPais.Text := 'BRASIL';
   self.edtComplemento.Clear;
-  self.edtFone1.Clear;
-  self.edtFone2.Clear;
-  self.edtFax.Clear;
+  Fone1.limpa;
+  Fone2.limpa;
+  FoneFax.limpa;
   self.edtEmail.Clear;
   self.memObs.Clear;
 
@@ -388,9 +385,9 @@ begin
     self.edtRg.Text                     := Empresa.RG_IE;
     self.edtDtCad.Text                  := FormatDateTime('dd/mm/yyyy', Empresa.DtCadastro);
     self.rgrpRegimeTributario.ItemIndex := Empresa.RegimeTributarioInteger;
-    self.edtFone1.Text                  := Empresa.Fone1;
-    self.edtFone2.Text                  := Empresa.Fone2;
-    self.edtFax.Text                    := Empresa.Fax;
+    Fone1.Fone                          := Empresa.Fone1;
+    Fone2.Fone                          := Empresa.Fone2;
+    FoneFax.Fone                        := Empresa.Fax;
     self.edtEmail.Text                  := Empresa.Email;
     self.memObs.Lines.Add(Empresa.Observacao);
 
@@ -477,11 +474,11 @@ begin
     avisar('Endereço obrigatório! Favor informe a cidade');
     cidade.edtCodCid.SetFocus;
   end
-  else if (trim(edtFone1.Text) = '(  )    -') and
-          (trim(edtFone2.Text) = '(  )    -') and
-          (trim(edtFax.Text)   = '(  )    -') then begin
+  else if (StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-') then begin
     avisar('Favor informar ao menos um telefone para contato');
-    edtFone1.SetFocus;
+    Fone1.edtFone.SetFocus;
   end
   else if (self.rgrpRegimeTributario.ItemIndex < 0) or (self.rgrpRegimeTributario.ItemIndex > 2) then begin
     inherited Avisar('Favor informar o regime tributário da empresa');

@@ -182,6 +182,8 @@ type
     cdsItensTam10: TIntegerField;
     cdsItensTam12: TIntegerField;
     cdsItensTam14: TIntegerField;
+    edtValorFrete: TCurrencyEdit;
+    Label20: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbAprovacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -244,6 +246,7 @@ type
     procedure BuscaCor1edtReferenciaChange(Sender: TObject);
     procedure btnImprimeVersoClick(Sender: TObject);
     procedure btnGerarCotacaoClick(Sender: TObject);
+    procedure edtRepresentanteChange(Sender: TObject);
 
   private
     Pedido :TPedido;
@@ -251,6 +254,7 @@ type
     dataAprovacao :TDateTime;
     Item   :TItem;
     repPedido, repItem :TRepositorio;
+    FPedidoTricae :Boolean;
 
     procedure habilitaTamanhos;
     procedure BloqueiaLiberaCampos;
@@ -276,9 +280,10 @@ type
 //    procedure Salva_estoque(cod_produto, cod_cor, cod_tamanho :integer; quantidade :Real);
     procedure Busca_tamanhos(var cds :TClientDataSet);
     procedure subtrai_estoque_reservado;
+    procedure SetPedidoTricae(const Value: Boolean);
 
   public
-    { Public declarations }
+    property PedidoTricae :Boolean read FPedidoTricae write SetPedidoTricae;
   end;
 
 var
@@ -297,6 +302,7 @@ begin
   inherited;
   BuscaCliente.TipoPessoa        := tpCliente;
   BuscaTransportadora.TipoPessoa := tpTransportadora;
+  FPedidoTricae := false;
 end;
 
 procedure TfrmPedido.cbAprovacaoChange(Sender: TObject);         
@@ -353,7 +359,6 @@ begin
   dtpRecebido.DateTime      := date;
   dtpRepresentante.DateTime := date;
   aproveitandoPedido        := false;
-
 end;
 
 procedure TfrmPedido.cdsAfterScroll(DataSet: TDataSet);
@@ -754,12 +759,18 @@ procedure TfrmPedido.edtPrecoExit(Sender: TObject);
 begin
   inherited;
   somaQtdCores;
+  BuscaCor1.edtReferencia.SetFocus;
 end;
 
 procedure TfrmPedido.edtPrecoKeyPress(Sender: TObject; var Key: Char);
 begin
   if not (key in ['0'..'9']) and not (key in [#8,#37,#39,',']) then
     key := #0;
+end;
+
+procedure TfrmPedido.edtRepresentanteChange(Sender: TObject);
+begin
+  PedidoTricae := (pos('TRICAE',edtRepresentante.Text) > 0);
 end;
 
 procedure TfrmPedido.edtPercDescontoChange(Sender: TObject);
@@ -878,6 +889,7 @@ begin
      Pedido.despachado        := IfThen(rbSim.Checked, 'S', '');
      Pedido.dt_despacho       := StrToDateDef(edtDataDespacho.Text, strToDate('01/01/1900'));
      Pedido.desconto_itens    := edtDescontoItens.Value;  //itens
+     Pedido.valor_frete       := edtValorFrete.Value;
 
      {se pedido já tem conferencia associada e esta sendo cancelado, retorna o estoque conferido}
      if assigned(BuscaPedido1.Ped) and assigned(BuscaPedido1.Ped.Conferencia) and (Pedido.cancelado <> 'S') and (rgStatus.ItemIndex = 1) then
@@ -956,6 +968,15 @@ begin
 
 end;
 
+procedure TfrmPedido.SetPedidoTricae(const Value: Boolean);
+begin
+  FPedidoTricae := Value;
+
+  edtPercComissao.Value := IfThen(FPedidoTricae,30,0);
+  edtValorFrete.Enabled := FPedidoTricae;
+  edtPreco.ReadOnly     := not FPedidoTricae;
+end;
+
 procedure TfrmPedido.mostraPedido;
 var i :integer;
 begin
@@ -993,6 +1014,7 @@ begin
   edtTotPedido.Value                     := BuscaPedido1.Ped.valor_total;
   edtDescontoPedido.Value                := BuscaPedido1.Ped.desconto;
   edtAcrescimoPedido.Value               := BuscaPedido1.Ped.acrescimo;
+  edtValorFrete.Value                    := BuscaPedido1.Ped.valor_frete;
   rgStatus.ItemIndex                     := IfThen(BuscaPedido1.Ped.cancelado = 'S', 1, 0);
 
   if cdsItens.Active then
@@ -1231,6 +1253,7 @@ begin
   edtTotPedidoBruto.Clear;
   edtDesconto.Clear;
   edtAcrescimoPedido.Clear;
+  edtValorFrete.Clear;
   edtDescontoPedido.Clear;
   edtObservacoes.Clear;
   rbNao.Checked              := true;
@@ -1375,8 +1398,11 @@ begin
     BuscaCor1.Enabled:= True;
   if BuscaCor1.Enabled then
   begin
-    if pagPedido.ActivePageIndex = 1 then
-      BuscaCor1.edtReferencia.SetFocus;
+    if (pagPedido.ActivePageIndex = 1) then
+      if (FPedidoTricae) then
+        edtPreco.SetFocus
+      else
+        BuscaCor1.edtReferencia.SetFocus;
   end
   else
     DBGrid1.ReadOnly := false;
@@ -1554,7 +1580,8 @@ end;
 
 procedure TfrmPedido.edtPrecoEnter(Sender: TObject);
 begin
-  keybd_event(VK_TAB, 0, 0, 0);
+  if not FPedidoTricae then
+    keybd_event(VK_TAB, 0, 0, 0);
 end;
 
 procedure TfrmPedido.BuscaFormaPagamento1Exit(Sender: TObject);

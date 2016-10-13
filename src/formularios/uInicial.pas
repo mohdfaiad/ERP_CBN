@@ -122,6 +122,10 @@ type
     Loja1: TMenuItem;
     Caixa2: TMenuItem;
     Pedidos2: TMenuItem;
+    abeladePreos1: TMenuItem;
+    Grupos1: TMenuItem;
+    Cidades1: TMenuItem;
+    NCMs1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -201,6 +205,10 @@ type
     procedure CaixaLoja1Click(Sender: TObject);
     procedure Caixa2Click(Sender: TObject);
     procedure Pedidos2Click(Sender: TObject);
+    procedure abeladePreos1Click(Sender: TObject);
+    procedure Grupos1Click(Sender: TObject);
+    procedure Cidades1Click(Sender: TObject);
+    procedure NCMs1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -266,12 +274,12 @@ uses
   uRelatorioReferencias,
   uFechaComissaoRepresentante,
   uSintegra,
-  uEFDContribuicoes,
+  uEFDContribuicoes, uCadastroGrupo,
   uCadastroContador, uImportadorOrdemServico,
-  uEFDFiscal, uCadastroContasBanco, uCaixa,
+  uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM,
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
   uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque,
-  uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque,
+  uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco,
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque;
@@ -478,6 +486,18 @@ begin
   end;
 end;
 
+procedure TfrmInicial.abeladePreos1Click(Sender: TObject);
+begin
+  try
+     self.AbreForm(TfrmRelatorioTabelasPreco, paRelatorioTabelaPrecos);
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
+end;
+
 procedure TfrmInicial.abelasdePreo1Click(Sender: TObject);
 begin
   try
@@ -518,6 +538,18 @@ procedure TfrmInicial.Grades1Click(Sender: TObject);
 begin
   try
      self.AbreForm(TfrmCadastroGrade, paCadastroGrade);
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
+end;
+
+procedure TfrmInicial.Grupos1Click(Sender: TObject);
+begin
+  try
+     self.AbreForm(TfrmCadastroGrupo, paCadastroGrupo);
   except
     on e : Exception do
       begin
@@ -688,6 +720,11 @@ begin
   end;
 end;
 
+procedure TfrmInicial.NCMs1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmCadastroNCM, paCadastroNCM);
+end;
+
 procedure TfrmInicial.mnuConfiguracoesNotaFiscalClick(Sender: TObject);
 begin
   self.AbreForm(TfrmConfiguracoesNF, paTelaConfiguracaoNotaFiscal);
@@ -805,6 +842,11 @@ end;
 procedure TfrmInicial.CFOPsCorrespondentes1Click(Sender: TObject);
 begin
   self.AbreForm(TFrmCadastroCfopCorrespondente, paCadastroCFOPCorrespondente);
+end;
+
+procedure TfrmInicial.Cidades1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmCadastroCidade, paCadastroCidade);
 end;
 
 procedure TfrmInicial.EntradaNota1Click(Sender: TObject);

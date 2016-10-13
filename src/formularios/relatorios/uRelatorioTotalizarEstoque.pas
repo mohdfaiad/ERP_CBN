@@ -254,7 +254,7 @@ begin
     cWhere := 'WHERE PRODUTOS.REFERENCIA IS NOT NULL ';
 
   if chkSomenteLoja.Checked then
-    cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or produtos.referencia = ''KGLOJA'')';
+    cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or PRODUTOS.referencia like ''%LOJA%'')';
 
 
   Qry.Close;

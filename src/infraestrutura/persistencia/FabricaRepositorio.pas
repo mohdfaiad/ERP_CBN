@@ -101,7 +101,9 @@ uses
   RepositorioOrdemServico,
   RepositorioNcmIBPT,
   RepositorioCaixa,
-  RepositorioEntradaSaidaMoeda;
+  RepositorioEntradaSaidaMoeda,
+  RepositorioGrupo,
+  RepositorioClassificacaoFiscal;
 
 
 { TFabricaRepositorio }
@@ -195,6 +197,8 @@ begin
    else if (NomeDaEntidade  = 'TNcmIBPT')                   then result := TRepositorioNcmIBPT.Create
    else if (NomeDaEntidade  = 'TCaixa')                     then result := TRepositorioCaixa.Create
    else if (NomeDaEntidade  = 'TEntradaSaidaMoeda')         then result := TRepositorioEntradaSaidaMoeda.Create
+   else if (NomeDaEntidade  = 'TGrupo')                     then result := TRepositorioGrupo.Create
+   else if (NomeDaEntidade  = 'TClassificacaoFiscal')       then result := TRepositorioClassificacaoFiscal.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

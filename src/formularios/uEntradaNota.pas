@@ -88,6 +88,7 @@ type
     procedure edtCSTKeyPress(Sender: TObject; var Key: Char);
     procedure GridMateriasKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure AlterarCFOP1Click(Sender: TObject);
 
   private
     function MateriaCadastrada(produtoNfe :TProd) :Integer;
@@ -206,6 +207,7 @@ begin
                                 ' | IE: ' + AcbrNfe.NotasFiscais.Items[0].NFe.Emit.IE + #13#10+' não consta no cadastro. Favor cadastrar.';
     fornecedor_yes.Visible  := false;
     inc(Validacoes);
+    exit;
   end
   else begin
     lbInfoFornecedor.Caption := 'Fornecedor válido.';
@@ -672,6 +674,12 @@ procedure TfrmEntradaNota.GridMateriasKeyDown(Sender: TObject; var Key: Word; Sh
 begin
   if key = VK_F2 then
     altera_cfop;
+end;
+
+procedure TfrmEntradaNota.AlterarCFOP1Click(Sender: TObject);
+begin
+  inherited;
+  altera_cfop;
 end;
 
 procedure TfrmEntradaNota.altera_cfop;

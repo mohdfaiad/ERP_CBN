@@ -9,7 +9,7 @@ uses
   frameMaskCpfCnpj, DBCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, frameFone;
 
 type
   TfrmCadastroFornecedor = class(TfrmPadrao)
@@ -60,12 +60,6 @@ type
     edtCep: TMaskEdit;
     edtComplemento: TEdit;
     GroupBox2: TGroupBox;
-    Label12: TLabel;
-    Label13: TLabel;
-    Label14: TLabel;
-    edtFone1: TMaskEdit;
-    edtFone2: TMaskEdit;
-    edtFax: TMaskEdit;
     edtCodigo: TEdit;
     btnIncluir: TSpeedButton;
     btnAlterar: TSpeedButton;
@@ -101,6 +95,9 @@ type
     Label23: TLabel;
     cdsNOME_FANTASIA: TStringField;
     qry: TFDQuery;
+    Fone1: TFone;
+    Fone2: TFone;
+    FoneFax: TFone;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -118,6 +115,7 @@ type
     procedure edtEmailEnter(Sender: TObject);
     procedure edtEmailExit(Sender: TObject);
     procedure TabSheet2Exit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     Fornecedor :TPessoa;
@@ -191,7 +189,7 @@ begin
   edtCodigo.Text        := cdsCODIGO.AsString;
   edtRazao.text         := cdsRAZAO.AsString;
   edtNomeFantasia.Text  := cdsNOME_FANTASIA.AsString;
-  CpfCnpj.pessoa        := cdsPESSOA.AsString;
+//  CpfCnpj.pessoa        := cdsPESSOA.AsString;
   CpfCnpj.edtCpf.text   := cdsCPF_CNPJ.AsString;
   edtRg.text	          := cdsRG_IE.AsString;
   edtDtCad.text         := dateToStr(cdsDTCADASTRO.AsDateTime);
@@ -202,9 +200,9 @@ begin
   edtCep.text 	        := cdsCEP.AsString;
   edtPais.text 	        := cdsPais.AsString;
   edtComplemento.text   := cdsCOMPLEMENTO.AsString;
-  edtFone1.text         := cdsFONE1.AsString;
-  edtFone2.text         := cdsFone2.AsString;
-  edtFax.text 	        := cdsFAX.AsString;
+  Fone1.Fone            := cdsFONE1.AsString;
+  Fone2.Fone            := cdsFone2.AsString;
+  FoneFax.Fone 	        := cdsFAX.AsString;
   carregaEmails(cdsEmail.AsString);
   memObs.text 	        := cdsObservacao.AsString;
 
@@ -243,7 +241,7 @@ begin
   edtcodigo.Text := '0';
   edtRazao.Clear;
   edtNomeFantasia.Clear;
-  CpfCnpj.comPessoa.itemIndex := 0;
+//  CpfCnpj.comPessoa.itemIndex := 0;
   CpfCnpj.edtCpf.Clear;
   edtRg.Clear;
   edtDtCad.text := dateToStr(date);
@@ -256,9 +254,9 @@ begin
   edtCep.Clear;
   edtPais.Text := 'BRASIL';
   edtComplemento.Clear;
-  edtFone1.Clear;
-  edtFone2.Clear;
-  edtFax.Clear;
+  Fone1.limpa;
+  Fone2.limpa;
+  FoneFax.limpa;
   edtEmail.Clear;
   memObs.Clear;
   cdsEmails.EmptyDataSet;
@@ -317,11 +315,11 @@ begin
     avisar('Endereço obrigatório! Favor informe a cidade');
     cidade.edtCodCid.SetFocus;
   end
-  else if (trim(edtFone1.Text) = '(  )    -') and
-          (trim(edtFone2.Text) = '(  )    -') and
-          (trim(edtFax.Text)   = '(  )    -') then begin
+  else if (StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+          (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-') then begin
     avisar('Favor informar ao menos um telefone para contato');
-    edtFone1.SetFocus;
+    Fone1.edtFone.SetFocus;
   end
   else
     result := true;
@@ -338,9 +336,9 @@ begin
  Fornecedor.CPF_CNPJ             := CpfCnpj.edtCpf.text;
  Fornecedor.RG_IE                := edtRg.text;
  Fornecedor.DtCadastro           := strToDate(edtDtCad.text);
- Fornecedor.Fone1                := edtFone1.text;
- Fornecedor.Fone2                := edtFone2.text;
- Fornecedor.Fax                  := edtFax.text;
+ Fornecedor.Fone1                := Fone1.edtFone.text;
+ Fornecedor.Fone2                := Fone2.edtFone.text;
+ Fornecedor.Fax                  := FoneFax.edtFone.text;
  Fornecedor.Email                := concatenaEmails;
  Fornecedor.Observacao           := memObs.text;
  Fornecedor.Tipo                 := 'F';
@@ -399,6 +397,12 @@ begin
       cds.Locate('CODIGO', edtCodigo.Text, []);
       pagFornecedores.ActivePageIndex := 1;
     end;
+end;
+
+procedure TfrmCadastroFornecedor.FormCreate(Sender: TObject);
+begin
+  inherited;
+  CpfCnpj.pessoa := 'J';
 end;
 
 procedure TfrmCadastroFornecedor.FormKeyDown(Sender: TObject;

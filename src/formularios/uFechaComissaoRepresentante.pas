@@ -10,7 +10,7 @@ uses
   RLFilters, RLPDFFilter, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, ACBrBase, ACBrMail;
 
 type
   TfrmFechaComissaoRepresentante = class(TfrmPadrao)
@@ -329,6 +329,7 @@ type
     cdsQuinzena2COMISSAO: TBCDField;
     cdsQuinzena2VALOR_TOTAL: TBCDField;
     cdsQuinzena2VLRCOMISSAO: TBCDField;
+    ACBrMail1: TACBrMail;
     procedure FormShow(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
@@ -1322,51 +1323,30 @@ var
 begin
  try
   try
-    IdSMTP := TIdSMTP.create(nil);
-    IdSSLIOHandlerSocketOpenSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create (IdSMTP);
-
-    IdSMTP.ConnectTimeout := 10000;
-    IdSMTP.ReadTimeout    := 10000;
-
-
-    IdSSLIOHandlerSocketOpenSSL1.SSLOptions.Method := sslvSSLv23;
-    IdSSLIOHandlerSocketOpenSSL1.SSLOptions.Mode   := sslmClient;
-
-    IdSMTP.IOHandler    := IdSSLIOHandlerSocketOpenSSL1;
-    IdSMTP.UseTLS       := utUseExplicitTLS;
-
     repositorio         := TFabricaRepositorio.GetRepositorio( TConfiguracoesNFEmail.ClassName );
     configuracoes_email := TConfiguracoesNFEmail( repositorio.Get( 1 ) );
 
     if assigned(configuracoes_email) then begin {configuracoes_email - é a classe com as informações do email do cliente}
 
-      IdSMTP.AuthType     := satDefault;
-      IdSMTP.Host         := configuracoes_email.SMTPHost;//'smtp.live.com';//'smtp.gmail.com';
-      IdSMTP.Port         := strToInt( configuracoes_email.SMTPPort );
-      IdSMTP.Username     := configuracoes_email.SMTPUser;
-      IdSMTP.Password     := configuracoes_email.SMTPPassword;
+      ACBrMail1.Host         := configuracoes_email.SMTPHost;//'smtp.live.com';//'smtp.gmail.com';
+      ACBrMail1.Port         := configuracoes_email.SMTPPort;
+      ACBrMail1.Username     := configuracoes_email.SMTPUser;
+      ACBrMail1.Password     := configuracoes_email.SMTPPassword;
+      ACBrMail1.AddReplyTo(edtEmailCopia.Text);
+      ACBrMail1.AddAddress(Endereco);// + ';' +configuracoes_email.SMTPUser;
 
-      IdMessage := TIdMessage.create(nil);
-      IdMessage.Clear;
-      IdMessage.MessageParts.Clear;
-      IdMessage.Recipients.EMailAddresses:= Endereco;// + ';' +configuracoes_email.SMTPUser;
+      ACBrMail1.From                := edtEmailCopia.Text;//configuracoes_email.SMTPUser;
+      ACBrMail1.FromName            := edtNome.Text;
+      ACBrMail1.IsHTML := false;
 
-      IdMessage.From.Address              := edtEmailCopia.Text;//configuracoes_email.SMTPUser;
-      IdMessage.From.Name                 := edtNome.Text;
-      IdMessage.Priority                  := mpHigh; //MpNormal MpLow
-
-      IdMessage.Subject  := Assunto;
-      IdMessage.Body.Add( Texto );
+      ACBrMail1.Subject  := Assunto;
+      ACBrMail1.Body.Text := Texto;
 
       for nX := 0 to stlAnexo.Count -1 do
-        TIdAttachmentFile.Create(idmessage.MessageParts, TFileName( stlAnexo[nX] ));
+        ACBrMail1.AddAttachment(TFileName( stlAnexo[nX] ));
 
       Application.ProcessMessages;
-      IdSMTP.Connect;
-      IdSMTP.Authenticate;
-      
-      Application.ProcessMessages;
-      IdSMTP.Send(IdMessage);
+      ACBrMail1.Send;
 
       avisar('Os relatórios de comissão referente a 1ª e 2ª quinzena do mês de '+ TDateTimeUtilitario.mes_extenso( strToInt( formatDateTime('mm', dtpFim.DateTime) ))
             +', foram enviados com sucesso!'+#13#10

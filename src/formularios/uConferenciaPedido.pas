@@ -482,7 +482,6 @@ type
   private
 
     function  Conferencia_finalizada :Boolean;
-    function  verifica_esta_conferido :String;
     function  grade_imcompleta :Boolean;
 
     { se ao dividir o pedido, for solicitado apenas grades fechadas, ele envia para o novo pedido, os itens com grades parcialmente conferidas}
@@ -1081,11 +1080,12 @@ begin
   else if AnsiIndexStr(Column.FieldName, ['REFPRO','PRODUTO', 'COR']) >= 0 then begin
     TDBGridCBN(Sender).Canvas.Font.name   := 'Calibri';
     TDBGridCBN(Sender).Canvas.Font.Size   := 8;
-  end
-  else if TDBGridCBN(Sender).Fields[1].asString = 'S' then begin {se campo conferido = S}
-    TDBGridCBN(Sender).Canvas.Brush.Color := $0086B98B;
-    TDBGridCBN(Sender).Canvas.FillRect(Rect);
-    TDBGridCBN(Sender).DefaultDrawDataCell(Rect, TDBGridCBN(Sender).columns[datacol].field, State);
+
+    if TDBGridCBN(Sender).Fields[1].asString = 'S' then begin {se campo conferido = S}
+      TDBGridCBN(Sender).Canvas.Brush.Color := $0086B98B;
+      TDBGridCBN(Sender).Canvas.FillRect(Rect);
+      TDBGridCBN(Sender).DefaultDrawDataCell(Rect, TDBGridCBN(Sender).columns[datacol].field, State);
+    end;
   end;
 
   inherited;
@@ -1148,26 +1148,6 @@ begin
   masculino_feminino  := fdm.qryGenerica.fieldByName('genero').AsString;
   acessorio           := (fdm.qryGenerica.fieldByName('tipo').AsString = 'ACESSORIO');
 
-end;
-
-function TfrmConferenciaPedido.verifica_esta_conferido: String;
-begin
-  Result := 'N';
-
-  if (( cdsItensQTD_RN.AsInteger ) +
-     ( cdsItensQTD_P.AsInteger ) +
-     ( cdsItensQTD_M.AsInteger ) +
-     ( cdsItensQTD_G.AsInteger ) +
-     ( cdsItensQTD_1.AsInteger ) +
-     ( cdsItensQTD_2.AsInteger ) +
-     ( cdsItensQTD_3.AsInteger ) +
-     ( cdsItensQTD_4.AsInteger ) +
-     ( cdsItensQTD_6.AsInteger ) +
-     ( cdsItensQTD_8.AsInteger ) +
-     ( cdsItensQTD_10.AsInteger ) +
-     ( cdsItensQTD_12.AsInteger ) +
-     ( cdsItensQTD_14.AsInteger ) +
-     ( cdsItensQTD_UNICA.AsInteger )) = 1 then  Result := 'S';
 end;
 
 procedure TfrmConferenciaPedido.calcula_percentagem_conferida;
@@ -2954,7 +2934,7 @@ begin
     Item.cod_cor       := codcor;
     Item.preco         := preco;
 
-    case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','UNICA']) of
+    case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','10','12','14','UNICA']) of
      0  : Item.qtd_RN    := Item.qtd_RN    + quantidade;
      1  : Item.qtd_P     := Item.qtd_P     + quantidade;
      2  : Item.qtd_M     := Item.qtd_M     + quantidade;
@@ -2992,7 +2972,7 @@ begin
     repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
     Item        := TItem( repositorio.Get(coditem) );
 
-    case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','UNICA']) of
+    case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','10','12','14','UNICA']) of
      0  : Item.qtd_RN    := Item.qtd_RN    - quantidade;
      1  : Item.qtd_P     := Item.qtd_P     - quantidade;
      2  : Item.qtd_M     := Item.qtd_M     - quantidade;

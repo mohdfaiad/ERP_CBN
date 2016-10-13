@@ -448,10 +448,6 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     object TabSheet1: TTabSheet
       Caption = 'F1 - Clientes'
       OnExit = TabSheet1Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         872
         469)
@@ -857,12 +853,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     object TabSheet2: TTabSheet
       Caption = 'F2 - Dados do Cliente'
       ImageIndex = 1
-      OnEnter = TabSheet2Enter
       OnExit = TabSheet2Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 24
         Top = 17
@@ -877,9 +868,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         ParentFont = False
       end
       object Label4: TLabel
-        Left = 569
+        Left = 567
         Top = 17
-        Width = 35
+        Width = 38
         Height = 13
         Caption = 'RG / IE'
         Font.Charset = DEFAULT_CHARSET
@@ -963,11 +954,11 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         TabOrder = 0
       end
       object edtRg: TMaskEdit
-        Left = 569
+        Left = 567
         Top = 33
-        Width = 94
+        Width = 97
         Height = 21
-        MaxLength = 12
+        MaxLength = 15
         TabOrder = 2
         Text = ''
       end
@@ -1302,45 +1293,6 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 5
-        object Label12: TLabel
-          Left = 25
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label13: TLabel
-          Left = 150
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 2'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label14: TLabel
-          Left = 271
-          Top = 27
-          Width = 18
-          Height = 13
-          Caption = 'Fax'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
         object Label23: TLabel
           Left = 12
           Top = 17
@@ -1354,53 +1306,69 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object edtFone1: TMaskEdit
-          Left = 24
-          Top = 43
-          Width = 111
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline Fone1: TFone
+          Left = 21
+          Top = 24
+          Width = 132
+          Height = 47
           TabOrder = 0
-          Text = '(  )    -    '
+          ExplicitLeft = 21
+          ExplicitTop = 24
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 1'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            EditMask = '!\(99\)99999\-9999;1; '
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ExplicitWidth = 99
+          end
         end
-        object edtFone2: TMaskEdit
-          Left = 149
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline Fone2: TFone
+          Left = 139
+          Top = 24
+          Width = 122
+          Height = 47
           TabOrder = 1
-          Text = '(  )    -    '
+          ExplicitLeft = 139
+          ExplicitTop = 24
+          ExplicitWidth = 122
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 2'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
         end
-        object edtFax: TMaskEdit
-          Left = 270
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline FoneFax: TFone
+          Left = 268
+          Top = 24
+          Width = 132
+          Height = 47
           TabOrder = 2
-          Text = '(  )    -    '
+          ExplicitLeft = 268
+          ExplicitTop = 24
+          inherited Label12: TLabel
+            Width = 18
+            Caption = 'Fax'
+            ExplicitWidth = 18
+          end
+          inherited edtFone: TMaskEdit
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
         end
       end
       object edtCodigo: TEdit
@@ -1831,7 +1799,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400180010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

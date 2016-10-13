@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls, Buttons, Mask, RxToolEdit, RxCurrEdit, ObjetoGenerico,
-  ExtCtrls, System.StrUtils;
+  ExtCtrls, System.StrUtils, Cor;
 
 type
   TBuscaCor = class(TFrame)
@@ -29,6 +29,7 @@ type
     Ftipo: String;
     FTamanho: String;
     FApareceKits: String;
+    FObjCor      :TCor;
 
     procedure buscaCor(codigo:String);
     procedure SetcodCor(const Value: String);
@@ -41,6 +42,7 @@ type
   public
     procedure limpa;
 
+    property ObjCor     :TCor read FObjCor;
     property codCor     :String read FcodCor write SetcodCor;
     property CodigoCor  :Integer read GetCodigoCor;
     property codProduto :integer read FCodProduto write SetCodProduto;
@@ -55,7 +57,7 @@ type
 
 implementation
 
-uses uPesquisaSimples, funcoes;
+uses uPesquisaSimples, funcoes, repositorio, fabricarepositorio;
 
 {$R *.dfm}
 
@@ -104,6 +106,7 @@ end;
 procedure TBuscaCor.buscaCor(codigo: String);
 var campoRetorno :String;
     condicao     :String;
+    repositorio  :TRepositorio;
 begin
   campoRetorno := 'REFERENCIA'; //campo que deseja que retorne
   condicao     := '';
@@ -131,6 +134,10 @@ begin
     edtReferencia.Text := cor.getCampo('referencia').AsString;
     edtDescricao.Text  := cor.getCampo('descricao').AsString;
     self.Ftipo         := cor.getCampo('tipo').AsString;
+
+    repositorio := TFabricaRepositorio.GetRepositorio(TCor.ClassName);
+    FObjCor     := TCor(repositorio.get(cor.getCampo('codigo').AsInteger));
+
   end
   else begin
     limpa;

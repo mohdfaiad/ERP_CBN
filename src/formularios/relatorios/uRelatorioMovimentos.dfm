@@ -708,8 +708,6 @@ inherited frmRelatorioMovimentos: TfrmRelatorioMovimentos
     Height = 39
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 530
-    ExplicitWidth = 1034
     DesignSize = (
       455
       39)
@@ -866,6 +864,7 @@ inherited frmRelatorioMovimentos: TfrmRelatorioMovimentos
         9B009B9B9B009B9B9B009B9B9B009B9B9B0086550400784400006C3900006130
         0000562600004F1E00006B3600007B48000085550000804F0000}
       NumGlyphs = 2
+      OnClick = btnSairClick
       ExplicitLeft = 133
     end
   end

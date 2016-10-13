@@ -395,9 +395,10 @@ procedure TfrmImpressaoEtiquetas.cdsProAfterScroll(DataSet: TDataSet);
 begin
   cdsCor.Close;
   dspCor.DataSet := FDM.GetConsulta('select cb.codcor, c.referencia , iif(c.desc_producao <> '''',(c.desc_producao || '' '' || c.cor),max(c.descricao)) descricao '+
-                                    '                                                             from codigo_barras cb                '+
-                                    'inner join cores c on c.codigo = cb.codcor                                                        '+
-                                    'where cb.codproduto = :codpro                                                                     '+
+                                    '  from produto_cores pc                                                                           '+
+                                    ' left join cores c on pc.codcor = c.codigo                                                        '+
+                                    ' left join codigo_barras cb on (c.codigo = cb.codcor and cb.codproduto = :codpro)                 '+
+                                    ' where pc.codproduto = :codpro                                                                    '+
                                     'group by cb.codcor, c.descricao, c.referencia, c.desc_producao, c.cor                             ');
 
   TFDQuery(dspCor.DataSet).ParamByName('codpro').AsInteger := cdsProCODPRODUTO.AsInteger;

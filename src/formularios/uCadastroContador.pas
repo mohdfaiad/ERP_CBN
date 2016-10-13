@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uCadastroPadrao, DB, DBClient, StdCtrls, Grids, DBGrids,
   DBGridCBN, ComCtrls, Buttons, ExtCtrls, Contnrs, frameBuscaCidade, Mask,
-  RxToolEdit, RxCurrEdit;
+  RxToolEdit, RxCurrEdit, frameFone;
 
 type
   TfrmCadastroContador = class(TfrmCadastroPadrao)
@@ -34,14 +34,13 @@ type
     edtCep: TMaskEdit;
     gpbContato: TGroupBox;
     edtEmail: TEdit;
-    edtFone: TMaskEdit;
-    lblFone1: TLabel;
     lblEmail: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
     CheckBox1: TCheckBox;
+    Fone1: TFone;
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -157,7 +156,7 @@ begin
      Contador.numero         := TRIM( self.edtNumero.Text );
      Contador.bairro         := TRIM( self.edtBairro.Text );
      Contador.codigo_cidade  := self.BuscaCidade1.edtCodCid.AsInteger;
-     Contador.fone           := TRIM(edtFone.Text);
+     Contador.fone           := TRIM(Fone1.edtFone.Text);
      Contador.email          := TRIM(edtEmail.Text);
 
      RepositorioContador.Salvar(Contador);
@@ -196,7 +195,7 @@ begin
   edtBairro.Clear;
   BuscaCidade1.limpa;
   edtCep.Clear;
-  edtFone.Clear;
+  Fone1.limpa;
   edtEmail.Clear;
 
 end;
@@ -227,7 +226,7 @@ begin
     self.edtBairro.Text                 := Contador.bairro;
     self.BuscaCidade1.CodigoMunicipio   := Contador.codigo_cidade;
     self.edtCep.Text                    := Contador.cep;
-    self.edtFone.Text                   := Contador.fone;
+    Fone1.Fone                          := Contador.fone;
     self.edtEmail.Text                  := Contador.email;
 
   finally

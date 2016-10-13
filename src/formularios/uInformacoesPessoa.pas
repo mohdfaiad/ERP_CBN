@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, Repositorio, Pessoa, ExtCtrls, StdCtrls, Grids,
-  DBGrids, frameMaskCpfCnpj, Mask, DB, DBClient;
+  DBGrids, frameMaskCpfCnpj, Mask, DB, DBClient, frameFone;
 
 type
   TfrmInformacoesPessoa = class(TfrmPadrao)
@@ -19,7 +19,6 @@ type
     edtCEP: TMaskEdit;
     edtPais: TEdit;
     CpfCnpj: TMaskCpfCnpj;
-    edtTelefone: TMaskEdit;
     GridEmail: TDBGrid;
     Label1: TLabel;
     Label2: TLabel;
@@ -29,10 +28,10 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label9: TLabel;
     cdsEmails: TClientDataSet;
     dsEmails: TDataSource;
     cdsEmailsemail: TStringField;
+    Fone1: TFone;
     procedure FormShow(Sender: TObject);
   private
     FCodigo :Integer;
@@ -107,7 +106,7 @@ begin
   edtUf.Text          := fdm.qryGenerica.fieldByName('SIGLA').AsString;
   edtCEP.Text         := fdm.qryGenerica.fieldByName('CEP').AsString;
   edtPais.Text        := fdm.qryGenerica.fieldByName('PAIS').AsString;
-  edtTelefone.Text    := fdm.qryGenerica.fieldByName('FONE1').AsString;
+  Fone1.Fone          := fdm.qryGenerica.fieldByName('FONE1').AsString;
   carregaEmails(fdm.qryGenerica.FieldByName('EMAIL').AsString);
 end;
 

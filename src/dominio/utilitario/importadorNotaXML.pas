@@ -277,7 +277,7 @@ begin
     nCodigoNotaFiscal     := 0;
     nNumeroNotaFiscal     := nfe.NFe.Ide.nNF;
     nCodigoNatureza       := 1;
-    nSerie                := '00'+IntToStr(nfe.NFe.Ide.serie);
+    nSerie                := zeroEsquerda(IntToStr(nfe.NFe.Ide.serie),3);
     nCodigoEmitente       := StrToIntDef(campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',nfe.NFe.Emit.CNPJCPF,'TIPO','F'), 0); //F fornecedor
     nCodigoDestinatario   := StrToIntDef(campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',nfe.NFe.Dest.CNPJCPF,'TIPO','E'), 0); //E empresa
     nCodigoFormaPagamento := 0;
@@ -302,7 +302,7 @@ begin
 
     transportadora := TPessoa(rep.Get(nCodigoTransportadora));
 
-    FNotaFiscal := TNotaFiscal.Create(natureza_operacao, nSerie, emitente, destinatario);
+    FNotaFiscal := TNotaFiscal.Create(natureza_operacao, nSerie, emitente, destinatario, true);
 
     FNotaFiscal.CodigoNotaFiscal := nCodigoNotaFiscal;
     FNotaFiscal.NumeroNotaFiscal := nNumeroNotaFiscal;

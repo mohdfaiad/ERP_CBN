@@ -32,8 +32,8 @@ procedure EmiteSomErro;
 function impressoraPadrao:String;
 function Valida_CPF_CNPJ(Nr_CGC:String):boolean;
 function UF_TO_CODUF(UF :String) :integer;
+function zeroEsquerda(texto :String; tamMax :integer) :String;
 function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer = 0) :String;
-
 
 implementation
 
@@ -49,6 +49,11 @@ begin
       Str[x] := SemAcento[Pos(Str[x], ComAcento)];
 
   Result := Str;
+end;
+
+function zeroEsquerda(texto :String; tamMax :integer) :String;
+begin
+  Result := StringOfChar('0',tamMax-Length(texto))+ texto;
 end;
 
 function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer) :String;

@@ -13,14 +13,12 @@ inherited frmCadastroContador: TfrmCadastroContador
   end
   inherited pgGeral: TPageControl
     Width = 523
-    ActivePage = tsConsulta
     ExplicitWidth = 523
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 515
       inherited gridConsulta: TDBGridCBN
         Width = 497
         Height = 353
-        SalvaConfiguracoes = False
       end
       inherited lblAjudaSelecionar: TStaticText
         Width = 515
@@ -438,19 +436,6 @@ inherited frmCadastroContador: TfrmCadastroContador
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 3
-          object lblFone1: TLabel
-            Left = 14
-            Top = 19
-            Width = 26
-            Height = 13
-            Caption = 'Fone'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            ParentFont = False
-          end
           object lblEmail: TLabel
             Left = 136
             Top = 19
@@ -476,23 +461,17 @@ inherited frmCadastroContador: TfrmCadastroContador
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 1
-          end
-          object edtFone: TMaskEdit
-            Left = 13
-            Top = 35
-            Width = 111
-            Height = 21
-            EditMask = '!\(99\)9999-9999;1; '
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            MaxLength = 13
-            ParentFont = False
             TabOrder = 0
-            Text = '(  )    -    '
+          end
+          inline Fone1: TFone
+            Left = 8
+            Top = 16
+            Width = 122
+            Height = 47
+            TabOrder = 1
+            ExplicitLeft = 8
+            ExplicitTop = 16
+            ExplicitWidth = 122
           end
         end
       end

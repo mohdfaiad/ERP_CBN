@@ -7,6 +7,8 @@ inherited frmEntradaNota: TfrmEntradaNota
   ClientHeight = 537
   ClientWidth = 691
   OldCreateOrder = True
+  ExplicitWidth = 697
+  ExplicitHeight = 565
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -772,7 +774,7 @@ inherited frmEntradaNota: TfrmEntradaNota
     Left = 488
     Top = 8
     Bitmap = {
-      494C010104000900080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1073,6 +1075,7 @@ inherited frmEntradaNota: TfrmEntradaNota
     Top = 320
     object AlterarCFOP1: TMenuItem
       Caption = 'Alterar CFOP'
+      OnClick = AlterarCFOP1Click
     end
   end
 end

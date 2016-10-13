@@ -228,6 +228,8 @@ begin
     FimAguarda;
     Excel := Unassigned;
     PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
+    Sheet := Unassigned;
+    Excel.Quit;
   end;
 end;
 

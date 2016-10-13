@@ -347,10 +347,6 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
     object TabSheet1: TTabSheet
       Caption = 'F1 - Representantes'
       OnExit = TabSheet1Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         857
         467)
@@ -955,47 +951,8 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 6
-        object Label12: TLabel
-          Left = 16
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label13: TLabel
-          Left = 143
-          Top = 27
-          Width = 35
-          Height = 13
-          Caption = 'Fone 2'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label14: TLabel
-          Left = 266
-          Top = 27
-          Width = 18
-          Height = 13
-          Caption = 'Fax'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 3355443
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
         object Label24: TLabel
-          Left = 4
+          Left = 12
           Top = 17
           Width = 11
           Height = 32
@@ -1007,53 +964,73 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object edtFone1: TMaskEdit
-          Left = 15
-          Top = 43
-          Width = 111
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline Fone1: TFone
+          Left = 22
+          Top = 24
+          Width = 132
+          Height = 47
           TabOrder = 0
-          Text = '(  )    -    '
+          ExplicitLeft = 22
+          ExplicitTop = 24
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 1'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            EditMask = '!\(99\)99999\-9999;1; '
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ExplicitWidth = 99
+          end
         end
-        object edtFone2: TMaskEdit
-          Left = 142
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline Fone2: TFone
+          Left = 139
+          Top = 24
+          Width = 122
+          Height = 47
           TabOrder = 1
-          Text = '(  )    -    '
+          ExplicitLeft = 139
+          ExplicitTop = 24
+          ExplicitWidth = 122
+          inherited Label12: TLabel
+            Width = 35
+            Caption = 'Fone 2'
+            ExplicitWidth = 35
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ExplicitWidth = 99
+          end
         end
-        object edtFax: TMaskEdit
-          Left = 265
-          Top = 43
-          Width = 107
-          Height = 21
-          EditMask = '!\(99\)9999-9999;1; '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          MaxLength = 13
-          ParentFont = False
+        inline FoneFax: TFone
+          Left = 253
+          Top = 24
+          Width = 132
+          Height = 47
           TabOrder = 2
-          Text = '(  )    -    '
+          ExplicitLeft = 253
+          ExplicitTop = 24
+          inherited Label12: TLabel
+            Width = 18
+            Caption = 'Fax'
+            ExplicitWidth = 18
+          end
+          inherited edtFone: TMaskEdit
+            Width = 99
+            Font.Color = clBlack
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ExplicitWidth = 99
+          end
         end
       end
       object edtCodigo: TEdit

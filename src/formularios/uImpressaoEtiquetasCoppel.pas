@@ -254,6 +254,7 @@ begin
 
   finally
     PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
+    Excel.Quit;
   end;
 end;
 

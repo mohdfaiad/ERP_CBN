@@ -288,13 +288,14 @@ begin
     cdsCoresFilhas.First;
     while not cdsCoresFilhas.Eof do begin
 
-      if cdsCoresFilhasCODIGO.AsInteger > 0 then Break;
+      if cdsCoresFilhasCODIGO.AsInteger = 0 then
+      begin
+        CorFilha := TCorFilha.Create;
+        CorFilha.codigo_cor_pai   := Cor.codigo;
+        CorFilha.codigo_cor_filha := cdsCoresFilhasCOD_COR_FILHA.AsInteger;
 
-      CorFilha := TCorFilha.Create;
-      CorFilha.codigo_cor_pai   := Cor.codigo;
-      CorFilha.codigo_cor_filha := cdsCoresFilhasCOD_COR_FILHA.AsInteger;
-
-      rep.Salvar(CorFilha);
+        rep.Salvar(CorFilha);
+      end;
 
       cdsCoresFilhas.Next;
     end;
@@ -309,13 +310,14 @@ begin
     cdsCoresKit.First;
     while not cdsCoresKit.Eof do begin
 
-      if cdsCoresKitCODIGO.AsInteger > 0 then Break;
+      if cdsCoresKitCODIGO.AsInteger = 0 then
+      begin
+        CoresKit := TCoresKit.Create;
+        CoresKit.codigo_kit  := Cor.codigo;
+        CoresKit.codigo_cor  := cdsCoresKitCODIGO_COR.AsInteger;
 
-      CoresKit := TCoresKit.Create;
-      CoresKit.codigo_kit  := Cor.codigo;
-      CoresKit.codigo_cor  := cdsCoresKitCODIGO_COR.AsInteger;
-
-      rep.Salvar(CoresKit);
+        rep.Salvar(CoresKit);
+      end;
 
       cdsCoresKit.Next;
     end;
@@ -489,8 +491,7 @@ end;
 
 procedure TfrmCadastroCores.btnAddCorKitClick(Sender: TObject);
 begin
-  if not cdsCoresKit.Locate('CODIGO_COR', BuscaCor2.edtCodigo.AsInteger, []) then
-  begin
+
     cdsCoresKit.Append;
     cdsCoresKitCODIGO.AsInteger     := 0;
     cdsCoresKitCODIGO_KIT.AsInteger := StrToInt(edtCodigo.Text);
@@ -500,7 +501,7 @@ begin
     cdsCoresKit.Post;
 
     cmbKit.Enabled := not cdsCoresKit.IsEmpty;
-  end;
+
 
   BuscaCor2.limpa;
   BuscaCor2.edtReferencia.SetFocus;

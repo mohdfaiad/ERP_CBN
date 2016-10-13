@@ -120,19 +120,6 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Label9: TLabel
-      Left = 8
-      Top = 179
-      Width = 45
-      Height = 13
-      Caption = 'Telefone'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
     object edtRg: TEdit
       Left = 148
       Top = 30
@@ -256,23 +243,6 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
         ExplicitWidth = 126
       end
     end
-    object edtTelefone: TMaskEdit
-      Left = 8
-      Top = 195
-      Width = 111
-      Height = 21
-      EditMask = '!\(99\)9999-9999;1; '
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      MaxLength = 13
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 9
-      Text = '(  )    -    '
-    end
     object GridEmail: TDBGrid
       Left = 296
       Top = 111
@@ -282,7 +252,7 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       DataSource = dsEmails
       ParentCtl3D = False
       ReadOnly = True
-      TabOrder = 10
+      TabOrder = 9
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
       TitleFont.Height = -11
@@ -295,6 +265,29 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
           Title.Caption = ' E-mail'
           Visible = True
         end>
+    end
+    inline Fone1: TFone
+      Left = 6
+      Top = 176
+      Width = 132
+      Height = 47
+      TabOrder = 10
+      ExplicitLeft = 6
+      ExplicitTop = 176
+      inherited Label12: TLabel
+        Width = 45
+        Caption = 'Telefone'
+        Font.Color = clBlack
+        ExplicitWidth = 45
+      end
+      inherited edtFone: TMaskEdit
+        Width = 99
+        EditMask = '!\(99\)99999\-9999;1; '
+        Font.Color = clBlack
+        Font.Name = 'Segoe UI'
+        ParentFont = False
+        ExplicitWidth = 99
+      end
     end
   end
   object cdsEmails: TClientDataSet

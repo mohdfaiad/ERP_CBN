@@ -21,7 +21,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
       Top = 6
       Width = 120
       Height = 30
-      Caption = 'F3 - &Incluir'
+      Caption = 'F3 - Incluir'
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -97,7 +97,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
       Top = 6
       Width = 120
       Height = 30
-      Caption = 'F4 - &Alterar'
+      Caption = 'F4 - Alterar'
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -338,10 +338,6 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
     OnChange = pgGeralChange
     object tsConsulta: TTabSheet
       Caption = 'F1 - Consulta'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         696
         378)
@@ -412,7 +408,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Ordenavel = True
         TipoBusca.ListarApenasEncontrados = False
         TipoBusca.QualquerParte = False
-        SalvaConfiguracoes = True
+        SalvaConfiguracoes = False
       end
       object lblAjudaSelecionar: TStaticText
         Left = 0
@@ -423,7 +419,6 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Alignment = taCenter
         Caption = 'Pressione ENTER para selecionar o registro'
         TabOrder = 1
-        ExplicitWidth = 222
       end
     end
     object tsDados: TTabSheet

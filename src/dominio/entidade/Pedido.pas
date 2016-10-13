@@ -35,6 +35,7 @@ type
     FCodigo: Integer;
     Facrescimo: Real;
     Fdesconto: Real;
+    FValor_frete: Real;
     Fvalor_total: Real;
     Fvalor_total_bruto: Real;
     Fcomissao: Real;
@@ -139,22 +140,23 @@ type
     property comissao          :Real         read Fcomissao          write Setcomissao;
     property valor_total       :Real         read Fvalor_total       write Setvalor_total;
     property valor_total_bruto :Real         read GetValor_total_bruto;
+    property desconto_fpgto    :Real         read Fdesconto_fpgto    write Setdesconto_fpgto;
+    property total_desconto    :Real         read GetTotal_desconto;
+    property desconto_itens    :Real         read Fdesconto_itens    write Setdesconto_itens;
+    property desconto_comiss   :Real         read Fdesconto_comiss   write Setdesconto_comiss;
+    property valor_frete       :Real         read FValor_frete       write FValor_frete;
+    property peso              :Real         read FPeso              write FPeso;
     property aprovacao         :String       read Faprovacao         write Setaprovacao;
     property aprovado_por      :String       read Faprovado_por      write Setaprovado_por;
     property dt_aprovacao      :TDateTime    read Fdt_aprovacao      write Setdt_aprovacao;
     property observacao        :String       read Fobservacao        write Setobservacao;
     property tipo_frete        :Integer      read Ftipo_frete        write Settipo_frete;
-    property desconto_fpgto    :Real         read Fdesconto_fpgto    write Setdesconto_fpgto;
-    property total_desconto    :Real         read GetTotal_desconto;
     property Itens             :TObjectList  read GetItens           write SetItens;
     property Item              :TItem        read FItem              write SetItem;
     property despachado        :String       read Fdespachado        write Setdespachado;
     property dt_despacho       :TDateTime    read Fdt_despacho       write Setdt_despacho;
-    property desconto_itens    :Real         read Fdesconto_itens    write Setdesconto_itens;
     property cod_pedido_matriz :Integer      read Fcod_pedido_matriz write Setcod_pedido_matriz;
-    property desconto_comiss   :Real         read Fdesconto_comiss   write Setdesconto_comiss;
     property cancelado         :String       read Fcancelado write Setcancelado;
-    property peso              :Real         read FPeso              write FPeso;
     property volumes           :Integer      read FVolumes           write FVolumes;
 
   public

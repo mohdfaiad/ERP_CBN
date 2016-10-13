@@ -11,7 +11,7 @@ uses
   frameBuscaCor, System.ImageList, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, StringUtilitario, VCL.FileCtrl;
+  FireDAC.Comp.Client, StringUtilitario, VCL.FileCtrl, Vcl.Menus;
                        
 type
   TfrmRelatorioVendas = class(TfrmPadrao)
@@ -67,7 +67,6 @@ type
     btnBuscar: TBitBtn;
     btnImprimir: TSpeedButton;
     Label4: TLabel;
-    Label12: TLabel;
     edtQuantidadePedidos: TEdit;
     chkInternet: TCheckBox;
     cdsTOTAL_PECAS: TAggregateField;
@@ -275,6 +274,18 @@ type
     RLDBText31: TRLDBText;
     RLDBText32: TRLDBText;
     RLDBText33: TRLDBText;
+    cdsTOTAL_BRUTO: TFloatField;
+    Label20: TLabel;
+    DBEdit5: TDBEdit;
+    cdsTOT_VALOR_BRUTO: TAggregateField;
+    RLLabel42: TRLLabel;
+    RLDBText34: TRLDBText;
+    RLLabel43: TRLLabel;
+    RLDBResult13: TRLDBResult;
+    RLDBResult14: TRLDBResult;
+    PopupMenu1: TPopupMenu;
+    ImprimirDanfe1: TMenuItem;
+    cdsCODIGO_NOTA_FISCAL: TIntegerField;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -299,6 +310,9 @@ type
     procedure RLBand9BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnArquivoSigepClick(Sender: TObject);
     procedure chkSelecionarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ImprimirDanfe1Click(Sender: TObject);
+    procedure cdsAfterScroll(DataSet: TDataSet);
   private
     FTotal :Real;
     repositorio: TRepositorio;
@@ -316,6 +330,7 @@ type
     procedure configura_sintetico;
     procedure configura_analitico;
     procedure marca_desmarca;
+    procedure imprimirDanfe;
 
   public
     RelatorioSemValores: Boolean;
@@ -331,7 +346,7 @@ uses RxCurrEdit, uPedido, PermissoesAcesso, IdIOHandlerStack, FabricaRepositorio
      StrUtils, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
      IdMessageClient, IdSMTP, IdAttachmentFile, IdExplicitTLSClientServerBase,
      IdSSLOpenSSL, IdIOHandler, IdIOHandlerSocket, ConfiguracoesNFEmail,
-     Endereco, Pessoa;
+     Endereco, Pessoa, GeradorNFe, NotaFiscal;
 
 {$R *.dfm}
 
@@ -372,6 +387,30 @@ procedure TfrmRelatorioVendas.imprimir;
 begin
   MostrarInformacoes;
   RLReport1.PreviewModal;
+end;
+
+procedure TfrmRelatorioVendas.imprimirDanfe;
+var
+  RepositorioNotaFiscal      :TRepositorio;
+  GeradorNFe                 :TGeradorNFe;
+  NotaFiscal                 :TNotaFiscal;
+begin
+  try
+    RepositorioNotaFiscal := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
+    NotaFiscal            := TNotaFiscal(RepositorioNotaFiscal.Get(cdsCODIGO_NOTA_FISCAL.AsInteger));
+
+    GeradorNFe            := TGeradorNFe.Create(FDM.Logo);
+    GeradorNFe.ImprimirComVisualizacao(NotaFiscal);
+  finally
+    FreeAndNil(GeradorNFe);
+    FreeAndNil(NotaFiscal);
+    FreeAndNil(RepositorioNotaFiscal);
+  end;
+end;
+
+procedure TfrmRelatorioVendas.ImprimirDanfe1Click(Sender: TObject);
+begin
+  imprimirDanfe;
 end;
 
 procedure TfrmRelatorioVendas.marca_desmarca;
@@ -454,11 +493,12 @@ begin
             '             CAST( lpad(EXTRACT(DAY FROM nf.data_saida), 2, ''0'') || ''.'' || lpad(EXTRACT(MONTH FROM nf.data_saida), 2, ''0'') || ''.'' || EXTRACT(YEAR FROM nf.data_saida) as Date), '+#13#10+
             '             P.dt_despacho) ,P.dt_despacho) DT_Despacho,                                                                         '+#13#10+
             '       P.DT_RECEBIMENTO, P.DT_CADASTRO, P.DT_REPRESENTANTE , P.DT_LIMITE_ENTREGA, (P.DESCONTO_FPGTO + P.DESCONTO + P.DESCONTO_ITENS+ P.desconto_comiss) TOTAL_DESCONTOS, '+#13#10+
-            '       (p.valor_total-((p.valor_total*p.desconto_comiss)/100)) total_liquido, iif((not (PF.codigo is null) or (P.despachado = ''S'')), ''SIM'', ''NÃO'') FATURADO, '+#13#10+
+            '       (p.valor_total-((p.valor_total*p.desconto_comiss)/100)) total_liquido, ((p.valor_total-((p.valor_total*p.desconto_comiss)/100)) + p.valor_frete) total_bruto, '+
+            ' iif((not (PF.codigo is null) or (P.despachado = ''S'')), ''SIM'', ''NÃO'') FATURADO, '+#13#10+
             '       iif(P.DESPACHADO = ''S'', ''DESPACHADO'',                                                                                 '+#13#10+
             '           iif(P.aprovacao = ''A'',''APROVADO'',iif(P.aprovacao = ''E'', ''EM ESTUDO'', ''REPROVADO''))) STATUS,                 '+#13#10+
             ' sum(itens.QTD_TOTAL * pro.qtd_pecas) as qtd_pecas, '+IfThen(self.RelatorioSemValores, condicao_percent_estoque,' cast(''0.10'' as numeric(15,2)) perc_estoque, ')+'sum(itens.QTD_TOTAL) as qtd_itens   '+#13#10+'',
-            campos_analitico) + ', PF.codigo '+
+            campos_analitico) + ', PF.codigo, PF.codigo_nota_fiscal '+
             '       from pedidos P                                                                                                            '+#13#10+
             ' LEFT JOIN pedidos_faturados      PF  ON PF.CODIGO_PEDIDO = P.CODIGO                                                             '+#13#10+
             ' LEFT JOIN PESSOAS                C   ON C.CODIGO = P.COD_CLIENTE                                                                '+#13#10+
@@ -482,8 +522,8 @@ begin
   result := result + condicao_exclui_bonificacoes;
   result := result + condicao_produto;
   result := result + condicao_cor;
-  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18'+ IfThen(self.RelatorioSemValores,',16',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao, pf.codigo ');
-  result := result + IfThen(self.RelatorioSemValores,' ORDER BY per.percent_disponivel DESC',IfThen(rgLeiaute.ItemIndex = 0,'',' order by 1, 3 '));
+  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,20'+ IfThen(self.RelatorioSemValores,',17',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao, pf.codigo, pf.codigo_nota_fiscal ');
+  result := result + IfThen(rgLeiaute.ItemIndex = 0, IfThen(self.RelatorioSemValores,' ORDER BY per.percent_disponivel DESC','') ,' order by 1, 3 ');
 end;
 
 procedure TfrmRelatorioVendas.dtpFimChange(Sender: TObject);
@@ -517,6 +557,7 @@ begin
     rgTipoPedido.ItemIndex:= 1;
     GroupBox2.Visible:= False;
     btnEnviarEmail.Visible := false;
+    btnConfigEmail.Visible := false;
     btnArquivoSigep.Visible := true;
     lbInfoSigep.Visible := true;
     chkSelecionar.Visible := true;
@@ -529,10 +570,17 @@ begin
     rgTipoPedido.ItemIndex:= 0;
     GroupBox2.Visible:= True;
     btnEnviarEmail.Visible := true;
+    btnConfigEmail.Visible := true;
     btnArquivoSigep.Visible := false;
     lbInfoSigep.Visible := false;
     chkSelecionar.Visible := false;
   end;
+end;
+
+procedure TfrmRelatorioVendas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  pnlConfigEmail.Align := alBottom;
 end;
 
 procedure TfrmRelatorioVendas.FormKeyDown(Sender: TObject; var Key: Word;
@@ -541,6 +589,14 @@ begin
   inherited;
   if ( (ssCtrl in Shift) AND (Key = ord('P')) ) then
     btnImprimir.Click;
+end;
+
+procedure TfrmRelatorioVendas.cdsAfterScroll(DataSet: TDataSet);
+begin
+  if cdsCODIGO_NOTA_FISCAL.AsInteger > 0 then
+    gridPedidos.PopupMenu := PopupMenu1
+  else
+    gridPedidos.PopupMenu := nil;
 end;
 
 procedure TfrmRelatorioVendas.chkSelecionarClick(Sender: TObject);
@@ -580,7 +636,7 @@ begin
   begin
     TDBGridCBN(Sender).Canvas.FillRect(Rect);
 
-    TDBGridCBN(Sender).Canvas.Brush.Color := clGreen;
+    TDBGridCBN(Sender).Canvas.Brush.Color := $0070914F;
     TDBGridCBN(Sender).Canvas.Font.Color  := clWhite;
     TDBGridCBN(Sender).DefaultDrawDataCell(Rect,Column.Field,State);
   end;
@@ -940,6 +996,7 @@ begin
     RLLabel9.Visible:= False;
     RLDBText8.Visible:= False;
     RLDBText9.Visible:= False;
+    RLDBText34.Visible:= false;
     RLDBResult1.Visible:= False;
     RLDBResult2.Visible:= False;
     RLDraw2.Visible:= False;
@@ -958,6 +1015,7 @@ begin
     RLLabel9.Visible:= True;
     RLDBText8.Visible:= True;
     RLDBText9.Visible:= True;
+    RLDBText34.Visible:= true;
     RLDBResult1.Visible:= True;
     RLDBResult2.Visible:= True;
     RLDraw2.Visible:= True;
@@ -1043,7 +1101,7 @@ begin
    label4.Visible       := false;
    Label10.Visible      := false;
    label11.Visible      := false;
-   label12.Visible      := false;
+   label20.Visible      := false;
    dbedit3.Visible      := false;
    dbedit4.Visible      := false;
    grpAnalitico.Visible := true
@@ -1068,6 +1126,10 @@ begin
    gridPedidos.Columns[11].Width   := 74;
    gridPedidos.Columns[12].Width   := 74;
    gridPedidos.Columns[13].Width   := 74;
+   gridPedidos.Columns[14].Width   := 74;
+   gridPedidos.Columns[15].Width   := 60;
+   gridPedidos.Columns[16].Width   := 60;
+   gridPedidos.Columns[17].Width   := 60;
 
    gridPedidos.Columns[0].Title.Caption  := 'Faturado';
    gridPedidos.Columns[1].Title.Caption  := 'Nº Pedido';
@@ -1082,20 +1144,25 @@ begin
    gridPedidos.Columns[10].Title.Caption := 'Limite Entrega';
    gridPedidos.Columns[11].Title.Caption := 'Tot. Desconto';
    gridPedidos.Columns[12].Title.Caption := 'Tot.Líquido';
-   gridPedidos.Columns[13].Title.Caption := '% Estoque';
+   gridPedidos.Columns[13].Title.Caption := 'Tot.Bruto';
    gridPedidos.Columns[14].Title.Caption := 'Status';
+   gridPedidos.Columns[14].Title.Caption := 'Status';
+   gridPedidos.Columns[15].Title.Caption := 'Qtde.Itens';
+   gridPedidos.Columns[16].Title.Caption := 'Qtde.Peças';
+   gridPedidos.Columns[17].Title.Caption := '% Estoque';
 
 
    gridPedidos.Columns[0].Visible  := not RelatorioSemValores; //FATURADO
    gridPedidos.Columns[6].Visible  := not RelatorioSemValores; //DT_DESPACHO
    gridPedidos.Columns[11].Visible := not RelatorioSemValores; // TOTAL DESCONTOS
    gridPedidos.Columns[12].Visible := not RelatorioSemValores; // TOTAL LIQUIDO
-   gridPedidos.Columns[13].Visible := RelatorioSemValores;  //% ESTOQUE
+   gridPedidos.Columns[13].Visible := not RelatorioSemValores; // TOTAL BRUTO
+   gridPedidos.Columns[17].Visible := RelatorioSemValores;  //% ESTOQUE
 
    label4.Visible  := true;
    Label10.Visible := true;
    label11.Visible := true;
-   label12.Visible := true;
+   label20.Visible := true;
    dbedit3.Visible := true;
    dbedit4.Visible := true;
    grpAnalitico.Visible   := false;

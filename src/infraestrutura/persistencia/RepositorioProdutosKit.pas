@@ -53,6 +53,7 @@ begin
    ProdutosKit.codigo_kit     := self.FQuery.FieldByName('codigo_kit').AsInteger;
    ProdutosKit.codigo_produto := self.FQuery.FieldByName('codigo_produto').AsInteger;
    ProdutosKit.codigo_cor     := self.FQuery.FieldByName('codigo_cor').AsInteger;
+   ProdutosKit.codigo_cor_kit := self.FQuery.FieldByName('codigo_cor_kit').AsInteger;
 
    result := ProdutosKit;
 end;
@@ -93,6 +94,9 @@ begin
 
    if (ProdutosKitAntigo.codigo_cor <> ProdutosKitNovo.codigo_cor) then
      Auditoria.AdicionaCampoAlterado('codigo_cor', IntToStr(ProdutosKitAntigo.codigo_cor), IntToStr(ProdutosKitNovo.codigo_cor));
+
+   if (ProdutosKitAntigo.codigo_cor_kit <> ProdutosKitNovo.codigo_cor_kit) then
+     Auditoria.AdicionaCampoAlterado('codigo_cor_kit', IntToStr(ProdutosKitAntigo.codigo_cor_kit), IntToStr(ProdutosKitNovo.codigo_cor_kit));
 end;
 
 procedure TRepositorioProdutosKit.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -104,6 +108,7 @@ begin
   Auditoria.AdicionaCampoExcluido('codigo_kit'    , IntToStr(ProdutosKit.codigo_kit));
   Auditoria.AdicionaCampoExcluido('codigo_produto', IntToStr(ProdutosKit.codigo_produto));
   Auditoria.AdicionaCampoExcluido('codigo_cor'    , IntToStr(ProdutosKit.codigo_cor));
+  Auditoria.AdicionaCampoExcluido('codigo_cor_kit' , IntToStr(ProdutosKit.codigo_cor_kit));
 end;
 
 procedure TRepositorioProdutosKit.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -115,6 +120,7 @@ begin
   Auditoria.AdicionaCampoIncluido('codigo_kit'    ,    IntToStr(ProdutosKit.codigo_kit));
   Auditoria.AdicionaCampoIncluido('codigo_produto',    IntToStr(ProdutosKit.codigo_produto));
   Auditoria.AdicionaCampoIncluido('codigo_cor'    ,    IntToStr(ProdutosKit.codigo_cor));
+  Auditoria.AdicionaCampoIncluido('codigo_cor_kit' ,   IntToStr(ProdutosKit.codigo_cor_kit));
 end;
 
 procedure TRepositorioProdutosKit.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -131,6 +137,7 @@ begin
   self.FQuery.ParamByName('codigo_kit').AsInteger     := ProdutosKit.codigo_kit;
   self.FQuery.ParamByName('codigo_produto').AsInteger := ProdutosKit.codigo_produto;
   self.FQuery.ParamByName('codigo_cor').AsInteger     := ProdutosKit.codigo_cor;
+  self.FQuery.ParamByName('codigo_cor_kit').AsInteger := ProdutosKit.codigo_cor_kit;
 end;
 
 function TRepositorioProdutosKit.SQLGet: String;
@@ -155,8 +162,8 @@ end;
 
 function TRepositorioProdutosKit.SQLSalvar: String;
 begin
-  result := 'update or insert into PRODUTOS_KIT (CODIGO ,CODIGO_KIT ,CODIGO_PRODUTO, CODIGO_COR) '+
-           '                      values ( :CODIGO , :CODIGO_KIT , :CODIGO_PRODUTO, :CODIGO_COR) ';
+  result := 'update or insert into PRODUTOS_KIT (CODIGO ,CODIGO_KIT ,CODIGO_PRODUTO, CODIGO_COR, CODIGO_COR_KIT) '+
+           '                      values ( :CODIGO , :CODIGO_KIT , :CODIGO_PRODUTO, :CODIGO_COR, :CODIGO_COR_KIT) ';
 end;
 
 end.

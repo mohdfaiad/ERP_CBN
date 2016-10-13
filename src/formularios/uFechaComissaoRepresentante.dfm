@@ -9,7 +9,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
   OldCreateOrder = True
   Position = poDefault
   OnShow = FormShow
-  ExplicitTop = -111
+  ExplicitTop = -24
   ExplicitWidth = 1119
   ExplicitHeight = 711
   PixelsPerInch = 96
@@ -1099,8 +1099,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         TabOrder = 4
       end
       object RLReport1: TRLReport
-        Left = 696
-        Top = 528
+        Left = 518
+        Top = 515
         Width = 794
         Height = 1123
         Borders.Sides = sdCustom
@@ -1626,11 +1626,11 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
               ParentFont = False
             end
             object RLLabel8: TRLLabel
-              Left = 547
+              Left = 540
               Top = 3
-              Width = 65
+              Width = 79
               Height = 16
-              Caption = 'Comiss'#227'o'
+              Caption = '% Comiss'#227'o'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
@@ -5422,5 +5422,16 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object ACBrMail1: TACBrMail
+    Host = '127.0.0.1'
+    Port = '25'
+    SetSSL = False
+    SetTLS = False
+    Attempts = 3
+    DefaultCharset = UTF_8
+    IDECharset = CP1252
+    Left = 936
+    Top = 641
   end
 end
