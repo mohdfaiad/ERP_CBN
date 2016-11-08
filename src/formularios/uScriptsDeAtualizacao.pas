@@ -186,6 +186,7 @@ type
     versao175: TMemo;
     versao176: TMemo;
     versao177: TMemo;
+    versao178: TMemo;
 
   private
 

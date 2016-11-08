@@ -333,7 +333,7 @@ inherited frmCadastroCores: TfrmCadastroCores
     Top = 0
     Width = 491
     Height = 519
-    ActivePage = tsCoresKit
+    ActivePage = tsDados
     Align = alClient
     TabOrder = 1
     object tsDados: TTabSheet
@@ -482,13 +482,14 @@ inherited frmCadastroCores: TfrmCadastroCores
         Visible = False
       end
       object edtReferencia: TEdit
-        Left = 8
-        Top = 19
+        Left = 11
+        Top = 16
         Width = 119
         Height = 21
         CharCase = ecUpperCase
         Enabled = False
         TabOrder = 0
+        OnChange = edtReferenciaChange
         OnEnter = edtReferenciaEnter
       end
       object gpbDescricao2: TGroupBox

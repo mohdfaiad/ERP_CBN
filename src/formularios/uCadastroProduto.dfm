@@ -411,7 +411,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 797
     Height = 477
-    ActivePage = TabSheet5
+    ActivePage = tbsKits
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -1845,7 +1845,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Top = 9
         Width = 789
         Height = 446
-        ActivePage = TabSheet8
+        ActivePage = TabSheet7
         Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 0
         object TabSheet7: TTabSheet
@@ -3451,6 +3451,19 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         NumGlyphs = 2
         OnClick = btnDeletaVinculoClick
       end
+      object Label31: TLabel
+        Left = 7
+        Top = 74
+        Width = 174
+        Height = 13
+        Caption = 'DELETE - remove item adicionado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 9474192
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       inline BuscaProduto1: TBuscaProduto
         Left = 7
         Top = 10
@@ -3709,7 +3722,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         OnDrawColumnCell = DBGrid2DrawColumnCell
         OnEnter = DBGrid2Enter
         OnExit = DBGrid2Exit
-        OnKeyDown = gridKitsKeyDown
+        OnKeyDown = DBGrid2KeyDown
         Columns = <
           item
             Expanded = False
@@ -4470,7 +4483,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
@@ -4975,6 +4988,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       FieldName = 'REFPRO'
       Size = 25
     end
+    object cdsCoresKitCONT: TIntegerField
+      FieldName = 'CONT'
+    end
   end
   object dsProdsKit: TDataSource
     DataSet = cdsProdsKit
@@ -4998,6 +5014,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     object cdsProdsKitPRODUTO: TStringField
       FieldName = 'PRODUTO'
       Size = 40
+    end
+    object cdsProdsKitCONT: TIntegerField
+      FieldName = 'CONT'
     end
   end
 end

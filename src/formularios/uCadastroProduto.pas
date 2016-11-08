@@ -299,6 +299,9 @@ type
     btnCriaVinculo: TBitBtn;
     btnDeletaVinculo: TSpeedButton;
     btnCancelaAss: TBitBtn;
+    Label31: TLabel;
+    cdsProdsKitCONT: TIntegerField;
+    cdsCoresKitCONT: TIntegerField;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -360,6 +363,7 @@ type
     procedure DBGrid2Enter(Sender: TObject);
     procedure cdsProdsKitAfterScroll(DataSet: TDataSet);
     procedure btnCancelaAssClick(Sender: TObject);
+    procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
@@ -604,8 +608,6 @@ procedure TfrmCadastroProduto.FormShow(Sender: TObject);
 begin
   inherited;
   BuscaCor2.ApareceKits := 'S';
-//  CDSKits.CreateDataSet;
-
 
   pagProdutos.ActivePageIndex := 0;
 
@@ -1216,7 +1218,6 @@ procedure TfrmCadastroProduto.BuscaCor1btnBuscaClick(Sender: TObject);
 begin
   inherited;
   BuscaCor1.btnBuscaClick(Sender);
-
 end;
 
 procedure TfrmCadastroProduto.gridProdutosDrawColumnCell(Sender:TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -1261,7 +1262,7 @@ end;
 
 procedure TfrmCadastroProduto.cdsProdsKitAfterScroll(DataSet: TDataSet);
 begin
-  if not cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]) then
+  if not cdsCoresKit.Locate('REFPRO;CONT',VarArrayOf([cdsProdsKitREFPRO.AsString,cdsProdsKitCONT.AsInteger]),[]) then
   begin
     btnDeletaVinculo.Enabled := false;
     btnCriaVinculo.Enabled   := true;
@@ -1314,8 +1315,12 @@ end;
 
 procedure TfrmCadastroProduto.btnCriaVinculoClick(Sender: TObject);
 begin
+  if cdsCoresKit.isEmpty then
+    exit;
+
   cdsCoresKit.Edit;
   cdsCoresKitREFPRO.AsString := cdsProdsKitREFPRO.AsString;
+  cdsCoresKitCONT.AsInteger  := cdsProdsKitCONT.AsInteger;
   cdsCoresKit.Post;
   DBGrid2.SetFocus;
   cdsProdsKitAfterScroll(nil);
@@ -1486,6 +1491,9 @@ end;
 procedure TfrmCadastroProduto.btnAddCorClick(Sender: TObject);
 var i :integer;
 begin
+  if not CDSKits.active then
+    CDSKits.CreateDataSet;
+
   if CDSKits.Locate('CODIGO_COR_KIT',BuscaCor2.CodigoCor,[]) then
   begin
     avisar('Cor "'+BuscaCor2.edtReferencia.Text+'-'+BuscaCor2.edtDescricao.Text+'", já foi associada ao produto.');
@@ -1540,7 +1548,7 @@ begin
     CDSKitsCODIGO_PRODUTO.AsInteger := cdsProdsKitCODIGO.AsInteger;
     CDSKitsREFPRO.AsString          := cdsProdsKitREFPRO.AsString;
     CDSKitsPRODUTO.AsString         := cdsProdsKitPRODUTO.AsString;
-    cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]);
+    cdsCoresKit.Locate('REFPRO;CONT',VarArrayOf([cdsProdsKitREFPRO.AsString,cdsProdsKitCONT.AsInteger]),[]);
 
     CDSKitsCODIGO_COR.AsInteger     := cdsCoresKitCODIGO.AsInteger;
     CDSKitsREFCOR.AsString          := cdsCoresKitREFCOR.AsString;
@@ -1558,12 +1566,13 @@ end;
 
 procedure TfrmCadastroProduto.btnAddProdClick(Sender: TObject);
 begin
-  if not (BuscaProduto1.edtDescricao.Text = '') and not cdsProdsKit.Locate('CODIGO',BuscaProduto1.CodigoProduto,[]) then
+  if not (BuscaProduto1.edtDescricao.Text = '') then
   begin
     cdsProdsKit.Append;
     cdsProdsKitCODIGO.AsInteger  := BuscaProduto1.CodigoProduto;
     cdsProdsKitREFPRO.AsString   := BuscaProduto1.edtReferencia.Text;
     cdsProdsKitPRODUTO.AsString  := BuscaProduto1.edtDescricao.Text;
+    cdsProdsKitCONT.AsInteger    := cdsProdsKit.RecordCount + 1;
     cdsProdsKit.Post;
   end;
 
@@ -1665,7 +1674,7 @@ end;
 procedure TfrmCadastroProduto.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-  if cdsCoresKit.Locate('REFPRO',cdsProdsKitREFPRO.AsString,[]) then
+  if cdsCoresKit.Locate('REFPRO;CONT',VarArrayOf([cdsProdsKitREFPRO.AsString,cdsProdsKitCONT.AsInteger]),[]) then
   begin
     if Column.FieldName = 'REFPRO' then
       TDBGrid(Sender).Canvas.Brush.Color := $00AADDB1
@@ -1688,6 +1697,12 @@ end;
 procedure TfrmCadastroProduto.DBGrid2Exit(Sender: TObject);
 begin
   btnDeletaVinculo.Enabled := false;
+end;
+
+procedure TfrmCadastroProduto.DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if not cdsProdsKit.IsEmpty then
+    cdsProdsKit.Delete;
 end;
 
 procedure TfrmCadastroProduto.DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;

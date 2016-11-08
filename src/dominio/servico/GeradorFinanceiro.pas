@@ -20,7 +20,7 @@ uses
   DateUtils,
   ExcecaoParametroInvalido,
   FormaPagamentoParcelas,
-  Funcoes; //Math;
+  Funcoes, Math;
 
 { TGeradorFinanceiro }
 
@@ -52,7 +52,7 @@ begin
      TotalFatura := (TotalFatura - ((TotalFatura * NotaFiscal.Totais.PercentualDescontoFatura) / 100))
    end;
 
-   TotalFatura := Arredonda(TotalFatura);
+   TotalFatura := RoundTo(TotalFatura,-2);
    // Arredondo o valor pra cima sem nenhuma casa decimal
 //   SetRoundMode(rmUp);
 //   TotalFatura := RoundTo(TotalFatura, -1);

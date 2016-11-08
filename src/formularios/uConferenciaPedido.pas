@@ -350,7 +350,6 @@ type
     cdsCaixasQTD_10: TIntegerField;
     cdsCaixasQTD_12: TIntegerField;
     cdsCaixasQTD_14: TIntegerField;
-    Button1: TButton;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -396,7 +395,6 @@ type
     procedure Timer3Timer(Sender: TObject);
     procedure btnSubstituiClick(Sender: TObject);
     procedure chkTodosClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
 
   private
     hora_inicio :TTime;
@@ -2209,11 +2207,6 @@ begin
    lista.Free;
  end;
 
-end;
-
-procedure TfrmConferenciaPedido.Button1Click(Sender: TObject);
-begin
-  cdsItensQTD_12.AsInteger := 0;
 end;
 
 procedure TfrmConferenciaPedido.Salva_estoque(cod_produto, cod_cor : integer; descricao_tamanho :String;

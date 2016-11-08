@@ -6538,15 +6538,6 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     TabStop = False
     OnClick = btnExcluirClick
   end
-  object Button1: TButton
-    Left = 906
-    Top = 70
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 9
-    OnClick = Button1Click
-  end
   object dsItens: TDataSource
     DataSet = cdsItens
     Left = 175
@@ -6925,7 +6916,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900740010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

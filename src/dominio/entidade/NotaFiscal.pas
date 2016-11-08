@@ -250,7 +250,7 @@ type
 
 
   public
-    procedure AdicionarChaveAcesso(const ChaveAcesso :String);
+    procedure AdicionarChaveAcesso(const ChaveAcesso, XML :String);
     procedure AdicionarPedido     (Pedido      :TPedido);
     procedure AdicionarItemAvulso (ItemAvulso  :TItemAvulso);
     procedure AdicionarRetornoLote(Status :String; Motivo :String; Recibo :String);
@@ -1737,10 +1737,10 @@ begin
    result := self.FNFe;
 end;
 
-procedure TNotaFiscal.AdicionarChaveAcesso(const ChaveAcesso: String);
+procedure TNotaFiscal.AdicionarChaveAcesso(const ChaveAcesso, XML: String);
 begin
    FreeAndNil(self.FNFe);
-   self.FNFe := TNFe.Create(self.FCodigoNotaFiscal, ChaveAcesso);
+   self.FNFe := TNFe.Create(self.FCodigoNotaFiscal, ChaveAcesso, XML);
 end;
 
 procedure TNotaFiscal.AdicionarRetornoNFe(Status, Motivo :String);

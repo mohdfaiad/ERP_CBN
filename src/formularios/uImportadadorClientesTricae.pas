@@ -38,6 +38,8 @@ type
     procedure BitBtn2Click(Sender: TObject);
   private
     function verificaObrigatorios :Boolean;
+    function getNumero(texto :String) :String;
+    function getRua(texto :String) :String;
 
     procedure CriaArquivoPadroes;
     procedure CarregaPadroes;
@@ -101,6 +103,36 @@ begin
 
   if FileExists(dm.DiretorioSistema+'padroes.txt') then
     CarregaPadroes;
+end;
+
+function TfrmImportadadorClientesTricae.getNumero(texto: String): String;
+var i :integer;
+begin
+  result := '';
+  for i := Length(texto) downto 1 do
+  begin
+    try
+      StrToInt(texto[i]);
+      result := texto[i] + result;
+    Except
+      exit;
+    end;
+  end;
+end;
+
+function TfrmImportadadorClientesTricae.getRua(texto: String): String;
+var i :integer;
+begin
+  result := '';
+  for i := Length(texto) downto 1 do
+  begin
+    try
+      StrToInt(texto[i]);
+    Except
+      result := copy(texto,1,i);
+      exit;
+    end;
+  end;
 end;
 
 procedure TfrmImportadadorClientesTricae.btnImportarClick(Sender: TObject);
@@ -203,8 +235,8 @@ begin
         else
           Endereco := TEndereco.Create;
 
-        cidade               := TRIM(AnsiUpperCase( copy(Excel.WorkBooks[1].Sheets[1].Cells[i,13], 1, pos('/',Excel.WorkBooks[1].Sheets[1].Cells[i,13])-1 )));
-        estado               := TRIM(copy(Excel.WorkBooks[1].Sheets[1].Cells[i,13], pos('/',Excel.WorkBooks[1].Sheets[1].Cells[i,13])+1, 3) );
+        cidade               := TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,18]));
+        estado               := TRIM(Excel.WorkBooks[1].Sheets[1].Cells[i,14]);
         especificacaoCidade  := TEspecificacaoCidadePorNome.Create( RemoveAcento(cidade), estado);
         repositorio          := TFabricaRepositorio.GetRepositorio(TCidade.ClassName);
         CidadeCliente        := TCIdade(repositorio.GetPorEspecificacao(especificacaoCidade));
@@ -220,9 +252,9 @@ begin
         if assigned(Endereco) then
         begin
           Endereco.codpessoa   := Cliente.Codigo;
-          Endereco.Logradouro  := TRIM(AnsiUpperCase( copy(Excel.WorkBooks[1].Sheets[1].Cells[i,11], 1, pos(',',Excel.WorkBooks[1].Sheets[1].Cells[i,11])-1)));
-          Endereco.Numero      := TRIM(copy(Excel.WorkBooks[1].Sheets[1].Cells[i,11], pos(',',Excel.WorkBooks[1].Sheets[1].Cells[i,11])+1, 10));
-          Endereco.Bairro      := TRIM(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,14]));
+          Endereco.Logradouro  := getRua( TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,11])) );
+          Endereco.Numero      := getNumero( TRIM(Excel.WorkBooks[1].Sheets[1].Cells[i,11] ));
+          Endereco.Bairro      := TRIM(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,13]));
           Endereco.CEP         := substituiString( Excel.WorkBooks[1].Sheets[1].Cells[i,19], '-', '');
           Endereco.Pais        := 'BRASIL';
           Endereco.Complemento := TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,12]));

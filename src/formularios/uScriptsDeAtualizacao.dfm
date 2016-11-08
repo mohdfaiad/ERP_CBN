@@ -7545,4 +7545,81 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 177
     WordWrap = False
   end
+  object versao178: TMemo
+    Left = 321
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      'declare variable cod_cor_kit integer;'
+      'begin'
+      
+        '  for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ci.q' +
+        'td_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3, ci.qtd_4,'
+      
+        '             ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qtd_14' +
+        ', ci.qtd_unica, pro.kit, cor.kit   from conferencia_itens ci'
+      '   inner join itens i        on ci.codigo_item = i.codigo'
+      '   inner join pedidos p      on p.codigo = i.cod_pedido'
+      '   inner join produtos pro   on pro.codigo = i.cod_produto'
+      '   inner join cores cor      on cor.codigo = i.cod_cor'
+      '  where (p.codigo = :codped)   order by i.cod_produto, i.cod_cor'
+      '    into'
+      
+        '  :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2, :' +
+        'q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :prokit, :' +
+        'corkit   do'
+      '  begin'
+      '     if (:prokit = '#39'S'#39') then'
+      '     begin'
+      
+        '        for select pk.codigo_produto, pk.codigo_cor from produto' +
+        's_kit pk'
+      
+        '        where pk.codigo_kit = :cod_produto and pk.codigo_cor_kit' +
+        ' = :cod_cor'
+      '          into'
+      '        :cod_produto_kit, :cod_cor_kit do'
+      '        begin'
+      
+        '           execute procedure altera_estoque(:cod_produto_kit, :c' +
+        'od_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :' +
+        'q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '        end'
+      '     end'
+      '     else'
+      
+        '        execute procedure altera_estoque(:cod_produto, :cod_cor,' +
+        ' :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, ' +
+        ':q_10, :q_12, :q_14, :q_unica, :multiplicador);'
+      '     end'
+      'end'
+      '^')
+    TabOrder = 178
+    WordWrap = False
+  end
 end

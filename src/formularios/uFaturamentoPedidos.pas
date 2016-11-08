@@ -1427,6 +1427,9 @@ begin
      RepNotaFiscal := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
      RepNotaFiscal.AdicionarEventoDeAtualizarTela(self.AtualizarTela);
 
+     {Para pegar o nr da nota atualizado, caso estiver sendo usado mais de uma tela simultaneamente}
+     self.FNotaFiscal.Empresa.ConfiguracoesNF.Free;
+     self.FNotaFiscal.Empresa.ConfiguracoesNF := nil;
      self.FNotaFiscal.NumeroNotaFiscal := self.FNotaFiscal.Empresa.ConfiguracoesNF.IncrementarSequencia;
 
      RepEmpresa.Salvar(self.FNotaFiscal.Empresa);

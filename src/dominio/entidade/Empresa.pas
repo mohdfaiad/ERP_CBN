@@ -36,7 +36,7 @@ type
     property CodigoEmpresa            :Integer               read GetCodigoEmpresa            write SetCodigoEmpresa;
     property RegimeTributario         :TTipoRegimeTributario read FRegimeTributario           write SetRegimeTributario;
     property RegimeTributarioInteger  :Integer               read GetRegimeTributarioInteger  write SetRegimeTributarioInteger;
-    property ConfiguracoesNF          :TConfiguracoesNF      read GetConfiguracoesNF;
+    property ConfiguracoesNF          :TConfiguracoesNF      read GetConfiguracoesNF          write FConfiguracoesNF;
     property ConfiguracoesEmail       :TConfiguracoesNFEmail read GetConfiguracoesEmail;
 
   public

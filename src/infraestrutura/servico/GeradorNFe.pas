@@ -186,15 +186,22 @@ begin
 
   self.AjustarConfiguracoesDaEmpresa(NotaFiscal.Empresa.ConfiguracoesNF);
 
-   self.FACBrNFe.WebServices.Consulta.NFeChave := NotaFiscal.NFe.ChaveAcesso;
-   self.FACBrNFe.WebServices.Consulta.Executar;
+  { self.FACBrNFe.WebServices.Consulta.NFeChave := NotaFiscal.NFe.ChaveAcesso;
+   self.FACBrNFe.WebServices.Consulta.Executar; }
+
+//   self.GerarNFe(NotaFiscal);
+
+   //self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.nProt    := self.FACBrNFe.WebServices.Consulta.Protocolo;
+
+   FACBrNFe.Configuracoes.Geral.ValidarDigest := true;
+   FACBrNFe.NotasFiscais.Clear;
+   FACBrNFe.NotasFiscais.LoadFromString(NotaFiscal.NFe.XMLText);
+   FACBrNFe.Consultar;
 
    NotaFiscal.AdicionarRetornoNFe(IntToStr(self.FACBrNFe.WebServices.Consulta.cStat),
-                                  self.FACBrNFe.WebServices.Consulta.xMotivo);
+                                    self.FACBrNFe.WebServices.Consulta.xMotivo);
 
-   self.GerarNFe(NotaFiscal);
-
-   self.FACBrNFe.NotasFiscais.Items[0].Assinar;
+   {self.FACBrNFe.NotasFiscais.Items[0].Assinar;
    self.FACBrNFe.NotasFiscais.Items[0].Validar;
 
    self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.tpAmb    := self.FACBrNFe.WebServices.Consulta.protNFe.tpAmb;
@@ -206,7 +213,9 @@ begin
    self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.xMotivo  := self.FACBrNFe.WebServices.Consulta.xMotivo;
    self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.verAplic := self.FACBrNFe.WebServices.Consulta.verAplic;
 
- //  self.FACBrNFe.NotasFiscais.Items[0].XMLOriginal := '';
+    }
+
+   //self.FACBrNFe.NotasFiscais.Items[0].XMLOriginal := '';
    self.GerarXML(NotaFiscal);
 end;
 
@@ -251,7 +260,7 @@ begin
     raise Exception.Create(self.FACBrNFe.WebServices.Enviar.Msg);
 
   NotaFiscal.AdicionarRetornoLote(IntToStr(self.FACBrNFe.WebServices.Enviar.cStat), self.FACBrNFe.WebServices.Enviar.xMotivo, self.FACBrNFe.WebServices.Enviar.Recibo);
-  NotaFiscal.AdicionarChaveAcesso(self.FACBrNFe.NotasFiscais.Items[0].NFe.infNFe.ID);
+  NotaFiscal.AdicionarChaveAcesso(self.FACBrNFe.NotasFiscais.Items[0].NFe.infNFe.ID, self.FACBrNFe.NotasFiscais.Items[0].XML);
 end;
 
 procedure TGeradorNFe.EnviarEmail(NotaFiscal :TNotaFiscal);

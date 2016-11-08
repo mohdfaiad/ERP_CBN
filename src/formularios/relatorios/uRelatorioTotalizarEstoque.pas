@@ -174,6 +174,7 @@ type
     procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure chkSomenteLojaClick(Sender: TObject);
+    procedure RLDBResult31BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
 
   private
     Valor: Currency;
@@ -374,6 +375,12 @@ procedure TfrmRelatorioTotalizarEstoque.btnImprimirClick(Sender: TObject);
 begin
   inherited;
   TotalizarEstoque;
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.RLDBResult31BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+begin
+  inherited;
+  PrintIt := not (Text = '0');
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.RLDBResult4BeforePrint(

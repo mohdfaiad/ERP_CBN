@@ -2,7 +2,7 @@ unit RepositorioMovimento;
 
 interface
 
-uses DB, Auditoria, Repositorio;
+uses DB, Auditoria, Repositorio, System.StrUtils;
 
 type
   TRepositorioMovimento = class(TRepositorio)
@@ -17,6 +17,7 @@ type
     function SQLGet                      :String;            override;
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
+    function CondicaoSQLGetAll           :String;            override;
     function SQLRemover                  :String;            override;
     function SQLGetExiste(campo: String): String;            override;
 
@@ -37,6 +38,11 @@ implementation
 uses SysUtils, Movimento, Funcoes;
 
 { TRepositorioMovimento }
+
+function TRepositorioMovimento.CondicaoSQLGetAll: String;
+begin
+  result := ' WHERE '+FIdentificador;
+end;
 
 function TRepositorioMovimento.Get(Dataset: TDataSet): TObject;
 var
@@ -141,7 +147,7 @@ end;
 
 function TRepositorioMovimento.SQLGetAll: String;
 begin
-  result := 'select * from MOVIMENTOS';
+  result := 'select * from MOVIMENTOS ' + IfThen(FIdentificador = '','', CondicaoSQLGetAll);
 end;
 
 function TRepositorioMovimento.SQLGetExiste(campo: String): String;

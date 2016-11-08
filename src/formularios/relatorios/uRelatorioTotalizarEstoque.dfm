@@ -4,20 +4,20 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Totalizar Estoque'
-  ClientHeight = 348
-  ClientWidth = 609
+  ClientHeight = 352
+  ClientWidth = 613
   OldCreateOrder = True
   PrintScale = poNone
   Scaled = False
   OnCreate = nil
   OnShow = FormShow
-  ExplicitWidth = 615
-  ExplicitHeight = 376
+  ExplicitWidth = 619
+  ExplicitHeight = 380
   PixelsPerInch = 96
   TextHeight = 13
   object RLTotalizarEstoque: TRLReport
-    Left = 0
-    Top = 200
+    Left = 42
+    Top = 262
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -487,9 +487,9 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           BeforePrint = RLDBResult4BeforePrint
         end
         object RLDBResult16: TRLDBResult
-          Left = 228
+          Left = 230
           Top = 5
-          Width = 44
+          Width = 40
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -498,17 +498,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText2
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult17: TRLDBResult
-          Left = 266
+          Left = 267
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -517,17 +516,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText3
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult18: TRLDBResult
-          Left = 299
+          Left = 300
           Top = 5
-          Width = 38
+          Width = 36
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -536,17 +534,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText4
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult19: TRLDBResult
-          Left = 333
+          Left = 334
           Top = 5
-          Width = 38
+          Width = 34
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -555,17 +552,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText5
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult20: TRLDBResult
-          Left = 367
+          Left = 368
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -574,17 +570,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText7
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult21: TRLDBResult
-          Left = 401
+          Left = 402
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -593,17 +588,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText8
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult22: TRLDBResult
-          Left = 435
+          Left = 436
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -612,17 +606,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText9
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult23: TRLDBResult
-          Left = 469
+          Left = 470
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -631,17 +624,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText10
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult24: TRLDBResult
-          Left = 502
+          Left = 503
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -650,17 +642,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText11
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult25: TRLDBResult
-          Left = 536
+          Left = 537
           Top = 5
-          Width = 36
+          Width = 32
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -669,17 +660,16 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText12
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult26: TRLDBResult
-          Left = 659
+          Left = 670
           Top = 5
-          Width = 62
+          Width = 40
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -690,15 +680,14 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Height = -11
           Font.Name = 'Arial'
           Font.Style = []
-          Holder = RLDBText13
           Info = riSum
           ParentFont = False
           Text = ''
         end
         object RLDBResult31: TRLDBResult
-          Left = 567
+          Left = 569
           Top = 5
-          Width = 42
+          Width = 38
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -707,17 +696,17 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText17
           Info = riSum
           ParentFont = False
           Text = ''
+          BeforePrint = RLDBResult31BeforePrint
         end
         object RLDBResult32: TRLDBResult
-          Left = 600
+          Left = 602
           Top = 5
-          Width = 42
+          Width = 38
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -726,17 +715,17 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText18
           Info = riSum
           ParentFont = False
           Text = ''
+          BeforePrint = RLDBResult31BeforePrint
         end
         object RLDBResult33: TRLDBResult
-          Left = 634
+          Left = 636
           Top = 5
-          Width = 42
+          Width = 38
           Height = 16
           Alignment = taCenter
           AutoSize = False
@@ -745,12 +734,12 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
-          Holder = RLDBText19
           Info = riSum
           ParentFont = False
           Text = ''
+          BeforePrint = RLDBResult31BeforePrint
         end
       end
       object RLBand3: TRLBand
@@ -759,6 +748,23 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Width = 756
         Height = 18
         GreenBarPrint = True
+        object RLDBText6: TRLDBText
+          Left = 686
+          Top = 2
+          Width = 68
+          Height = 14
+          Alignment = taRightJustify
+          DataField = 'QTD_TOTAL'
+          DataSource = dsTotalizarEstoque
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Holder = RLLabel16
+          ParentFont = False
+          Text = ''
+        end
         object RLDBText15: TRLDBText
           Left = 2
           Top = 2
@@ -791,170 +797,170 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           Text = ''
         end
         object RLDBText2: TRLDBText
-          Left = 228
+          Left = 230
           Top = 2
-          Width = 44
-          Height = 14
+          Width = 40
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_RN'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel3
           ParentFont = False
           Text = ''
         end
         object RLDBText3: TRLDBText
-          Left = 266
+          Left = 267
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_P'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel4
           ParentFont = False
           Text = ''
         end
         object RLDBText4: TRLDBText
-          Left = 299
+          Left = 300
           Top = 2
-          Width = 38
-          Height = 14
+          Width = 36
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_M'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel5
           ParentFont = False
           Text = ''
         end
         object RLDBText5: TRLDBText
-          Left = 333
+          Left = 334
           Top = 2
-          Width = 38
-          Height = 14
+          Width = 34
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_G'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel6
           ParentFont = False
           Text = ''
         end
         object RLDBText7: TRLDBText
-          Left = 367
+          Left = 368
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_1'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel7
           ParentFont = False
           Text = ''
         end
         object RLDBText8: TRLDBText
-          Left = 401
+          Left = 402
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_2'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel8
           ParentFont = False
           Text = ''
         end
         object RLDBText9: TRLDBText
-          Left = 435
+          Left = 436
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_3'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel9
           ParentFont = False
           Text = ''
         end
         object RLDBText10: TRLDBText
-          Left = 469
+          Left = 470
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_4'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel10
           ParentFont = False
           Text = ''
         end
         object RLDBText11: TRLDBText
-          Left = 502
+          Left = 503
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_6'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel13
           ParentFont = False
           Text = ''
         end
         object RLDBText12: TRLDBText
-          Left = 536
+          Left = 537
           Top = 2
-          Width = 36
-          Height = 14
+          Width = 32
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_8'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel14
           ParentFont = False
@@ -977,69 +983,52 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
           ParentFont = False
           Text = ''
         end
-        object RLDBText6: TRLDBText
-          Left = 686
-          Top = 2
-          Width = 68
-          Height = 14
-          Alignment = taRightJustify
-          DataField = 'QTD_TOTAL'
-          DataSource = dsTotalizarEstoque
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Holder = RLLabel16
-          ParentFont = False
-          Text = ''
-        end
         object RLDBText17: TRLDBText
-          Left = 567
+          Left = 569
           Top = 2
-          Width = 42
-          Height = 14
+          Width = 38
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_10'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel23
           ParentFont = False
           Text = ''
         end
         object RLDBText18: TRLDBText
-          Left = 600
+          Left = 602
           Top = 2
-          Width = 42
-          Height = 14
+          Width = 38
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_12'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel24
           ParentFont = False
           Text = ''
         end
         object RLDBText19: TRLDBText
-          Left = 634
+          Left = 636
           Top = 2
-          Width = 42
-          Height = 14
+          Width = 38
+          Height = 13
           Alignment = taCenter
           DataField = 'QTD_14'
           DataSource = dsTotalizarEstoque
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Name = 'Calibri'
           Font.Style = []
           Holder = RLLabel25
           ParentFont = False
@@ -1140,7 +1129,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult6: TRLDBResult
-        Left = 250
+        Left = 249
         Top = 5
         Width = 68
         Height = 14
@@ -1176,7 +1165,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult8: TRLDBResult
-        Left = 317
+        Left = 316
         Top = 5
         Width = 70
         Height = 14
@@ -1194,7 +1183,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult9: TRLDBResult
-        Left = 351
+        Left = 350
         Top = 5
         Width = 68
         Height = 14
@@ -1212,7 +1201,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult10: TRLDBResult
-        Left = 385
+        Left = 384
         Top = 5
         Width = 68
         Height = 14
@@ -1230,7 +1219,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult11: TRLDBResult
-        Left = 419
+        Left = 418
         Top = 5
         Width = 68
         Height = 14
@@ -1248,7 +1237,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult12: TRLDBResult
-        Left = 453
+        Left = 452
         Top = 5
         Width = 68
         Height = 14
@@ -1266,7 +1255,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult13: TRLDBResult
-        Left = 486
+        Left = 485
         Top = 5
         Width = 68
         Height = 14
@@ -1284,7 +1273,7 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
         Text = ''
       end
       object RLDBResult14: TRLDBResult
-        Left = 520
+        Left = 519
         Top = 5
         Width = 68
         Height = 14
@@ -1426,11 +1415,13 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
   end
   object Panel1: TPanel
     Left = 0
-    Top = 307
-    Width = 609
+    Top = 311
+    Width = 613
     Height = 41
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 307
+    ExplicitWidth = 609
     object btnImprimir: TBitBtn
       Left = 219
       Top = 6

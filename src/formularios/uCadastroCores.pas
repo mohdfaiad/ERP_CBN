@@ -100,13 +100,17 @@ type
     procedure btnAddCorKitClick(Sender: TObject);
     procedure cbPaiChange(Sender: TObject);
     procedure cmbKitChange(Sender: TObject);
+    procedure edtReferenciaChange(Sender: TObject);
   private
     CoresFilhasDeletadas :TStringList;
     CoresKitDeletadas :TStringList;
+    FReferencia :String;
+    FDesejaAlterarReferencia :Boolean;
 
     procedure armazena_deletadas;
     procedure deleta_selecionadas( repositorio :TRepositorio; lista :TStringList );
     function  verifica_vinculo(codigo_cor :integer) :Boolean;
+    function qtdeCodBarrasDaCor :integer;
 
     procedure habilitar(SN:Boolean);
     procedure mostra_dados;
@@ -190,8 +194,9 @@ begin
   inherited;
   habilitar(false);
   pgcCores.ActivePageIndex := 0;
-  edtReferencia.Enabled := false;
-  gpbDescricao2.Enabled := false;
+  edtReferencia.Enabled    := false;
+  gpbDescricao2.Enabled    := false;
+  FDesejaAlterarReferencia := false;
   cds.Refresh;
   mostra_dados;
   pgcCores.Pages[1].Enabled := false;
@@ -336,9 +341,33 @@ begin
   FreeAndNil(Cor);
 end;
 
+procedure TfrmCadastroCores.edtReferenciaChange(Sender: TObject);
+var qtde :integer;
+begin
+  edtReferencia.OnChange := nil;
+  if not FDesejaAlterarReferencia then
+  begin
+    qtde := qtdeCodBarrasDaCor;
+    if qtde > 0 then
+    begin
+      if not confirma('Existem '+intToStr(qtde)+' códigos de barras criados, que utilizam esta cor.'+#13#10+'Deseja realmente alterar a referência da cor?') then
+        edtReferencia.Text := FReferencia
+      else
+        FDesejaAlterarReferencia := true;
+    end;
+  end;
+  edtReferencia.OnChange := edtReferenciaChange;
+end;
+
 procedure TfrmCadastroCores.edtReferenciaEnter(Sender: TObject);
 begin
   inherited;
+
+  if edtCodigo.Text = '0' then
+    FDesejaAlterarReferencia := true
+  else
+    FReferencia := edtReferencia.Text;
+
   if self.Tag in [1,2] then
     habilitar(true);
 end;
@@ -349,6 +378,7 @@ var Cor :TCor;
     i :integer;
 begin
   try
+    edtReferencia.OnChange := nil;
 
     edtCodigo.Text      := cdsCODIGO.AsString;
     edtDescricao.Text   := cdsDESCRICAO.AsString;
@@ -397,6 +427,7 @@ begin
     end;
 
   Finally
+    edtReferencia.OnChange := edtReferenciaChange;
     FreeAndNil(cor);
     FreeAndNil(repositorio);
   end;
@@ -515,6 +546,16 @@ end;
 procedure TfrmCadastroCores.cmbKitChange(Sender: TObject);
 begin
    tsCoresKit.TabVisible := (cmbKit.ItemIndex = 0);
+end;
+
+function TfrmCadastroCores.qtdeCodBarrasDaCor: integer;
+begin
+  Fdm.qryGenerica.Close;
+  Fdm.qryGenerica.SQL.Text := 'SELECT COUNT(cb.codigo) CONT from codigo_barras cb '+
+                              ' Where cb.codcor = :codcor ';
+  Fdm.qryGenerica.ParamByName('codcor').AsInteger := strToInt(edtCodigo.text);
+  Fdm.qryGenerica.Open;
+  result := Fdm.qryGenerica.FieldByName('CONT').AsInteger;
 end;
 
 end.

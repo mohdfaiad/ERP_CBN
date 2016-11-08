@@ -30,7 +30,8 @@ type
 
   public
     constructor Create(const CodigoNotaFiscal :Integer;
-                             ChaveAcesso      :String);
+                             ChaveAcesso      :String;
+                             const XML :String = '');
     destructor Destroy; override;
 
   public
@@ -62,6 +63,9 @@ uses
 
 procedure TNFe.AdicionarRetorno(Status, Motivo :String);
 begin
+   if assigned(FRetorno) then
+     FreeAndNil(FRetorno);
+
    self.FRetorno := TRetornoNFe.Create(self.FCodigoNotaFiscal,
                                        Status,
                                        Motivo);
@@ -85,7 +89,7 @@ begin
    self.FXMLStringList.LoadFromStream(XMLStream);   
 end;
 
-constructor TNFe.Create(const CodigoNotaFiscal: Integer; ChaveAcesso: String);
+constructor TNFe.Create(const CodigoNotaFiscal: Integer; ChaveAcesso: String; const XML :String);
 const
   NOME_METODO = 'Create(const CodigoNotaFiscal: Integer; ChaveAcesso: String)';
 var
@@ -104,6 +108,7 @@ begin
    self.FRetorno          := nil;
    self.FXML              := TMemoryStream.Create;
    self.FXMLStringList    := TStringList.Create;
+   self.FXMLStringList.Add(XML);
 end;
 
 destructor TNFe.Destroy;

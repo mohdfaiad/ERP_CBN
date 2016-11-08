@@ -462,7 +462,7 @@ begin
    self.btnImprimirEtiquetaCaixas.Enabled := self.ApenasAguardandoEnvioRejeitadasEAutorizadasSelecionadas;
    self.btnGerarArqXML.Enabled            := self.ApenasAutorizadasECanceladasSelecionadas;
 //   self.btnCartaCorrecao.Enabled          := self.ApenasAutorizadasSelecionadas;
-   self.btnConsultaStatus.Enabled         := self.ApenasAguardandoEnvioRejeitadasEAutorizadasSelecionadas;
+   self.btnConsultaStatus.Enabled         := self.ApenasAutorizadasERejeitadasSelecionadas;
 
 end;
 
@@ -720,17 +720,9 @@ begin
      GeradorNFe := TGeradorNFe.Create(FDM.Logo);
      for nX := 0 to (self.FNotasSelecionadas.Count-1) do
         try
-        
-          //if assigned(NotaFiscal) and (assigned(NotaFiscal.Itens)) then
-
 
           NotaFiscal := nil;
           NotaFiscal := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-     {     if (assigned(NotaFiscal.Itens)) then
-            NotaFiscal.Itens.Free;
-            NotaFiscal.Itens := nil;
-          end; }
 
           self.AtualizarEstadoDaOperacao('Buscando certificado digital...');
 
@@ -786,6 +778,7 @@ begin
           { Consultar no SEFAZ }
           try
             self.AtualizarEstadoDaOperacao('Consultando nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
+            sleep(1000);
             GeradorNFe.ConsultarNFe(NotaFiscal);
           except
             on E: Exception do
@@ -795,7 +788,7 @@ begin
           end;
 
           { Gerar XML da nota fiscal }
-          try
+         { try
             self.AtualizarEstadoDaOperacao('Gerando XML da nota fiscal'+IntToStr(NotaFiscal.NumeroNotaFiscal));
             GeradorNFe.GerarXML(NotaFiscal);
           except
@@ -803,7 +796,7 @@ begin
               raise Exception.Create('Erro ao gerar XML da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
                                      NotaFiscal.Destinatario.Razao+'.'+#13+
                                      'Erro: '+E.Message);
-          end;
+          end;  }
 
           { Persistir Nota Fiscal }
           try
@@ -829,7 +822,7 @@ begin
           { Enviar E-mail }
           try
             self.AtualizarEstadoDaOperacao('Enviando e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
-//            GeradorNFe.EnviarEmail(NotaFiscal);
+            GeradorNFe.EnviarEmail(NotaFiscal);
           except
             on E: Exception do
               raise Exception.Create('Erro ao enviar e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
@@ -845,18 +838,6 @@ begin
             continue;
           end;
         end;
-
-       { try   comentado, pois a baixa do estoque esta sendo feita na conferencia do pedido
-        // -1 faz subtrair do estoque
-          self.Atualiza_estoque(NotaFiscal, -1);
-
-        except
-          on E: Exception do begin
-            raise Exception.Create('Erro ao atualizar estoque '+#13+
-                                   'Erro: '+E.Message);
-            HouveErros := true;
-          end;
-        end;}
 
      if HouveErros then begin
        dm.conexao.Rollback;
@@ -1523,8 +1504,10 @@ begin
 
     for nX := 0 to (self.FNotasSelecionadas.Count-1) do
     begin
-
        NotaFiscal             := (self.FNotasSelecionadas[nX] as TNotaFiscal);
+
+       Aguarda('Consultando nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
+       Application.ProcessMessages;
 
        { Obtendo o número do certificado caso não esteja cadastrado }
        if TStringUtilitario.EstaVazia(NotaFiscal.Empresa.ConfiguracoesNF.num_certificado) then begin
@@ -1546,16 +1529,6 @@ begin
                                   'Erro: '+E.Message);
        end;
 
-       { Gerar XML da nota fiscal }
-       { try
-           GeradorNFe.GerarXML(NotaFiscal);
-        except
-          on E: Exception do
-            raise Exception.Create('Erro ao gerar XML da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
-                                   NotaFiscal.Destinatario.Razao+'.'+#13+
-                                   'Erro: '+E.Message);
-        end;}
-
        { Persistir Nota Fiscal }
        try
          RepositorioNotaFiscal.Salvar(NotaFiscal);
@@ -1568,7 +1541,11 @@ begin
 
     end;
 
+    self.Buscar;
+
  Finally
+    FimAguarda;
+    self.RemoverTodasNotasSelecionadas;
     FreeAndNil(RepositorioNotaFiscal);
     FreeAndNil(GeradorNFe);
  end;
