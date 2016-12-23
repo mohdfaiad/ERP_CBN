@@ -3,11 +3,11 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
   Top = 202
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio de Notas Ficais de Sa'#237'da'
-  ClientHeight = 409
-  ClientWidth = 502
+  ClientHeight = 416
+  ClientWidth = 506
   OldCreateOrder = True
-  ExplicitWidth = 508
-  ExplicitHeight = 437
+  ExplicitWidth = 512
+  ExplicitHeight = 444
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -44,16 +44,18 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
   end
   object Panel1: TPanel
     Left = 0
-    Top = 365
-    Width = 502
+    Top = 372
+    Width = 506
     Height = 44
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 365
+    ExplicitWidth = 502
     DesignSize = (
-      502
+      506
       44)
     object btnImprimir: TSpeedButton
-      Left = 258
+      Left = 262
       Top = 7
       Width = 169
       Height = 30
@@ -128,9 +130,10 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
+      ExplicitLeft = 258
     end
     object SpeedButton1: TSpeedButton
-      Left = 74
+      Left = 78
       Top = 7
       Width = 169
       Height = 30
@@ -205,6 +208,7 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
         0000562600004F1E00006B3600007B48000085550000804F0000}
       NumGlyphs = 2
       OnClick = SpeedButton1Click
+      ExplicitLeft = 74
     end
   end
   object GroupBox1: TGroupBox

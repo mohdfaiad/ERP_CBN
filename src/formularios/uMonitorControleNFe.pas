@@ -820,14 +820,17 @@ begin
 //          end;
 
           { Enviar E-mail }
-          try
-            self.AtualizarEstadoDaOperacao('Enviando e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
-            GeradorNFe.EnviarEmail(NotaFiscal);
-          except
-            on E: Exception do
-              raise Exception.Create('Erro ao enviar e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
-                                     NotaFiscal.Destinatario.Razao+'.'+#13+
-                                     'Erro: '+E.Message);
+          if assigned(NotaFiscal.NFe) and (NotaFiscal.NFe.Retorno.Status = '100') then
+          begin
+            try
+              self.AtualizarEstadoDaOperacao('Enviando e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
+              GeradorNFe.EnviarEmail(NotaFiscal);
+            except
+              on E: Exception do
+                raise Exception.Create('Erro ao enviar e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
+                                       NotaFiscal.Destinatario.Razao+'.'+#13+
+                                       'Erro: '+E.Message);
+            end;
           end;
 
           GeradorNFe.Recarregar;
@@ -1222,8 +1225,9 @@ begin
           try
             self.AtualizarEstadoDaOperacao('Imprimindo etiqueta para caixa da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
 
-            frmImpressaoEtiquetaCaixa.nr_nota    := NotaFiscal.NumeroNotaFiscal;
-            frmImpressaoEtiquetaCaixa.vlr_nota   := TStringUtilitario.FormataDinheiro(NotaFiscal.Totais.TotalNF);
+            frmImpressaoEtiquetaCaixa.nr_nota        := NotaFiscal.NumeroNotaFiscal;
+            frmImpressaoEtiquetaCaixa.codigoEmitente := NotaFiscal.Emitente.Codigo;
+            frmImpressaoEtiquetaCaixa.vlr_nota       := TStringUtilitario.FormataDinheiro(NotaFiscal.Totais.TotalNF);
             frmImpressaoEtiquetaCaixa.Imprimir;
 
           except

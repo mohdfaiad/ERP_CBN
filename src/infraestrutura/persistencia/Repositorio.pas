@@ -391,6 +391,9 @@ begin
         self.FQuery.Next;
      end;
 
+     if result.Count = 0 then
+       FreeAndNil(result);
+
    except
      on E: Exception do begin
         dm.LogErros.AdicionaErro('Repositorio', E.ClassName, E.Message);

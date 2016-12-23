@@ -38,10 +38,6 @@ type
     ds: TDataSource;
     qryTOTAL: TBCDField;
     qryDESCONTO: TBCDField;
-    qryVP1: TBCDField;
-    qryVP2: TBCDField;
-    qryVP3: TBCDField;
-    qryVP4: TBCDField;
     RLBand2: TRLBand;
     RLDraw2: TRLDraw;
     RLLabel12: TRLLabel;
@@ -94,9 +90,14 @@ type
     rlbTotalGeral: TRLLabel;
     RLDraw5: TRLDraw;
     qryDATA: TDateField;
+    qryDINHEIRO: TBCDField;
+    qryCONVENIO: TBCDField;
+    qryCART_CRED: TBCDField;
+    qryCART_DEB: TBCDField;
     procedure btnImprimirClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     procedure imprimir;
   public
@@ -120,6 +121,13 @@ end;
 procedure TfrmRelatorioCaixa.btnSairClick(Sender: TObject);
 begin
   Self.Close;
+end;
+
+procedure TfrmRelatorioCaixa.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if ( btnImprimir.Enabled ) and ( (ssCtrl in Shift) AND (Key = ord('P')) ) then
+    btnImprimir.Click;
 end;
 
 procedure TfrmRelatorioCaixa.FormShow(Sender: TObject);
@@ -147,12 +155,12 @@ begin
 
   if not qry.IsEmpty then
   begin
-    totDinheiroP := qryVP1.AsFloat;
-    totConvenioP := qryVP2.AsFloat;
-    totCartCredP := qryVP3.AsFloat;
-    totCartDebP  := qryVP4.AsFloat;
+    totDinheiroP := qryDINHEIRO.AsFloat;
+    totConvenioP := qryCONVENIO.AsFloat;
+    totCartCredP := qryCART_CRED.AsFloat;
+    totCartDebP  := qryCART_DEB.AsFloat;
     totDesconto  := qryDESCONTO.AsFloat;
-    totProdutos  := qryVP1.AsFloat+qryVP2.AsFloat+qryVP3.AsFloat+qryVP4.AsFloat-qryDESCONTO.AsFloat;
+    totProdutos  := qryDINHEIRO.AsFloat+qryCONVENIO.AsFloat+qryCART_CRED.AsFloat+qryCART_DEB.AsFloat;
   end;
 
   rlbDinheiro.Caption      := FormatFloat(' ,0.00; -,0.00;', totDinheiroP);

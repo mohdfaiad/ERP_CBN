@@ -193,9 +193,9 @@ begin
 
    //self.FACBrNFe.NotasFiscais.Items[0].NFe.procNFe.nProt    := self.FACBrNFe.WebServices.Consulta.Protocolo;
 
-   FACBrNFe.Configuracoes.Geral.ValidarDigest := true;
+   FACBrNFe.Configuracoes.Geral.ValidarDigest := false;
    FACBrNFe.NotasFiscais.Clear;
-   FACBrNFe.NotasFiscais.LoadFromString(NotaFiscal.NFe.XMLText);
+   FACBrNFe.NotasFiscais.LoadFromString(NotaFiscal.NFe.XMLText); //verificar esse xml com o da receita e ver oq difere
    FACBrNFe.Consultar;
 
    NotaFiscal.AdicionarRetornoNFe(IntToStr(self.FACBrNFe.WebServices.Consulta.cStat),
@@ -285,7 +285,8 @@ begin
 
 
    if TStringUtilitario.EstaVazia(NotaFiscal.Destinatario.Email) then
-    raise Exception.Create('O destinatário '+IntToStr(NotaFiscal.Destinatario.Codigo)+' - '+NotaFiscal.Destinatario.Razao+' não possui e-mails cadastrados!');
+     exit;
+    //raise Exception.Create('O destinatário '+IntToStr(NotaFiscal.Destinatario.Codigo)+' - '+NotaFiscal.Destinatario.Razao+' não possui e-mails cadastrados!');
 
    try
      ACBrMail1                        := TACBrMail.Create(nil);

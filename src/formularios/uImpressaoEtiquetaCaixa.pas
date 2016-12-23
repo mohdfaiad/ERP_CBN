@@ -98,6 +98,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     Fnr_nota: Double;
+    FCodigoEmitente :Integer;
     Fvlr_nota: String;
     Fdigitar: Boolean;
     procedure Setdigitar(const Value: Boolean);
@@ -121,6 +122,7 @@ type
   public
     property Automatico :Boolean write SetAutomatico;
     property nr_nota  :double read Fnr_nota write Setnr_nota;
+    property codigoEmitente :Integer read FCodigoEmitente write FCodigoEmitente;
     property vlr_nota :String read Fvlr_nota write Setvlr_nota;
     property digitar :Boolean read Fdigitar write Setdigitar;
 
@@ -250,7 +252,8 @@ begin
   total_volumes_conferidos := 0;
   
   qry.Close;
-  qry.ParamByName('nr_nota').AsFloat := nr_nota;
+  qry.ParamByName('nr_nota').AsFloat := Fnr_nota;
+  qry.ParamByName('cod_emit').AsInteger := FCodigoEmitente;
   qry.Open;
 
   cdsVolumes.Close;

@@ -103,7 +103,8 @@ uses
   RepositorioCaixa,
   RepositorioEntradaSaidaMoeda,
   RepositorioGrupo,
-  RepositorioClassificacaoFiscal;
+  RepositorioClassificacaoFiscal,
+  RepositorioDadosRepresentante;
 
 
 { TFabricaRepositorio }
@@ -199,6 +200,7 @@ begin
    else if (NomeDaEntidade  = 'TEntradaSaidaMoeda')         then result := TRepositorioEntradaSaidaMoeda.Create
    else if (NomeDaEntidade  = 'TGrupo')                     then result := TRepositorioGrupo.Create
    else if (NomeDaEntidade  = 'TClassificacaoFiscal')       then result := TRepositorioClassificacaoFiscal.Create
+   else if (NomeDaEntidade  = 'TDadosRepresentante')        then result := TRepositorioDadosRepresentante.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

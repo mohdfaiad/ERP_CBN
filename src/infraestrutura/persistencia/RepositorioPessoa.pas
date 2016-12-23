@@ -31,6 +31,9 @@ type
     procedure SetParametros   (Objeto :TObject                        ); override;
     procedure SetIdentificador(Objeto :TObject; Identificador :Variant); override;
 
+  protected
+    procedure ExecutaDepoisDeSalvar (Objeto :TObject); override;
+
   //==============================================================================
   // Auditoria
   //==============================================================================
@@ -45,13 +48,31 @@ implementation
 
 uses
   SysUtils,
-  Pessoa, StrUtils;
+  Pessoa, StrUtils,DadosRepresentante, FabricaRepositorio;
 
 { TRepositorioPessoa }
 
 function TRepositorioPessoa.CondicaoSQLGetAll: String;
 begin
   result := ' WHERE CPF_CNPJ = '''+FIdentificador+'''';
+end;
+
+procedure TRepositorioPessoa.ExecutaDepoisDeSalvar(Objeto: TObject);
+var
+  Repositorio :TRepositorio;
+  Pessoa      :TPessoa;
+begin
+   Pessoa := (Objeto as TPessoa);
+   Repositorio := nil;
+   try
+     if Assigned(Pessoa.DadosRepresentante) then begin
+       Repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
+       Pessoa.DadosRepresentante.codigo_representante := Pessoa.Codigo;
+       Repositorio.Salvar(Pessoa.DadosRepresentante);
+     end;
+   finally
+     FreeAndNil(Repositorio);
+   end;
 end;
 
 function TRepositorioPessoa.Get(Dataset: TDataSet): TObject;

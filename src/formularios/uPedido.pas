@@ -972,7 +972,7 @@ procedure TfrmPedido.SetPedidoTricae(const Value: Boolean);
 begin
   FPedidoTricae := Value;
 
-  edtPercComissao.Value := IfThen(FPedidoTricae,30,0);
+ // edtPercComissao.Value := IfThen(FPedidoTricae,30,0);
   edtValorFrete.Enabled := FPedidoTricae;
   edtPreco.ReadOnly     := not FPedidoTricae;
 end;
@@ -1306,6 +1306,9 @@ begin
   end;
 
   edtRepresentante.Text := BuscaCliente.razao_rep;
+
+  if BuscaCliente.percComissaoRep > 0 then
+    edtPercComissao.Value := BuscaCliente.percComissaoRep;
 end;
 
 procedure TfrmPedido.gridItensKeyDown(Sender: TObject; var Key: Word;
@@ -1587,7 +1590,7 @@ end;
 procedure TfrmPedido.BuscaFormaPagamento1Exit(Sender: TObject);
 begin
   calculaTotais;
-  if BuscaFormaPagamento1.edtDescricao.Text <> '' then
+  if (BuscaFormaPagamento1.edtDescricao.Text <> '') and (BuscaCliente.percComissaoRep <= 0) then
     edtPercComissao.Value := BuscaFormaPagamento1.PercComissao;
 end;
 

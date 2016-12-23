@@ -126,6 +126,8 @@ type
     Grupos1: TMenuItem;
     Cidades1: TMenuItem;
     NCMs1: TMenuItem;
+    Parcelamento1: TMenuItem;
+    FechaComissoEcommerce1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -209,6 +211,8 @@ type
     procedure Grupos1Click(Sender: TObject);
     procedure Cidades1Click(Sender: TObject);
     procedure NCMs1Click(Sender: TObject);
+    procedure Parcelamento1Click(Sender: TObject);
+    procedure FechaComissoEcommerce1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -273,14 +277,14 @@ uses
   uRelatorioClientes,
   uRelatorioReferencias,
   uFechaComissaoRepresentante,
-  uSintegra,
+  uSintegra, uParcelamento,
   uEFDContribuicoes, uCadastroGrupo,
   uCadastroContador, uImportadorOrdemServico,
   uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM,
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
   uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque,
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco,
-  uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa,
+  uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque;
 
@@ -437,6 +441,11 @@ end;
 procedure TfrmInicial.MostraTempoRestante(TempoRestante: String);
 begin
    self.lblTempoRestanteParaManutencao.Caption := 'Tempo restante para iniciar a manutenção: '+TempoRestante;
+end;
+
+procedure TfrmInicial.FechaComissoEcommerce1Click(Sender: TObject);
+begin
+   self.AbreForm(TfrmFechaComissaoECommerce, paFechaComissaoECommerce);
 end;
 
 procedure TfrmInicial.FinalizarSistemaParaManutencao;
@@ -802,6 +811,11 @@ end;
 procedure TfrmInicial.ParaProduo1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioPedidosProducao, paRelatorioPedidosProducao);
+end;
+
+procedure TfrmInicial.Parcelamento1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmParcelamento, paParcelamento);
 end;
 
 procedure TfrmInicial.FormClose(Sender: TObject; var Action: TCloseAction);

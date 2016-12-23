@@ -743,7 +743,7 @@ begin
     avisar('O vencimento deve ser informado');
     edtVencimento.SetFocus;
   end
-  else if edtVencimento.Text = '' then
+  else if edtTotalConta.Value = 0 then
   begin
     avisar('Impossível gerar parcelas. Total da conta está zerado.');
     edtParcela.SetFocus;

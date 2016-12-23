@@ -133,6 +133,7 @@ type
     procedure rldbTotalBeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnSairClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FTotalDinheiro :Real;
     FTotalConvenio :Real;
@@ -169,6 +170,13 @@ procedure TfrmRelatorioMovimentos.chkPeriodoGeralClick(Sender: TObject);
 begin
   dtpInicio.Enabled := not chkPeriodoGeral.Checked;
   dtpFim.Enabled    := not chkPeriodoGeral.Checked;
+end;
+
+procedure TfrmRelatorioMovimentos.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if ( btnImprimir.Enabled ) and ( (ssCtrl in Shift) AND (Key = ord('P')) ) then
+    btnImprimir.Click;
 end;
 
 procedure TfrmRelatorioMovimentos.FormShow(Sender: TObject);
@@ -212,13 +220,13 @@ begin
 
   qry.Close;
   qry.SQL.Text := 'select ped.numpedido, mov.data data_hora, ped.valor_total, ped.desconto,            '+
-                  ' (select mov1.valor_pago from movimentos mov1                                       '+
+                  ' (select sum(mov1.valor_pago) from movimentos mov1                                       '+
                   ' where mov1.codigo_pedido = mov.codigo_pedido and mov1.tipo_moeda = 1) VP1,         '+
-                  ' (select mov2.valor_pago from movimentos mov2                                       '+
+                  ' (select sum(mov2.valor_pago) from movimentos mov2                                       '+
                   ' where mov2.codigo_pedido = mov.codigo_pedido and mov2.tipo_moeda = 2) VP2,         '+
-                  ' (select mov3.valor_pago from movimentos mov3                                       '+
+                  ' (select sum(mov3.valor_pago) from movimentos mov3                                       '+
                   ' where mov3.codigo_pedido = mov.codigo_pedido and mov3.tipo_moeda = 3) VP3,         '+
-                  ' (select mov4.valor_pago from movimentos mov4                                       '+
+                  ' (select sum(mov4.valor_pago) from movimentos mov4                                       '+
                   ' where mov4.codigo_pedido = mov.codigo_pedido and mov4.tipo_moeda = 4) VP4,         '+
                   ' pro.referencia, pro.descricao, itn.preco, itn.qtd_total, itn.peso, itn.valor_total total_item '+
                   ' from movimentos mov                                                                '+
@@ -226,7 +234,8 @@ begin
                   ' inner join itens    itn on itn.cod_pedido = ped.codigo                             '+
                   ' inner join produtos pro on pro.codigo = itn.cod_produto                            '+
                   ' inner join cores    cor on cor.codigo = itn.cod_cor                                '+
-                  ' where ' + condicaoTipoMoeda + condicaoPeriodo;
+                  ' where ' + condicaoTipoMoeda + condicaoPeriodo+
+                  ' order by ped.numpedido ';
 
   if condicaoPeriodo <> '' then
   begin

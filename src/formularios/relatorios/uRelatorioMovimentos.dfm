@@ -1,9 +1,9 @@
 inherited frmRelatorioMovimentos: TfrmRelatorioMovimentos
   Caption = 'Relat'#243'rio de Pedidos (Loja)'
   ClientHeight = 215
-  ClientWidth = 455
+  ClientWidth = 453
   OnShow = FormShow
-  ExplicitWidth = 471
+  ExplicitWidth = 469
   ExplicitHeight = 253
   PixelsPerInch = 96
   TextHeight = 13
@@ -704,15 +704,16 @@ inherited frmRelatorioMovimentos: TfrmRelatorioMovimentos
   object Panel1: TPanel
     Left = 0
     Top = 176
-    Width = 455
+    Width = 453
     Height = 39
     Align = alBottom
     TabOrder = 0
+    ExplicitWidth = 455
     DesignSize = (
-      455
+      453
       39)
     object btnImprimir: TSpeedButton
-      Left = 275
+      Left = 273
       Top = 5
       Width = 169
       Height = 30
@@ -790,7 +791,7 @@ inherited frmRelatorioMovimentos: TfrmRelatorioMovimentos
       ExplicitLeft = 314
     end
     object btnSair: TSpeedButton
-      Left = 94
+      Left = 92
       Top = 5
       Width = 169
       Height = 30

@@ -3,12 +3,12 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
   Top = 178
   BorderStyle = bsSingle
   Caption = 'Impressao das etiquetas dos volumes'
-  ClientHeight = 136
-  ClientWidth = 384
+  ClientHeight = 652
+  ClientWidth = 1151
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 390
-  ExplicitHeight = 164
+  ExplicitWidth = 1157
+  ExplicitHeight = 680
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
@@ -324,7 +324,7 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
   object rgLayout: TRadioGroup
     Left = 0
     Top = 0
-    Width = 384
+    Width = 1151
     Height = 97
     Align = alTop
     Caption = ' Selecione o Layout da etiqueta: '
@@ -340,11 +340,12 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
     ParentFont = False
     TabOrder = 1
     Visible = False
+    ExplicitWidth = 384
   end
   object rgDados: TGroupBox
     Left = 0
     Top = 97
-    Width = 384
+    Width = 1151
     Height = 272
     Align = alTop
     Caption = ' Dados da Etiqueta '
@@ -356,6 +357,7 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
     ParentFont = False
     TabOrder = 3
     Visible = False
+    ExplicitWidth = 384
     object Label2: TLabel
       Left = 10
       Top = 24
@@ -639,16 +641,18 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
   end
   object Panel1: TPanel
     Left = 0
-    Top = 95
-    Width = 384
+    Top = 611
+    Width = 1151
     Height = 41
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 95
+    ExplicitWidth = 384
     DesignSize = (
-      384
+      1151
       41)
     object btnImprimir: TSpeedButton
-      Left = 179
+      Left = 946
       Top = 5
       Width = 193
       Height = 30
@@ -723,6 +727,7 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
+      ExplicitLeft = 179
     end
     object Label1: TLabel
       Left = -2
@@ -846,13 +851,19 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
       
         'left join volumes_notas_fiscais vn  on vn.codigo_nota_fiscal =  ' +
         'nf.codigo'
-      'where nf.numero_nota_fiscal = :nr_nota')
+      
+        'where nf.numero_nota_fiscal = :nr_nota and nf.codigo_emitente = ' +
+        ':cod_emit')
     Left = 152
     Top = 48
     ParamData = <
       item
         Name = 'NR_NOTA'
         DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'COD_EMIT'
         ParamType = ptInput
       end>
     object qryCODIGO: TIntegerField

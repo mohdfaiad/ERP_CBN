@@ -88,6 +88,8 @@ const
   paCadastroGrupo                = 71;
   paCadastroCidade               = 72;
   paCadastroNCM                  = 73;
+  paParcelamento                 = 74;
+  paFechaComissaoECommerce       = 75;
 
 implementation
 

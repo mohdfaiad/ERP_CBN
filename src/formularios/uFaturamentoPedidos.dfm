@@ -567,7 +567,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     end
     object btnImprimirEtiquetas: TBitBtn
       Left = 319
-      Top = 69
+      Top = 70
       Width = 140
       Height = 30
       Anchors = [akLeft, akBottom]
@@ -650,7 +650,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     Top = 200
     Width = 1035
     Height = 393
-    ActivePage = tbsCabecalho
+    ActivePage = tbsPedidos
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 2
@@ -1270,10 +1270,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         object tbsDestino: TTabSheet
           Caption = '&2 - Destino'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gbEnderecoEntrega: TGroupBox
             Left = 0
             Top = 0
@@ -1574,10 +1570,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsItensFisicos: TTabSheet
       Caption = '&Itens F'#237'sicos'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gridItensFisicos: TDBGridCBN
         Left = 0
         Top = 0
@@ -1674,10 +1666,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsItensFiscais: TTabSheet
       Caption = 'Itens &Fiscais'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gridItensFiscais: TDBGridCBN
         Left = 0
         Top = 0
@@ -1799,10 +1787,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsPedidos: TTabSheet
       Caption = '&Pedidos'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1027
         362)
@@ -1997,10 +1981,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsObservacoes: TTabSheet
       Caption = '&Observa'#231#245'es'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbObservacoes: TGroupBox
         Left = 0
         Top = 0

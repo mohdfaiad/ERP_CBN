@@ -16,7 +16,7 @@ object BuscaNaturezaOperacao: TBuscaNaturezaOperacao
   object lblCFOP: TStaticText
     Left = 9
     Top = 17
-    Width = 32
+    Width = 31
     Height = 17
     Caption = 'CFOP'
     TabOrder = 1
@@ -24,7 +24,7 @@ object BuscaNaturezaOperacao: TBuscaNaturezaOperacao
   object lblRazao: TStaticText
     Left = 110
     Top = 17
-    Width = 52
+    Width = 50
     Height = 17
     Caption = 'Descri'#231#227'o'
     TabOrder = 2
@@ -43,9 +43,6 @@ object BuscaNaturezaOperacao: TBuscaNaturezaOperacao
     Top = 33
     Width = 25
     Height = 25
-    TabOrder = 4
-    OnClick = btnBuscaClick
-    OnEnter = btnBuscaEnter
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -114,6 +111,9 @@ object BuscaNaturezaOperacao: TBuscaNaturezaOperacao
       9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
     NumGlyphs = 2
+    TabOrder = 4
+    OnClick = btnBuscaClick
+    OnEnter = btnBuscaEnter
   end
   object edtDescricao: TEdit
     Left = 110

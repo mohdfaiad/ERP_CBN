@@ -18,7 +18,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
     Top = 0
     Width = 822
     Height = 518
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 0
     TabStop = False
@@ -283,7 +283,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         Top = 56
         Width = 814
         Height = 417
-        ActivePage = TabSheet3
+        ActivePage = TabSheet6
         TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'Permiss'#245'es B'#225'sicas'
@@ -636,6 +636,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Caption = 'Entrada e saida de moeda'
             TabOrder = 11
           end
+          object chk74: TCheckBox
+            Left = 8
+            Top = 296
+            Width = 209
+            Height = 17
+            Caption = 'Tela de parcelamento'
+            TabOrder = 12
+          end
         end
         object TabSheet2: TTabSheet
           Caption = 'Permiss'#245'es Utilit'#225'rios'
@@ -886,11 +894,19 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
           end
           object chk70: TCheckBox
             Left = 385
-            Top = 80
+            Top = 79
             Width = 313
             Height = 17
             Caption = 'Visualizar Relat'#243'rio de Tabela'
             TabOrder = 19
+          end
+          object chk75: TCheckBox
+            Left = 385
+            Top = 103
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Fecha Comiss'#227'o E-commerce'
+            TabOrder = 20
           end
         end
       end

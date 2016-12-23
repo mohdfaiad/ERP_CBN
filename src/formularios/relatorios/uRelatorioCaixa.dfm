@@ -1,10 +1,10 @@
 inherited frmRelatorioCaixa: TfrmRelatorioCaixa
   Caption = 'Relat'#243'rio de Caixa'
-  ClientHeight = 198
-  ClientWidth = 397
+  ClientHeight = 209
+  ClientWidth = 390
   OnShow = FormShow
-  ExplicitWidth = 413
-  ExplicitHeight = 236
+  ExplicitWidth = 406
+  ExplicitHeight = 247
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
@@ -790,18 +790,18 @@ inherited frmRelatorioCaixa: TfrmRelatorioCaixa
   end
   object Panel1: TPanel
     Left = 0
-    Top = 159
-    Width = 397
+    Top = 170
+    Width = 390
     Height = 39
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 144
-    ExplicitWidth = 398
+    ExplicitTop = 159
+    ExplicitWidth = 397
     DesignSize = (
-      397
+      390
       39)
     object btnImprimir: TSpeedButton
-      Left = 217
+      Left = 210
       Top = 5
       Width = 169
       Height = 30
@@ -879,7 +879,7 @@ inherited frmRelatorioCaixa: TfrmRelatorioCaixa
       ExplicitLeft = 314
     end
     object btnSair: TSpeedButton
-      Left = 36
+      Left = 29
       Top = 5
       Width = 169
       Height = 30
@@ -1002,50 +1002,42 @@ inherited frmRelatorioCaixa: TfrmRelatorioCaixa
     Connection = dm.FDConnection
     SQL.Strings = (
       
-        'select cast(mov.data as date)data, sum(ped.valor_total + ped.des' +
-        'conto)TOTAL, sum(ped.desconto)DESCONTO,'
-      
-        'sum((select (mov1.valor_pago + ped.desconto) from movimentos mov' +
-        '1'
-      
-        'where mov1.codigo_pedido = mov.codigo_pedido and mov1.tipo_moeda' +
-        ' = 1)) VP1,'
-      
-        'sum((select (mov2.valor_pago + ped.desconto) from movimentos mov' +
-        '2'
-      
-        'where mov2.codigo_pedido = mov.codigo_pedido and mov2.tipo_moeda' +
-        ' = 2)) VP2,'
-      
-        'sum((select (mov3.valor_pago + ped.desconto) from movimentos mov' +
-        '3'
-      
-        'where mov3.codigo_pedido = mov.codigo_pedido and mov3.tipo_moeda' +
-        ' = 3)) VP3,'
-      
-        'sum((select (mov4.valor_pago + ped.desconto) from movimentos mov' +
-        '4'
-      
-        'where mov4.codigo_pedido = mov.codigo_pedido and mov4.tipo_moeda' +
-        ' = 4)) VP4'
+        'select (ped.dt_cadastro)data, (dinheiro.valor + convenio.valor +' +
+        ' cartao_cred.valor + cartao_deb.valor)TOTAL,'
+      'sum(ped.desconto)DESCONTO,'
       ''
-      'from movimentos mov'
-      ''
-      'inner join pedidos  ped on ped.codigo = mov.codigo_pedido'
       
-        'where  mov.tipo_moeda in (1,2,3,4) and mov.data between :dti and' +
-        ' :dtf'
+        'dinheiro.valor dinheiro, convenio.valor convenio, cartao_cred.va' +
+        'lor cart_cred, cartao_deb.valor cart_deb'
       ''
-      'group by cast(mov.data as date)')
+      'from  pedidos ped'
+      'inner join total_moeda_periodo(1, :dti, :dtf) dinheiro on (1=1)'
+      'inner join total_moeda_periodo(2, :dti, :dtf) convenio on (1=1)'
+      
+        'inner join total_moeda_periodo(3, :dti, :dtf) cartao_cred on (1=' +
+        '1)'
+      
+        'inner join total_moeda_periodo(4, :dti, :dtf) cartao_deb on (1=1' +
+        ')'
+      ''
+      'where  CAST(ped.dt_cadastro as timestamp) between :dti and :dtf'
+      '       and ((select first 1 mov.codigo from movimentos mov'
+      '            where mov.codigo_pedido = ped.codigo) > 0)'
+      ''
+      
+        'group by ped.dt_cadastro, dinheiro.valor, convenio.valor, cartao' +
+        '_cred.valor, cartao_deb.valor')
     Left = 256
     Top = 8
     ParamData = <
       item
         Name = 'DTI'
+        DataType = ftTimeStamp
         ParamType = ptInput
       end
       item
         Name = 'DTF'
+        DataType = ftTimeStamp
         ParamType = ptInput
       end>
     object qryTOTAL: TBCDField
@@ -1066,44 +1058,48 @@ inherited frmRelatorioCaixa: TfrmRelatorioCaixa
       Precision = 18
       Size = 2
     end
-    object qryVP1: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'VP1'
-      Origin = 'VP1'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object qryVP2: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'VP2'
-      Origin = 'VP2'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object qryVP3: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'VP3'
-      Origin = 'VP3'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object qryVP4: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'VP4'
-      Origin = 'VP4'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
     object qryDATA: TDateField
+      AutoGenerateValue = arDefault
       FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryDINHEIRO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'DINHEIRO'
+      Origin = 'DINHEIRO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qryCONVENIO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'CONVENIO'
+      Origin = 'CONVENIO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qryCART_CRED: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'CART_CRED'
+      Origin = 'CART_CRED'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qryCART_DEB: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'CART_DEB'
+      Origin = 'CART_DEB'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
   object ds: TDataSource

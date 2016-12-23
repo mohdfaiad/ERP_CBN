@@ -1339,8 +1339,9 @@ begin
       ACBrMail1.FromName            := edtNome.Text;
       ACBrMail1.IsHTML := false;
 
-      ACBrMail1.Subject  := Assunto;
-      ACBrMail1.Body.Text := Texto;
+      ACBrMail1.Subject      := Assunto;
+      ACBrMail1.Body.Text    := Texto;
+      ACBrMail1.AltBody.Text := ACBrMail1.Body.Text;
 
       for nX := 0 to stlAnexo.Count -1 do
         ACBrMail1.AddAttachment(TFileName( stlAnexo[nX] ));

@@ -487,13 +487,16 @@ begin
      Pedidos     := Repositorio.GetListaPorEspecificacao(EspecificacaoPedidosAprovadosNaoFaturados);
 
      try
-       if (Pedidos.Count <= 0) and (self.FNotaFiscal.ItensAvulsos.Count <= 0) then
+       if (not assigned(Pedidos)or(Pedidos.Count <= 0)) and (not assigned(self.FNotaFiscal.ItensAvulsos)or(self.FNotaFiscal.ItensAvulsos.Count <= 0)) then
         raise EAccessViolation.Create('');
      except
        on E: EAccessViolation do
         raise EAccessViolation.Create('Não há pedidos para faturar deste destinatario. Para faturar um pedido para esse destinatário, crie um pedido '+
                                       'ou adicione itens avulsos!');
      end;
+
+     if not assigned(Pedidos) then
+       Exit;
 
      for nX := 0 to (Pedidos.Count-1) do begin
         Pedido := (Pedidos.Items[nX] as TPedido);
@@ -1105,8 +1108,8 @@ procedure TfrmFaturamentoPedidos.edtSeguroChange(Sender: TObject);
 begin
   inherited;
 
-//  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
-//    exit;
+  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+    exit;
 
   self.FNotaFiscal.Totais.Seguro := TCurrencyEdit(Sender).Value;
 //  self.AtualizarNotaFiscal(self.FNotaFiscal);
@@ -1116,8 +1119,9 @@ procedure TfrmFaturamentoPedidos.edtDescontoChange(Sender: TObject);
 begin
   inherited;
 
-//  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
-//    exit;
+  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+    exit;
+
 
   self.FNotaFiscal.Totais.Descontos := TCurrencyEdit(Sender).Value;
 //  self.AtualizarNotaFiscal(self.FNotaFiscal);
@@ -1127,8 +1131,8 @@ procedure TfrmFaturamentoPedidos.edtOutrasDespesasChange(Sender: TObject);
 begin
   inherited;
 
-//  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
-//    exit;
+  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+    exit;
 
   self.FNotaFiscal.Totais.OutrasDespesas := TCurrencyEdit(Sender).Value;
 //  self.AtualizarNotaFiscal(self.FNotaFiscal);

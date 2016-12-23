@@ -1,9 +1,9 @@
 object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
   Left = 233
   Top = 191
-  Width = 870
-  Height = 480
   Caption = 'frmFortesNotasFiscaisVenda'
+  ClientHeight = 442
+  ClientWidth = 854
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,6 +18,8 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
     Top = 32
     Width = 794
     Height = 1123
+    Margins.LeftMargin = 5.000000000000000000
+    Margins.RightMargin = 5.000000000000000000
     Borders.Sides = sdCustom
     Borders.DrawLeft = True
     Borders.DrawTop = True
@@ -29,8 +31,6 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
     Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = []
-    Margins.LeftMargin = 5.000000000000000000
-    Margins.RightMargin = 5.000000000000000000
     object RLBand1: TRLBand
       Left = 20
       Top = 39
@@ -43,21 +43,21 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
       Borders.DrawRight = False
       Borders.DrawBottom = False
       object RLLabel1: TRLLabel
-        Left = 165
-        Top = 1
-        Width = 404
-        Height = 32
+        Left = 202
+        Top = 0
+        Width = 348
+        Height = 30
         Alignment = taCenter
         Caption = 'Relat'#243'rio de Notas Fiscais de Sa'#237'da'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -24
+        Font.Height = -21
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object RLLabel3: TRLLabel
-        Left = 368
+        Left = 352
         Top = 71
         Width = 58
         Height = 16
@@ -70,14 +70,14 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         ParentFont = False
       end
       object lbPeriodo: TRLLabel
-        Left = 432
-        Top = 71
-        Width = 48
-        Height = 16
+        Left = 413
+        Top = 72
+        Width = 46
+        Height = 15
         Caption = 'Per'#237'odo'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -13
+        Font.Height = -12
         Font.Name = 'Arial'
         Font.Style = []
         ParentFont = False
@@ -97,20 +97,20 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
       end
       object lbEmpresa: TRLLabel
         Left = 66
-        Top = 71
-        Width = 60
-        Height = 16
+        Top = 72
+        Width = 57
+        Height = 15
         Caption = 'Empresa:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -13
+        Font.Height = -12
         Font.Name = 'Arial'
         Font.Style = []
         ParentFont = False
       end
       object RLLabel19: TRLLabel
-        Left = 553
-        Top = 71
+        Left = 561
+        Top = 72
         Width = 68
         Height = 15
         Caption = 'Data / Hora:'
@@ -122,11 +122,18 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         ParentFont = False
       end
       object RLSystemInfo5: TRLSystemInfo
-        Left = 624
-        Top = 70
-        Width = 37
-        Height = 16
+        Left = 631
+        Top = 72
+        Width = 36
+        Height = 15
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
         Info = itNow
+        ParentFont = False
+        Text = ''
       end
     end
     object RLBand2: TRLBand
@@ -254,6 +261,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Height = 16
         DataField = 'NUMERO_NOTA'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText2: TRLDBText
@@ -264,6 +272,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Alignment = taCenter
         DataField = 'EMISSAO'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText3: TRLDBText
@@ -274,6 +283,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Alignment = taCenter
         DataField = 'CFOP'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText4: TRLDBText
@@ -283,6 +293,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Height = 16
         DataField = 'CLIENTE'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText5: TRLDBText
@@ -293,6 +304,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Alignment = taRightJustify
         DataField = 'TOT_NF'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText6: TRLDBText
@@ -303,6 +315,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Alignment = taRightJustify
         DataField = 'TOT_BC'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDBText7: TRLDBText
@@ -313,6 +326,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Alignment = taRightJustify
         DataField = 'TOT_ICMS'
         DataSource = ds
+        Text = ''
         Transparent = False
       end
       object RLDraw7: TRLDraw
@@ -457,6 +471,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Font.Style = [fsBold]
         Info = riSum
         ParentFont = False
+        Text = ''
       end
       object RLDBResult2: TRLDBResult
         Left = 570
@@ -473,6 +488,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Font.Style = [fsBold]
         Info = riSum
         ParentFont = False
+        Text = ''
       end
       object RLDBResult3: TRLDBResult
         Left = 643
@@ -489,6 +505,7 @@ object frmFortesNotasFiscaisVenda: TfrmFortesNotasFiscaisVenda
         Font.Style = [fsBold]
         Info = riSum
         ParentFont = False
+        Text = ''
       end
     end
   end

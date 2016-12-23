@@ -5,7 +5,8 @@ interface
 uses
   SysUtils,
   Endereco,
-  Contnrs;
+  Contnrs,
+  DadosRepresentante;
 
 type
   TPessoa = class
@@ -27,6 +28,7 @@ type
     FEndereco   :TEndereco;
     FBloqueado: String;
     FMotivoBloq: String;
+    FDadosRepresentante :TDadosRepresentante;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetRazao      (const value :String);
@@ -44,6 +46,7 @@ type
   public
     function GetIsPessoaJuridica  :Boolean;
     function GetIsPessoaFisica    :Boolean;
+    function GetDadosRepresentante: TDadosRepresentante;
     function GetEndereco          :TEndereco;
 
   public
@@ -68,9 +71,10 @@ type
     property MotivoBloq   :String    read FMotivoBloq   write FMotivoBloq;
 
   public
-    property Endereco         :TEndereco  read GetEndereco;
-    property IsPessoaJuridica :Boolean    read GetIsPessoaJuridica;
-    property IsPessoaFisica   :Boolean    read GetIsPessoaFisica;
+    property Endereco           :TEndereco  read GetEndereco;
+    property DadosRepresentante :TDadosRepresentante read GetDadosRepresentante write FDadosRepresentante;
+    property IsPessoaJuridica   :Boolean    read GetIsPessoaJuridica;
+    property IsPessoaFisica     :Boolean    read GetIsPessoaFisica;
 end;
 
 implementation
@@ -91,8 +95,26 @@ end;
 destructor TPessoa.Destroy;
 begin
    FreeAndNil(self.FEndereco);
-   
+   FreeAndNil(self.FDadosRepresentante);
   inherited;
+end;
+
+function TPessoa.GetDadosRepresentante: TDadosRepresentante;
+var
+  Repositorio   :TRepositorio;
+begin
+   if not Assigned(self.FDadosRepresentante) then begin
+     Repositorio   := nil;
+
+     try
+       Repositorio              := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
+       self.FDadosRepresentante := (Repositorio.Get(self.Codigo) as TDadosRepresentante);
+     finally
+       FreeAndNil(Repositorio);
+     end;
+   end;
+
+   result := self.FDadosRepresentante;
 end;
 
 function TPessoa.GetEndereco: TEndereco;
@@ -113,7 +135,7 @@ begin
        FreeAndNil(Repositorio);
      end;
    end;
-   
+
    result := self.FEndereco;
 end;
 

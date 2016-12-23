@@ -7622,4 +7622,82 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 178
     WordWrap = False
   end
+  object versao179: TMemo
+    Left = 345
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE PROCEDURE TOTAL_MOEDA_PERIODO ('
+      '    tipo_moeda integer,'
+      '    dt_i timestamp,'
+      '    dt_f timestamp)'
+      'returns ('
+      '    valor numeric(15,2))'
+      'as'
+      'begin   select sum(mov.valor_pago) from movimentos mov'
+      
+        '         inner join pedidos ped on ped.codigo = mov.codigo_pedid' +
+        'o'
+      
+        '        where mov.tipo_moeda = :tipo_moeda and mov.data between ' +
+        ':dt_i and :dt_f'
+      ''
+      '          into'
+      '        :valor;'
+      'suspend;'
+      'end')
+    TabOrder = 179
+    WordWrap = False
+  end
+  object versao180: TMemo
+    Left = 369
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PARCELAS'
+      'ADD CODIGO_PEDIDO INTEGER'
+      '^'
+      'alter table PARCELAS'
+      'add constraint FK_PARCELAS_2'
+      'foreign key (CODIGO_PEDIDO)'
+      'references PEDIDOS(CODIGO)'
+      '^')
+    TabOrder = 180
+    WordWrap = False
+  end
+  object versao181: TMemo
+    Left = 393
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_DADOS_REPRESENTANTE_ID'
+      '^'
+      'CREATE TABLE DADOS_REPRESENTANTE ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_REPRESENTANTE INTEGER,'
+      '    PERCENTAGEM_COMISSAO NUMERIC(15,2))'
+      '^'
+      'alter table DADOS_REPRESENTANTE'
+      'add constraint PK_DADOS_REPRESENTANTE'
+      'primary key (CODIGO)'
+      '^'
+      'CREATE TRIGGER DADOS_REPRESENTANTE_BI FOR DADOS_REPRESENTANTE'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL)or(NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_DADOS_REPRESENTANTE_ID,1);'
+      'END'
+      '^'
+      'alter table DADOS_REPRESENTANTE'
+      'add constraint FK_DADOS_REPRESENTANTE_1'
+      'foreign key (CODIGO_REPRESENTANTE)'
+      'references PESSOAS(CODIGO)'
+      '^')
+    TabOrder = 181
+    WordWrap = False
+  end
 end

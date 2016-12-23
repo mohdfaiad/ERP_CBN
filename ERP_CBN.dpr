@@ -429,7 +429,12 @@ uses
   ClassificacaoFiscal in 'src\dominio\entidade\ClassificacaoFiscal.pas',
   RepositorioClassificacaoFiscal in 'src\infraestrutura\persistencia\RepositorioClassificacaoFiscal.pas',
   frameFone in 'src\formularios\frameFone.pas' {Fone: TFrame},
-  uProtocoloEntrega in 'src\formularios\uProtocoloEntrega.pas' {frmProtocoloEntrega};
+  uProtocoloEntrega in 'src\formularios\uProtocoloEntrega.pas' {frmProtocoloEntrega},
+  uParcelamento in 'src\formularios\uParcelamento.pas' {frmParcelamento},
+  EspecificacaoParcelaPorCodigoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoParcelaPorCodigoPedido.pas',
+  uFechaComissaoECommerce in 'src\formularios\uFechaComissaoECommerce.pas' {frmFechaComissaoECommerce},
+  DadosRepresentante in 'src\dominio\entidade\DadosRepresentante.pas',
+  RepositorioDadosRepresentante in 'src\infraestrutura\persistencia\RepositorioDadosRepresentante.pas';
 
 {$R *.res}
 {$R win7810.res}
@@ -446,6 +451,8 @@ begin
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrmProtocoloEntrega, frmProtocoloEntrega);
+  Application.CreateForm(TfrmParcelamento, frmParcelamento);
+  Application.CreateForm(TfrmFechaComissaoECommerce, frmFechaComissaoECommerce);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

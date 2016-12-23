@@ -496,7 +496,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label2: TLabel
-        Left = 384
+        Left = 360
         Top = 17
         Width = 36
         Height = 13
@@ -509,7 +509,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label3: TLabel
-        Left = 488
+        Left = 445
         Top = 17
         Width = 59
         Height = 13
@@ -522,7 +522,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label4: TLabel
-        Left = 624
+        Left = 570
         Top = 17
         Width = 35
         Height = 13
@@ -535,7 +535,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 744
+        Left = 674
         Top = 17
         Width = 73
         Height = 13
@@ -587,7 +587,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label19: TLabel
-        Left = 475
+        Left = 432
         Top = 7
         Width = 11
         Height = 32
@@ -599,32 +599,45 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label25: TLabel
+        Left = 765
+        Top = 17
+        Width = 63
+        Height = 13
+        Caption = '% Comiss'#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 3355443
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtRazao: TEdit
         Left = 24
         Top = 33
-        Width = 339
+        Width = 321
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
       end
       object comPessoa: TComboBox
-        Left = 384
+        Left = 360
         Top = 33
-        Width = 83
+        Width = 71
         Height = 21
         Style = csDropDownList
-        ItemIndex = 0
+        ItemIndex = 1
         TabOrder = 1
-        Text = 'F'#205'SICA'
+        Text = 'JUR'#205'DICA'
         OnExit = comPessoaExit
         Items.Strings = (
           'F'#205'SICA'
           'JUR'#205'DICA')
       end
       object edtCpf: TMaskEdit
-        Left = 488
+        Left = 447
         Top = 33
-        Width = 116
+        Width = 106
         Height = 21
         EditMask = '999\.999\.999\-99;0; '
         MaxLength = 14
@@ -632,18 +645,18 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Text = ''
       end
       object edtRg: TMaskEdit
-        Left = 624
+        Left = 570
         Top = 33
-        Width = 100
+        Width = 89
         Height = 21
         MaxLength = 12
         TabOrder = 3
         Text = ''
       end
       object edtDtCad: TMaskEdit
-        Left = 744
+        Left = 674
         Top = 33
-        Width = 88
+        Width = 76
         Height = 21
         Enabled = False
         EditMask = '!99/99/9999;1; '
@@ -663,7 +676,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 6
         object Label6: TLabel
           Left = 16
           Top = 24
@@ -950,9 +963,48 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
+        object Label12: TLabel
+          Left = 16
+          Top = 27
+          Width = 35
+          Height = 13
+          Caption = 'Fone 1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3355443
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label13: TLabel
+          Left = 143
+          Top = 27
+          Width = 35
+          Height = 13
+          Caption = 'Fone 2'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3355443
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label14: TLabel
+          Left = 266
+          Top = 27
+          Width = 18
+          Height = 13
+          Caption = 'Fax'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3355443
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
         object Label24: TLabel
-          Left = 12
+          Left = 4
           Top = 17
           Width = 11
           Height = 32
@@ -964,73 +1016,53 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           Font.Style = [fsBold]
           ParentFont = False
         end
-        inline Fone1: TFone
-          Left = 22
-          Top = 24
-          Width = 132
-          Height = 47
+        object edtFone1: TMaskEdit
+          Left = 15
+          Top = 43
+          Width = 111
+          Height = 21
+          EditMask = '!\(99\)9999-9999;1; '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          MaxLength = 13
+          ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 22
-          ExplicitTop = 24
-          inherited Label12: TLabel
-            Width = 35
-            Caption = 'Fone 1'
-            ExplicitWidth = 35
-          end
-          inherited edtFone: TMaskEdit
-            Width = 99
-            EditMask = '!\(99\)99999\-9999;1; '
-            Font.Color = clBlack
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-            ExplicitWidth = 99
-          end
+          Text = '(  )    -    '
         end
-        inline Fone2: TFone
-          Left = 139
-          Top = 24
-          Width = 122
-          Height = 47
+        object edtFone2: TMaskEdit
+          Left = 142
+          Top = 43
+          Width = 107
+          Height = 21
+          EditMask = '!\(99\)9999-9999;1; '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          MaxLength = 13
+          ParentFont = False
           TabOrder = 1
-          ExplicitLeft = 139
-          ExplicitTop = 24
-          ExplicitWidth = 122
-          inherited Label12: TLabel
-            Width = 35
-            Caption = 'Fone 2'
-            ExplicitWidth = 35
-          end
-          inherited edtFone: TMaskEdit
-            Width = 99
-            Font.Color = clBlack
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-            ExplicitWidth = 99
-          end
+          Text = '(  )    -    '
         end
-        inline FoneFax: TFone
-          Left = 253
-          Top = 24
-          Width = 132
-          Height = 47
+        object edtFax: TMaskEdit
+          Left = 265
+          Top = 43
+          Width = 107
+          Height = 21
+          EditMask = '!\(99\)9999-9999;1; '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          MaxLength = 13
+          ParentFont = False
           TabOrder = 2
-          ExplicitLeft = 253
-          ExplicitTop = 24
-          inherited Label12: TLabel
-            Width = 18
-            Caption = 'Fax'
-            ExplicitWidth = 18
-          end
-          inherited edtFone: TMaskEdit
-            Width = 99
-            Font.Color = clBlack
-            Font.Name = 'Segoe UI'
-            Font.Style = [fsBold]
-            ParentFont = False
-            ExplicitWidth = 99
-          end
+          Text = '(  )    -    '
         end
       end
       object edtCodigo: TEdit
@@ -1044,7 +1076,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        TabOrder = 9
+        TabOrder = 10
         Text = '0'
         Visible = False
       end
@@ -1060,7 +1092,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 8
         object memObs: TMemo
           Left = 8
           Top = 18
@@ -1078,9 +1110,9 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         end
       end
       object GroupBox7: TGroupBox
-        Left = 416
+        Left = 420
         Top = 231
-        Width = 417
+        Width = 413
         Height = 210
         Caption = ' E-mails '
         Font.Charset = DEFAULT_CHARSET
@@ -1089,9 +1121,9 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 8
+        TabOrder = 9
         object Label15: TLabel
-          Left = 17
+          Left = 14
           Top = 19
           Width = 175
           Height = 13
@@ -1104,7 +1136,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           ParentFont = False
         end
         object Label16: TLabel
-          Left = 17
+          Left = 14
           Top = 187
           Width = 241
           Height = 13
@@ -1117,7 +1149,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           ParentFont = False
         end
         object Label17: TLabel
-          Left = 143
+          Left = 140
           Top = 187
           Width = 4
           Height = 13
@@ -1131,7 +1163,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           ParentFont = False
         end
         object DBGrid1: TDBGrid
-          Left = 16
+          Left = 13
           Top = 66
           Width = 389
           Height = 119
@@ -1156,7 +1188,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
             end>
         end
         object edtEmail: TDBEdit
-          Left = 16
+          Left = 13
           Top = 34
           Width = 388
           Height = 21
@@ -1175,20 +1207,35 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
           OnExit = edtEmailExit
         end
       end
+      object edtComissao: TCurrencyEdit
+        Left = 766
+        Top = 33
+        Width = 67
+        Height = 21
+        Color = clWhite
+        Ctl3D = True
+        DisplayFormat = '% ,0.00; -,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 5
+      end
     end
   end
   object ds: TDataSource
     DataSet = cds
-    Left = 700
-    Top = 8
+    Left = 588
   end
   object cds: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsp'
     AfterScroll = cdsAfterScroll
-    Left = 740
-    Top = 8
+    Left = 628
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -1279,11 +1326,25 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       FieldName = 'EMAIL'
       Size = 250
     end
+    object cdsPERCENTAGEM_COMISSAO: TBCDField
+      FieldName = 'PERCENTAGEM_COMISSAO'
+      Size = 2
+    end
   end
   object dsp: TDataSetProvider
-    DataSet = qry
-    Left = 780
-    Top = 8
+    DataSet = ZQuery1
+    Left = 668
+  end
+  object ZQuery1: TZQuery
+    SQL.Strings = (
+      'SELECT p.*, en.*, dr.percentagem_comissao FROM pessoas p'
+      ' left join enderecos en on en.codpessoa = p.codigo'
+      
+        ' left join dados_representante dr on dr.codigo_representante = p' +
+        '.codigo'
+      ' where p.tipo = '#39'R'#39)
+    Params = <>
+    Left = 552
   end
   object dsEmails: TDataSource
     DataSet = cdsEmails
@@ -1299,13 +1360,5 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       FieldName = 'EMAIL'
       Size = 60
     end
-  end
-  object qry: TFDQuery
-    SQL.Strings = (
-      'SELECT * FROM pessoas p                           '
-      ' left join enderecos en on en.codpessoa = p.codigo'
-      ' where p.tipo = '#39'R'#39'                          ')
-    Left = 816
-    Top = 8
   end
 end

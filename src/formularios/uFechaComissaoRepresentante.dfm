@@ -9,7 +9,6 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
   OldCreateOrder = True
   Position = poDefault
   OnShow = FormShow
-  ExplicitTop = -24
   ExplicitWidth = 1119
   ExplicitHeight = 711
   PixelsPerInch = 96
@@ -1099,8 +1098,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         TabOrder = 4
       end
       object RLReport1: TRLReport
-        Left = 518
-        Top = 515
+        Left = 135
+        Top = 80
         Width = 794
         Height = 1123
         Borders.Sides = sdCustom

@@ -5,10 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, uPadrao,
   frameBuscaCidade, Provider, DB, DBClient, Grids, DBGrids, DBGridCBN, StdCtrls, Buttons, ComCtrls,
-  ExtCtrls, Mask, Pessoa, Repositorio, StrUtils, Endereco,
-  DBCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
-  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, frameFone;
+  ExtCtrls, Mask, Pessoa, Repositorio, StrUtils, ZAbstractRODataset, ZAbstractDataset, ZDataset, Endereco,
+  DBCtrls, RxToolEdit, RxCurrEdit;
 
 type
   TfrmCadastroRepresentante = class(TfrmPadrao)
@@ -63,6 +61,12 @@ type
     edtCep: TMaskEdit;
     edtComplemento: TEdit;
     GroupBox2: TGroupBox;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    edtFone1: TMaskEdit;
+    edtFone2: TMaskEdit;
+    edtFax: TMaskEdit;
     edtCodigo: TEdit;
     btnIncluir: TSpeedButton;
     btnAlterar: TSpeedButton;
@@ -71,6 +75,7 @@ type
     btnCancelar: TBitBtn;
     btnSalvar: TBitBtn;
     Shape2: TShape;
+    ZQuery1: TZQuery;
     cdsRAZAO: TStringField;
     cdsNUMERO: TStringField;
     GroupBox8: TGroupBox;
@@ -94,10 +99,9 @@ type
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
-    qry: TFDQuery;
-    Fone1: TFone;
-    Fone2: TFone;
-    FoneFax: TFone;
+    edtComissao: TCurrencyEdit;
+    Label25: TLabel;
+    cdsPERCENTAGEM_COMISSAO: TBCDField;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -141,7 +145,7 @@ var
 implementation
 
 uses
-  FabricaRepositorio, Math;
+  FabricaRepositorio, Math, DadosRepresentante;
 
 {$R *.dfm}
 
@@ -152,8 +156,9 @@ begin
   cdsEmails.CreateDataSet;
   
   cds.Close;
-  dsp.DataSet := FDM.GetConsulta('SELECT * FROM pessoas p                           '+
+  dsp.DataSet := FDM.GetConsulta('SELECT p.*, en.*, dr.percentagem_comissao FROM pessoas p                 '+
                                  ' left join enderecos en on en.codpessoa = p.codigo'+
+                                 ' left join dados_representante dr on dr.codigo_representante = p.codigo '+
                                  ' where p.tipo = ''R''                             ');
   cds.Open;
 
@@ -193,18 +198,18 @@ begin
   edtRg.text	          := cdsRG_IE.AsString;
   edtDtCad.text         := dateToStr(cdsDTCADASTRO.AsDateTime);
   edtLogradouro.text    := cdsLOGRADOURO.AsString;
-  edtNumero.text	      := cdsNumero.AsString;
+  edtNumero.text	      := intToStr(cdsNumero.AsInteger);
   edtBairro.text        := cdsBAIRRO.AsString;
   Cidade.codCid         := cdsCODCIDADE.AsString;
   edtCep.text 	        := cdsCEP.AsString;
   edtPais.text 	        := cdsPais.AsString;
   edtComplemento.text   := cdsCOMPLEMENTO.AsString;
-  Fone1.Fone            := cdsFONE1.AsString;
-  Fone2.Fone            := cdsFone2.AsString;
-  FoneFax.Fone 	        := cdsFAX.AsString;
+  edtFone1.text         := cdsFONE1.AsString;
+  edtFone2.text         := cdsFone2.AsString;
+  edtFax.text 	        := cdsFAX.AsString;
   carregaEmails(cdsEmail.AsString);
   memObs.text 	        := cdsObservacao.AsString;
-
+  edtComissao.Value     := cdsPERCENTAGEM_COMISSAO.AsFloat;
 end;
 
 procedure TfrmCadastroRepresentante.TabSheet2Enter(Sender: TObject);
@@ -252,11 +257,12 @@ begin
   edtCep.Clear;
   edtPais.Text := 'BRASIL';
   edtComplemento.Clear;
-  Fone1.limpa;
-  Fone2.limpa;
-  FoneFax.limpa;
+  edtFone1.Clear;
+  edtFone2.Clear;
+  edtFax.Clear;
   edtEmail.Clear;
   memObs.Clear;
+  edtComissao.Clear;
   cdsEmails.EmptyDataSet;
 end;
 
@@ -315,54 +321,68 @@ begin
     cidade.edtCodCid.SetFocus;
     result := false;
   end
-  else if (StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
-          (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
-          (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-') then begin
+  else if (trim(edtFone1.Text) = '(  )    -') and
+          (trim(edtFone2.Text) = '(  )    -') and
+          (trim(edtFax.Text)   = '(  )    -') then begin
     avisar('Favor informar ao menos um telefone para contato');
-    Fone1.edtFone.SetFocus;
+    edtFone1.SetFocus;
     result := false;
   end;
 end;
 
 procedure TfrmCadastroRepresentante.salvar;
+var repositorio :TRepositorio;
 begin
-  if self.Tag = 2 then
-    Representante.Codigo := cdsCODIGO.asInteger;
+ try
+   if self.Tag = 2 then
+      Representante.Codigo := cdsCODIGO.asInteger;
 
- Representante.Razao                := edtRazao.text;
- Representante.Pessoa               := copy(comPessoa.text,1,1);
- Representante.CPF_CNPJ             := edtCpf.text;
- Representante.RG_IE                := edtRg.text;
- Representante.DtCadastro           := strToDate(edtDtCad.text);
- Representante.Fone1                := Fone1.edtFone.text;
- Representante.Fone2                := Fone2.edtFone.text;
- Representante.Fax                  := FoneFax.edtFone.text;
- Representante.Email                := concatenaEmails;
- Representante.Observacao           := memObs.text;
- Representante.Tipo                 := 'R';
+   Representante.Razao                := edtRazao.text;
+   Representante.Pessoa               := copy(comPessoa.text,1,1);
+   Representante.CPF_CNPJ             := edtCpf.text;
+   Representante.RG_IE                := edtRg.text;
+   Representante.DtCadastro           := strToDate(edtDtCad.text);
+   Representante.Fone1                := edtFone1.text;
+   Representante.Fone2                := edtFone2.text;
+   Representante.Fax                  := edtFax.text;
+   Representante.Email                := concatenaEmails;
+   Representante.Observacao           := memObs.text;
+   Representante.Tipo                 := 'R';
 
- Rep.Salvar(Representante);
+   if edtComissao.Value > 0 then
+    begin
+       repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
+       if not assigned(Representante.DadosRepresentante) then
+         Representante.DadosRepresentante := TDadosRepresentante.Create;
 
- if self.Tag = 2 then
-    Endereco.Codigo := cdsCODIGO_1.asInteger;
+       Representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
+    end;
 
- Endereco.CodPessoa   := Representante.Codigo;
- Endereco.Logradouro  := edtLogradouro.text;
- Endereco.Numero      := edtNumero.text;
- Endereco.Bairro      := edtBairro.text;
- Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
- Endereco.CEP         := edtCep.text;
- Endereco.Pais        := edtPais.text;
- Endereco.Complemento := edtComplemento.text;
+   Rep.Salvar(Representante);
 
- RepEnd.Salvar(Endereco);
+   if self.Tag = 2 then
+      Endereco.Codigo := cdsCODIGO_1.asInteger;
 
- btnCancelar.Click;
+   Endereco.CodPessoa   := Representante.Codigo;
+   Endereco.Logradouro  := edtLogradouro.text;
+   Endereco.Numero      := edtNumero.text;
+   Endereco.Bairro      := edtBairro.text;
+   Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
+   Endereco.CEP         := edtCep.text;
+   Endereco.Pais        := edtPais.text;
+   Endereco.Complemento := edtComplemento.text;
 
- avisar('Operação realizada com sucesso!');
+   RepEnd.Salvar(Endereco);
 
- cds.Close;
- cds.Open;
+   btnCancelar.Click;
+
+   avisar('Operação realizada com sucesso!');
+
+   cds.Close;
+   cds.Open;
+ finally
+   FreeAndNil(repositorio);
+ end;
 end;
 
 procedure TfrmCadastroRepresentante.comPessoaExit(Sender: TObject);

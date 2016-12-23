@@ -1026,7 +1026,7 @@ end;
 
 procedure TNotaFiscal.SomarPedidoAosTotais(Pedido: TPedido);
 begin
-//   self.FTotais.SomarFreteAoTotal(Pedido.Frete);
+  self.FTotais.SomarFreteAoTotal(Pedido.valor_frete);
 //   self.FTotais.SomarSeguroAoTotal(Pedido.Seguro);
   self.Totais.SomarDescontoAoTotal(Pedido.total_desconto);
   self.Totais.SomarOutrasDespesasAoTotal(Pedido.Acrescimo);
@@ -1038,7 +1038,7 @@ end;
 
 procedure TNotaFiscal.SubtrairPedidoDosTotais(Pedido: TPedido);
 begin
-//   self.FTotais.SubtrairFreteDoTotal(Pedido.Frete);
+  self.FTotais.SubtrairFreteDoTotal(Pedido.valor_frete);
 //   self.FTotais.SubtrairSeguroDoTotal(Pedido.Seguro);
   self.Totais.SubtrairDescontoDoTotal(Pedido.total_desconto);
   self.Totais.SubtrairOutrasDespesasDoTotal(Pedido.Acrescimo);
@@ -1342,40 +1342,81 @@ end;
 procedure TNotaFiscal.AlterarPercentualDescontoItens;
 var
   nX :Integer;
+  total :Real;
+  diferenca :Real;
 begin
+  total      := 0;
+  diferenca  := 0;
    for nX := 0 to (self.Itens.Count-1) do begin
       TItemNotaFiscal(self.Itens.Items[nX]).ValorDesconto := roundTo((self.GetPercentualEmRelacaoAoTotalProdutos(TItemNotaFiscal(self.Itens.Items[nX]).ValorBruto) * self.Totais.Descontos)/100, -2);
-      //TItemNotaFiscal(self.Itens.Items[nX]).SetPercentualDesconto(self.GetPercentualEmRelacaoAoTotalProdutos(TItemNotaFiscal(self.Itens.Items[nX]).ValorBruto));
+      total := total + TItemNotaFiscal(self.Itens.Items[nX]).ValorDesconto;
+
+      if (nX = (self.Itens.Count-1)) then
+        diferenca := Totais.Descontos - total;
+
+      TItemNotaFiscal(self.Itens.Items[nX]).ValorDesconto := TItemNotaFiscal(self.Itens.Items[nX]).ValorDesconto + diferenca;
    end;
+
+   total:=total;
 end;
 
 procedure TNotaFiscal.AlterarPercentualFreteItens;
 var
   nX :Integer;
+  total :Real;
+  diferenca :Real;
 begin
+  total      := 0;
+  diferenca  := 0;
    for nX := 0 to (self.Itens.Count-1) do begin
       TItemNotaFiscal(self.Itens.Items[nX]).ValorFrete := roundTo((self.GetPercentualEmRelacaoAoTotalProdutos(TItemNotaFiscal(self.Itens.Items[nX]).ValorBruto) * self.Totais.Frete)/100, -2);
 //      TItemNotaFiscal(self.Itens.Items[nX]).SetPercentualFrete(self.GetPercentualEmRelacaoAoTotalProdutos(self.Totais.Frete));
+      total := total + TItemNotaFiscal(self.Itens.Items[nX]).ValorFrete;
+
+      if (nX = (self.Itens.Count-1)) then
+        diferenca := Totais.Frete - total;
+
+      TItemNotaFiscal(self.Itens.Items[nX]).ValorFrete := TItemNotaFiscal(self.Itens.Items[nX]).ValorFrete + diferenca;
    end;
 end;
 
 procedure TNotaFiscal.AlterarPercentualOutrasDespesasItens;
 var
   nX :Integer;
+  total :Real;
+  diferenca :Real;
 begin
+  total      := 0;
+  diferenca  := 0;
    for nX := 0 to (self.Itens.Count-1) do begin
       TItemNotaFiscal(self.Itens.Items[nX]).ValorOutrasDespesas := roundTo((self.GetPercentualEmRelacaoAoTotalProdutos(TItemNotaFiscal(self.Itens.Items[nX]).ValorBruto) * self.Totais.OutrasDespesas)/100, -2);
    //      TItemNotaFiscal(self.Itens.Items[nX]).SetPercentualOutrasDespesas(self.GetPercentualEmRelacaoAoTotalProdutos(self.Totais.OutrasDespesas));
+      total := total + TItemNotaFiscal(self.Itens.Items[nX]).ValorOutrasDespesas;
+
+      if (nX = (self.Itens.Count-1)) then
+        diferenca := Totais.OutrasDespesas - total;
+
+      TItemNotaFiscal(self.Itens.Items[nX]).ValorOutrasDespesas := TItemNotaFiscal(self.Itens.Items[nX]).ValorOutrasDespesas + diferenca;
    end;
 end;
 
 procedure TNotaFiscal.AlterarPercentualSeguroItens;
 var
   nX :Integer;
+  total :Real;
+  diferenca :Real;
 begin
+  total      := 0;
+  diferenca  := 0;
    for nX := 0 to (self.Itens.Count-1) do begin
       TItemNotaFiscal(self.Itens.Items[nX]).ValorSeguro := roundTo((self.GetPercentualEmRelacaoAoTotalProdutos(TItemNotaFiscal(self.Itens.Items[nX]).ValorBruto) * self.Totais.Seguro)/100, -2);
     //  TItemNotaFiscal(self.Itens.Items[nX]).SetPercentualSeguro(self.GetPercentualEmRelacaoAoTotalProdutos(self.Totais.Seguro));
+      total := total + TItemNotaFiscal(self.Itens.Items[nX]).ValorSeguro;
+
+      if (nX = (self.Itens.Count-1)) then
+        diferenca := Totais.Seguro - total;
+
+      TItemNotaFiscal(self.Itens.Items[nX]).ValorSeguro := TItemNotaFiscal(self.Itens.Items[nX]).ValorSeguro + diferenca;
    end;
 end;
 

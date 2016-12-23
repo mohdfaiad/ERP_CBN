@@ -35,6 +35,7 @@ type
     FUF: String;
     FCidade: String;
     FCnpj: String;
+    FPercComissaoRep :Real;
 
     procedure buscaPessoa(codigo :String);
     procedure Setcod_pessoa(const Value: String);
@@ -54,6 +55,7 @@ type
     property Cidade       :String read FCidade;
     property UF           :String read FUF;
     property cnpj         :String read FCnpj;
+    property percComissaoRep :Real read FPercComissaoRep;
 
   end;
 
@@ -84,11 +86,12 @@ begin
    if pessoa = nil then
      pessoa := TObjetoGenerico.Create;
 
-   pessoa.SQL := 'Select first 1 p.codigo, p.razao, p.email, cr.cod_representante, rep.razao representante, '+
+   pessoa.SQL := 'Select first 1 p.codigo, p.razao, p.email, cr.cod_representante, rep.razao representante, dr.percentagem_comissao, '+
                  '               p.bloqueado, cid.nome cidade, p.cpf_cnpj ,est.sigla uf, p.motivo_bloq '+FCamposAdicionais+' from pessoas p '+
                   FTabelaAdicional +
                  ' left join cliente_representante cr on cr.cod_cliente = p.codigo      '+
                  ' left join pessoas rep on rep.codigo = cr.cod_representante           '+
+                 ' left join dados_representante dr on dr.codigo_representante = rep.codigo '+
                  ' left join enderecos ed on ed.codpessoa = p.codigo                  '+
                  ' left join cidades cid on cid.codibge = ed.codcidade                 '+
                  ' left join estados est on est.codigo = cid.codest                     '+
@@ -115,6 +118,7 @@ begin
      FCidade        := pessoa.getCampo('cidade').AsString;
      FUF            := pessoa.getCampo('uf').AsString;
      FCnpj          := pessoa.getCampo('cpf_cnpj').AsString;
+     FPercComissaoRep := pessoa.getCampo('percentagem_comissao').AsFloat;
 
      if FTipoPessoa = tpCliente then begin
        Ftab_preco  := pessoa.getCampo('codtabelapreco').AsInteger;

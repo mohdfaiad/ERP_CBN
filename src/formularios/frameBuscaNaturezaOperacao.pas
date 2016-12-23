@@ -42,7 +42,7 @@ type
   public
     property NaturezaOperacao :TNaturezaOperacao read FNaturezaOperacao write SetNaturezaOperacao;
     property AbreTelaPesquisa :Boolean           read FAbreTelaPesquisa write SetAbreTelaPesquisa;
-    property Especificacao    :TEspecificacao    read FEspecificacao write SetEspecificacao;
+    property Especificacao    :TEspecificacao    read FEspecificacao    write SetEspecificacao;
   end;
 
 implementation
