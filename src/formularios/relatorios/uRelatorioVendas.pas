@@ -685,6 +685,7 @@ var arq: TextFile;
     caminho :String;
     Destinatario :TPessoa;
     repositorio  :TRepositorio;
+    erro :Boolean;
 begin
   cds.Filtered := false;
   cds.Filter   := 'TAG = ''S''';
@@ -697,22 +698,22 @@ begin
     exit;
   end;
 
-   SelectDirectory('Selecione a pasta destino','', caminho);
+  SelectDirectory('Selecione a pasta destino','', caminho);
+  if caminho = '' then begin
+    avisar('Operação abortada');
+    exit;
+  end;
 
  try
-   if caminho = '' then begin
-     avisar('Operação abortada');
-     exit;
-   end;
-
    repositorio := nil;
 
- try
    AssignFile(arq, caminho+'\Destinatario.txt');
    Rewrite(arq);
    Writeln(arq, '1SIGEP DESTINATARIO NACIONAL');
 
+   try
    repositorio := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
+   erro        := false;
 
    cds.First;
    while not cds.Eof do begin
@@ -744,13 +745,21 @@ begin
    end;
 
    Writeln(arq, '9'+TStringUtilitario.CaracterAEsquerda('0', intToStr(cds.RecordCount), 6));
+  except
+    on e : Exception do
+    begin
+      avisar('Erro ao gerar arquivo. '+#13#10+e.Message);
+      erro := true;
+    end;
+  end;
+
    CloseFile(arq);
 
-   avisar('Arquivo gerado com sucesso!');
- except
-   on e : Exception do
-     avisar('Erro ao gerar arquivo. '+#13#10+e.Message)
- end;
+   chkSelecionar.OnClick := nil;
+   chkSelecionar.Checked := false;
+   chkSelecionar.OnClick := chkSelecionarClick;
+   if not erro then
+     avisar('Arquivo gerado com sucesso!');
 
  finally
    cds.Filtered := false;

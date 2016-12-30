@@ -683,6 +683,11 @@ begin
   else
     nfe.NFe.Ide.tpNF := tnEntrada;
 
+  if not assigned(Nf.Destinatario.Endereco) then
+     raise Exception.Create('Endereço do destinatário não cadastrado')
+  else if not assigned(Nf.Destinatario.Endereco.Cidade) then
+     raise Exception.Create('Cidade do destinatário não cadastrada');
+
   case AnsiIndexStr(UpperCase(Nf.Destinatario.Endereco.Cidade.estado.sigla), [NF.Emitente.Endereco.Cidade.estado.sigla, 'XX']) of
     0 : nfe.NFe.Ide.idDest := doInterna;
     1 : nfe.NFe.Ide.idDest := doExterior;

@@ -175,6 +175,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 71
         Width = 154
         Height = 17
+        TabStop = False
         Caption = 'Todos os representantes'
         TabOrder = 1
         OnClick = chkTodosClick
@@ -184,6 +185,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 71
         Width = 71
         Height = 17
+        TabStop = False
         Caption = 'Internet'
         TabOrder = 2
         OnClick = rgTipoDataClick
@@ -193,6 +195,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 70
         Width = 90
         Height = 17
+        TabStop = False
         Caption = 'Funcion'#225'rios'
         TabOrder = 3
         OnClick = rgTipoDataClick
@@ -325,7 +328,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Height = 136
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 578
     DesignSize = (
       1187
       136)
@@ -1329,7 +1331,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 2
-    ExplicitHeight = 483
     object Splitter5: TSplitter
       Left = 1
       Top = 60
@@ -3181,7 +3182,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
