@@ -102,6 +102,9 @@ type
     edtComissao: TCurrencyEdit;
     Label25: TLabel;
     cdsPERCENTAGEM_COMISSAO: TBCDField;
+    Label26: TLabel;
+    cmbEcommerce: TComboBox;
+    cdsREP_ECOMMERCE: TStringField;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -156,10 +159,10 @@ begin
   cdsEmails.CreateDataSet;
   
   cds.Close;
-  dsp.DataSet := FDM.GetConsulta('SELECT p.*, en.*, dr.percentagem_comissao FROM pessoas p                 '+
-                                 ' left join enderecos en on en.codpessoa = p.codigo'+
-                                 ' left join dados_representante dr on dr.codigo_representante = p.codigo '+
-                                 ' where p.tipo = ''R''                             ');
+  dsp.DataSet := FDM.GetConsulta('SELECT p.*, en.*, dr.REP_ECOMMERCE, dr.percentagem_comissao FROM pessoas p  '+
+                                 ' left join enderecos en on en.codpessoa = p.codigo                           '+
+                                 ' left join dados_representante dr on dr.codigo_representante = p.codigo      '+
+                                 ' where p.tipo = ''R''                                                        ');
   cds.Open;
 
   gridRepresentantes.SetFocus;
@@ -210,6 +213,7 @@ begin
   carregaEmails(cdsEmail.AsString);
   memObs.text 	        := cdsObservacao.AsString;
   edtComissao.Value     := cdsPERCENTAGEM_COMISSAO.AsFloat;
+  cmbEcommerce.ItemIndex:= IfThen(cdsREP_ECOMMERCE.AsString = 'S',0,1);
 end;
 
 procedure TfrmCadastroRepresentante.TabSheet2Enter(Sender: TObject);
@@ -264,6 +268,7 @@ begin
   memObs.Clear;
   edtComissao.Clear;
   cdsEmails.EmptyDataSet;
+  cmbEcommerce.ItemIndex := -1;
 end;
 
 procedure TfrmCadastroRepresentante.btnCancelarClick(Sender: TObject);
@@ -349,14 +354,12 @@ begin
    Representante.Observacao           := memObs.text;
    Representante.Tipo                 := 'R';
 
-   if edtComissao.Value > 0 then
-    begin
-       repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
-       if not assigned(Representante.DadosRepresentante) then
-         Representante.DadosRepresentante := TDadosRepresentante.Create;
+   repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
+   if not assigned(Representante.DadosRepresentante) then
+     Representante.DadosRepresentante := TDadosRepresentante.Create;
 
-       Representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
-    end;
+   Representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
+   Representante.DadosRepresentante.rep_ecommerce        := copy(cmbEcommerce.Items[cmbEcommerce.ItemIndex],1,1);
 
    Rep.Salvar(Representante);
 

@@ -548,7 +548,7 @@ begin
                        'inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )                                                              '+
                        'left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)                                                              '+
                        'where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + E + condicaoFaturado                         +
-                       'group by p.referencia, c.desc_producao, c.referencia, c.cor, pf.codigo                                                         '+
+                       'group by p.referencia, c.desc_producao, c.referencia, c.cor '+IfThen(BuscaPedido1.rgTipoBusca.ItemIndex = 2,', pf.codigo ', '')+
                        'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'p.referencia, cor', 'cor, p.referencia') ;
 
   if not cbPeriodo.Checked then begin
@@ -694,6 +694,9 @@ begin
   RLDBText11.Visible := true;
   RLDBText12.Visible := true;
   RLDBText13.Visible := true;
+  RLDBText36.Visible := true;
+  RLDBText37.Visible := true;
+  RLDBText38.Visible := true;
 
   if qryItensQTD_RN.AsInteger    <= 0  then  RLDBText3.Visible := false;
   if qryItensQTD_P.AsInteger     <= 0  then  RLDBText4.Visible := false;
@@ -705,6 +708,9 @@ begin
   if qryItensQTD_4.AsInteger     <= 0  then  RLDBText10.Visible := false;
   if qryItensQTD_6.AsInteger     <= 0  then  RLDBText11.Visible := false;
   if qryItensQTD_8.AsInteger     <= 0  then  RLDBText12.Visible := false;
+  if qryItensQTD_10.AsInteger    <= 0  then  RLDBText36.Visible := false;
+  if qryItensQTD_12.AsInteger    <= 0  then  RLDBText37.Visible := false;
+  if qryItensQTD_14.AsInteger    <= 0  then  RLDBText38.Visible := false;
   if qryItensQTD_UNICA.AsInteger <= 0  then  RLDBText13.Visible := false;
 end;
 

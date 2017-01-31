@@ -8,7 +8,7 @@ uses
   frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math,
   ServicoVerificadorSistemaEmManutencao, uImpressaoEtiquetasCoppel, uEntradaNota,
   IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts,
-  RLReport, System.ImageList;
+  RLReport, System.ImageList, System.StrUtils;
 
 type
   TfrmInicial = class(TfrmPadrao)

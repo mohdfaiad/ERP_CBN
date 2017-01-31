@@ -3182,7 +3182,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060009005C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3517,10 +3517,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       ReadOnly = True
       DisplayFormat = ' ,0.00; -,0.00'
       Precision = 18
+      Size = 2
     end
-    object cdsTOTAL_BRUTO: TFloatField
+    object cdsTOTAL_BRUTO: TBCDField
       FieldName = 'TOTAL_BRUTO'
-      DisplayFormat = ' ,0.00; -,0.00'
+      Size = 2
     end
     object cdsSTATUS: TStringField
       FieldName = 'STATUS'

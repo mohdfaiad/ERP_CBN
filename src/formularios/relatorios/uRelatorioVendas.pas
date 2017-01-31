@@ -274,7 +274,6 @@ type
     RLDBText31: TRLDBText;
     RLDBText32: TRLDBText;
     RLDBText33: TRLDBText;
-    cdsTOTAL_BRUTO: TFloatField;
     Label20: TLabel;
     DBEdit5: TDBEdit;
     cdsTOT_VALOR_BRUTO: TAggregateField;
@@ -286,6 +285,7 @@ type
     PopupMenu1: TPopupMenu;
     ImprimirDanfe1: TMenuItem;
     cdsCODIGO_NOTA_FISCAL: TIntegerField;
+    cdsTOTAL_BRUTO: TBCDField;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -455,9 +455,9 @@ begin
   else if rgTipoData.ItemIndex = 1 then  tipo_data := ' P.DT_REPRESENTANTE '
   else if rgTipoData.ItemIndex = 2 then  tipo_data := ' P.DT_RECEBIMENTO '
   else if rgTipoData.ItemIndex = 3 then  tipo_data := ' P.DT_LIMITE_ENTREGA'
-  else if rgTipoData.ItemIndex = 4 then  tipo_data := ' iif( not(PF.codigo is null), '+
-                                                      '      CAST( lpad(EXTRACT(DAY FROM nf.data_saida), 2, ''0'') || ''.'' || lpad(EXTRACT(MONTH FROM nf.data_saida), 2, ''0'') || ''.'' || EXTRACT(YEAR FROM nf.data_saida) as Date), '+
-                                                      '      P.dt_despacho)         ';
+  else if rgTipoData.ItemIndex = 4 then  tipo_data := ' iif( not(PF.codigo is null),      '+
+                                                      '      CAST(nf.data_saida as Date), '+
+                                                      '      P.dt_despacho)               ';
 
   condicao_data := ' AND ('+ tipo_data + ' BETWEEN :DTI AND :DTF ) '+#13#10;
 
@@ -490,10 +490,10 @@ begin
   result := 'SELECT ' +
             IfThen(rgLeiaute.ItemIndex = 0,'P.NUMPEDIDO, R.CODIGO COD_REPRES ,SUBSTRING(R.RAZAO from 1 for 40) REPRESENTANTE, C.RAZAO CLIENTE, C.CODIGO CODCLI,             '+#13#10+
             '       iif( not(PF.codigo is null), iif( not(PF.codigo is null),                                                                 '+#13#10+
-            '             CAST( lpad(EXTRACT(DAY FROM nf.data_saida), 2, ''0'') || ''.'' || lpad(EXTRACT(MONTH FROM nf.data_saida), 2, ''0'') || ''.'' || EXTRACT(YEAR FROM nf.data_saida) as Date), '+#13#10+
+            '             CAST(nf.data_saida as Date), '+#13#10+
             '             P.dt_despacho) ,P.dt_despacho) DT_Despacho,                                                                         '+#13#10+
             '       P.DT_RECEBIMENTO, P.DT_CADASTRO, P.DT_REPRESENTANTE , P.DT_LIMITE_ENTREGA, (P.DESCONTO_FPGTO + P.DESCONTO + P.DESCONTO_ITENS+ P.desconto_comiss) TOTAL_DESCONTOS, '+#13#10+
-            '       (p.valor_total-((p.valor_total*p.desconto_comiss)/100)) total_liquido, ((p.valor_total-((p.valor_total*p.desconto_comiss)/100)) + p.valor_frete) total_bruto, '+
+            '              TP.total_liquido, TP.total_bruto, '+
             ' iif((not (PF.codigo is null) or (P.despachado = ''S'')), ''SIM'', ''NÃO'') FATURADO, '+#13#10+
             '       iif(P.DESPACHADO = ''S'', ''DESPACHADO'',                                                                                 '+#13#10+
             '           iif(P.aprovacao = ''A'',''APROVADO'',iif(P.aprovacao = ''E'', ''EM ESTUDO'', ''REPROVADO''))) STATUS,                 '+#13#10+
@@ -510,6 +510,7 @@ begin
             IfThen(rgLeiaute.ItemIndex = 0, '', ' left join cores cor  on cor.codigo = itens.cod_cor ') +
             ' left join naturezas_operacao nat on nat.codigo = nf.codigo_natureza '+#13#10+
             ' left join clientes cli on cli.codcli = c.codigo '+#13#10+
+            '  LEFT JOIN get_totais_pedido(P.cod_repres, P.codigo) TP ON (1=1) '+
             ' WHERE not (p.cancelado = ''S'')                                     '+#13#10;
 
   result := result + condicao_data;

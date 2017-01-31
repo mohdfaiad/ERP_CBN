@@ -1038,7 +1038,7 @@ end;
 
 procedure TNotaFiscal.SubtrairPedidoDosTotais(Pedido: TPedido);
 begin
-  self.FTotais.SubtrairFreteDoTotal(Pedido.valor_frete);
+  self.Totais.SubtrairFreteDoTotal(Pedido.valor_frete);
 //   self.FTotais.SubtrairSeguroDoTotal(Pedido.Seguro);
   self.Totais.SubtrairDescontoDoTotal(Pedido.total_desconto);
   self.Totais.SubtrairOutrasDespesasDoTotal(Pedido.Acrescimo);
@@ -2172,7 +2172,7 @@ end;
 
 function TNotaFiscal.GetCalculaIcmsCompartilhado: Boolean;
 begin
-  result := (self.Destinatario.Endereco.Cidade.estado.sigla <> self.Emitente.Endereco.Cidade.estado.sigla) and (length(self.Destinatario.CPF_CNPJ) < 14);
+  result := (self.Entrada_saida <> 'E') and (self.Destinatario.Endereco.Cidade.estado.sigla <> self.Emitente.Endereco.Cidade.estado.sigla) and (length(self.Destinatario.CPF_CNPJ) < 14);
 end;
 
 function TNotaFiscal.GetICMSFCP: Real;

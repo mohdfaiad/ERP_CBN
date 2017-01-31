@@ -7700,4 +7700,80 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 181
     WordWrap = False
   end
+  object versao182: TMemo
+    Left = 417
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE DADOS_REPRESENTANTE'
+      'ADD REP_ECOMMERCE CHAR(1)'
+      '^'
+      'CREATE PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      '  SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      '  WHERE DR.codigo_representante = :cod_rep'
+      '    INTO'
+      '  :rep_ecommerce;'
+      ''
+      '  if (:rep_ecommerce = '#39'S'#39') then'
+      '  begin'
+      
+        '    SELECT ((PED.valor_total-tnf.desconto+tnf.frete+tnf.seguro+t' +
+        'nf.outras_despesas)-(((PED.valor_total-tnf.desconto+tnf.frete+tn' +
+        'f.seguro+tnf.outras_despesas)* PED.desconto_comiss)/100)),'
+      
+        '           ((PED.valor_total-((PED.valor_total* PED.desconto_com' +
+        'iss)/100)))'
+      '     FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      
+        '    LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo_' +
+        'nota_fiscal'
+      
+        '    LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisca' +
+        'l = NF.codigo'
+      '    WHERE PED.codigo = :cod_pedido'
+      '      INTO'
+      '    :total_liquido, :total_bruto;'
+      '  end'
+      '  else'
+      '  begin'
+      
+        '    SELECT (PED.valor_total-((PED.valor_total* PED.desconto_comi' +
+        'ss)/100)),'
+      
+        '           ((PED.valor_total-((PED.valor_total* PED.desconto_com' +
+        'iss)/100)) + PED.valor_frete)'
+      '     FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      
+        '    LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo_' +
+        'nota_fiscal'
+      
+        '    LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisca' +
+        'l = NF.codigo'
+      '    WHERE PED.codigo = :cod_pedido'
+      '      INTO'
+      '    :total_liquido, :total_bruto;'
+      '  end'
+      ''
+      ''
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 182
+    WordWrap = False
+  end
 end

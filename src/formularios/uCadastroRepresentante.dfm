@@ -535,8 +535,8 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 674
-        Top = 17
+        Left = 610
+        Top = -7
         Width = 73
         Height = 13
         Caption = 'Data Cadastro'
@@ -546,6 +546,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+        Visible = False
       end
       object lblAsterisco: TLabel
         Left = 7
@@ -612,6 +613,19 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label26: TLabel
+        Left = 674
+        Top = 17
+        Width = 68
+        Height = 13
+        Caption = 'E-commerce?'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 3355443
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtRazao: TEdit
         Left = 24
         Top = 33
@@ -654,8 +668,8 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Text = ''
       end
       object edtDtCad: TMaskEdit
-        Left = 674
-        Top = 33
+        Left = 610
+        Top = 9
         Width = 76
         Height = 21
         Enabled = False
@@ -663,6 +677,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         MaxLength = 10
         TabOrder = 4
         Text = '  /  /    '
+        Visible = False
       end
       object GroupBox1: TGroupBox
         Left = 24
@@ -1224,6 +1239,17 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         ParentFont = False
         TabOrder = 5
       end
+      object cmbEcommerce: TComboBox
+        Left = 675
+        Top = 33
+        Width = 75
+        Height = 21
+        Style = csDropDownList
+        TabOrder = 11
+        Items.Strings = (
+          'SIM'
+          'N'#195'O')
+      end
     end
   end
   object ds: TDataSource
@@ -1330,6 +1356,10 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       FieldName = 'PERCENTAGEM_COMISSAO'
       Size = 2
     end
+    object cdsREP_ECOMMERCE: TStringField
+      FieldName = 'REP_ECOMMERCE'
+      Size = 1
+    end
   end
   object dsp: TDataSetProvider
     DataSet = ZQuery1
@@ -1337,12 +1367,18 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
   end
   object ZQuery1: TZQuery
     SQL.Strings = (
-      'SELECT p.*, en.*, dr.percentagem_comissao FROM pessoas p'
-      ' left join enderecos en on en.codpessoa = p.codigo'
+      
+        'SELECT p.*, en.*, dr.REP_ECOMMERCE, dr.percentagem_comissao FROM' +
+        ' pessoas p              '
+      
+        ' left join enderecos en on en.codpessoa = p.codigo              ' +
+        '           '
       
         ' left join dados_representante dr on dr.codigo_representante = p' +
-        '.codigo'
-      ' where p.tipo = '#39'R'#39)
+        '.codigo    '
+      
+        ' where p.tipo = '#39'R'#39'                                             ' +
+        '         ')
     Params = <>
     Left = 552
   end

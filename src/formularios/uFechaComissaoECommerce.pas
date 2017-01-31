@@ -78,7 +78,6 @@ type
     qryCOMISSAO: TBCDField;
     qryVALOR_TOTAL: TBCDField;
     qryVLRCOMISSAO: TBCDField;
-    qryVALOR_FRETE: TSingleField;
     RLBand5: TRLBand;
     RLLabel11: TRLLabel;
     RLLabel12: TRLLabel;
@@ -112,6 +111,7 @@ type
     edtComissaoParceiro: TCurrencyEdit;
     RLLabel32: TRLLabel;
     RLLabel33: TRLLabel;
+    qryFRETE: TBCDField;
     procedure btnBuscarClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -185,10 +185,10 @@ begin
   qry.First;
   while not qry.Eof do
   begin
-    edtVendaBruta.Value   := edtVendaBruta.Value + (qryVALOR_TOTAL.AsFloat - qryVALOR_FRETE.AsFloat);
+    edtVendaBruta.Value   := edtVendaBruta.Value + (qryVALOR_TOTAL.AsFloat - qryFRETE.AsFloat);
     edtVendaLiquida.Value := edtVendaBruta.Value;
     //edtComissao.Value     := edtComissao.Value + qryVLRCOMISSAO.AsFloat;
-    edtFreteSite.Value    := edtFreteSite.Value + qryVALOR_FRETE.AsFloat;
+    edtFreteSite.Value    := edtFreteSite.Value + qryFRETE.AsFloat;
     qry.Next;
   end;
   edtComissaoParceiro.Value := qryCOMISSAO.AsFloat;

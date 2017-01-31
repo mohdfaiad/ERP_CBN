@@ -870,7 +870,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
       object Label4: TLabel
         Left = 567
         Top = 17
-        Width = 38
+        Width = 35
         Height = 13
         Caption = 'RG / IE'
         Font.Charset = DEFAULT_CHARSET
@@ -1402,10 +1402,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         end
         inherited edtCpf: TMaskEdit
           Left = 106
-          Width = 104
-          Text = '12345678912345'
+          Width = 103
           ExplicitLeft = 106
-          ExplicitWidth = 104
+          ExplicitWidth = 103
         end
         inherited comPessoa: TComboBox
           Width = 79
@@ -1799,7 +1798,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101030004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -1517,21 +1517,15 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
   object qry: TFDQuery
     Connection = dm.FDConnection
     SQL.Strings = (
-      
-        'select   nf.data_saida, p.cod_repres, p.cancelado,  p.valor_fret' +
-        'e,'
-      ' CAST( iif(nfr.status = '#39'100'#39','
-      
-        '       lpad(EXTRACT(DAY FROM nf.data_saida), 2, '#39'0'#39') || '#39'.'#39' || l' +
-        'pad(EXTRACT(MONTH FROM nf.data_saida), 2, '#39'0'#39') || '#39'.'#39' || EXTRACT' +
-        '(YEAR FROM nf.data_saida),'
-      
-        '       lpad(EXTRACT(DAY FROM p.dt_despacho), 2, '#39'0'#39') || '#39'.'#39' || l' +
-        'pad(EXTRACT(MONTH FROM p.dt_despacho), 2, '#39'0'#39') || '#39'.'#39' || EXTRACT' +
-        '(YEAR FROM p.dt_despacho)) as Date) dt_envio,'
+      'select   nf.data_saida, p.cod_repres, p.cancelado,  tnf.frete,'
+      '       iif(nfr.status = '#39'100'#39','
+      '       CAST(nf.data_saida as Date),'
+      '       CAST(p.dt_despacho as Date)) dt_envio,'
+      ''
       
         ' iif(nfr.status = '#39'100'#39', EXTRACT(DAY FROM nf.data_saida), EXTRAC' +
         'T(DAY FROM p.dt_despacho) )dia_pedido, c.razao cliente,'
+      ''
       
         ' fp.descricao FPGTO, p.numpedido, p.comissao, (p.valor_total-tnf' +
         '.desconto+tnf.frete+tnf.seguro+tnf.outras_despesas) valor_total,'
@@ -1561,17 +1555,16 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
         'a_fiscal = nf.codigo'
       ''
       
-        ' where (( nfr.status = '#39'100'#39' and ((nf.data_saida >= :dt_ini) and' +
-        ' (nf.data_saida <= :dt_fim)) and p.cod_repres = :codRep)'
+        ' where (( nfr.status = '#39'100'#39' and (CAST(nf.data_saida as Date) be' +
+        'tween :dt_ini and :dt_fim) and p.cod_repres = :codRep)'
       '        OR'
       
-        '       ( p.despachado = '#39'S'#39' and ((p.dt_despacho >= :dt_ini) and ' +
-        '(p.dt_despacho <= :dt_fim)) and p.cod_repres = :codRep) )'
+        '             ( p.despachado = '#39'S'#39' and (CAST(p.dt_despacho as Dat' +
+        'e) between :dt_ini and :dt_fim) and p.cod_repres = :codRep))'
       ''
       '        and not (p.cancelado = '#39'S'#39')'
       ''
-      ' ORDER BY p.comissao'
-      '')
+      ' ORDER BY p.comissao')
     Left = 40
     Top = 192
     ParamData = <
@@ -1649,8 +1642,9 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
       Precision = 18
       Size = 2
     end
-    object qryVALOR_FRETE: TSingleField
-      FieldName = 'VALOR_FRETE'
+    object qryFRETE: TBCDField
+      FieldName = 'FRETE'
+      Size = 2
     end
   end
   object ds: TDataSource
