@@ -987,7 +987,7 @@ begin
   edtRepresentante.Text                  := BuscaCliente.razao_rep;
   BuscaEmpresa.codEmpresa                := BuscaPedido1.Ped.cod_filial;
   
-  BuscaFormaPagamento1.codFormaPagamento := intToStr(BuscaPedido1.Ped.cod_forma_pag);
+  BuscaFormaPagamento1.codigoFormaPagamento := BuscaPedido1.Ped.cod_forma_pag;
   BuscaTabelaPreco1.codTabela            := intToStr(BuscaPedido1.Ped.cod_tab_preco);
   BuscaTransportadora.cod_pessoa         := intToStr(BuscaPedido1.Ped.cod_transp);
   cbTipoFrete.ItemIndex                  := BuscaPedido1.Ped.tipo_frete;
@@ -1025,35 +1025,32 @@ begin
       cdsItens.CreateDataSet;
 
     cdsItens.Append;
-
-    cdsItensCODIGO.AsInteger       := TItem(BuscaPedido1.Itens[i]).codigo;
-    cdsItensProduto.AsString       := TItem(BuscaPedido1.Itens[i]).ref_prod;
-    cdsItensCor.AsString           := TItem(BuscaPedido1.Itens[i]).Cor.Descricao;
-    cdsItensRefCor.AsString        := TItem(BuscaPedido1.Itens[i]).ref_cor;
-    cdsItensCodPro.AsInteger       := TItem(BuscaPedido1.Itens[i]).cod_produto;
-    cdsItensCodCor.AsInteger       := TItem(BuscaPedido1.Itens[i]).cod_cor;
-    cdsItensValorUnit.AsFloat      := TItem(BuscaPedido1.Itens[i]).preco;
-    cdsItensDesconto.AsFloat       := TItem(BuscaPedido1.Itens[i]).desconto;
-    cdsItensValorTotalItem.AsFloat := TItem(BuscaPedido1.Itens[i]).valor_total;
-    cdsItensTamRN.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_RN;
-    cdsItensTamP.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_P;
-    cdsItensTamM.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_M;
-    cdsItensTamG.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_G;
-    cdsItensTam1.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_1;
-    cdsItensTam2.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_2;
-    cdsItensTam3.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_3;
-    cdsItensTam4.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_4;
-    cdsItensTam6.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_6;
-    cdsItensTam8.AsInteger         := TItem(BuscaPedido1.Itens[i]).qtd_8;
-    cdsItensTam10.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_10;
-    cdsItensTam12.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_12;
-    cdsItensTam14.AsInteger        := TItem(BuscaPedido1.Itens[i]).qtd_14;
-    cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Itens[i]).qtd_UNICA;
-    cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Itens[i]).qtd_total;
-    cdsItensObsItem.AsString       := TItem(BuscaPedido1.Itens[i]).observacao;
-
+    cdsItensCODIGO.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).codigo;
+    cdsItensProduto.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).Produto.Referencia;
+    cdsItensCor.AsString           := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Descricao;
+    cdsItensRefCor.AsString        := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Referencia;
+    cdsItensCodPro.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_produto;
+    cdsItensCodCor.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_cor;
+    cdsItensValorUnit.AsFloat      := TItem(BuscaPedido1.Ped.Itens[i]).preco;
+    cdsItensDesconto.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).desconto;
+    cdsItensValorTotalItem.AsFloat := TItem(BuscaPedido1.Ped.Itens[i]).valor_total;
+    cdsItensTamRN.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
+    cdsItensTamP.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_P;
+    cdsItensTamM.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_M;
+    cdsItensTamG.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_G;
+    cdsItensTam1.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_1;
+    cdsItensTam2.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_2;
+    cdsItensTam3.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_3;
+    cdsItensTam4.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_4;
+    cdsItensTam6.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_6;
+    cdsItensTam8.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_8;
+    cdsItensTam10.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_10;
+    cdsItensTam12.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
+    cdsItensTam14.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
+    cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
+    cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Ped.Itens[i]).qtd_total;
+    cdsItensObsItem.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).observacao;
     cdsItens.Post;
-
   end;
 
   calculaTotais;
@@ -1143,71 +1140,73 @@ end;
 
 procedure TfrmPedido.BuscaPedido1Exit(Sender: TObject);
 begin
-  if BuscaPedido1.codigo > 0 then begin//se encontrou
+  try
+    BuscaCliente.OnExit := nil;
+    if BuscaPedido1.codigo > 0 then begin //se encontrou
+       pagPedido.ActivePageIndex := 0;
 
-     pagPedido.ActivePageIndex := 0;
+       if self.Tag = 1 then begin //alterando
+          if assigned(BuscaPedido1.Ped.Conferencia) or (BuscaPedido1.pedido_faturado) then begin
+            avisar('Esse pedido já '+IfThen(assigned(BuscaPedido1.Ped.Conferencia),'possui uma conferência associada', 'foi faturado')+#13#10+
+                   'Portanto, não é possível altera-lo.');
+            bloqueia_alteracao( false);
+          end
+          else  bloqueia_alteracao( true );
 
-     if self.Tag = 1 then begin//alterando
+          pagPedido.Enabled := true;
+          btnSalvar.Enabled := true;
+          mostraPedido;
 
-        if assigned(BuscaPedido1.Ped.Conferencia) or (BuscaPedido1.pedido_faturado) then begin
-          avisar('Esse pedido já possui uma conferência associada.'+#13#10+'Portanto, não é possível altera-lo.');
-          bloqueia_alteracao( false);
-        end
-        else  bloqueia_alteracao( true );
-
-        pagPedido.Enabled := true;
-        btnSalvar.Enabled := true;
-        mostraPedido;
-
-        if Buscapedido1.pedido_faturado then begin
-          imgFaturado.Visible   := true;
-          lbfaturado.Visible    := true;
-
-        end
-        else begin
-          imgFaturado.Visible   := false;
-          lbfaturado.Visible    := false;
-        end;
-        BuscaPedido1.Enabled := false;
-     end
-     else if self.Tag = 0 then begin //incluindo
-       if confirma('Já existe um pedido com esse número! Deseja aproveitar dados do mesmo?') then begin
-         aproveitandoPedido := true;
-         mostraPedido;
-         BuscaPedido1.limpa;
-         BuscaPedido1.edtNumPedido.Clear;
-         BuscaCliente.limpa;
-         edtRepresentante.Clear;
+          if Buscapedido1.pedido_faturado then
+          begin
+            imgFaturado.Visible   := true;
+            lbfaturado.Visible    := true;
+          end
+          else begin
+            imgFaturado.Visible   := false;
+            lbfaturado.Visible    := false;
+          end;
+          BuscaPedido1.Enabled := false;
        end
-       else begin
-         BuscaPedido1.limpa;
-         BuscaPedido1.edtNumPedido.SetFocus;
-       end;
-     end
-
-  end
-  else begin
-  
-     if self.Tag = 1 then begin
-
-       if BuscaPedido1.edtNumPedido.Text = '' then begin
-         BuscaPedido1.btnBuscar.Click;
-         BuscaPedido1Exit(nil);
+       else if self.Tag = 0 then begin //incluindo
+         if confirma('Já existe um pedido com esse número! Deseja aproveitar dados do mesmo?') then begin
+           aproveitandoPedido := true;
+           mostraPedido;
+           BuscaPedido1.limpa;
+           BuscaPedido1.edtNumPedido.Clear;
+           BuscaCliente.limpa;
+           edtRepresentante.Clear;
+         end
+         else begin
+           BuscaPedido1.limpa;
+           BuscaPedido1.edtNumPedido.SetFocus;
+         end;
        end
-       else begin
-         avisar('Pedido não encontrado!');
-         BuscaPedido1.edtNumPedido.Clear;
-         BuscaPedido1.edtNumPedido.SetFocus;
-         limpaCampos;
-       end;
-     end
-     else if self.Tag = 0 then begin
-       if not aproveitandoPedido then  limpaCampos;
-       BuscaCliente.btnBuscar.Click;
-     end;
+    end
+    else
+    begin
+       if self.Tag = 1 then begin
 
+         if BuscaPedido1.edtNumPedido.Text = '' then begin
+           BuscaPedido1.btnBuscar.Click;
+           BuscaPedido1Exit(nil);
+         end
+         else begin
+           avisar('Pedido não encontrado!');
+           BuscaPedido1.edtNumPedido.Clear;
+           BuscaPedido1.edtNumPedido.SetFocus;
+           limpaCampos;
+         end;
+       end
+       else if self.Tag = 0 then begin
+         if not aproveitandoPedido then  limpaCampos;
+         BuscaCliente.btnBuscar.Click;
+       end;
+    end;
+
+  finally
+    BuscaCliente.OnExit := BuscaClienteExit;
   end;
-
 end;
 
 procedure TfrmPedido.BuscaPedido1btnBuscarEnter(Sender: TObject);
@@ -1295,8 +1294,11 @@ begin
   btnInfCli.Visible     := false;
 
   if ( StrToIntDef(BuscaCliente.cod_pessoa,0) > 0 ) then begin
-    BuscaTabelaPreco1.codTabela            := intToStr(BuscaCliente.tab_preco);
-    BuscaFormaPagamento1.codFormaPagamento := intToStr(BuscaCliente.forma_pgto);
+    if (self.TAG = 0) then
+    begin
+      BuscaTabelaPreco1.codTabela               := intToStr(BuscaCliente.tab_preco);
+      BuscaFormaPagamento1.codigoFormaPagamento := BuscaCliente.forma_pgto;
+    end;
 
     if (BuscaCliente.cod_rep = '') or (BuscaCliente.cod_rep = '0') then
       avisar('Atenção! Cliente não possui representante associado, assim, o pedido não poderá ser concluído.');
@@ -1434,7 +1436,7 @@ begin
  // edtTotPedidoBruto.Value := arredonda( edtTotPedidoBruto.Value );
 
   if ( edtTotPedido.Value > 0 ) then  begin
-    edtDescFPgto.Value := arredonda( (edtTotPedidoBruto.Value * BuscaFormaPagamento1.Desconto) / 100 );
+    edtDescFPgto.Value := arredonda( (edtTotPedidoBruto.Value * BuscaFormaPagamento1.FormaPagamento.Desconto) / 100 );
     edtTotPedido.Value := edtTotPedido.Value - edtDescFPgto.Value;
     edtTotPedido.Value := edtTotPedido.Value - edtDescontoPedido.Value;
     edtTotPedido.Value := edtTotPedido.Value + edtAcrescimoPedido.Value;
@@ -1591,7 +1593,7 @@ procedure TfrmPedido.BuscaFormaPagamento1Exit(Sender: TObject);
 begin
   calculaTotais;
   if (BuscaFormaPagamento1.edtDescricao.Text <> '') and (BuscaCliente.percComissaoRep <= 0) then
-    edtPercComissao.Value := BuscaFormaPagamento1.PercComissao;
+    edtPercComissao.Value := BuscaFormaPagamento1.FormaPagamento.Perc_Comissao;
 end;
 
 procedure TfrmPedido.edtDescontoPedidoKeyPress(Sender: TObject;

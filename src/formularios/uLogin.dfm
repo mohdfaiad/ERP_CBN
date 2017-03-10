@@ -7,6 +7,8 @@ inherited frmLogin: TfrmLogin
   ClientWidth = 399
   Color = 4208399
   OldCreateOrder = True
+  ExplicitWidth = 399
+  ExplicitHeight = 271
   PixelsPerInch = 96
   TextHeight = 13
   object Panel2: TPanel

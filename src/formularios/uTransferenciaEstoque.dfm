@@ -1,7 +1,7 @@
 object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   Left = 0
   Top = 0
-  Caption = 'frmTransferenciaEstoque'
+  Caption = 'Transferencia de Estoque'
   ClientHeight = 562
   ClientWidth = 694
   Color = clBtnFace
@@ -214,7 +214,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 2
     TabStop = True
     OnClick = rgTamanhos1Click
-    ExplicitWidth = 733
   end
   inline BuscaProduto2: TBuscaProduto
     Left = 10
@@ -303,7 +302,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 5
     TabStop = True
     OnClick = rgTamanhos2Click
-    ExplicitWidth = 733
   end
   object edtEstoqueDestino: TCurrencyEdit
     Left = 528
@@ -368,7 +366,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 9
-    ExplicitWidth = 619
     object btnSalvar: TBitBtn
       Left = 527
       Top = 8

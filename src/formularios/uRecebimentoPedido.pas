@@ -192,7 +192,7 @@ begin
 
    cdsMoedasCODIGO_MOEDA.AsInteger := cmbMoeda.ItemIndex;
    cdsMoedasMOEDA.AsString         := cmbMoeda.Items[cmbMoeda.ItemIndex];
-   cdsMoedasVALOR.AsFloat          := (edtValorPago.Value - edtTroco.Value);
+   cdsMoedasVALOR.AsFloat          := cdsMoedasVALOR.AsFloat + (edtValorPago.Value - edtTroco.Value);
    cdsMoedas.Post;
 
    edtValorRestante.Value := edtValorRestante.Value - (edtValorPago.Value - edtTroco.Value);

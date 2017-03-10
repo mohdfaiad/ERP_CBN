@@ -83,7 +83,8 @@ uses
     Repositorio,
     FabricaRepositorio,
     Especificacao,
-    EspecificacaoEnderecoComPessoaIgualA;
+    EspecificacaoEnderecoComPessoaIgualA,
+    EspecificacaoDadosRepresentantePorCodPessoa;
 
 { TPessoa }
 
@@ -102,13 +103,15 @@ end;
 function TPessoa.GetDadosRepresentante: TDadosRepresentante;
 var
   Repositorio   :TRepositorio;
+  Especificacao :TEspecificacaoDadosRepresentantePorCodPessoa;
 begin
    if not Assigned(self.FDadosRepresentante) then begin
      Repositorio   := nil;
 
      try
        Repositorio              := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
-       self.FDadosRepresentante := (Repositorio.Get(self.Codigo) as TDadosRepresentante);
+       Especificacao            := TEspecificacaoDadosRepresentantePorCodPessoa.Create(self.Codigo);
+       self.FDadosRepresentante := (Repositorio.GetPorEspecificacao(Especificacao) as TDadosRepresentante);
      finally
        FreeAndNil(Repositorio);
      end;

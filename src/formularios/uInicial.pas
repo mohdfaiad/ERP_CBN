@@ -8,7 +8,7 @@ uses
   frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math,
   ServicoVerificadorSistemaEmManutencao, uImpressaoEtiquetasCoppel, uEntradaNota,
   IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts,
-  RLReport, System.ImageList, System.StrUtils;
+  RLReport, System.ImageList, System.StrUtils, DBGridCBN;
 
 type
   TfrmInicial = class(TfrmPadrao)
@@ -79,7 +79,6 @@ type
     GerarEFDFiscal2: TMenuItem;
     Expedicao1: TMenuItem;
     Venda1: TMenuItem;
-    ApplicationEvents1: TApplicationEvents;
     labVersaoBD: TLabel;
     Image3: TImage;
     s: TImage;
@@ -128,6 +127,7 @@ type
     NCMs1: TMenuItem;
     Parcelamento1: TMenuItem;
     FechaComissoEcommerce1: TMenuItem;
+    ApplicationEvents1: TApplicationEvents;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -174,8 +174,6 @@ type
     procedure Confernciadopedido1Click(Sender: TObject);
     procedure Venda1Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure ApplicationEvents1Message(var Msg: tagMSG;
-      var Handled: Boolean);
     procedure BotaoImg3Label1Click(Sender: TObject);
     procedure MapadeReferncias1Click(Sender: TObject);
     procedure RaioXRepresentante2Click(Sender: TObject);
@@ -213,6 +211,7 @@ type
     procedure NCMs1Click(Sender: TObject);
     procedure Parcelamento1Click(Sender: TObject);
     procedure FechaComissoEcommerce1Click(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -286,7 +285,7 @@ uses
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco,
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
-  uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque;
+  uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao;
 
 {$R *.dfm}
 
@@ -375,6 +374,24 @@ begin
                                                                                self.HabilitaContagemRegressiva,
                                                                                self.MostraTempoRestante,
                                                                                self.DesabilitaContagemRegressiva);
+end;
+
+procedure TfrmInicial.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+var
+  i: SmallInt;
+begin
+  if Msg.message = WM_MOUSEWHEEL then
+  begin
+    Msg.message := WM_KEYDOWN;
+    Msg.lParam  := 0;
+
+    i := HiWord(Msg.wParam) ;
+    if i > 0 then
+      Msg.wParam := VK_UP
+    else
+      Msg.wParam := VK_DOWN;
+    Handled := False;
+ end;
 end;
 
 procedure TfrmInicial.AtualizaBancoDeDados;
@@ -947,28 +964,6 @@ begin
   end;
 end;
 
-procedure TfrmInicial.ApplicationEvents1Message(var Msg: tagMSG;
-  var Handled: Boolean);
-var i: SmallInt;
-begin 
-
-  if Msg.message = WM_MOUSEWHEEL then begin
-
-    Msg.message := WM_KEYDOWN;
-    Msg.lParam := 0;
-    
-    i := HiWord(Msg.wParam); 
-    
-    if i > 0 then 
-      Msg.wParam := VK_UP
-    else
-     Msg.wParam := VK_DOWN;
-
-    Handled := False;
-
-  end;
-end;
-
 procedure TfrmInicial.BotaoImg3Label1Click(Sender: TObject);
 begin
   Confernciadopedido1Click(nil);
@@ -1062,12 +1057,7 @@ procedure TfrmInicial.Button1Click(Sender: TObject);
 var result :Real;
 begin
   inherited;
-
-  result := RoundTo(3685.215, -2);
-
-  result := SimpleRoundTo(3685.215, -2);
-
-  result := 0;
+  self.AbreForm(TfrmDevolucao, paCadastroColecao);
 end;
       {
 Initialization

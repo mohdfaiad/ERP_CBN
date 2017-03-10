@@ -73,7 +73,7 @@ begin
   campoRetorno := 'NUMPEDIDO'; //campo que deseja que retorne
 
   condicao_tipo := IfThen(FTipoBusca = tbpTodos, '',
-                                                IfThen(FTipoBusca = tbpFaturados, ' and not (pf.codigo is null) ',
+                                                IfThen(FTipoBusca = tbpFaturados, ' and (not (pf.codigo is null) or (p.despachado = ''S'')) ',
                                                                                   ' and ( (pf.codigo is null) and ((p.despachado is null) or (p.despachado <> ''S'')) ) '));
   if not self.FpermiteCancelado then
     condicao_cancelado := ' and ((p.cancelado is null) or (p.cancelado <> ''S'')) ';
@@ -171,7 +171,7 @@ begin
            ' left join pessoas c on c.codigo = p.cod_cliente                                    '+
            ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo                      '+
            ' left join nfce on nfce.codigo_pedido = p.codigo                                    '+
-           ' where ((p.cancelado is null) or (p.cancelado <> ''S'')) '+ condicao_tipo+
+           ' where (1=1) '+ condicao_tipo+
            ' order by p.dt_representante                                                        ';
   end
   else
@@ -261,6 +261,9 @@ begin
       Item.qtd_4             := dm.qryGenerica.fieldByName('QTD_4').AsInteger;
       Item.qtd_6             := dm.qryGenerica.fieldByName('QTD_6').AsInteger;
       Item.qtd_8             := dm.qryGenerica.fieldByName('QTD_8').AsInteger;
+      Item.qtd_10            := dm.qryGenerica.fieldByName('QTD_10').AsInteger;
+      Item.qtd_12            := dm.qryGenerica.fieldByName('QTD_12').AsInteger;
+      Item.qtd_14            := dm.qryGenerica.fieldByName('QTD_14').AsInteger;
       Item.qtd_UNICA         := dm.qryGenerica.fieldByName('QTD_UNICA').AsFloat;
       Item.qtd_total         := dm.qryGenerica.fieldByName('QTD_TOTAL').AsFloat;
       Item.observacao        := dm.qryGenerica.fieldByName('OBSERVACAO').AsString;

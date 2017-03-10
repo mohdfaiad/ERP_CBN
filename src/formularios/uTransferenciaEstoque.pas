@@ -145,16 +145,12 @@ procedure TfrmTransferenciaEstoque.BuscaCor1Exit(Sender: TObject);
 begin
   inherited;
   BuscaCor1.FrameExit(Sender);
-
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaCor2edtDescricaoChange(Sender: TObject);
 begin
   if BuscaCor1.edtDescricao.Text <> '' then
-  begin
     mostraEstoqueDestino;
-  //  keybd_event(VK_TAB, 0, 0, 0);
-  end;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaCor2Enter(Sender: TObject);
@@ -167,17 +163,15 @@ procedure TfrmTransferenciaEstoque.BuscaProduto1edtDescricaoChange(
   Sender: TObject);
 begin
   if BuscaProduto1.edtDescricao.Text <> '' then
-  begin
     mostraEstoqueOrigem;
-  //  keybd_event(VK_TAB, 0, 0, 0);
-  end;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaProduto1Exit(Sender: TObject);
 begin
   inherited;
   BuscaProduto1.FrameExit(Sender);
-  habilitaTamanhos(rgTamanhos1, BuscaProduto1.Prod.Grade);
+  if assigned(BuscaProduto1.Prod) then
+    habilitaTamanhos(rgTamanhos1, BuscaProduto1.Prod.Grade);
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaProduto2edtDescricaoChange(
@@ -194,7 +188,8 @@ procedure TfrmTransferenciaEstoque.BuscaProduto2Exit(Sender: TObject);
 begin
   inherited;
   BuscaProduto2.FrameExit(Sender);
-  habilitaTamanhos(rgTamanhos2, BuscaProduto2.Prod.Grade);
+  if assigned(BuscaProduto2.Prod) then
+    habilitaTamanhos(rgTamanhos2, BuscaProduto2.Prod.Grade);
 end;
 
 procedure TfrmTransferenciaEstoque.edtQtdTransferirChange(Sender: TObject);

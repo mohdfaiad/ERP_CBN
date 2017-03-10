@@ -114,6 +114,9 @@ begin
   self.FcodNotaFiscal    := 0;
   self.FID               := '';
   self.FDestinatario     := '';
+
+  if assigned(FNotaFiscal) then
+    FreeAndNil(FNotaFiscal);
 end;
 
 procedure TBuscaNotaFiscal.SetNumeroNotaFiscal(const Value: String);
@@ -154,7 +157,7 @@ begin
 
   frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select nf.numero_nota_fiscal, p.razao destinatario, nf.codigo                  '+
                                                         'from notas_fiscais nf                                                          '+
-                                                        ' left join pessoas                   p   on p.codigo = nf.codigo_emitente      '+
+                                                        ' left join pessoas                   p   on p.codigo = nf.codigo_destinatario  '+
                                                         ' left join notas_fiscais_nfe_retorno nfr on nfr.codigo_nota_fiscal = nf.codigo '+
                                                         ' left join contas_pagar cp on cp.codigo_nf = nf.codigo                         '+
                                                         'where 1=1 '+condicao_filtro+condicao_empresa+condicao_contas+condicao_entradaSaida+' order by 1 ', campoRetorno, 'Selecione a Nota Fiscal desejada...');

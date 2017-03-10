@@ -93,7 +93,8 @@ begin
    Item.qtd_total         := self.FQuery.FieldByName('QTD_TOTAL'        ).AsFloat;
    Item.observacao        := self.FQuery.FieldByName('OBSERVACAO'       ).AsString;
    Item.peso              := self.FQuery.FieldByName('PESO'             ).AsFloat;
-      
+   Item.devolvido         := self.FQuery.FieldByName('DEVOLVIDO'        ).AsString;
+
    result := Item;
 end;
 
@@ -172,6 +173,8 @@ begin
     Auditoria.AdicionaCampoAlterado('OBSERVACAO', ItemAntigo.observacao, ItemNovo.observacao);
    if (ItemAntigo.peso <> ItemNovo.peso) then
     Auditoria.AdicionaCampoAlterado('peso', FloatToStr(ItemAntigo.peso), floatToStr(ItemNovo.peso));
+   if (ItemAntigo.devolvido <> ItemNovo.devolvido) then
+    Auditoria.AdicionaCampoAlterado('devolvido', ItemAntigo.devolvido, ItemNovo.devolvido);
 end;
 
 procedure TRepositorioItem.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -205,6 +208,7 @@ begin
    Auditoria.AdicionaCampoExcluido('QTD_TOTAL'        , FloatToStr(Item.qtd_total)        );
    Auditoria.AdicionaCampoExcluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoExcluido('PESO'             , FloatToStr(Item.peso)        );
+   Auditoria.AdicionaCampoExcluido('devolvido'        , Item.devolvido                   );
 end;
 
 procedure TRepositorioItem.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -238,6 +242,7 @@ begin
    Auditoria.AdicionaCampoIncluido('QTD_TOTAL'        , FloatToStr(Item.qtd_total)        );
    Auditoria.AdicionaCampoIncluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoIncluido('PESO'             , FloatToStr(Item.peso)        );
+   Auditoria.AdicionaCampoIncluido('devolvido'        , Item.devolvido                   );
 end;
 
 procedure TRepositorioItem.SetIdentificador(Objeto: TObject;
@@ -282,6 +287,7 @@ begin
    inherited SetParametro('QTD_TOTAL'        , Item.qtd_total);
    inherited SetParametro('OBSERVACAO'       , Item.observacao);
    inherited SetParametro('PESO'             , Item.peso);
+   inherited SetParametro('devolvido'        , Item.devolvido);
 end;
 
 function TRepositorioItem.SQLGet: String;
@@ -309,10 +315,10 @@ begin
   result := 'UPDATE OR INSERT INTO ITENS (CODIGO, COD_PEDIDO, COD_PRODUTO, COD_COR, QTD_TOTAL,      '+
             '                             PRECO, DESCONTO,VALOR_TOTAL, QTD_RN, QTD_P, QTD_M,        '+
             '                             QTD_G, QTD_1, QTD_2, QTD_3,QTD_4, QTD_6, QTD_8,           '+
-            '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO)      '+
+            '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO, devolvido)      '+
             'VALUES (:CODIGO, :COD_PEDIDO, :COD_PRODUTO, :COD_COR, :QTD_TOTAL, :PRECO, :DESCONTO,   '+
             '        :VALOR_TOTAL, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, '+
-            '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO)     ';
+            '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO, :devolvido)     ';
 
 end;
 

@@ -17,11 +17,12 @@ type
     procedure SetPedido(const Value: TPedido);
 
   private
+    FMotivo: String;
     function GetCodigoNotaFiscal: Integer;
     function GetPedido :TPedido;
 
   public
-    constructor Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer); overload;
+    constructor Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String = ''); overload;
     constructor Create(CodigoPedido :Integer); overload;
 
   public
@@ -30,6 +31,7 @@ type
   public
     property CodigoNotaFiscal :Integer  read GetCodigoNotaFiscal;
     property CodigoPedido     :Integer  read FCodigoPedido;
+    property Motivo           :String   read FMotivo   write FMotivo;
     property Pedido           :TPedido  read GetPedido write SetPedido;
 end;
 
@@ -46,7 +48,7 @@ begin
    self.FBuscadorCodigoNotaFiscal := Buscador;
 end;
 
-constructor TPedidoFaturado.Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer);
+constructor TPedidoFaturado.Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String);
 const
   NOME_DA_CLASSE = 'TPedidoFaturado';
   NOME_DO_METODO = 'Create(CodigoNotaFiscal :TCodigoNotaFiscal; CodigoPedido :Integer)';

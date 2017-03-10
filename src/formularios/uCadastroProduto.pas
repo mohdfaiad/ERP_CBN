@@ -302,6 +302,7 @@ type
     Label31: TLabel;
     cdsProdsKitCONT: TIntegerField;
     cdsCoresKitCONT: TIntegerField;
+    btnClonar: TSpeedButton;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -364,6 +365,7 @@ type
     procedure cdsProdsKitAfterScroll(DataSet: TDataSet);
     procedure btnCancelaAssClick(Sender: TObject);
     procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnClonarClick(Sender: TObject);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
@@ -371,6 +373,7 @@ type
     rep :TRepositorio;
     posicaoGrid :integer;
     FPressionado :Boolean;
+    FClonando :Boolean;
 
     procedure habilita(SN:Boolean);
     procedure limpaCampos;
@@ -492,6 +495,7 @@ begin
 
   btnIncluir.Enabled           := not SN;
   btnAlterar.Enabled           := not SN;
+  btnClonar.Enabled            := not SN;
   btnCancelar.Enabled          := SN;
   btnSalvar.Enabled            := SN;
   pagProdutos.Pages[1].Enabled := SN;
@@ -546,7 +550,7 @@ end;
 
 procedure TfrmCadastroProduto.mostraDados;
 begin                      
-  edtReferencia.Text        := cdsREFERENCIA.AsString;
+  edtReferencia.Text        := IfThen(FClonando, '', cdsREFERENCIA.AsString);
   edtDescricao.text         := cdsDESCRICAO.AsString;
   edtLinha.text             := cdsLINHA_ANO.AsString;
   comAtivo.ItemIndex        := IfThen((cdsATIVO.AsString = 'N'),1,0);
@@ -590,7 +594,7 @@ begin
       if not cdsProdsKit.Locate('CODIGO',CDSKitsCODIGO_PRODUTO.AsInteger,[]) then
       begin
         cdsProdsKit.Append;
-        cdsProdsKitCODIGO.AsInteger := CDSKitsCODIGO_PRODUTO.AsInteger;
+        cdsProdsKitCODIGO.AsInteger := IfThen(FClonando, 0,CDSKitsCODIGO_PRODUTO.AsInteger);
         cdsProdsKitREFPRO.AsString  := CDSKitsREFPRO.AsString;
         cdsProdsKitPRODUTO.AsString := CDSKitsPRODUTO.AsString;
         cdsProdsKit.Post;
@@ -601,7 +605,6 @@ begin
   end;
 
   comKit.Enabled := CDSKits.isEmpty;
-
 end;
 
 procedure TfrmCadastroProduto.FormShow(Sender: TObject);
@@ -672,10 +675,17 @@ begin
   self.habilita(false);
   self.Tag := 0;
   limpaCampos;
-
+  FClonando := false;
   gridProdutos.SetFocus;
   FreeAndNil(Produto);
   FreeAndNil(Rep);
+end;
+
+procedure TfrmCadastroProduto.btnClonarClick(Sender: TObject);
+begin
+  self.FClonando := true;
+  btnAlterar.Click;
+  self.Tag := 1;
 end;
 
 procedure TfrmCadastroProduto.btnSalvarClick(Sender: TObject);
@@ -710,7 +720,7 @@ begin
   Produto.EstoqueFis    := edtEstoqueFis.AsInteger;
   Produto.EstoqueMin    := edtEstoqueMin.AsInteger;
   Produto.PesoLiq       := edtPesoLiq.Value;
-  pRODUTO.PesoBru       := edtPesoBru.Value;
+  Produto.PesoBru       := edtPesoBru.Value;
   Produto.Qtd_Pecas     := edtPecas.AsInteger;
   Produto.Ativo         := (comAtivo.ItemIndex = 0);
   Produto.Tipo          := copy(rgTipoProduto.Items[rgTipoProduto.ItemIndex],1,1);
@@ -738,7 +748,7 @@ end;
 function TfrmCadastroProduto.verificaObrigatorios: Boolean;
 begin
   Result := false;
-
+  pagProdutos.ActivePageIndex := 1;
   if (edtDescricao.Text = '') then begin
     avisar('Favor informar uma descrição para o produto');
     edtDescricao.SetFocus;
@@ -770,7 +780,6 @@ begin
   end
   else if (comKit.ItemIndex = 0) and (not (CDSKits.active) or (CDSKits.RecordCount < 2)) then begin
     avisar('Um Kit deve conter no mínimo dois produtos');
-    pagProdutos.ActivePageIndex := 1;
     BuscaProduto1.edtReferencia.SetFocus;
   end
   else if (cbUnidadeMedida.ItemIndex < 0) then begin
@@ -844,9 +853,9 @@ begin
   cdsCor.First;
   while not cdsCor.Eof do begin
 
-    if cdsCorSTATUS.AsString = 'I' then begin
+    if (cdsCorSTATUS.AsString = 'I') or FClonando then begin
 
-      ProdutoCores.Codigo     := IfThen(cdsCorCODIGO.AsInteger < 0, 0, cdsCorCODIGO.AsInteger );
+      ProdutoCores.Codigo     := IfThen((cdsCorCODIGO.AsInteger < 0) or FClonando, 0, cdsCorCODIGO.AsInteger );
 
       if self.Tag = 1 then
         ProdutoCores.CodProduto := fdm.GetValorGenerator('GEN_PRODUTOS_ID')
@@ -931,10 +940,10 @@ begin
 
   while not cdsTabela.Eof do begin
 
-    if (cdsTabelaSTATUS.AsString = 'I') or (cdsTabelaSTATUS.AsString = 'A') then begin
+    if (cdsTabelaSTATUS.AsString = 'I') or (cdsTabelaSTATUS.AsString = 'A') or FClonando then begin
 
-       if cdsTabelaSTATUS.AsString = 'I' then
-           ProdutoTabelaPreco.Codigo  := 0
+       if (cdsTabelaSTATUS.AsString = 'I') or FClonando then
+         ProdutoTabelaPreco.Codigo  := 0
        else
          ProdutoTabelaPreco.Codigo  := IfThen(cdsTabelaCODIGO.AsInteger < 0, 0,cdsTabelaCODIGO.AsInteger);
 
@@ -1593,7 +1602,7 @@ begin
     CDSKits.First;
     while not cdsKits.Eof do begin
 
-      if (CDSKitsCODIGO.AsInteger > 0) then begin
+      if (CDSKitsCODIGO.AsInteger > 0) and not FClonando then begin
         if (CDSKitsREMOVE.AsString = 'S') then begin
           Kits := TProdutosKit(repositorio.Get(CDSKitsCODIGO.AsInteger));
           repositorio.Remover(Kits);

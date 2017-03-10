@@ -98,6 +98,7 @@ type
     FTotais            :TTotaisNotaFiscal;
     FEmpresa           :TEmpresa;
     FItensAvulsos      :TObjectList;
+    FParcelas          :TObjectList;
 
   { Métodos Delegados }
     FAposAdicionarPrimeiroPedido      :TMetodoDelegadoAposAtualizarNotaFiscal;
@@ -184,6 +185,7 @@ type
     procedure SomarItemAvulsoAosTotais   (ItemAvulso   :TItemAvulso);
     procedure SubtrairPedidoDosTotais    (Pedido       :TPedido);
     procedure SubtrairItemAvulsoDosTotais(ItemAvulso   :TItemAvulso);
+    function GetParcelas: TObjectList;
 
   public
     constructor Create(
@@ -248,6 +250,8 @@ type
     property AliquotaPartilhaDestinatario :Real        read GetAliqPartilhaDestinatario;
     property AliquotaFCP      :Real                    read GetAliqFCP;
 
+  public
+    property Parcelas         :TObjectList        read GetParcelas;
 
   public
     procedure AdicionarChaveAcesso(const ChaveAcesso, XML :String);
@@ -284,7 +288,7 @@ uses
   PedidoFaturado,
   Repositorio,
   FabricaRepositorio,
-  Item,
+  Item, Parcela,
   ItemNotaFiscal,
   ItemNfMateria,
   TipoRegimeTributario,
@@ -294,7 +298,7 @@ uses
   EspecificacaoItensMateriaDaNotaFiscal,
   EspecificacaoEmpresaPorCodigoPessoa, Especificacao,
   ExcecaoCampoNaoInformado, EspecificacaoAliqInternaPorCodigoEstado,
-  Funcoes, AliqInternaIcms;
+  Funcoes, AliqInternaIcms, EspecificacaoParcelaPorCodigoNotaFiscal;
 
 { TNotaFiscal }
 
@@ -584,6 +588,9 @@ begin
 
   if self.FLCriouTransportadora and Assigned(self.FTransportadora) then
     FreeAndNil(self.FTransportadora);
+
+  if Assigned(self.FParcelas) then
+    FreeAndNil(self.FParcelas);
 
   FreeAndNil(self.FLote);
   FreeAndNil(self.FNFe);
@@ -904,6 +911,28 @@ begin
    end;
 
    result := self.FNatureza;
+end;
+
+function TNotaFiscal.GetParcelas: TObjectList;
+var
+  Repositorio   :TRepositorio;
+  Especificacao :TEspecificacaoParcelaPorCodigoNotaFiscal;
+begin
+   Repositorio    := nil;
+   Especificacao  := nil;
+
+   try
+      if not Assigned(self.FParcelas) then begin
+        Especificacao         := TEspecificacaoParcelaPorCodigoNotaFiscal.Create(self.CodigoNotaFiscal);
+        Repositorio           := TFabricaRepositorio.GetRepositorio(TParcela.ClassName);
+        self.FParcelas        := Repositorio.GetListaPorEspecificacao(Especificacao);
+      end;
+
+      result := self.FParcelas;
+   finally
+     FreeAndNil(Especificacao);
+     FreeAndNil(Repositorio);
+   end;
 end;
 
 function TNotaFiscal.GetPedidoFaturados: TObjectList;

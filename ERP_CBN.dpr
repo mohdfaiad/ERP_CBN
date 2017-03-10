@@ -431,10 +431,15 @@ uses
   frameFone in 'src\formularios\frameFone.pas' {Fone: TFrame},
   uProtocoloEntrega in 'src\formularios\uProtocoloEntrega.pas' {frmProtocoloEntrega},
   uParcelamento in 'src\formularios\uParcelamento.pas' {frmParcelamento},
-  EspecificacaoParcelaPorCodigoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoParcelaPorCodigoPedido.pas',
   uFechaComissaoECommerce in 'src\formularios\uFechaComissaoECommerce.pas' {frmFechaComissaoECommerce},
   DadosRepresentante in 'src\dominio\entidade\DadosRepresentante.pas',
-  RepositorioDadosRepresentante in 'src\infraestrutura\persistencia\RepositorioDadosRepresentante.pas';
+  RepositorioDadosRepresentante in 'src\infraestrutura\persistencia\RepositorioDadosRepresentante.pas',
+  EspecificacaoParcelaPorCodigoNotaFiscal in 'src\dominio\objetoValor\especificacao\EspecificacaoParcelaPorCodigoNotaFiscal.pas',
+  EspecificacaoDadosRepresentantePorCodPessoa in 'src\dominio\objetoValor\especificacao\EspecificacaoDadosRepresentantePorCodPessoa.pas',
+  uDevolucao in 'src\formularios\uDevolucao.pas' {frmDevolucao},
+  Devolucao in 'src\dominio\entidade\Devolucao.pas',
+  RepositorioDevolucao in 'src\infraestrutura\persistencia\RepositorioDevolucao.pas',
+  EspecificacaoDevolucaoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoDevolucaoPedido.pas';
 
 {$R *.res}
 {$R win7810.res}
@@ -450,9 +455,7 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-  Application.CreateForm(TfrmProtocoloEntrega, frmProtocoloEntrega);
-  Application.CreateForm(TfrmParcelamento, frmParcelamento);
-  Application.CreateForm(TfrmFechaComissaoECommerce, frmFechaComissaoECommerce);
+  Application.CreateForm(TfrmDevolucao, frmDevolucao);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

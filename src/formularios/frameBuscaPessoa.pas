@@ -120,7 +120,8 @@ begin
      FCnpj          := pessoa.getCampo('cpf_cnpj').AsString;
      FPercComissaoRep := pessoa.getCampo('percentagem_comissao').AsFloat;
 
-     if FTipoPessoa = tpCliente then begin
+     if FTipoPessoa = tpCliente then
+     begin
        Ftab_preco  := pessoa.getCampo('codtabelapreco').AsInteger;
        Fforma_pgto := pessoa.getCampo('codformaspgto').AsInteger;
      end;

@@ -430,7 +430,7 @@ begin
 
      self.FQuery.ExecSQL;
 
- //    self.GravaAuditoria(nil, Objeto, taExclusao);
+     self.GravaAuditoria(nil, Objeto, taExclusao);
    except
      on E: Exception do
       dm.LogErros.AdicionaErro('Repositorio', E.ClassName, E.Message);
@@ -605,15 +605,17 @@ end;
 
 function TRepositorio.RemoverPorIdentificador(
   const Identificador: Variant): Boolean;
+var Objeto :TObject;
 begin
    try
+     Objeto := self.Get(Identificador);
      self.FQuery.SQL.Clear;
      self.FQuery.SQL.Add(self.SQLRemover);
 
      self.FQuery.Params[0].Value := Identificador;
      self.FQuery.ExecSQL;
 
-     //self.GravaAuditoria(nil, Objeto, taExclusao);
+     self.GravaAuditoria(nil, Objeto, taExclusao);
    except
      on E: Exception do
       dm.LogErros.AdicionaErro('Repositorio', E.ClassName, E.Message);

@@ -484,7 +484,7 @@ begin
      end;
 
      pedido.cod_tab_preco := tabelaLoja;
-     pedido.cod_forma_pag := StrToIntDef(BuscaFormaPagamento1.codFormaPagamento ,0);
+     pedido.cod_forma_pag := BuscaFormaPagamento1.FormaPagamento.Codigo;
      pedido.cod_filial    := 3;
      pedido.cod_cliente   := StrToIntDef(BuscaPessoa1.cod_pessoa ,0);
      pedido.cod_repres    := StrToIntDef( Campo_por_campo('PESSOAS','CODIGO','RAZAO','LOJA') ,0);
@@ -618,7 +618,7 @@ begin
 
   codFPagamento := Campo_por_campo('FORMAS_PGTO','CODIGO','DESCRICAO','LOJA');
 
-  BuscaFormaPagamento1.codFormaPagamento := IfThen(codFPagamento = '', '0', codFPagamento);
+  BuscaFormaPagamento1.codigoFormaPagamento := strToIntDef(codFPagamento,0);
   habilitaDesabilita('D');
 
   if not dm.caixaAberto then

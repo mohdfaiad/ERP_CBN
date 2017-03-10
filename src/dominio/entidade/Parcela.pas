@@ -17,7 +17,7 @@ type
     Fdesc_status :String;
     Fvalor :Real;
     Fvalor_pago :Real;
-    Fcodigo_pedido: Integer;
+    Fcodigo_nota_fiscal: Integer;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -29,7 +29,7 @@ type
     property desc_status           :String read Fdesc_status           write Fdesc_status;
     property valor                 :Real read Fvalor                 write Fvalor;
     property valor_pago            :Real read Fvalor_pago            write Fvalor_pago;
-    property codigo_pedido         :Integer read Fcodigo_pedido          write Fcodigo_pedido;
+    property codigo_nota_fiscal    :Integer read Fcodigo_nota_fiscal write Fcodigo_nota_fiscal;
 end;
 
 implementation

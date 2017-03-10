@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, Buttons, Mask, RxToolEdit, RxCurrEdit, ObjetoGenerico;
+  Dialogs, StdCtrls, Buttons, Mask, RxToolEdit, RxCurrEdit, ObjetoGenerico, FormaPagamento;
 
 type
   TBuscaFormaPagamento = class(TFrame)
@@ -18,80 +18,59 @@ type
     procedure edtCodigoExit(Sender: TObject);
     procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
   private
-    formaPag :TObjetoGenerico;
-    FcodFormaPagamento: String;
-    FNumeroParcelas :integer;
-    FDesconto :Real;
-    FAcrescimo :Real;
-    FAposAlterarFormaPagamento :TNotifyEvent;
-    FPercComissao: Real;
+    FFormaPagamento :TFormaPagamento;
+    FAposAlterarFormaPagamento: TNotifyEvent;
 
-    procedure SetcodFormaPagamento(const Value: String);
+    procedure SetFormaPagamento(const Value: Integer);
     procedure SetAposAlterarFormaPagamento(const Value: TNotifyEvent);
-
-    procedure buscaFormaPagamento(codigo:String);
+    procedure buscaFormaPagamento(codigo:Integer);
 
   public
      procedure limpa;
 
-     property codFormaPagamento :String  read FcodFormaPagamento write SetcodFormaPagamento;
-     property NumeroParcelas    :Integer read FNumeroParcelas;
-     property Desconto          :Real    read FDesconto;
-     property Acrescimo         :Real    read FAcrescimo;
-     property PercComissao      :Real    read FPercComissao;
-
-     property AposAlterarFormaPagamento :TNotifyEvent read FAposAlterarFormaPagamento write SetAposAlterarFormaPagamento;
+  public
+     property codigoFormaPagamento       :Integer         write SetFormaPagamento;
+     property FormaPagamento             :TFormaPagamento read  FFormaPagamento write FFormaPagamento;
+     property AposAlterarFormaPagamento  :TNotifyEvent    read  FAposAlterarFormaPagamento write SetAposAlterarFormaPagamento;
   end;
 
 implementation
 
-uses uPesquisaSimples, FormaPagamento;
+uses uPesquisaSimples, repositorio, fabricaRepositorio;
 
 {$R *.dfm}
 
 { TBuscaFormaPagamento }
 
-procedure TBuscaFormaPagamento.buscaFormaPagamento(codigo: String);
+procedure TBuscaFormaPagamento.buscaFormaPagamento(codigo: Integer);
 var
+  repositorio  :TRepositorio;
   campoRetorno :String;
   FormaPagamento :TFormaPagamento;
 begin
-  campoRetorno := 'CODIGO'; //campo que deseja que retorne
+  repositorio     := nil;
+  FFormaPagamento := nil;
+  repositorio     := TFabricaRepositorio.GetRepositorio(TFormaPagamento.ClassName);
+  FFormaPagamento := TFormaPagamento(repositorio.Get(codigo));
 
-  if formaPag = nil then
-    formaPag := TObjetoGenerico.Create;
+  if assigned(FFormaPagamento) then
+  begin
+    edtCodigo.Value   := FFormaPagamento.Codigo;
+    edtDescricao.Text := FFormaPagamento.Descricao;
+  end
+  else
+    limpa;
 
-  formaPag.SQL := 'Select first 1 codigo, descricao, numero_parcelas, desconto, acrescimo, perc_comissao from formas_pgto where '+campoRetorno+'='+ codigo;
-
-  FormaPagamento := nil;
-
-  try
-
-    if not formaPag.BuscaVazia then begin
-      edtDescricao.Text  := formaPag.getCampo('descricao').AsString;
-      edtCodigo.Text     := formaPag.getCampo('codigo').AsString;
-      FNumeroParcelas    := formaPag.getCampo('numero_parcelas').asInteger;
-      FDesconto          := formaPag.getCampo('desconto').asFloat;
-      FAcrescimo         := formaPag.getCampo('acrescimo').asFloat;
-      FPercComissao      := formaPag.getCampo('perc_comissao').asFloat;
-
-      FormaPagamento           := TFormaPagamento.Create;
-      FormaPagamento.Codigo    := formaPag.getCampo('codigo').AsInteger;
-      FcodFormaPagamento := formaPag.getCampo('codigo').AsString;
-    end
-    else
-      limpa;
-
-    if Assigned(self.FAposAlterarFormaPagamento) then
-      self.FAposAlterarFormaPagamento(FormaPagamento);
-  finally
-    FreeAndNil(FormaPagamento);
-  end;
-
-  FreeAndNil(formaPag);
+  if Assigned(self.FAposAlterarFormaPagamento) then
+    self.FAposAlterarFormaPagamento(FFormaPagamento);
 end;
 
-procedure TBuscaFormaPagamento.SetcodFormaPagamento(const Value: String);
+procedure TBuscaFormaPagamento.SetAposAlterarFormaPagamento(const Value: TNotifyEvent);
+begin
+  FAposAlterarFormaPagamento := Value;
+end;
+
+procedure TBuscaFormaPagamento.SetFormaPagamento(const Value: Integer);
 begin
   buscaFormaPagamento(value);
 end;
@@ -105,7 +84,7 @@ begin
                                                          campoRetorno, 'Selecione a Forma de Pagamento desejada...');
 
   if frmPesquisaSimples.ShowModal = mrOk then
-    buscaFormaPagamento(frmPesquisaSimples.cds_retorno.Fields[0].AsString);
+    buscaFormaPagamento(frmPesquisaSimples.cds_retorno.Fields[0].AsInteger);
 
   frmPesquisaSimples.Release;
 
@@ -120,20 +99,18 @@ end;
 procedure TBuscaFormaPagamento.edtCodigoExit(Sender: TObject);
 begin
   if edtCodigo.Value > 0 then
-    buscaFormaPagamento(edtCodigo.Text)
+    buscaFormaPagamento(edtCodigo.AsInteger)
   else
     limpa;
 end;
 
 procedure TBuscaFormaPagamento.limpa;
 begin
-  edtCodigo.Text     := '';
-  edtDescricao.Text  := '';
-  FNumeroParcelas    := 0;
-  FDesconto          := 0;
-  FAcrescimo         := 0;
-  FPercComissao      := 0;
-  FcodFormaPagamento := '';
+  edtCodigo.Clear;
+  edtDescricao.Clear;
+
+  if Assigned(FFormaPagamento) then
+    FreeAndNil(FFormaPagamento);
 end;
 
 procedure TBuscaFormaPagamento.edtCodigoKeyPress(Sender: TObject;
@@ -142,12 +119,6 @@ begin
   if key = #13 then
     if edtCodigo.Value <= 0 then
       btnBusca.Click;
-end;
-
-procedure TBuscaFormaPagamento.SetAposAlterarFormaPagamento(
-  const Value: TNotifyEvent);
-begin
-  FAposAlterarFormaPagamento := Value;
 end;
 
 end.

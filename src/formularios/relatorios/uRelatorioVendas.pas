@@ -424,7 +424,7 @@ function TfrmRelatorioVendas.monta_sql: String;
 var condicao_representante, condicao_data, condicao_faturado, condicao_internet, condicao_funcionario :String;
     tipo_data, condicao_exclui_remessa, condicao_exclui_vendas_propria_empresa :String;
     condicao_exclui_bonificacoes, condicao_percent_estoque, condicao_produto, condicao_cor :String;
-    agrupa_itens, campos_analitico :String;
+    agrupa_itens, campos_analitico, condicao_item :String;
 begin
 
   condicao_exclui_remessa := ' and not (iif((select first 1 nat.descricao from itens_notas_fiscais it                    '+#13#10+
@@ -448,6 +448,8 @@ begin
 
 
   condicao_faturado       := ' AND iif((not (PF.codigo is null) or (P.despachado = ''S'')), ''SIM'', ''NÃO'')'+#13#10;
+
+  condicao_item           := ' AND ((itens.devolvido is null) or (itens.devolvido <> ''S'')) ';
 
   condicao_exclui_bonificacoes := ' and ( ((not nat.cfop in (''5910'',''6910'',''5916'')) and not(nat.cfop like ''1%'' or nat.cfop like ''2%'')) or (nat.cfop is null)) '+#13#10;
 
@@ -523,6 +525,7 @@ begin
   result := result + condicao_exclui_bonificacoes;
   result := result + condicao_produto;
   result := result + condicao_cor;
+  result := result + condicao_item;
   result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,20'+ IfThen(self.RelatorioSemValores,',17',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao, pf.codigo, pf.codigo_nota_fiscal ');
   result := result + IfThen(rgLeiaute.ItemIndex = 0, IfThen(self.RelatorioSemValores,' ORDER BY per.percent_disponivel DESC','') ,' order by 1, 3 ');
 end;

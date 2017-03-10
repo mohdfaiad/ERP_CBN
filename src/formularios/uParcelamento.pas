@@ -5,52 +5,79 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, frameBuscaPedido, Data.DB, Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, DBGridCBN, Vcl.Mask,
-  RxToolEdit, RxCurrEdit, Datasnap.DBClient, Vcl.Buttons, Vcl.ExtCtrls, contnrs;
+  RxToolEdit, RxCurrEdit, Datasnap.DBClient, Vcl.Buttons, Vcl.ExtCtrls, contnrs, Vcl.ComCtrls, frameBuscaFormaPagamento, frameBuscaNotaFiscal;
 
 type
   TfrmParcelamento = class(TfrmPadrao)
-    DBGridCBN1: TDBGridCBN;
-    Label1: TLabel;
-    GroupBox1: TGroupBox;
-    BuscaPedido1: TBuscaPedido;
-    edtTotalPedido: TCurrencyEdit;
-    Label18: TLabel;
-    edtParcelas: TCurrencyEdit;
-    Label2: TLabel;
-    Label3: TLabel;
-    edtIntervalo: TCurrencyEdit;
-    btnGerar: TBitBtn;
+    pnlBotoes: TPanel;
+    btnCancelar: TBitBtn;
+    btnSalvar: TBitBtn;
+    BitBtn1: TBitBtn;
     cds: TClientDataSet;
-    ds: TDataSource;
     cdsCODIGO: TIntegerField;
     cdsNUMERO: TIntegerField;
     cdsVALOR: TFloatField;
     cdsVENCIMENTO: TDateField;
-    edtVencimento: TMaskEdit;
-    lbVencimento: TLabel;
-    pnlBotoes: TPanel;
-    btnCancelar: TBitBtn;
-    btnSalvar: TBitBtn;
-    btnAddParcela: TBitBtn;
-    btnRemoveParcela: TBitBtn;
+    ds: TDataSource;
     cdsDeletadas: TClientDataSet;
     cdsDeletadasCODIGO: TIntegerField;
+    Label1: TLabel;
+    GridParcelas: TDBGridCBN;
+    GroupBox1: TGroupBox;
+    Label18: TLabel;
+    lbVencimento: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    edtTotalParcelas: TCurrencyEdit;
+    btnGerar: TBitBtn;
+    BuscaFormaPagamento1: TBuscaFormaPagamento;
+    dtpVencimento: TDateTimePicker;
+    edtNParcelas: TCurrencyEdit;
+    edtIntervalo: TCurrencyEdit;
+    btnAddParcela: TBitBtn;
+    btnRemoveParcela: TBitBtn;
+    pnlNovaData: TPanel;
+    Label4: TLabel;
+    dtpNovaData: TDateTimePicker;
+    btnConfirma: TBitBtn;
+    btnCancela: TBitBtn;
+    Panel1: TPanel;
+    Label5: TLabel;
+    Shape1: TShape;
+    BuscaNotaFiscal: TBuscaNotaFiscal;
+    Label6: TLabel;
+    edtValorParcela: TCurrencyEdit;
     procedure btnGerarClick(Sender: TObject);
-    procedure BuscaPedido1Exit(Sender: TObject);
-    procedure BuscaPedido1edtNumPedidoChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure btnRemoveParcelaClick(Sender: TObject);
     procedure btnAddParcelaClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
+    procedure BuscaFormaPagamento1Exit(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure cdsAfterScroll(DataSet: TDataSet);
+    procedure btnConfirmaClick(Sender: TObject);
+    procedure btnCancelaClick(Sender: TObject);
+    procedure GridParcelasDblClick(Sender: TObject);
+    procedure BuscaNotaFiscalExit(Sender: TObject);
+    procedure cdsAfterPost(DataSet: TDataSet);
+    procedure cdsAfterDelete(DataSet: TDataSet);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
+    FDataAtual :TDate;
+
     procedure gerarParcelas;
     procedure LimpaTela;
     function salvar :Boolean;
-    function salvaRemovidas :Boolean;   
+    function salvaRemovidas :Boolean;
     procedure carregarParcelas(parcelas :TObjectList);
     procedure armazenaDeletada;
+    procedure validaDataSelecionada;
+    procedure recalculaValoresParcelas;
+
+    function intervalo :integer;
+    function calculaTotalParcelas :Real;
   public
     { Public declarations }
   end;
@@ -60,7 +87,7 @@ var
 
 implementation
 
-uses Math, Parcela, repositorio, fabricaRepositorio;
+uses Math, Parcela, repositorio, fabricaRepositorio, FormaPagamentoParcelas, PedidoFaturado;
 
 {$R *.dfm}
 
@@ -80,15 +107,30 @@ begin
     armazenaDeletada;
 
   cds.Delete;
+  edtNParcelas.AsInteger := edtNParcelas.AsInteger - 1;
+  gerarParcelas;
+end;
 
-  edtParcelas.AsInteger := edtParcelas.AsInteger - 1;
-  gerarParcelas;  
+procedure TfrmParcelamento.BitBtn1Click(Sender: TObject);
+begin
+  LimpaTela;
+  BuscaNotaFiscal.edtNrNota.Clear;
 end;
 
 procedure TfrmParcelamento.btnAddParcelaClick(Sender: TObject);
 begin
-  edtParcelas.AsInteger := edtParcelas.AsInteger + 1;
+  edtNParcelas.AsInteger := edtNParcelas.AsInteger + 1;
   gerarParcelas;
+end;
+
+procedure TfrmParcelamento.btnCancelaClick(Sender: TObject);
+begin
+  pnlNovaData.Visible:= false;
+  pnlBotoes.Enabled := true;
+  GroupBox1.Enabled := true;
+  GridParcelas.Enabled := true;
+  btnAddParcela.Enabled := true;
+  btnRemoveParcela.Enabled := true;
 end;
 
 procedure TfrmParcelamento.btnCancelarClick(Sender: TObject);
@@ -97,27 +139,41 @@ begin
   self.Close;
 end;
 
+procedure TfrmParcelamento.btnConfirmaClick(Sender: TObject);
+begin
+  try
+    if (edtValorParcela.Value <= 0) or (edtValorParcela.Value > (edtTotalParcelas.Value - 1)) then
+    begin
+      avisar('Favor informar um valor válido para a parcela');
+      edtValorParcela.SetFocus;
+      exit;
+    end;
+    validaDataSelecionada;
+    recalculaValoresParcelas;
+
+    cds.Edit;
+    cdsVENCIMENTO.AsDateTime := dtpNovaData.DateTime;
+    cdsVALOR.AsFloat         := edtValorParcela.Value;
+    cds.Post;
+    btnCancela.Click;
+
+  Except
+    on e :Exception do
+      avisar(e.Message);
+  end;
+end;
+
 procedure TfrmParcelamento.btnGerarClick(Sender: TObject);
 begin
-  if edtParcelas.AsInteger <= 0 then
+  if not assigned(BuscaFormaPagamento1.FormaPagamento) then
   begin
-    avisar('O quantidade de parcelas deve ser informada');
-    edtParcelas.SetFocus;
+    avisar('Primeiramente selecione uma forma de pagamento.');
+    BuscaFormaPagamento1.edtCodigo.SetFocus;
   end
-  else if (edtParcelas.AsInteger > 1) and (edtIntervalo.AsInteger <= 0) then
-  begin
-    avisar('O intervalo entre as parcelas deve ser informado');
-    edtIntervalo.SetFocus;
-  end
-  else if trim(edtVencimento.Text) = '/  /' then
-  begin
-    avisar('O vencimento deve ser informado');
-    edtVencimento.SetFocus;
-  end
-  else if edtVencimento.Text = '' then
+  else if edtTotalParcelas.Value = 0 then
   begin
     avisar('Impossível gerar parcelas. Total da conta está zerado.');
-    edtParcelas.SetFocus;
+    BuscaNotaFiscal.edtNrNota.SetFocus;
   end
   else
     gerarParcelas;
@@ -129,54 +185,87 @@ begin
  begin
    avisar('Parcelas salvas com sucesso!');
    LimpaTela;
-   BuscaPedido1.limpa;
+   BuscaNotaFiscal.limpa;
  end;
 end;
 
-procedure TfrmParcelamento.BuscaPedido1edtNumPedidoChange(Sender: TObject);
+procedure TfrmParcelamento.BuscaFormaPagamento1Exit(Sender: TObject);
 begin
-  limpaTela;
+  if assigned(BuscaFormaPagamento1.FormaPagamento) then
+  begin
+    edtIntervalo.AsInteger := intervalo;
+    edtNParcelas.AsInteger := BuscaFormaPagamento1.FormaPagamento.Parcelas.Count;
+  end;
 end;
 
-procedure TfrmParcelamento.BuscaPedido1Exit(Sender: TObject);
+procedure TfrmParcelamento.BuscaNotaFiscalExit(Sender: TObject);
 begin
   inherited;
-  if BuscaPedido1.edtNumPedido.Text = '' then
-    BuscaPedido1.limpa;
-  
-  if not assigned(BuscaPedido1.Ped) then
+  if BuscaNotaFiscal.edtNrNota.Text = '' then
+    BuscaNotaFiscal.limpa;
+
+  if not assigned(BuscaNotaFiscal.NotaFiscal) then
   begin
-    BuscaPedido1.btnBuscar.Click;
-    BuscaPedido1.edtNumPedido.SetFocus;
+    BuscaNotaFiscal.btnBusca.Click;
+    BuscaNotaFiscal.edtNrNota.SetFocus;
   end
   else
   begin
-    edtTotalPedido.Value := BuscaPedido1.Ped.valor_total;
-    carregarParcelas(BuscaPedido1.Ped.Parcelas);
-    edtParcelas.Enabled    := not assigned(BuscaPedido1.Ped.Parcelas);
-    edtIntervalo.Enabled   := not assigned(BuscaPedido1.Ped.Parcelas);
-    edtVencimento.Enabled  := not assigned(BuscaPedido1.Ped.Parcelas);
-    btnGerar.Enabled       := not assigned(BuscaPedido1.Ped.Parcelas);
-    btnRemoveParcela.Enabled := assigned(BuscaPedido1.Ped.Parcelas);
-    btnAddParcela.Enabled    := assigned(BuscaPedido1.Ped.Parcelas);
+    BuscaNotaFiscal.edtNrNota.Enabled := false;
+    cds.EmptyDataSet;
+    if cdsDeletadas.Active then
+      cdsDeletadas.EmptyDataSet;
+    edtTotalParcelas.Value := calculaTotalParcelas;
+    carregarParcelas(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    BuscaFormaPagamento1.codigoFormaPagamento := BuscaNotaFiscal.NotaFiscal.FormaPagamento.Codigo;
+    dtpVencimento.Enabled                     := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    btnGerar.Enabled                          := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    edtNParcelas.Enabled                      := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    edtIntervalo.Enabled                      := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    BuscaFormaPagamento1.visible              := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+   // BuscaFormaPagamento1.edtCodigo.Enabled    := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+  //  BuscaFormaPagamento1.btnBusca.Enabled     := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+   // BuscaFormaPagamento1.edtDescricao.Enabled := not assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    btnRemoveParcela.Enabled                  := assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+    btnAddParcela.Enabled                     := assigned(BuscaNotaFiscal.NotaFiscal.Parcelas);
+  // BuscaFormaPagamento1Exit(nil);
   end;
+end;
+
+function TfrmParcelamento.calculaTotalParcelas: Real;
+var totalPedidos :Real;
+    i: integer;
+begin
+  result := 0;
+  if not assigned(BuscaNotaFiscal.NotaFiscal.PedidosFaturados) then
+    exit;
+
+  totalPedidos := 0;
+  for i := 0 to BuscaNotaFiscal.NotaFiscal.PedidosFaturados.Count - 1 do
+    totalPedidos := totalPedidos + TPedidoFaturado(BuscaNotaFiscal.NotaFiscal.PedidosFaturados.Items[i]).Pedido.valor_total;
+
+  result := totalPedidos - BuscaNotaFiscal.NotaFiscal.Totais.TotalNF;
 end;
 
 procedure TfrmParcelamento.carregarParcelas(parcelas: TObjectList);
 var i :integer;
+    dt_ini :TDateTime;
+    total :Real;
 begin
   if not assigned(parcelas) then
     exit;
 
-  edtParcelas.Value := parcelas.Count;
-
+  total              := 0;
+  edtNParcelas.Value := parcelas.Count;
 
   for i := 0 to parcelas.Count - 1 do
   begin
     if i = 0 then
-      edtVencimento.Text := DateToStr(TParcela(parcelas[i]).dt_vencimento)
-    else if i = 2 then
-      edtIntervalo.Value := TParcela(parcelas[i]).dt_vencimento - cdsVENCIMENTO.AsDateTime;
+      dtpVencimento.DateTime := TParcela(parcelas[i]).dt_vencimento
+    else if i = 1 then
+      edtIntervalo.AsInteger := trunc(TParcela(parcelas[i]).dt_vencimento - dtpVencimento.DateTime);
+
+    total := total + TParcela(parcelas[i]).valor;
 
     cds.Append;
     cdsCODIGO.AsInteger      := TParcela(parcelas[i]).codigo;
@@ -186,6 +275,25 @@ begin
     cds.Post;
   end;
 
+  edtTotalParcelas.Value := total;
+end;
+
+procedure TfrmParcelamento.cdsAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  btnRemoveParcela.Enabled := cds.RecordCount > 1;
+end;
+
+procedure TfrmParcelamento.cdsAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  btnRemoveParcela.Enabled := cds.RecordCount > 1;
+end;
+
+procedure TfrmParcelamento.cdsAfterScroll(DataSet: TDataSet);
+begin
+  inherited;
+  FDataAtual := cdsVENCIMENTO.AsDateTime;
 end;
 
 procedure TfrmParcelamento.FormCreate(Sender: TObject);
@@ -194,59 +302,138 @@ begin
   cds.CreateDataSet;
 end;
 
+procedure TfrmParcelamento.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (key = vk_escape) and assigned(BuscaNotaFiscal.NotaFiscal) then
+    if not confirma('Deseja cancelar alterações e sair?') then
+      key := 0;
+  inherited;
+end;
+
 procedure TfrmParcelamento.FormShow(Sender: TObject);
 begin
-  BuscaPedido1.edtNumPedido.SetFocus;
+  BuscaNotaFiscal.edtNrNota.SetFocus;
 end;
 
 procedure TfrmParcelamento.gerarParcelas;
 var
   i :integer;
-  data :TDateTime;
+  dataIni, dataVenc :TDateTime;
   valor, diferenca, totsomado :Real;
 begin
-  data      := StrToDateTime(edtVencimento.Text);
-  valor     := RoundTo(edtTotalPedido.Value / edtParcelas.AsInteger, -2);
+  dataIni   := dtpVencimento.DateTime;
+  valor     := RoundTo(edtTotalParcelas.Value / edtNParcelas.AsInteger, -2);
   diferenca := 0;
 
   if cdsCODIGO.AsInteger = 0 then
     cds.EmptyDataSet;
 
   cds.first;  
-  for i := 1 to edtParcelas.AsInteger do
+  for i := 1 to edtNParcelas.AsInteger do
   begin
     totsomado := totsomado + valor;
 
-    if i = edtParcelas.AsInteger then
-      diferenca := edtTotalPedido.Value - totsomado;
+    if i = edtNParcelas.AsInteger then
+      diferenca := edtTotalParcelas.Value - totsomado;
 
     if (cds.recordcount >= i) and (cdsCODIGO.AsInteger > 0) then
-    begin
-     // cds.Recno := i;
-      cds.Edit;
-    end
+      cds.Edit
     else
       cds.Append;
 
-    cdsNUMERO.AsInteger := i;
-    cdsVENCIMENTO.AsDateTime := data;
+    cdsNUMERO.AsInteger      := i;
+    cdsVENCIMENTO.AsDateTime := dataIni;
     cdsVALOR.AsFloat         := valor + diferenca;
     cds.Post;
 
-    data := data + edtIntervalo.AsInteger;
+    dataIni := dataIni + edtIntervalo.AsInteger;
     cds.next;
+  end;
+end;
+
+procedure TfrmParcelamento.GridParcelasDblClick(Sender: TObject);
+begin
+  dtpNovaData.Date      := cdsVENCIMENTO.AsDateTime;
+  edtValorParcela.Value := cdsVALOR.AsFloat;
+  pnlNovaData.Visible   := true;
+  pnlBotoes.Enabled     := false;
+  GroupBox1.Enabled     := false;
+  GridParcelas.Enabled  := false;
+  btnAddParcela.Enabled := false;
+  btnRemoveParcela.Enabled := false;
+  dtpNovaData.SetFocus;
+end;
+
+function TfrmParcelamento.intervalo: integer;
+var diaIni, i :integer;
+begin
+  diaIni := 0;
+  if assigned(BuscaNotaFiscal.NotaFiscal.Parcelas) then
+  begin
+    for i := 0 to BuscaNotaFiscal.NotaFiscal.Parcelas.Count -1 do
+      if i = 1 then
+      begin
+        result := trunc(((BuscaNotaFiscal.NotaFiscal.Parcelas[i] as TParcela).dt_vencimento-(BuscaNotaFiscal.NotaFiscal.Parcelas[i-1] as TParcela).dt_vencimento));
+        break;
+      end;
+  end
+  else if assigned(BuscaFormaPagamento1.FormaPagamento) then
+  begin
+    for i := 0 to BuscaFormaPagamento1.FormaPagamento.Parcelas.Count -1 do
+      if i = 1 then
+      begin
+        result := ((BuscaFormaPagamento1.FormaPagamento.Parcelas[i] as TFormaPagamentoParcelas).DiasParcela-
+                   (BuscaFormaPagamento1.FormaPagamento.Parcelas[i-1] as TFormaPagamentoParcelas).DiasParcela);
+        break;
+      end;
   end;
 end;
 
 procedure TfrmParcelamento.LimpaTela;
 begin
-  edtTotalPedido.Clear;
-  edtParcelas.Clear;
+  edtTotalParcelas.Clear;
+  BuscaFormaPagamento1.limpa;
+  edtNParcelas.Clear;
   edtIntervalo.Clear;
-  edtVencimento.Clear;
+  dtpVencimento.DateTime := Date;
+  BuscaFormaPagamento1.Visible := true;
+  BuscaNotaFiscal.limpa;
+
+  if not BuscaNotaFiscal.edtNrNota.Enabled then
+     BuscaNotaFiscal.edtNrNota.Enabled := true;
+
+  BuscaNotaFiscal.edtNrNota.SetFocus;
+  BuscaNotaFiscal.edtNrNota.SelectAll;
 
   if cds.Active then
     cds.EmptyDataSet;
+end;
+
+procedure TfrmParcelamento.recalculaValoresParcelas;
+var registroAlterado :integer;
+    diferenca, reajuste, totalDistribuido :Real;
+begin
+  totalDistribuido := 0;
+  registroAlterado := cds.RecNo;
+  reajuste         := edtTotalParcelas.Value - edtValorParcela.Value;
+  reajuste         := roundto((reajuste / (cds.RecordCount - 1)),-2);
+  totalDistribuido := reajuste * (cds.RecordCount - 1);
+  diferenca        := edtTotalParcelas.Value - (totalDistribuido + edtValorParcela.Value);
+
+  cds.First;
+  while not cds.Eof do
+  begin
+    if cds.RecNo <> registroAlterado then
+    begin
+      cds.Edit;
+      cdsVALOR.AsFloat := reajuste + diferenca;
+      cds.Post;
+      diferenca := 0;
+    end;
+    cds.Next;
+  end;
+
+  cds.RecNo := registroAlterado;
 end;
 
 function TfrmParcelamento.salvar :Boolean;
@@ -268,7 +455,7 @@ begin
       if not assigned(Parcela) then
         Parcela := TParcela.Create;
         
-      Parcela.codigo_pedido := BuscaPedido1.Ped.Codigo;
+      Parcela.codigo_nota_fiscal := BuscaNotaFiscal.NotaFiscal.CodigoNotaFiscal;
       Parcela.num_parcela   := cdsNUMERO.AsInteger;
       Parcela.dt_vencimento := cdsVENCIMENTO.AsDateTime;
       Parcela.valor         := cdsVALOR.AsFloat;
@@ -305,6 +492,35 @@ begin
   finally
     FreeAndNil(repositorio);
   end;  
+end;
+
+procedure TfrmParcelamento.validaDataSelecionada;
+var dataAnterior, dataSeguinte, dataAtual :TDate;
+begin
+  dataAtual := dtpNovaData.Date;
+
+  if cds.RecNo > 1 then
+  begin
+    cds.Prior;
+    if dataAtual < cdsVENCIMENTO.AsDateTime then
+    begin
+      cds.Next;
+      raise Exception.Create('Data selecionada deve ser maior que a data da parcela anterior');
+    end;
+    cds.Next;
+  end;
+
+  if cds.RecNo < cds.RecordCount then
+  begin
+    cds.Next;
+    if dataAtual > cdsVENCIMENTO.AsDateTime then
+    begin
+      cds.Prior;
+      raise Exception.Create('Data selecionada deve ser menor que a data da parcela seguinte');
+    end;
+    cds.Prior;
+  end;
+
 end;
 
 end.

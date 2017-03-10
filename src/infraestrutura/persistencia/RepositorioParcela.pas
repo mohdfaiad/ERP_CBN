@@ -58,7 +58,7 @@ begin
    Parcela.desc_status   := self.FQuery.FieldByName('desc_status').AsString;
    Parcela.valor         := self.FQuery.FieldByName('valor').AsFloat;
    Parcela.valor_pago    := self.FQuery.FieldByName('valor_pago').AsFloat;
-   Parcela.codigo_pedido := self.FQuery.FieldByName('codigo_pedido').AsInteger;
+   Parcela.codigo_nota_fiscal := self.FQuery.FieldByName('codigo_nota_fiscal').AsInteger;
 
    result := Parcela;
 end;
@@ -115,8 +115,8 @@ begin
    if (ParcelaAntigo.valor_pago <> ParcelaNovo.valor_pago) then
      Auditoria.AdicionaCampoAlterado('valor_pago', FloatToStr(ParcelaAntigo.valor_pago), FloatToStr(ParcelaNovo.valor_pago));
 
-    if (ParcelaAntigo.codigo_pedido <> ParcelaNovo.codigo_pedido) then
-     Auditoria.AdicionaCampoAlterado('codigo_pedido', IntToStr(ParcelaAntigo.codigo_pedido), IntToStr(ParcelaNovo.codigo_pedido));
+    if (ParcelaAntigo.codigo_nota_fiscal <> ParcelaNovo.codigo_nota_fiscal) then
+     Auditoria.AdicionaCampoAlterado('codigo_nota_fiscal', IntToStr(ParcelaAntigo.codigo_nota_fiscal), IntToStr(ParcelaNovo.codigo_nota_fiscal));
 end;
 
 procedure TRepositorioParcela.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -133,7 +133,7 @@ begin
   Auditoria.AdicionaCampoExcluido('desc_status'  , Parcela.desc_status);
   Auditoria.AdicionaCampoExcluido('valor'        , FloatToStr(Parcela.valor));
   Auditoria.AdicionaCampoExcluido('valor_pago'   , FloatToStr(Parcela.valor_pago));
-  Auditoria.AdicionaCampoExcluido('codigo_pedido' , IntToStr(Parcela.codigo_pedido));
+  Auditoria.AdicionaCampoExcluido('codigo_nota_fiscal' , IntToStr(Parcela.codigo_nota_fiscal));
 end;
 
 procedure TRepositorioParcela.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -150,7 +150,7 @@ begin
   Auditoria.AdicionaCampoIncluido('desc_status'  ,    Parcela.desc_status);
   Auditoria.AdicionaCampoIncluido('valor'        ,    FloatToStr(Parcela.valor));
   Auditoria.AdicionaCampoIncluido('valor_pago'   ,    FloatToStr(Parcela.valor_pago));
-  Auditoria.AdicionaCampoIncluido('codigo_pedido' , IntToStr(Parcela.codigo_pedido));
+  Auditoria.AdicionaCampoIncluido('codigo_nota_fiscal' , IntToStr(Parcela.codigo_nota_fiscal));
 end;
 
 procedure TRepositorioParcela.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -176,8 +176,8 @@ begin
   self.FQuery.ParamByName('valor').AsFloat         := Parcela.valor;
   self.FQuery.ParamByName('valor_pago').AsFloat    := Parcela.valor_pago;
 
-  if Parcela.codigo_pedido > 0 then
-    self.FQuery.ParamByName('codigo_pedido').AsInteger  := Parcela.codigo_pedido;
+  if Parcela.codigo_nota_fiscal > 0 then
+    self.FQuery.ParamByName('codigo_nota_fiscal').AsInteger  := Parcela.codigo_nota_fiscal;
 
 end;
 
@@ -203,8 +203,8 @@ end;
 
 function TRepositorioParcela.SQLSalvar: String;
 begin
-  result := 'update or insert into PARCELAS (CODIGO ,CODIGO_CONTA ,NUM_PARCELA ,DT_VENCIMENTO ,DT_PAGAMENTO ,STATUS ,DESC_STATUS ,VALOR, VALOR_PAGO, CODIGO_PEDIDO) '+
-           '                      values ( :CODIGO , :CODIGO_CONTA , :NUM_PARCELA , :DT_VENCIMENTO , :DT_PAGAMENTO , :STATUS , :DESC_STATUS , :VALOR, :VALOR_PAGO, :CODIGO_PEDIDO) ';
+  result := 'update or insert into PARCELAS (CODIGO ,CODIGO_CONTA ,NUM_PARCELA ,DT_VENCIMENTO ,DT_PAGAMENTO ,STATUS ,DESC_STATUS ,VALOR, VALOR_PAGO, codigo_nota_fiscal) '+
+           '                      values ( :CODIGO , :CODIGO_CONTA , :NUM_PARCELA , :DT_VENCIMENTO , :DT_PAGAMENTO , :STATUS , :DESC_STATUS , :VALOR, :VALOR_PAGO, :codigo_nota_fiscal) ';
 end;
 
 end.

@@ -70,6 +70,7 @@ type
     Fqtd_12: integer;
     Fqtd_10: integer;
     Fqtd_14: integer;
+    FDevolvido: String;
     function GetCor              :TCor;
     function GetPesoBrutoTotal   :Real;
     function GetPesoLiquidoTotal :Real;
@@ -107,8 +108,9 @@ type
     property qtd_14            :integer   read Fqtd_14            write Setqtd_14;
     property qtd_UNICA         :Real      read Fqtd_UNICA         write Setqtd_UNICA;
     property qtd_total         :Double    read GetQtd_total       write Setqtd_total;
-    property observacao        :String read Fobservacao write Setobservacao;
+    property observacao        :String    read Fobservacao        write Setobservacao;
     property peso              :Real      read FPeso              write FPeso;
+    property devolvido         :String    read FDevolvido         write FDevolvido;
 
   public
     property Cor               :TCor      read GetCor;

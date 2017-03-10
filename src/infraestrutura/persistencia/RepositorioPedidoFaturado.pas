@@ -48,7 +48,8 @@ uses
 function TRepositorioPedidoFaturado.Get(Dataset: TDataSet): TObject;
 begin
    result := TPedidoFaturado.Create( Dataset.FieldByName('CODIGO_NOTA_FISCAL').AsInteger,
-                                     Dataset.FieldByName('CODIGO_PEDIDO').AsInteger    );
+                                     Dataset.FieldByName('CODIGO_PEDIDO').AsInteger,
+                                     Dataset.FieldByName('MOTIVO').AsString);
 end;
 
 function TRepositorioPedidoFaturado.GetIdentificador(
@@ -86,6 +87,7 @@ begin
 
    Auditoria.AdicionaCampoExcluido('codigo_nota_fiscal',  FloatToStr(PedidoFaturado.CodigoNotaFiscal));
    Auditoria.AdicionaCampoExcluido('codigo_pedido',       IntToStr(PedidoFaturado.CodigoPedido));
+   Auditoria.AdicionaCampoExcluido('motivo',              PedidoFaturado.motivo);
 end;
 
 procedure TRepositorioPedidoFaturado.SetCamposIncluidos(
@@ -97,6 +99,7 @@ begin
 
    Auditoria.AdicionaCampoIncluido('codigo_nota_fiscal',  FloatToStr(PedidoFaturado.CodigoNotaFiscal));
    Auditoria.AdicionaCampoIncluido('codigo_pedido',       IntToStr(PedidoFaturado.CodigoPedido));
+   Auditoria.AdicionaCampoIncluido('motivo',              PedidoFaturado.motivo);
 end;
 
 procedure TRepositorioPedidoFaturado.SetParametros(Objeto: TObject);
@@ -107,6 +110,7 @@ begin
 
    inherited SetParametro('codigo_nota_fiscal', PedidoFaturado.CodigoNotaFiscal);
    inherited SetParametro('codigo_pedido',      PedidoFaturado.CodigoPedido);
+   inherited SetParametro('motivo',             PedidoFaturado.Motivo);
 end;
 
 function TRepositorioPedidoFaturado.SQLGet: String;
@@ -126,8 +130,8 @@ end;
 
 function TRepositorioPedidoFaturado.SQLSalvar: String;
 begin
-   result := 'update or insert into '+self.GetNomeDaTabela +' (codigo, codigo_nota_fiscal,  codigo_pedido  )'+
-                             '                        values (0,      :codigo_nota_fiscal, :codigo_pedido )';
+   result := 'update or insert into '+self.GetNomeDaTabela +' (codigo, codigo_nota_fiscal,  codigo_pedido, motivo  )'+
+                             '                        values (0,      :codigo_nota_fiscal, :codigo_pedido, :motivo )';
 end;
 
 end.

@@ -19,8 +19,6 @@ type
   private
     FCriouListaItens :Boolean;
     Fcancelado: String;
-    procedure Setcancelado(const Value: String);
-    function GetValor_total_bruto: Real;
 
   private
     Fnumpedido: String;
@@ -62,7 +60,6 @@ type
     Fcod_pedido_matriz: Integer;
     Fdesconto_comiss: Real;
     FEmpresa :TEmpresa;
-    FParcelas :TObjectList;
 
     procedure Setacrescimo(const Value: Real);
     procedure Setaprovacao(const Value: String);
@@ -95,6 +92,7 @@ type
     procedure Setdesconto_itens(const Value: Real);
     procedure Setcod_pedido_matriz(const Value: Integer);
     procedure Setdesconto_comiss(const Value: Real);
+    procedure Setcancelado(const Value: String);
 
   private
     function GetItens             :TObjectList;
@@ -104,11 +102,11 @@ type
     function GetRepresentante: TPessoa;
     function GetConferencia: TConferenciaPedido;
     function GetEmpresa: TEmpresa;
-    function GetParcelas: TObjectList;
 
     function GetPesoBrutoTotal    :Real;
     function GetPesoLiquidoTotal  :Real;
     function GetTotal_desconto    :Real;
+    function GetValor_total_bruto: Real;
 
     function SomarCampoEspecificoReal   (MetodoQueSoma :TMetodoDelegadoSomarCampoEspecificoReal)    :Real;
     function SomarCampoEspecificoInteger(MetodoQueSoma :TMetodoDelegadoSomarCampoEspecificoInteger) :Integer;
@@ -170,7 +168,6 @@ type
     property PesoBrutoTotal   :Real               read GetPesoBrutoTotal;
     property PesoLiquidoTotal :Real               read GetPesoLiquidoTotal;
     property Conferencia      :TConferenciaPedido read GetConferencia;
-    property Parcelas         :TObjectList        read GetParcelas;
 
   public
     constructor Create;
@@ -189,9 +186,9 @@ implementation
 
 uses
   EspecificacaoItensDoPedido,
-  EspecificacaoParcelaPorCodigoPedido,
+  EspecificacaoParcelaPorCodigoNotaFiscal,
   FabricaRepositorio,
-  Classes, Parcela,
+  Classes,
   uModulo,
   ExcecaoParametroInvalido,
   Especificacao, Funcoes,
@@ -418,7 +415,6 @@ var
 begin
    Repositorio    := nil;
    Especificacao  := nil;
-
    try
       if not Assigned(self.FItens) then begin
         Especificacao         := TEspecificacaoItensDoPedido.Create(self);
@@ -426,7 +422,6 @@ begin
         self.FItens           := Repositorio.GetListaPorEspecificacao(Especificacao, IntToStr(self.Codigo));
         self.FCriouListaItens := true;
       end;
-
       result := self.FItens;
    finally
      FreeAndNil(Especificacao);
@@ -552,28 +547,6 @@ begin
    end;
    
    result := (ValorAtual + I.PesoLiquidoTotal);
-end;
-
-function TPedido.GetParcelas: TObjectList;
-var
-  Repositorio   :TRepositorio;
-  Especificacao :TEspecificacaoParcelaPorCodigoPedido;
-begin
-   Repositorio    := nil;
-   Especificacao  := nil;
-
-   try
-      if not Assigned(self.FParcelas) then begin
-        Especificacao         := TEspecificacaoParcelaPorCodigoPedido.Create(self.Codigo);
-        Repositorio           := TFabricaRepositorio.GetRepositorio(TParcela.ClassName);
-        self.FParcelas        := Repositorio.GetListaPorEspecificacao(Especificacao);
-      end;
-
-      result := self.FParcelas;
-   finally
-     FreeAndNil(Especificacao);
-     FreeAndNil(Repositorio);
-   end;
 end;
 
 function TPedido.GetPesoBrutoTotal: Real;

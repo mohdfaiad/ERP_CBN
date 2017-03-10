@@ -230,6 +230,7 @@ type
 
   private
     function ValidarNotaFiscal        :Boolean;
+    procedure VerificaConferencia;
 
   private
     procedure AdicionarPedidoNaNotaFiscal(const CodigoPedido :Integer);
@@ -519,6 +520,31 @@ begin
      FreeAndNil(Repositorio);
      FreeAndNil(Pedidos);
    end;
+end;
+
+procedure TfrmFaturamentoPedidos.VerificaConferencia;
+var i :integer;
+    motivo :String;
+    repositorio :TRepositorio;
+begin
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TPedidoFaturado.ClassName);
+    if assigned(self.FNotaFiscal.PedidosFaturados) then
+    for i := 0 to self.FNotaFiscal.PedidosFaturados.Count -1 do
+      begin
+        if not assigned(TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Pedido.Conferencia) then
+        begin
+          motivo := chamaInput('TEXT', 'Pedido Nº '+TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Pedido.numpedido+' não conferido. Informe o motivo:');
+
+        if length(motivo) > 5 then
+            TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Motivo := motivo
+          else
+            raise Exception.Create('Motivo não informado. Faturamento cancelado.');
+        end;
+      end;
+    finally
+    FreeAndNil(repositorio);
+  end;
 end;
 
 function TfrmFaturamentoPedidos.VerificaPedidoFaturado(
@@ -868,9 +894,9 @@ var
 begin
    NF := (NotaFiscal as TNotaFiscal);
 
-   self.BuscaFormaPagamento.codFormaPagamento := IntToStr(NF.FormaPagamento.Codigo);
-   self.BuscaTransportadora.Transportadora    := NF.Transportadora;
-   self.cbTipoFrete.ItemIndex                 := TTipoFreteUtilitario.DeEnumeradoParaInteiro(NF.TipoFrete);
+   self.BuscaFormaPagamento.codigoFormaPagamento := NF.FormaPagamento.Codigo;
+   self.BuscaTransportadora.Transportadora       := NF.Transportadora;
+   self.cbTipoFrete.ItemIndex                    := TTipoFreteUtilitario.DeEnumeradoParaInteiro(NF.TipoFrete);
    self.cbTipoFrete.OnChange(self);
   // self.dtpEmissao.DateTime                   := NF.DataEmissao;
   // self.dtpSaida.DateTime                     := NF.DataSaida;
@@ -911,9 +937,9 @@ begin
          Nf.Entrada_saida := IfThen( rgTipoNota.ItemIndex = 0,'E','S');
 
        if not ( Nf.Entrada_saida = 'E' ) then
-         self.BuscaFormaPagamento.codFormaPagamento := IntToStr(NF.FormaPagamento.Codigo);
-         
-       self.BuscaTransportadora.Transportadora    :=  NF.Transportadora;
+         self.BuscaFormaPagamento.codigoFormaPagamento := NF.FormaPagamento.Codigo;
+
+       self.BuscaTransportadora.Transportadora         :=  NF.Transportadora;
      except                                               
        on E: EAccessViolation do
         // Caso não tenha transportador e forma de pagamento só capturo o erro.
@@ -1368,6 +1394,8 @@ begin
       self.FNotaFiscal.LocalEntrega.ValidarCamposObrigatorios();
 
      self.FNotaFiscal.ValidarDadosObrigatorios;
+     VerificaConferencia;
+
    except
     on E: Exception do begin
        inherited Avisar(E.Message);

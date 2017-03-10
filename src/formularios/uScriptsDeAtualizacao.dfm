@@ -7776,4 +7776,115 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 182
     WordWrap = False
   end
+  object versao183: TMemo
+    Left = 441
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PARCELAS DROP CODIGO_PEDIDO'
+      '^'
+      'ALTER TABLE PARCELAS'
+      'ADD CODIGO_NOTA_FISCAL INTEGER'
+      '^'
+      'alter table PARCELAS'
+      'add constraint FK_PARCELAS_3'
+      'foreign key (CODIGO_NOTA_FISCAL)'
+      'references NOTAS_FISCAIS(CODIGO)'
+      '^')
+    TabOrder = 183
+    WordWrap = False
+  end
+  object versao184: TMemo
+    Left = 465
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'update RDB$FIELDS set'
+      'RDB$FIELD_TYPE = 16,'
+      'RDB$FIELD_LENGTH = 8,'
+      'RDB$CHARACTER_LENGTH = NULL,'
+      'RDB$FIELD_SCALE = -2,'
+      'RDB$FIELD_PRECISION = 15'
+      'where RDB$FIELD_NAME = '#39'RDB$741'#39
+      '^')
+    TabOrder = 184
+    WordWrap = False
+  end
+  object versao185: TMemo
+    Left = 489
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'update pedidos'
+      'set pedidos.comissao = 30'
+      'where pedidos.cod_repres = 6457'
+      '^')
+    TabOrder = 185
+    WordWrap = False
+  end
+  object versao186: TMemo
+    Left = 513
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_DEVOLUCOES_ID'
+      '^'
+      'ALTER TABLE ITENS'
+      'ADD DEVOLVIDO CHAR(1)'
+      '^'
+      'CREATE TABLE DEVOLUCOES ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_PEDIDO INTEGER,'
+      '    DATA DATE,'
+      '    MOTIVO VARCHAR(150),'
+      '    PARCIAL_TOTAL CHAR(1))'
+      '^'
+      'alter table DEVOLUCOES'
+      'add constraint PK_DEVOLUCOES'
+      'primary key (CODIGO)'
+      '^'
+      'alter table DEVOLUCOES'
+      'add constraint FK_DEVOLUCOES_1'
+      'foreign key (CODIGO_PEDIDO)'
+      'references PEDIDOS(CODIGO)'
+      '^'
+      'CREATE TRIGGER DEVOLUCOES_BI FOR DEVOLUCOES'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_DEVOLUCOES_ID,1);'
+      'END'
+      '^')
+    TabOrder = 186
+    WordWrap = False
+  end
+  object versao187: TMemo
+    Left = 537
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'update auditorias set nome_tabela = '#39'ITENS'#39
+      'where codigo = 1'
+      '^')
+    TabOrder = 187
+    WordWrap = False
+  end
+  object versao188: TMemo
+    Left = 561
+    Top = 228
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PEDIDOS_FATURADOS'
+      'ADD MOTIVO VARCHAR(150)'
+      '^')
+    TabOrder = 188
+    WordWrap = False
+  end
 end
