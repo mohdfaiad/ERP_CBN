@@ -442,7 +442,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Top = 0
     Width = 880
     Height = 497
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -1569,12 +1569,12 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Height = 97
         TabOrder = 0
         inline ListaTabelaPreco: TListaCampo
-          Left = 16
+          Left = 17
           Top = 25
           Width = 369
           Height = 64
           TabOrder = 0
-          ExplicitLeft = 16
+          ExplicitLeft = 17
           ExplicitTop = 25
           ExplicitWidth = 369
           inherited staTitulo: TLabel
@@ -1798,7 +1798,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

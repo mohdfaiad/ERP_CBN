@@ -197,7 +197,6 @@ begin
   ListaRepresentante.executa;
   ListaTransportadora.setValores('select codigo, razao from pessoas where tipo = ''T''', 'razao', 'Transportadora associada');
   ListaTransportadora.executa;
-
 end;
 
 procedure TfrmCadastroCliente.btnIncluirClick(Sender: TObject);

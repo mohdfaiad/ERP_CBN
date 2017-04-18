@@ -1,9 +1,9 @@
 inherited frmEntradaSaidaMoeda: TfrmEntradaSaidaMoeda
   Caption = 'Entrada e sa'#237'da de moedas'
-  ClientHeight = 314
+  ClientHeight = 311
   ClientWidth = 532
   ExplicitWidth = 548
-  ExplicitHeight = 352
+  ExplicitHeight = 349
   PixelsPerInch = 96
   TextHeight = 13
   object rgpOpcao: TRadioGroup
@@ -133,11 +133,12 @@ inherited frmEntradaSaidaMoeda: TfrmEntradaSaidaMoeda
   end
   object pnlbotoes: TPanel
     Left = 0
-    Top = 262
+    Top = 259
     Width = 532
     Height = 52
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 262
     DesignSize = (
       532
       52)

@@ -83,7 +83,6 @@ begin
 
     avisar('Operação realizada com sucesso!');
     limpaCampos;
-
   finally
     FreeAndNil(repositorio);
     FreeAndNil(Movimentacao);
