@@ -9,7 +9,7 @@ uses
   DBClient, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  RLFilters, RLPDFFilter;
+  RLFilters, RLPDFFilter, Vcl.MPlayer, ShellAPI;
 
 type
   TfrmRelatorioComissoesRepresentantes = class(TfrmPadrao)
@@ -327,9 +327,12 @@ begin
 end;
 
 procedure TfrmRelatorioComissoesRepresentantes.FormShow(Sender: TObject);
+var origem, destino :String;
+txtComando :PChar;
 begin
   cdsComissao.CreateDataSet;
   BuscaPessoa1.TipoPessoa := tpRepresentante;
+  cbAno.ItemIndex         := cbAno.Items.IndexOf(FormatDateTime('yyyy', Date ));
 end;
 
 procedure TfrmRelatorioComissoesRepresentantes.RLReport1BeforePrint(

@@ -306,7 +306,6 @@ begin
     qryMediasEmpresa.ParamByName('codRep').AsInteger := BuscaPessoa1.edtCodigo.AsInteger;
 
   cdsMediasEmpresa.Open;
-
   gpbMediasEmpresa.Caption := ' MÉDIAS DA EMPRESA   [ '+ intToStr(cdsMediasEmpresa.RecordCount) +' pedidos faturados] ';
 
 end;

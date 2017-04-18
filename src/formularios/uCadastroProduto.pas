@@ -417,9 +417,9 @@ uses Math, FabricaRepositorio, StrUtils, uModulo, ProdutosKit, CoresKit;
 procedure TfrmCadastroProduto.btnIncluirClick(Sender: TObject);
 begin
   inherited;
-
   posicaoGrid := cds.RecNo;
   self.Tag := 1;
+  cdsAfterScroll(nil);
   limpaCampos;
   pagProdutos.ActivePageIndex := 0;
   gridProdutos.SetFocus;
@@ -674,6 +674,7 @@ begin
   inherited;
   self.habilita(false);
   self.Tag := 0;
+  cdsAfterScroll(nil);
   limpaCampos;
   FClonando := false;
   gridProdutos.SetFocus;
@@ -1266,7 +1267,10 @@ end;
 
 procedure TfrmCadastroProduto.cdsAfterScroll(DataSet: TDataSet);
 begin
-  self.Caption := 'Cadastro de Produtos              '+ cdsREFERENCIA.AsString + ' - ' + cdsDESCRICAO.AsString;
+  if self.Tag = 1 then
+    self.Caption := 'Cadastro de Produtos              * * Incluindo produto * *'
+  else
+    self.Caption := 'Cadastro de Produtos              '+ cdsREFERENCIA.AsString + ' - ' + cdsDESCRICAO.AsString;
 end;
 
 procedure TfrmCadastroProduto.cdsProdsKitAfterScroll(DataSet: TDataSet);

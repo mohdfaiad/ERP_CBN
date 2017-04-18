@@ -46,6 +46,7 @@ begin
    IcmsEstado.codigo          := self.FQuery.FieldByName('codigo').AsInteger;
    IcmsEstado.codigo_estado   := self.FQuery.FieldByName('codigo_estado').AsInteger;
    IcmsEstado.perc_reducao_bc := self.FQuery.FieldByName('perc_reducao_bc').AsFloat;
+   IcmsEstado.aliquota        := self.FQuery.FieldByName('aliquota').AsFloat;
 
    result := IcmsEstado;
 end;
@@ -84,6 +85,8 @@ begin
    if (IcmsEstadoAntigo.perc_reducao_bc <> IcmsEstadoNovo.perc_reducao_bc) then
      Auditoria.AdicionaCampoAlterado('perc_reducao_bc', FloatToStr(IcmsEstadoAntigo.perc_reducao_bc), FloatToStr(IcmsEstadoNovo.perc_reducao_bc));
 
+   if (IcmsEstadoAntigo.aliquota <> IcmsEstadoNovo.aliquota) then
+     Auditoria.AdicionaCampoAlterado('aliquota', FloatToStr(IcmsEstadoAntigo.perc_reducao_bc), FloatToStr(IcmsEstadoNovo.aliquota));
 end;
 
 procedure TRepositorioIcmsEstado.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -94,6 +97,7 @@ begin
   Auditoria.AdicionaCampoExcluido('codigo'         , IntToStr(IcmsEstado.codigo));
   Auditoria.AdicionaCampoExcluido('codigo_estado'  , IntToStr(IcmsEstado.codigo_estado));
   Auditoria.AdicionaCampoExcluido('perc_reducao_bc', FloatToStr(IcmsEstado.perc_reducao_bc));
+  Auditoria.AdicionaCampoExcluido('aliquota'       , FloatToStr(IcmsEstado.aliquota));
 end;
 
 procedure TRepositorioIcmsEstado.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -104,6 +108,7 @@ begin
   Auditoria.AdicionaCampoIncluido('codigo'         ,    IntToStr(IcmsEstado.codigo));
   Auditoria.AdicionaCampoIncluido('codigo_estado'  ,    IntToStr(IcmsEstado.codigo_estado));
   Auditoria.AdicionaCampoIncluido('perc_reducao_bc',    FloatToStr(IcmsEstado.perc_reducao_bc));
+  Auditoria.AdicionaCampoIncluido('aliquota'       , FloatToStr(IcmsEstado.aliquota));
 end;
 
 procedure TRepositorioIcmsEstado.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -116,9 +121,10 @@ var
 begin
   IcmsEstado := (Objeto as TIcmsEstado);
 
-  self.FQuery.ParamByName('codigo').AsInteger          := IcmsEstado.codigo;
-  self.FQuery.ParamByName('codigo_estado').AsInteger   := IcmsEstado.codigo_estado;
+  self.FQuery.ParamByName('codigo').AsInteger        := IcmsEstado.codigo;
+  self.FQuery.ParamByName('codigo_estado').AsInteger := IcmsEstado.codigo_estado;
   self.FQuery.ParamByName('perc_reducao_bc').AsFloat := IcmsEstado.perc_reducao_bc;
+  self.FQuery.ParamByName('aliquota').AsFloat        := IcmsEstado.aliquota;
 end;
 
 function TRepositorioIcmsEstado.SQLGet: String;
@@ -143,8 +149,8 @@ end;
 
 function TRepositorioIcmsEstado.SQLSalvar: String;
 begin
-  result := 'update or insert into ICMS_ESTADO ( CODIGO ,CODIGO_ESTADO ,PERC_REDUCAO_BC) '+
-           '                      values ( :CODIGO , :CODIGO_ESTADO , :PERC_REDUCAO_BC) ';
+  result := 'update or insert into ICMS_ESTADO ( CODIGO ,CODIGO_ESTADO ,PERC_REDUCAO_BC, ALIQUOTA) '+
+           '                       values (:CODIGO , :CODIGO_ESTADO , :PERC_REDUCAO_BC, :ALIQUOTA) ';
 end;
 
 end.

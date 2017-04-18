@@ -52,6 +52,7 @@ begin
    EntradaSaida.data_producao    := self.FQuery.FieldByName('data_producao').AsDateTime;
    EntradaSaida.quantidade       := self.FQuery.FieldByName('quantidade').AsFloat;
    EntradaSaida.tipo             := self.FQuery.FieldByName('tipo').AsString;
+   EntradaSaida.lote             := self.FQuery.FieldByName('lote').AsInteger;
 
    result := EntradaSaida;
 end;
@@ -108,6 +109,8 @@ begin
    if (EntradaSaidaAntigo.tipo <> EntradaSaidaNovo.tipo) then
      Auditoria.AdicionaCampoAlterado('tipo', EntradaSaidaAntigo.tipo, EntradaSaidaNovo.tipo);
 
+   if (EntradaSaidaAntigo.lote <> EntradaSaidaNovo.lote) then
+     Auditoria.AdicionaCampoAlterado('lote', IntToStr(EntradaSaidaAntigo.lote), IntToStr(EntradaSaidaNovo.lote));
 end;
 
 procedure TRepositorioEntradaSaida.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -124,6 +127,7 @@ begin
   Auditoria.AdicionaCampoExcluido('data_producao'   , DateToStr(EntradaSaida.data_producao));
   Auditoria.AdicionaCampoExcluido('quantidade'      , FloatToStr(EntradaSaida.quantidade));
   Auditoria.AdicionaCampoExcluido('tipo'            , EntradaSaida.tipo);
+  Auditoria.AdicionaCampoExcluido('lote'            , IntToStr(EntradaSaida.lote));
 end;
 
 procedure TRepositorioEntradaSaida.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -131,15 +135,16 @@ var
   EntradaSaida :TEntradaSaida;
 begin
   EntradaSaida := (Objeto as TEntradaSaida);
-  Auditoria.AdicionaCampoIncluido('codigo'          ,    IntToStr(EntradaSaida.codigo));
-  Auditoria.AdicionaCampoIncluido('codigo_produto'  ,    IntToStr(EntradaSaida.codigo_produto));
-  Auditoria.AdicionaCampoIncluido('codigo_cor'      ,    IntToStr(EntradaSaida.codigo_cor));
-  Auditoria.AdicionaCampoIncluido('codigo_tamanho'  ,    IntToStr(EntradaSaida.codigo_tamanho));
-  Auditoria.AdicionaCampoIncluido('codigo_intervalo',    IntToStr(EntradaSaida.codigo_intervalo));
-  Auditoria.AdicionaCampoIncluido('data_lancamento' ,    DateToStr(EntradaSaida.data_lancamento));
-  Auditoria.AdicionaCampoIncluido('data_producao'   ,    DateToStr(EntradaSaida.data_producao));
-  Auditoria.AdicionaCampoIncluido('quantidade'      ,    FloatToStr(EntradaSaida.quantidade));
-  Auditoria.AdicionaCampoIncluido('tipo'            ,    EntradaSaida.tipo);
+  Auditoria.AdicionaCampoIncluido('codigo'          , IntToStr(EntradaSaida.codigo));
+  Auditoria.AdicionaCampoIncluido('codigo_produto'  , IntToStr(EntradaSaida.codigo_produto));
+  Auditoria.AdicionaCampoIncluido('codigo_cor'      , IntToStr(EntradaSaida.codigo_cor));
+  Auditoria.AdicionaCampoIncluido('codigo_tamanho'  , IntToStr(EntradaSaida.codigo_tamanho));
+  Auditoria.AdicionaCampoIncluido('codigo_intervalo', IntToStr(EntradaSaida.codigo_intervalo));
+  Auditoria.AdicionaCampoIncluido('data_lancamento' , DateToStr(EntradaSaida.data_lancamento));
+  Auditoria.AdicionaCampoIncluido('data_producao'   , DateToStr(EntradaSaida.data_producao));
+  Auditoria.AdicionaCampoIncluido('quantidade'      , FloatToStr(EntradaSaida.quantidade));
+  Auditoria.AdicionaCampoIncluido('tipo'            , EntradaSaida.tipo);
+  Auditoria.AdicionaCampoIncluido('lote'            , IntToStr(EntradaSaida.lote));
 end;
 
 procedure TRepositorioEntradaSaida.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -164,6 +169,7 @@ begin
   self.FQuery.ParamByName('data_producao').AsDateTime   := EntradaSaida.data_producao;
   self.FQuery.ParamByName('quantidade').AsFloat         := EntradaSaida.quantidade;
   self.FQuery.ParamByName('tipo').AsString              := EntradaSaida.tipo;
+  self.FQuery.ParamByName('lote').AsInteger             := EntradaSaida.lote;
 end;
 
 function TRepositorioEntradaSaida.SQLGet: String;
@@ -188,8 +194,8 @@ end;
 
 function TRepositorioEntradaSaida.SQLSalvar: String;
 begin
-  result := 'update or insert into ENTRADAS_SAIDAS (CODIGO ,CODIGO_PRODUTO ,CODIGO_COR ,CODIGO_TAMANHO ,CODIGO_INTERVALO ,DATA_LANCAMENTO ,DATA_PRODUCAO ,QUANTIDADE ,TIPO) '+
-           '                      values ( :CODIGO , :CODIGO_PRODUTO , :CODIGO_COR , :CODIGO_TAMANHO , :CODIGO_INTERVALO , :DATA_LANCAMENTO , :DATA_PRODUCAO , :QUANTIDADE , :TIPO) ';
+  result := 'update or insert into ENTRADAS_SAIDAS (CODIGO ,CODIGO_PRODUTO ,CODIGO_COR ,CODIGO_TAMANHO ,CODIGO_INTERVALO ,DATA_LANCAMENTO ,DATA_PRODUCAO ,QUANTIDADE , TIPO, LOTE) '+
+           '                      values ( :CODIGO , :CODIGO_PRODUTO , :CODIGO_COR , :CODIGO_TAMANHO , :CODIGO_INTERVALO , :DATA_LANCAMENTO , :DATA_PRODUCAO , :QUANTIDADE , :TIPO, :LOTE) ';
 end;
 
 end.

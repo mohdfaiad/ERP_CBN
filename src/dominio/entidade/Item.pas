@@ -38,6 +38,11 @@ type
     FCor     :TCor;
     FZeraCodigo :Boolean;
     FPeso: Real;
+    Fqtd_12: integer;
+    Fqtd_10: integer;
+    Fqtd_14: integer;
+    FDevolvido: String;
+    FCodigoKit: integer;
 
     function GetQtd_total: Double;
     function GetValor_total: Real;
@@ -67,10 +72,6 @@ type
     procedure Setobservacao(const Value: String);
 
   private
-    Fqtd_12: integer;
-    Fqtd_10: integer;
-    Fqtd_14: integer;
-    FDevolvido: String;
     function GetCor              :TCor;
     function GetPesoBrutoTotal   :Real;
     function GetPesoLiquidoTotal :Real;
@@ -111,6 +112,7 @@ type
     property observacao        :String    read Fobservacao        write Setobservacao;
     property peso              :Real      read FPeso              write FPeso;
     property devolvido         :String    read FDevolvido         write FDevolvido;
+    property codigoKit         :integer   read FCodigoKit         write FCodigoKit;
 
   public
     property Cor               :TCor      read GetCor;

@@ -198,14 +198,16 @@ inherited frmRelatorioComissoesRepresentantes: TfrmRelatorioComissoesRepresentan
       Width = 101
       Height = 21
       Style = csDropDownList
-      ItemIndex = 1
       TabOrder = 0
-      Text = '2014'
       Items.Strings = (
         '2013'
         '2014'
         '2015'
-        '2016')
+        '2016'
+        '2017'
+        '2018'
+        '2019'
+        '2020')
     end
   end
   object RLReport1: TRLReport

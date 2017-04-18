@@ -11,11 +11,13 @@ type
     Fcodigo :Integer;
     Fcodigo_estado :Integer;
     Fperc_reducao_bc :Real;
+    FAliquota: Real;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
     property codigo_estado         :Integer read Fcodigo_estado         write Fcodigo_estado;
     property perc_reducao_bc       :Real    read Fperc_reducao_bc       write Fperc_reducao_bc;
+    property aliquota              :Real    read FAliquota              write FAliquota;
 
   public
     constructor CreatePorEstado(codigo_estado: integer);    

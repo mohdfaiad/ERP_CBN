@@ -163,7 +163,7 @@ begin
 
    if not Assigned(registro0000) then exit;
 
-   registro0000.COD_VER     := vlVersao109;
+   registro0000.COD_VER     := vlVersao110;
    registro0000.COD_FIN     := raOriginal;
    registro0000.DT_INI      := self.FDataInicial;
    registro0000.DT_FIN      := self.FDataFinal;

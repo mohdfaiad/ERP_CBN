@@ -33,6 +33,10 @@ type
     dtpDataProducao: TDateTimePicker;
     ListaIntervalos: TListaCampo;
     Label5: TLabel;
+    edtLote: TCurrencyEdit;
+    Label6: TLabel;
+    btnNovoLote: TSpeedButton;
+    btnDirecionaEntradas: TBitBtn;
     procedure BuscaProduto1Exit(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
@@ -46,6 +50,8 @@ type
     procedure chkSaidaClick(Sender: TObject);
     procedure edtQtdEntradaChange(Sender: TObject);
     procedure BuscaCor1Enter(Sender: TObject);
+    procedure btnNovoLoteClick(Sender: TObject);
+    procedure btnDirecionaEntradasClick(Sender: TObject);
 
   private
     procedure mostra_estoque_atual;
@@ -64,7 +70,7 @@ var
 implementation
 
 uses Estoque, Repositorio, FabricaRepositorio, uModulo, DB, EspecificacaoEstoquePorProdutoCorTamanho, funcoes,
-  Math, StrUtils, entradaSaida;
+  Math, StrUtils, entradaSaida,uDirecionarEntradas, permissoesAcesso;
 
 {$R *.dfm}
 
@@ -186,6 +192,11 @@ begin
  end;
 end;
 
+procedure TfrmEntradaManualEstoque.btnDirecionaEntradasClick(Sender: TObject);
+begin
+  self.AbreForm(TFrmDirecionarEntradas, paDirecionarEntradas);
+end;
+
 procedure TfrmEntradaManualEstoque.btnLimparClick(Sender: TObject);
 begin
   edtCodigoEstoque.Clear;
@@ -211,10 +222,22 @@ begin
   ListaIntervalos.executa;
 
   dtpDataProducao.DateTime := Date;
+  edtLote.AsInteger := StrToIntDef(Maior_Valor_Cadastrado('ENTRADAS_SAIDAS', 'LOTE'), 0);
+  if edtlote.AsInteger = 0 then
+    edtlote.AsInteger := 1;
 
   label5.Visible          := (entrada_saida = 0);
   dtpDataProducao.Visible := (entrada_saida = 0);
   ListaIntervalos.Visible := (entrada_saida = 0);
+end;
+
+procedure TfrmEntradaManualEstoque.btnNovoLoteClick(Sender: TObject);
+begin
+  if confirma('Confirma fechamento do lote nº '+edtlote.Text+' e abertura do lote nº '+inttostr(edtlote.AsInteger + 1)) then
+  begin
+    edtLote.AsInteger   := edtLote.AsInteger + 1;
+    btnNovoLote.Enabled := false;
+  end;
 end;
 
 procedure TfrmEntradaManualEstoque.btnSalvarClick(Sender: TObject);
@@ -390,6 +413,7 @@ begin
    EntradaSaida.codigo_cor       := BuscaCor1.CodigoCor;
    EntradaSaida.codigo_tamanho   := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
    EntradaSaida.data_lancamento  := Date;
+   EntradaSaida.lote             := edtLote.AsInteger;
 
    if (entrada_saida = 0) then begin
      EntradaSaida.data_producao    := dtpDataProducao.Date;

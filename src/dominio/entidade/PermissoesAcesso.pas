@@ -90,6 +90,8 @@ const
   paCadastroNCM                  = 73;
   paParcelamento                 = 74;
   paFechaComissaoECommerce       = 75;
+  paCadastroMapaPedidos          = 76;
+  paDirecionarEntradas           = 77;
 
 implementation
 

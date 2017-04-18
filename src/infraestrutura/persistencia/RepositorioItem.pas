@@ -69,31 +69,32 @@ var
   Item :TItem;
 begin
    Item                   := TItem.Create;
-   Item.Codigo            := self.FQuery.FieldByName('CODIGO'           ).AsInteger;
-   Item.cod_pedido        := self.FQuery.FieldByName('COD_Pedido'       ).AsInteger;
-   Item.cod_produto       := self.FQuery.FieldByName('COD_PRODUTO'      ).AsInteger;
-   Item.cod_cor           := self.FQuery.FieldByName('COD_COR'          ).AsInteger;
-   Item.preco             := self.FQuery.FieldByName('PRECO'            ).AsFloat;
-   Item.desconto          := self.FQuery.FieldByName('DESCONTO'         ).AsFloat;   
-   Item.valor_total       := self.FQuery.FieldByName('VALOR_TOTAL'      ).AsFloat;
-   Item.qtd_RN            := self.FQuery.FieldByName('QTD_RN'           ).AsInteger;
-   Item.qtd_P             := self.FQuery.FieldByName('QTD_P'            ).AsInteger;
-   Item.qtd_M             := self.FQuery.FieldByName('QTD_M'            ).AsInteger;
-   Item.qtd_G             := self.FQuery.FieldByName('QTD_G'            ).AsInteger;
-   Item.qtd_1             := self.FQuery.FieldByName('QTD_1'            ).AsInteger;
-   Item.qtd_2             := self.FQuery.FieldByName('QTD_2'            ).AsInteger;
-   Item.qtd_3             := self.FQuery.FieldByName('QTD_3'            ).AsInteger;
-   Item.qtd_4             := self.FQuery.FieldByName('QTD_4'            ).AsInteger;
-   Item.qtd_6             := self.FQuery.FieldByName('QTD_6'            ).AsInteger;
-   Item.qtd_8             := self.FQuery.FieldByName('QTD_8'            ).AsInteger;
-   Item.qtd_10            := self.FQuery.FieldByName('qtd_10'            ).AsInteger;
-   Item.qtd_12            := self.FQuery.FieldByName('qtd_12'            ).AsInteger;
-   Item.qtd_14            := self.FQuery.FieldByName('qtd_14'            ).AsInteger;
-   Item.qtd_UNICA         := self.FQuery.FieldByName('QTD_UNICA'        ).AsFloat;
-   Item.qtd_total         := self.FQuery.FieldByName('QTD_TOTAL'        ).AsFloat;
-   Item.observacao        := self.FQuery.FieldByName('OBSERVACAO'       ).AsString;
-   Item.peso              := self.FQuery.FieldByName('PESO'             ).AsFloat;
-   Item.devolvido         := self.FQuery.FieldByName('DEVOLVIDO'        ).AsString;
+   Item.Codigo            := self.FQuery.FieldByName('CODIGO'      ).AsInteger;
+   Item.cod_pedido        := self.FQuery.FieldByName('COD_Pedido'  ).AsInteger;
+   Item.cod_produto       := self.FQuery.FieldByName('COD_PRODUTO' ).AsInteger;
+   Item.cod_cor           := self.FQuery.FieldByName('COD_COR'     ).AsInteger;
+   Item.preco             := self.FQuery.FieldByName('PRECO'       ).AsFloat;
+   Item.desconto          := self.FQuery.FieldByName('DESCONTO'    ).AsFloat;
+   Item.valor_total       := self.FQuery.FieldByName('VALOR_TOTAL' ).AsFloat;
+   Item.qtd_RN            := self.FQuery.FieldByName('QTD_RN'      ).AsInteger;
+   Item.qtd_P             := self.FQuery.FieldByName('QTD_P'       ).AsInteger;
+   Item.qtd_M             := self.FQuery.FieldByName('QTD_M'       ).AsInteger;
+   Item.qtd_G             := self.FQuery.FieldByName('QTD_G'       ).AsInteger;
+   Item.qtd_1             := self.FQuery.FieldByName('QTD_1'       ).AsInteger;
+   Item.qtd_2             := self.FQuery.FieldByName('QTD_2'       ).AsInteger;
+   Item.qtd_3             := self.FQuery.FieldByName('QTD_3'       ).AsInteger;
+   Item.qtd_4             := self.FQuery.FieldByName('QTD_4'       ).AsInteger;
+   Item.qtd_6             := self.FQuery.FieldByName('QTD_6'       ).AsInteger;
+   Item.qtd_8             := self.FQuery.FieldByName('QTD_8'       ).AsInteger;
+   Item.qtd_10            := self.FQuery.FieldByName('qtd_10'      ).AsInteger;
+   Item.qtd_12            := self.FQuery.FieldByName('qtd_12'      ).AsInteger;
+   Item.qtd_14            := self.FQuery.FieldByName('qtd_14'      ).AsInteger;
+   Item.qtd_UNICA         := self.FQuery.FieldByName('QTD_UNICA'   ).AsFloat;
+   Item.qtd_total         := self.FQuery.FieldByName('QTD_TOTAL'   ).AsFloat;
+   Item.observacao        := self.FQuery.FieldByName('OBSERVACAO'  ).AsString;
+   Item.peso              := self.FQuery.FieldByName('PESO'        ).AsFloat;
+   Item.devolvido         := self.FQuery.FieldByName('DEVOLVIDO'   ).AsString;
+   Item.codigoKit         := self.FQuery.FieldByName('codigo_kit'  ).AsInteger;
 
    result := Item;
 end;
@@ -175,6 +176,8 @@ begin
     Auditoria.AdicionaCampoAlterado('peso', FloatToStr(ItemAntigo.peso), floatToStr(ItemNovo.peso));
    if (ItemAntigo.devolvido <> ItemNovo.devolvido) then
     Auditoria.AdicionaCampoAlterado('devolvido', ItemAntigo.devolvido, ItemNovo.devolvido);
+   if (ItemAntigo.codigoKit <> ItemNovo.codigoKit) then
+    Auditoria.AdicionaCampoAlterado('codigo_kit', IntToStr(ItemAntigo.codigoKit), IntToStr(ItemNovo.codigoKit));
 end;
 
 procedure TRepositorioItem.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -209,6 +212,7 @@ begin
    Auditoria.AdicionaCampoExcluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoExcluido('PESO'             , FloatToStr(Item.peso)        );
    Auditoria.AdicionaCampoExcluido('devolvido'        , Item.devolvido                   );
+   Auditoria.AdicionaCampoExcluido('codigo_kit'       , intToStr(Item.codigoKit    )     );
 end;
 
 procedure TRepositorioItem.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -243,6 +247,7 @@ begin
    Auditoria.AdicionaCampoIncluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoIncluido('PESO'             , FloatToStr(Item.peso)        );
    Auditoria.AdicionaCampoIncluido('devolvido'        , Item.devolvido                   );
+   Auditoria.AdicionaCampoIncluido('codigo_kit'       , intToStr(Item.codigoKit    )     );
 end;
 
 procedure TRepositorioItem.SetIdentificador(Objeto: TObject;
@@ -288,6 +293,7 @@ begin
    inherited SetParametro('OBSERVACAO'       , Item.observacao);
    inherited SetParametro('PESO'             , Item.peso);
    inherited SetParametro('devolvido'        , Item.devolvido);
+   inherited SetParametro('codigo_kit'       , Item.codigoKit );
 end;
 
 function TRepositorioItem.SQLGet: String;
@@ -315,10 +321,10 @@ begin
   result := 'UPDATE OR INSERT INTO ITENS (CODIGO, COD_PEDIDO, COD_PRODUTO, COD_COR, QTD_TOTAL,      '+
             '                             PRECO, DESCONTO,VALOR_TOTAL, QTD_RN, QTD_P, QTD_M,        '+
             '                             QTD_G, QTD_1, QTD_2, QTD_3,QTD_4, QTD_6, QTD_8,           '+
-            '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO, devolvido)      '+
+            '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO, devolvido, codigo_kit)      '+
             'VALUES (:CODIGO, :COD_PEDIDO, :COD_PRODUTO, :COD_COR, :QTD_TOTAL, :PRECO, :DESCONTO,   '+
             '        :VALOR_TOTAL, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, '+
-            '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO, :devolvido)     ';
+            '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO, :devolvido, :codigo_kit)     ';
 
 end;
 

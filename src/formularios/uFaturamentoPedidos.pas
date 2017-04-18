@@ -293,14 +293,14 @@ uses
    EspecificacaoEnderecoComPessoaIgualA,
    EspecificacaoNaturezaPorTipo,
    TipoNaturezaOperacao,
-   Empresa,
+   Empresa, IcmsEstado,
    EspecificacaoEmpresaPorCodigoPessoa,
    StringUtilitario,
    LocalEntregaNotaFiscal,
    FormaPagamento, uPesquisaSimples,
    //uImpressaoEtiquetaCaixa,
    GeradorNFe, uImpressaoEtiquetaCaixa, ItemAvulso, uItensAvulsos,
-  TipoRegimeTributario, StrUtils, Funcoes, Math, IcmsEstado;
+  TipoRegimeTributario, StrUtils, Funcoes, Math;
 
 const
   MENSAGEM_DELETAR_PEDIDO = 'Ao deletar um pedido, os valores poderão ser alterados. Tais como: FRETE, DESCONTO e etc. Deseja realmente continuar?';
@@ -769,7 +769,8 @@ begin
      else
        self.cdsPedidosMARCADO_PARA_FATURAR.AsString := 'X';
 
-     self.cdsPedidos.Post;
+     if cdsPedidos.State in [dsEdit] then
+       self.cdsPedidos.Post;
   end;
 end;
 
@@ -841,6 +842,7 @@ procedure TfrmFaturamentoPedidos.AdicionarPedidoNaNotaFiscal(const CodigoPedido:
 var
   Repositorio :TRepositorio;
   Pedido      :TPedido;
+  nx :integer;
 begin                                      
    Repositorio := nil;
 
@@ -849,6 +851,15 @@ begin
 
      try
        Pedido      := (Repositorio.Get(CodigoPedido) as TPedido);
+
+       for nX := 0 to (Pedido.Itens.Count-1) do
+         if TItem(Pedido.Itens.Items[nX]).codigoKit > 0 then
+         begin
+           avisar('Pedido possui kits desmembrados, portanto só poderá ser faturado após a conferência ser completada.');
+           cdsPedidos.Cancel;
+           exit;
+         end;
+
        self.FNotaFiscal.AdicionarPedido(Pedido);
 
      except
@@ -1229,9 +1240,13 @@ begin
 end;
 
 function TfrmFaturamentoPedidos.GetAliquotaICMS: Real;
+var IcmsEstado :TIcmsEstado;
 begin
    try
-     result := self.FNotaFiscal.Empresa.ConfiguracoesNF.aliq_icms;
+   try
+     IcmsEstado := TIcmsEstado.CreatePorEstado(self.FNotaFiscal.Destinatario.Endereco.Cidade.estado.codigo);
+     result     := IcmsEstado.aliquota;
+    // result := self.FNotaFiscal.Empresa.ConfiguracoesNF.aliq_icms;
 
      if (self.FNotaFiscal.Destinatario.Endereco.Cidade.estado.sigla = 'PR') and
         (self.FNotaFiscal.Empresa.RegimeTributario = trtLucroPresumido ) then
@@ -1240,6 +1255,9 @@ begin
    except
      on E: EAccessViolation do
        raise Exception.Create(NENHUMA_CONFIGURACAO_CADASTRADA);
+   end;
+   finally
+     FreeAndNil(IcmsEstado);
    end;
 end;
 

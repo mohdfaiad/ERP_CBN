@@ -657,10 +657,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     OnEnter = pgcNotaFiscalEnter
     object tbsCabecalho: TTabSheet
       Caption = '&Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pgcCabecalho: TPageControl
         Left = 0
         Top = 0
@@ -672,10 +668,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         TabOrder = 0
         object tbsCabecalho1: TTabSheet
           Caption = '&1 - Cabe'#231'alho'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           inline BuscaTransportadora: TBuscaTransportadora
             Left = 4
             Top = 80

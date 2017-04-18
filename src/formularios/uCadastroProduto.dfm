@@ -19,7 +19,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Align = alBottom
     TabOrder = 0
     object btnIncluir: TSpeedButton
-      Left = 8
+      Left = 10
       Top = 6
       Width = 120
       Height = 30
@@ -487,7 +487,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 797
     Height = 477
-    ActivePage = TabSheet3
+    ActivePage = TabSheet6
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -3394,6 +3394,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     object tbsKits: TTabSheet
       Caption = 'Configura Kit'
       ImageIndex = 6
+      TabVisible = False
       object Label30: TLabel
         Left = 6
         Top = 225
@@ -4559,7 +4560,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C0101060009007C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

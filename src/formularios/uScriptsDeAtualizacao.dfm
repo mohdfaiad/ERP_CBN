@@ -7887,4 +7887,425 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 188
     WordWrap = False
   end
+  object versao189: TMemo
+    Left = 9
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ITENS'
+      'ADD CODIGO_KIT INTEGER'
+      '^')
+    TabOrder = 189
+    WordWrap = False
+  end
+  object versao190: TMemo
+    Left = 33
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ICMS_ESTADO'
+      'ADD ALIQUOTA NUMERIC(15,2)'
+      '^')
+    TabOrder = 190
+    WordWrap = False
+  end
+  object versao191: TMemo
+    Left = 57
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'delete from ICMS_ESTADO'
+      '^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,1, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,2, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,3, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,4, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,5, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,6, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,7, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,8, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,9, 33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,10,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,11,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,12,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,13,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,14,33.33,12)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,15,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,16,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,17,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,18,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,19,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,20,33.33,12)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,21,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,22,33.33,12)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,23,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,24,33.33,7)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,25,33.33,12)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,26,33.33,12)^'
+      'INSERT INTO ICMS_ESTADO VALUES(0,27,33.33,7)^')
+    TabOrder = 191
+    WordWrap = False
+  end
+  object versao192: TMemo
+    Left = 81
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_MAPAS_ID'
+      '^'
+      'CREATE TABLE MAPAS('
+      '    CODIGO INTEGER NOT NULL,'
+      '    NUMERO_MAPA INTEGER NOT NULL,'
+      '    CRIACAO TIMESTAMP,'
+      '    FINALIZADO CHAR(1))'
+      '^'
+      'alter table MAPAS'
+      'add constraint PK_MAPAS'
+      'primary key (CODIGO)'
+      '^'
+      'CREATE TRIGGER MAPAS_BI FOR MAPAS'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_MAPAS_ID,1);'
+      'END'
+      '^'
+      'CREATE GENERATOR GEN_PEDIDOS_MAPA_ID'
+      '^'
+      'CREATE TABLE PEDIDOS_MAPA ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_MAPA INTEGER,'
+      '    CODIGO_PEDIDO INTEGER)'
+      '^'
+      'alter table PEDIDOS_MAPA'
+      'add constraint PK_PEDIDOS_MAPA'
+      'primary key (CODIGO)'
+      '^'
+      'alter table PEDIDOS_MAPA'
+      'add constraint FK_PEDIDOS_MAPA_1'
+      'foreign key (CODIGO_MAPA)'
+      'references MAPAS(CODIGO)'
+      '^'
+      'alter table PEDIDOS_MAPA'
+      'add constraint FK_PEDIDOS_MAPA_2'
+      'foreign key (CODIGO_PEDIDO)'
+      'references PEDIDOS(CODIGO)'
+      '^'
+      'CREATE TRIGGER PEDIDOS_MAPA_BI FOR PEDIDOS_MAPA'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_PEDIDOS_MAPA_ID,1);'
+      'END'
+      '^')
+    TabOrder = 192
+    WordWrap = False
+  end
+  object versao193: TMemo
+    Left = 105
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ENTRADAS_SAIDAS'
+      'ADD LOTE INTEGER'
+      '^')
+    TabOrder = 193
+    WordWrap = False
+  end
+  object versao194: TMemo
+    Left = 129
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PEDIDOS_MAPA'
+      'ADD PESO SMALLINT'
+      '^')
+    TabOrder = 194
+    WordWrap = False
+  end
+  object versao195: TMemo
+    Left = 153
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_DIRECIONAMENTO_ENTRADA_ID'
+      '^'
+      'CREATE TABLE DIRECIONAMENTO_ENTRADA ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_ENTRADA INTEGER,'
+      '    CODIGO_PEDIDO INTEGER,'
+      '    QUANTIDADE NUMERIC(15,2),'
+      '    QUANTIDADE_CONF NUMERIC(15,2),'
+      '    CONFERIDO CHAR(1))'
+      '^'
+      'alter table DIRECIONAMENTO_ENTRADA'
+      'add constraint PK_DIRECIONAMENTO_ENTRADA'
+      'primary key (CODIGO)'
+      '^'
+      'alter table DIRECIONAMENTO_ENTRADA'
+      'add constraint FK_DIRECIONAMENTO_ENTRADA_1'
+      'foreign key (CODIGO_ENTRADA)'
+      'references ENTRADAS_SAIDAS(CODIGO)'
+      '^'
+      'alter table DIRECIONAMENTO_ENTRADA'
+      'add constraint FK_DIRECIONAMENTO_ENTRADA_2'
+      'foreign key (CODIGO_PEDIDO)'
+      'references PEDIDOS(CODIGO)'
+      '^'
+      
+        'CREATE TRIGGER DIRECIONAMENTO_ENTRADA_BI FOR DIRECIONAMENTO_ENTR' +
+        'ADA'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) OR (new.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_DIRECIONAMENTO_ENTRADA_ID,1);'
+      'END'
+      '^')
+    TabOrder = 195
+    WordWrap = False
+  end
+  object versao196: TMemo
+    Left = 177
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE PROCEDURE DIRECIONA_ENTRADA ('
+      '    codigo_entrada integer,'
+      '    quantidade numeric(15,2),'
+      '    cod_pro integer,'
+      '    cod_cor integer,'
+      '    cod_tamanho integer)'
+      'as'
+      'declare variable em_espera numeric(15,2);'
+      'declare variable alocado numeric(15,2);'
+      'declare variable codigo_pedido integer;'
+      'declare variable disponivel numeric(15,2);'
+      'declare variable num_mapa integer;'
+      'declare variable criacao timestamp;'
+      'declare variable pontos integer;'
+      'begin'
+      '  for select mp.numero_mapa, mp.criacao,'
+      
+        '       (sum((coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0)) + (' +
+        'coalesce(it.qtd_p,0) - coalesce(ci.qtd_p, 0)) +'
+      
+        '            (coalesce(it.qtd_m,0) - coalesce(ci.qtd_m, 0))   + (' +
+        'coalesce(it.qtd_g,0) - coalesce(ci.qtd_g, 0)) +'
+      
+        '            (coalesce(it.qtd_1,0) - coalesce(ci.qtd_1, 0))   + (' +
+        'coalesce(it.qtd_2,0) - coalesce(ci.qtd_2, 0)) +'
+      
+        '            (coalesce(it.qtd_3,0) - coalesce(ci.qtd_3, 0))   + (' +
+        'coalesce(it.qtd_4,0) - coalesce(ci.qtd_4, 0)) +'
+      
+        '            (coalesce(it.qtd_6,0) - coalesce(ci.qtd_6, 0))   + (' +
+        'coalesce(it.qtd_8,0) - coalesce(ci.qtd_8, 0)) +'
+      
+        '            (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0)) + (' +
+        'coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0)) +'
+      
+        '            (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0)) + (' +
+        'coalesce(it.qtd_unica,0) - coalesce(ci.qtd_unica, 0)))'
+      
+        '         * 2 * count(distinct it.cod_produto) * (ped.dt_limite_e' +
+        'ntrega - current_date) * 20 * pm.peso) / 1000 as PONTOS,'
+      '    Sum(case :cod_tamanho'
+      
+        '     when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0' +
+        '))'
+      
+        '     when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd_p, 0)' +
+        ')'
+      
+        '     when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd_m, 0)' +
+        ')'
+      
+        '     when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd_g, 0)' +
+        ')'
+      
+        '     when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd_1, 0)' +
+        ')'
+      
+        '     when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd_2, 0)' +
+        ')'
+      
+        '     when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd_3, 0)' +
+        ')'
+      
+        '     when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd_4, 0)' +
+        ')'
+      
+        '     when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd_6, 0)' +
+        ')'
+      
+        '     when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd_8, 0)' +
+        ')'
+      
+        '     when 11 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0' +
+        '))'
+      
+        '     when 12 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0' +
+        '))'
+      
+        '     when 13 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0' +
+        '))'
+      
+        '     when 14 then (coalesce(it.qtd_unica,0) - coalesce(ci.qtd_un' +
+        'ica, 0))'
+      '    end) disponivel, ped.codigo'
+      ''
+      '  from pedidos ped'
+      ''
+      
+        '  inner join pedidos_mapa       pm on pm.codigo_pedido = ped.cod' +
+        'igo'
+      '  inner join mapas              mp on mp.codigo = pm.codigo_mapa'
+      
+        '  inner join itens              it on it.cod_pedido = pm.codigo_' +
+        'pedido'
+      '  left join conferencia_itens   ci on ci.codigo_item = it.codigo'
+      ''
+      
+        'where mp.finalizado <> '#39'S'#39' and it.cod_produto = :cod_pro and it.' +
+        'cod_cor = :cod_cor and'
+      '   ((case :cod_tamanho'
+      
+        '     when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0' +
+        '))'
+      
+        '     when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd_p, 0)' +
+        ')'
+      
+        '     when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd_m, 0)' +
+        ')'
+      
+        '     when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd_g, 0)' +
+        ')'
+      
+        '     when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd_1, 0)' +
+        ')'
+      
+        '     when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd_2, 0)' +
+        ')'
+      
+        '     when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd_3, 0)' +
+        ')'
+      
+        '     when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd_4, 0)' +
+        ')'
+      
+        '     when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd_6, 0)' +
+        ')'
+      
+        '     when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd_8, 0)' +
+        ')'
+      
+        '     when 11 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0' +
+        '))'
+      
+        '     when 12 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0' +
+        '))'
+      
+        '     when 13 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0' +
+        '))'
+      
+        '     when 14 then (coalesce(it.qtd_unica,0) - coalesce(ci.qtd_un' +
+        'ica, 0))'
+      '    end ) > 0)'
+      ''
+      
+        '  group by mp.numero_mapa, mp.criacao, ped.numpedido, ped.codigo' +
+        ', ped.dt_limite_entrega, pm.peso'
+      '  order by mp.criacao, mp.numero_mapa, PONTOS'
+      ''
+      '  into'
+      '    :num_mapa, :criacao, :pontos, :disponivel, :codigo_pedido'
+      '  do'
+      '  begin'
+      '     em_espera = 0;'
+      '     select sum(de.quantidade) from direcionamento_entrada de'
+      
+        '     inner join entradas_saidas es on es.codigo = de.codigo_entr' +
+        'ada'
+      
+        '     where es.codigo_produto = :cod_pro and es.codigo_cor = :cod' +
+        '_cor and es.codigo_tamanho = :cod_tamanho'
+      
+        '       and de.codigo_pedido = :codigo_pedido and de.conferido = ' +
+        #39'N'#39
+      
+        '     group by es.codigo_produto, es.codigo_cor, es.codigo_tamanh' +
+        'o'
+      '     into :em_espera;'
+      ''
+      '     disponivel = :disponivel - :em_espera;'
+      ''
+      '     if (:disponivel > :quantidade) then'
+      '       alocado = quantidade;'
+      '     else'
+      '       alocado = disponivel;'
+      ''
+      '     if (alocado > 0) then'
+      '     begin'
+      
+        '       insert into direcionamento_entrada values(0, :codigo_entr' +
+        'ada, :codigo_pedido, :alocado, 0, '#39'N'#39');'
+      '       quantidade = quantidade - alocado;'
+      '     end'
+      ''
+      '     if (quantidade = 0) then'
+      '       exit;'
+      '  end'
+      ''
+      '  if (quantidade > 0) then'
+      
+        '    insert into direcionamento_entrada values(0, :codigo_entrada' +
+        ', null, :quantidade, 0, '#39'S'#39');'
+      '  suspend;'
+      'end'
+      '^'
+      'CREATE PROCEDURE EXECUTA_DIRECIONAMENTO ('
+      '    lote integer)'
+      'as'
+      'declare variable cod_entrada integer;'
+      'declare variable quantidade numeric(15,2);'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable cod_tamanho integer;'
+      'begin'
+      
+        '  for select es.codigo, es.quantidade, es.codigo_produto, es.cod' +
+        'igo_cor, es.codigo_tamanho'
+      '    from entradas_saidas es'
+      
+        '  left join direcionamento_entrada de on de.codigo_entrada = es.' +
+        'codigo'
+      '  where (es.lote = :lote) and (de.codigo is null)'
+      '    into'
+      
+        '  :cod_entrada, :quantidade, :cod_produto, :cod_cor, :cod_tamanh' +
+        'o'
+      '  do'
+      '  begin'
+      
+        '    execute procedure direciona_entrada(:cod_entrada, :quantidad' +
+        'e, :cod_produto, :cod_cor, :cod_tamanho);'
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 196
+    WordWrap = False
+  end
 end

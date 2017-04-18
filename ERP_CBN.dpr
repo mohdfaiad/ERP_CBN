@@ -418,7 +418,7 @@ uses
   Caixa in 'src\dominio\entidade\Caixa.pas',
   EntradaSaidaMoeda in 'src\dominio\entidade\EntradaSaidaMoeda.pas',
   RepositorioEntradaSaidaMoeda in 'src\infraestrutura\persistencia\RepositorioEntradaSaidaMoeda.pas',
-  uEntradaSaidaMoeda in 'uEntradaSaidaMoeda.pas' {frmEntradaSaidaMoeda},
+  uEntradaSaidaMoeda in 'src\formularios\uEntradaSaidaMoeda.pas' {frmEntradaSaidaMoeda},
   uRelatorioCaixa in 'src\formularios\relatorios\uRelatorioCaixa.pas' {frmRelatorioCaixa},
   uRelatorioTabelasPreco in 'src\formularios\relatorios\uRelatorioTabelasPreco.pas' {frmRelatorioTabelasPreco},
   uCadastroGrupo in 'src\formularios\uCadastroGrupo.pas' {frmCadastroGrupo},
@@ -439,7 +439,16 @@ uses
   uDevolucao in 'src\formularios\uDevolucao.pas' {frmDevolucao},
   Devolucao in 'src\dominio\entidade\Devolucao.pas',
   RepositorioDevolucao in 'src\infraestrutura\persistencia\RepositorioDevolucao.pas',
-  EspecificacaoDevolucaoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoDevolucaoPedido.pas';
+  EspecificacaoDevolucaoPedido in 'src\dominio\objetoValor\especificacao\EspecificacaoDevolucaoPedido.pas',
+  Mapa in 'src\dominio\entidade\Mapa.pas',
+  PedidoMapa in 'src\dominio\entidade\PedidoMapa.pas',
+  RepositorioMapa in 'src\infraestrutura\persistencia\RepositorioMapa.pas',
+  RepositorioPedidoMapa in 'src\infraestrutura\persistencia\RepositorioPedidoMapa.pas',
+  uCadastroMapaPedidos in 'src\formularios\uCadastroMapaPedidos.pas' {frmCadastroMapaPedidos},
+  EspecificacaoPedidosMapa in 'src\dominio\objetoValor\especificacao\EspecificacaoPedidosMapa.pas',
+  uDirecionarEntradas in 'src\formularios\uDirecionarEntradas.pas' {frmDirecionarEntradas},
+  DirecionamentoEntrada in 'src\dominio\entidade\DirecionamentoEntrada.pas',
+  RepositorioDirecionamentoEntrada in 'src\infraestrutura\persistencia\RepositorioDirecionamentoEntrada.pas';
 
 {$R *.res}
 {$R win7810.res}
@@ -455,7 +464,7 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-  Application.CreateForm(TfrmDevolucao, frmDevolucao);
+  Application.CreateForm(TfrmDirecionarEntradas, frmDirecionarEntradas);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

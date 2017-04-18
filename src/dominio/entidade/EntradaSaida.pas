@@ -17,6 +17,7 @@ type
     Fdata_producao :TDateTime;
     Fquantidade :Real;
     Ftipo :String;
+    FLote: integer;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -26,8 +27,9 @@ type
     property codigo_intervalo      :Integer read Fcodigo_intervalo      write Fcodigo_intervalo;
     property data_lancamento       :TDateTime read Fdata_lancamento       write Fdata_lancamento;
     property data_producao         :TDateTime read Fdata_producao         write Fdata_producao;
-    property quantidade            :Real read Fquantidade            write Fquantidade;
-    property tipo                  :String read Ftipo                  write Ftipo;
+    property quantidade            :Real read Fquantidade               write Fquantidade;
+    property tipo                  :String read Ftipo                   write Ftipo;
+    property lote                  :integer read FLote                  write FLote;
 end;
 
 implementation

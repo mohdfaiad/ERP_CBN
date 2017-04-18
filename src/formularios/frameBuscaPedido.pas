@@ -32,6 +32,7 @@ type
     FpermiteCancelado  :Boolean;
     FBuscaParaConferencia: Boolean;
     FPedidosLoja: Boolean;
+    FExcluiPedidosNoMapa: Boolean;
 
     procedure buscaPedido(codigo:String);
     procedure Setcodigo(const Value: integer);
@@ -54,6 +55,7 @@ type
     property permiteCancelado     :Boolean read FpermiteCancelado write SetpermiteCancelado;
     property BuscaParaConferencia :Boolean read FBuscaParaConferencia write SetBuscaParaConferencia;
     property pedidosLoja          :Boolean read FPedidosLoja     write FPedidosLoja;
+    property excluiPedidosNoMapa  :Boolean read FExcluiPedidosNoMapa   write FExcluiPedidosNoMapa;
     
     procedure limpa;
     
@@ -68,7 +70,7 @@ uses uPesquisaSimples, DB, uModulo, StrUtils;
 { TBuscaPedido }
 
 procedure TBuscaPedido.buscaPedido(codigo: String);
-var campoRetorno, condicao_tipo, condicao_cancelado :String;
+var campoRetorno, condicao_tipo, condicao_cancelado, condicao_mapa :String;
 begin
   campoRetorno := 'NUMPEDIDO'; //campo que deseja que retorne
 
@@ -81,14 +83,18 @@ begin
   if FPedidosLoja then
     condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
 
+  if FExcluiPedidosNoMapa then
+    condicao_mapa := ' and (pm.codigo is null) ';
+
   if Pedido = nil then
     Pedido := TObjetoGenerico.Create;
 
   Pedido.SQL := 'Select first 1 p.*, pf.codigo_nota_fiscal from Pedidos p       '+
                 ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo '+
                 ' left join nfce on nfce.codigo_pedido = p.codigo               '+
+                ' left join pedidos_mapa pm on pm.codigo_pedido = p.codigo      '+
                 'where p.'+campoRetorno+'='''+ codigo + ''''+ condicao_tipo +
-                condicao_cancelado;
+                condicao_cancelado + condicao_mapa;
 
                                //condição para bloquear a seleção de pedidos bloqueados
   if not (Pedido.BuscaVazia) {and (Pedido.getCampo('codigo_nota_fiscal').AsFloat = 0)} then begin
@@ -133,7 +139,6 @@ begin
 
     buscaItens;
     keybd_event(VK_TAB, 0, 0, 0);
-
   end
   else begin
    // if (Pedido.getCampo('codigo_nota_fiscal').AsFloat > 0) then   raise Exception.Create('Não se pode alterar um pedido já faturado');
@@ -154,7 +159,7 @@ begin
 end;
 
 procedure TBuscaPedido.btnBuscarClick(Sender: TObject);
-var campoRetorno, condicao_tipo, SQL :String;
+var campoRetorno, condicao_tipo, condicao_mapa, SQL :String;
 begin
   campoRetorno  := 'NUMPEDIDO';
   condicao_tipo := '';
@@ -164,6 +169,9 @@ begin
   if FPedidosLoja then
     condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
 
+  if FExcluiPedidosNoMapa then
+    condicao_mapa := ' and (pm.codigo is null) ';
+
   if not FBuscaParaConferencia then
   begin
     SQL := 'select '+IfThen(FPedidosLoja, 'iif(nfce.codigo is null, '''', ''ENVIADO'') st', 'p.dt_representante "Data Rep."')+', p.numpedido , p.valor_total, c.razao cliente '+
@@ -171,7 +179,8 @@ begin
            ' left join pessoas c on c.codigo = p.cod_cliente                                    '+
            ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo                      '+
            ' left join nfce on nfce.codigo_pedido = p.codigo                                    '+
-           ' where (1=1) '+ condicao_tipo+
+           ' left join pedidos_mapa pm on pm.codigo_pedido = p.codigo                           '+
+           ' where (1=1) '+ condicao_tipo+ condicao_mapa +
            ' order by p.dt_representante                                                        ';
   end
   else

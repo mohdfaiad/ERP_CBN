@@ -184,6 +184,7 @@ type
     cdsItensTam14: TIntegerField;
     edtValorFrete: TCurrencyEdit;
     Label20: TLabel;
+    cdsItensDESMEMBRADO: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure cbAprovacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -1050,6 +1051,7 @@ begin
     cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
     cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Ped.Itens[i]).qtd_total;
     cdsItensObsItem.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).observacao;
+    cdsItensDESMEMBRADO.AsString   := IfThen(TItem(BuscaPedido1.Ped.Itens[i]).codigoKit > 0, 'S', 'N');
     cdsItens.Post;
   end;
 
@@ -1316,10 +1318,20 @@ end;
 procedure TfrmPedido.gridItensKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if ( key = VK_Delete ) and (confirma('Deseja realmente remover item selecionado?')) then
-     deletarItem
-  else if Key = VK_F8 then
-     alterarItem;
+  if ( key = VK_Delete ) then
+  begin
+    if (cdsItensDESMEMBRADO.AsString = 'S') then
+      avisar('Este item faz parte de um kit que foi desmembrado, portanto não pode ser deletado.')
+    else if (confirma('Deseja realmente remover item selecionado?')) then
+      deletarItem
+  end
+  else if (Key = VK_F8) then
+  begin
+    if (cdsItensDESMEMBRADO.AsString = 'S') then
+      avisar('Este item faz parte de um kit que foi desmembrado, portanto não pode ser alterado.')
+    else
+      alterarItem;
+  end;
 end;
 
 procedure TfrmPedido.armazenaItemDeletado;

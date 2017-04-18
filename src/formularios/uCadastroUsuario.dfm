@@ -8,6 +8,8 @@ inherited frmCadastroUsuario: TfrmCadastroUsuario
   ClientWidth = 498
   OldCreateOrder = True
   OnShow = FormShow
+  ExplicitWidth = 504
+  ExplicitHeight = 389
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -419,16 +421,12 @@ inherited frmCadastroUsuario: TfrmCadastroUsuario
     Top = 0
     Width = 498
     Height = 317
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = pagUsuariosChange
     object TabSheet1: TTabSheet
       Caption = '[ F1 ] Usu'#225'rios Cadastrados'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         490
         289)
@@ -940,7 +938,7 @@ inherited frmCadastroUsuario: TfrmCadastroUsuario
     Left = 404
     Top = 232
     Bitmap = {
-      494C010102000400080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004000C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

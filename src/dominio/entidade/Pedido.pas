@@ -119,6 +119,7 @@ type
 
     procedure commit;
     procedure rollBack;
+    function GetFaturado: Boolean;
 
   public
     property Codigo            :Integer      read FCodigo            write SetCodigo;
@@ -168,6 +169,7 @@ type
     property PesoBrutoTotal   :Real               read GetPesoBrutoTotal;
     property PesoLiquidoTotal :Real               read GetPesoLiquidoTotal;
     property Conferencia      :TConferenciaPedido read GetConferencia;
+    property Faturado         :Boolean            read GetFaturado;
 
   public
     constructor Create;
@@ -437,6 +439,11 @@ begin
    end;
 
    self.FItens.Add(I);
+end;
+
+function TPedido.GetFaturado: Boolean;
+begin
+  result := (self.despachado = 'S') or (Campo_por_campo('PEDIDOS_FATURADOS','CODIGO','CODIGO_PEDIDO', IntToStr(self.Codigo)) <> '');
 end;
 
 function TPedido.GetFormaPagamento: TFormaPagamento;

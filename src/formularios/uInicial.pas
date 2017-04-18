@@ -128,6 +128,7 @@ type
     Parcelamento1: TMenuItem;
     FechaComissoEcommerce1: TMenuItem;
     ApplicationEvents1: TApplicationEvents;
+    Mapas1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -212,6 +213,7 @@ type
     procedure Parcelamento1Click(Sender: TObject);
     procedure FechaComissoEcommerce1Click(Sender: TObject);
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+    procedure Mapas1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -281,7 +283,7 @@ uses
   uCadastroContador, uImportadorOrdemServico,
   uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM,
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
-  uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque,
+  uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque, uCadastroMapaPedidos,
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco,
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
@@ -973,6 +975,11 @@ procedure TfrmInicial.MapadeReferncias1Click(Sender: TObject);
 begin
   inherited;
   self.AbreForm(TfrmRelatorioMapaReferencias, paRelatorioMapaReferencias);
+end;
+
+procedure TfrmInicial.Mapas1Click(Sender: TObject);
+begin
+   self.AbreForm(TFrmCadastroMapaPedidos, paCadastroMapaPedidos);
 end;
 
 procedure TfrmInicial.RaioXRepresentante2Click(Sender: TObject);

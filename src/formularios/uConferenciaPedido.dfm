@@ -31,7 +31,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Pen.Color = 13158600
   end
   object cx_fechada: TImage
-    Left = 196
+    Left = 236
     Top = 4
     Width = 112
     Height = 97
@@ -1390,7 +1390,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Visible = False
   end
   object Shape5: TShape
-    Left = 496
+    Left = 536
     Top = -3
     Width = 404
     Height = 105
@@ -1426,7 +1426,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Transparent = True
   end
   object btnNovaCaixa: TSpeedButton
-    Left = 411
+    Left = 451
     Top = 8
     Width = 72
     Height = 24
@@ -1503,7 +1503,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnClick = btnNovaCaixaClick
   end
   object staTitulo: TLabel
-    Left = 312
+    Left = 352
     Top = 20
     Width = 59
     Height = 17
@@ -1518,7 +1518,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Visible = False
   end
   object Label7: TLabel
-    Left = 608
+    Left = 648
     Top = 6
     Width = 276
     Height = 17
@@ -1532,7 +1532,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Transparent = True
   end
   object btnFecharCaixa: TSpeedButton
-    Left = 411
+    Left = 451
     Top = 40
     Width = 72
     Height = 24
@@ -1610,7 +1610,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnClick = btnFecharCaixaClick
   end
   object btnCancelarCaixa: TSpeedButton
-    Left = 411
+    Left = 451
     Top = 72
     Width = 72
     Height = 24
@@ -1688,20 +1688,20 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnClick = btnCancelarCaixaClick
   end
   object barcodeOFF: TImage
-    Left = 504
+    Left = 544
     Top = 8
     Width = 99
     Height = 84
   end
   object barcodeON: TImage
-    Left = 504
+    Left = 544
     Top = 8
     Width = 99
     Height = 84
     Visible = False
   end
   object Label3: TLabel
-    Left = 503
+    Left = 543
     Top = 8
     Width = 102
     Height = 85
@@ -1717,7 +1717,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnMouseLeave = Label3MouseLeave
   end
   object cx_aberta: TImage
-    Left = 191
+    Left = 231
     Top = 9
     Width = 112
     Height = 93
@@ -3155,14 +3155,14 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Visible = False
   end
   object flecha: TImage
-    Left = 197
+    Left = 237
     Top = 3
     Width = 65
     Height = 51
     Visible = False
   end
   object Label4: TLabel
-    Left = 195
+    Left = 235
     Top = 15
     Width = 110
     Height = 85
@@ -3178,7 +3178,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnMouseEnter = Label4MouseEnter
   end
   object edtCaixa: TEdit
-    Left = 219
+    Left = 259
     Top = 48
     Width = 25
     Height = 21
@@ -3549,9 +3549,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           ExplicitLeft = -8
         end
         object Shape2: TShape
-          Left = -5
+          Left = -3
           Top = 25
-          Width = 1521
+          Width = 1600
           Height = 36
           Brush.Color = clSilver
           Pen.Style = psClear
@@ -5652,7 +5652,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     end
   end
   object cbCaixas: TComboBox
-    Left = 312
+    Left = 352
     Top = 39
     Width = 85
     Height = 31
@@ -5668,7 +5668,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnClick = cbCaixasClick
   end
   object edtCodigoBarras: TEdit
-    Left = 613
+    Left = 653
     Top = 27
     Width = 272
     Height = 45
@@ -5686,15 +5686,15 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     OnEnter = edtCodigoBarrasEnter
   end
   inline BuscaPedido1: TBuscaPedido
-    Left = 14
-    Top = -34
+    Left = 11
+    Top = -33
     Width = 145
     Height = 91
     TabOrder = 0
     OnEnter = BuscaPedido1Enter
     OnExit = BuscaPedido1Exit
-    ExplicitLeft = 14
-    ExplicitTop = -34
+    ExplicitLeft = 11
+    ExplicitTop = -33
     ExplicitWidth = 145
     ExplicitHeight = 91
     inherited btnBuscar: TBitBtn
@@ -5725,7 +5725,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     end
   end
   object cbInformarQuantidade: TCheckBox
-    Left = 613
+    Left = 653
     Top = 74
     Width = 137
     Height = 17
@@ -6538,6 +6538,86 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     TabStop = False
     OnClick = btnExcluirClick
   end
+  object btnDesmembrar: TBitBtn
+    Left = 194
+    Top = 25
+    Width = 26
+    Height = 27
+    Hint = 'Desmembrar Kits'
+    Glyph.Data = {
+      36080000424D3608000000000000360000002800000020000000100000000100
+      2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00CECEEF008B89DD002723C6000802C0000800C6000902CB000000
+      E700271DC700D0AA8700F4EAE300FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B006A6A8B00272579000000620000005C0000006200000067000000
+      8300000063006C46230090867F009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF005451CC000400A6000500AF000C08C200171BD600181CDB001C20DE000A17
+      FC001F16C600A54B000099471200D0A78800FFFFFF00FFFFFF009B9B9B009B9B
+      9B00000068000000420000004B0000005E00000072000000770000007A000000
+      98000000620041000000350000006C4324009B9B9B009B9B9B00FFFFFF002B39
+      77000000B400161FCC002A43F300355DFF00345CFE00355BFD00355CFE001E53
+      FF008F6C4D00F4A30F00C47B1E00AC5E1E00C78A5500FFFFFF009B9B9B000000
+      1300000050000000680000008F0000009B0000009A000000990000009A000000
+      9B002B080000903F00006017000048000000632600009B9B9B0090B183002333
+      73002120FF002447FF002747FF002642F500263FF500273FF3001B3FFF002C38
+      BD00EA970800DE9E3200E09F3000DC982A00C47B2800E9CBA7002C4D1F000000
+      0F0000009B0000009B0000009B00000091000000910000008F0000009B000000
+      5900863300007A3A00007C3B00007834000060170000856743004E8C53006DD4
+      5E00487049003931B6001718FF00162DFF001B32F7001D32FC00001EFF00A06B
+      3900FAB32E00DD9F3E00DE9E3B00DFA23B00E0A13700D79A4300002800000970
+      0000000C00000000520000009B0000009B00000093000000980000009B003C07
+      0000964F0000793B00007A3A00007B3E00007C3D00007336000085C8920024B9
+      50002DC53F0045B32100486B49002C19BA00130AFF00000AFF0030259800F4B0
+      1E00E8B14F00E0A84700E1A84500E1A74400E3A84300E1A6460021642E000055
+      000000610000004F0000000700000000560000009B0000009B0000003400904C
+      0000844D00007C4400007D4400007D4300007F4400007D420000A4DFB50015A7
+      360035B358002DBD580033C8450040B62B00425D4D00110BAD00A36B2600FFCB
+      5A00E2AF5400E5B05300E5B05200E5AE4F00E4AE4E00E6B15600407B51000043
+      0000004F000000590000006400000052000000000000000049003F0700009B67
+      00007E4B0000814C0000814C0000814A0000804A0000824D00009CDDB20014AF
+      420033B95A0031B7590030B75A002FBC5D002ADB57003B7E0800FEB55400EDBC
+      6400E9B65D00E9B75E00E9B75D00E8B65B00E8B55A00E9B75D0038794E00004B
+      00000055000000530000005300000058000000770000001A00009A5100008958
+      0000855200008553000085530000845200008451000085530000C3EAD40034BE
+      670022B7540032BC620031BC610033BB5F001AC96B006E843B00FFC26E00ECC2
+      6900EDC06900ECBE6800ECBF6600ECBE6600ECBD6400EFC77D005F867000005A
+      030000530000005800000058000000570000006507000A2000009B5E0A00885E
+      0500895C0500885A0400885B0200885A0200885900008B631900EAF8F000A3E4
+      C2001EBD60001EBC5D0032C0690032C870000EAE5800B79E5000FFCE7900F0C7
+      7200F1C87100F0C77100F0C46E00EFC26500EDC36500FAEDD00086948C003F80
+      5E000059000000580000005C050000640C00004A0000533A00009B6A15008C63
+      0E008D640D008C630D008C600A008B5E0100895F010096896C00FFFFFF00E2F7
+      EE00ABE8CB0040CC830013BF630014CC720029A55700EBAE6000FFD68500F1CB
+      7A00F2C97600F0C76E00F1C56700F3D18900FCF4E400FFFFFF009B9B9B007E93
+      8A004784670000681F00005B000000680E0000410000874A00009B7221008D67
+      16008E6512008C630A008D6103008F6D2500989080009B9B9B00FFFFFF00FFFF
+      FF00EDFBF500CCF3E50094E3C00042D9A10064B06700FFC77200F3D07B00F2CC
+      7600F3D07D00F6DA9E00F9EAC700FEFBF700FFFFFF00FFFFFF009B9B9B009B9B
+      9B0089979100688F8100307F5C0000753D00004C03009B630E008F6C17008E68
+      12008F6C190092763A00958663009A9793009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FBFEFD00EAFAF300C7F2E400DAE2CD00FFF6DE00FAF0D700FCF0
+      D800FCF3DE00FFFBF400FFFFFE00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B00979A990086968F00638E8000767E69009B927A00968C7300988C
+      7400988F7A009B9790009B9B9A009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+    NumGlyphs = 2
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 9
+    TabStop = False
+    OnClick = btnDesmembrarClick
+  end
   object dsItens: TDataSource
     DataSet = cdsItens
     Left = 175
@@ -6916,7 +6996,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040009009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7339,6 +7419,9 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensQTD_UNICA: TIntegerField
       FieldName = 'QTD_UNICA'
     end
+    object cdsItensCODIGO_KIT: TIntegerField
+      FieldName = 'CODIGO_KIT'
+    end
   end
   object Timer2: TTimer
     Enabled = False
@@ -7366,7 +7449,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         'o) = '#39#39'), cor.descricao, cor.desc_producao|| '#39' '#39' ||cor.cor) cor,'
       
         '       cor.referencia refcor, ci.numero_caixa num_caixa, pro.cod' +
-        '_tipo tipo, i.preco,'
+        '_tipo tipo, i.preco, codigo_kit,'
       ''
       '       i.qtd_rn qtd_rn_o,'
       '       i.qtd_p qtd_p_o,'
@@ -7618,5 +7701,24 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object cdsConferidos: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspItens'
+    Left = 402
+    Top = 375
+    object cdsConferidosCOD_PRODUTO: TIntegerField
+      FieldName = 'COD_PRODUTO'
+    end
+    object cdsConferidosCOD_COR: TIntegerField
+      FieldName = 'COD_COR'
+    end
+    object cdsConferidosCOD_TAMANHO: TIntegerField
+      FieldName = 'COD_TAMANHO'
+    end
+    object cdsConferidosQUANTIDADE: TFloatField
+      FieldName = 'QUANTIDADE'
+    end
   end
 end

@@ -13,29 +13,28 @@ type
 
   protected                                                                                        
     function SQLGet                      :String;            override;                             
-    function SQLSalvar                   :String;            override;                             
-    function SQLGetAll                   :String;            override;                             
-    function SQLRemover                  :String;            override;                             
-    function SQLGetExiste(campo: String): String;            override;                             
+    function SQLSalvar                   :String;            override;
+    function SQLGetAll                   :String;            override;
+    function SQLRemover                  :String;            override;
+    function SQLGetExiste(campo: String): String;            override;
 
-  protected                                                                                        
-    function IsInsercao(Objeto :TObject) :Boolean;           override;                             
+  protected
+    function IsInsercao(Objeto :TObject) :Boolean;           override;
 
-  protected                                                                                        
-    procedure SetParametros   (Objeto :TObject                        ); override;                 
+  protected
+    procedure SetParametros   (Objeto :TObject                        ); override;
     procedure SetIdentificador(Objeto :TObject; Identificador :Variant); override;
 
   protected
     procedure ExecutaDepoisDeSalvar (Objeto :TObject); override;
 
-  //==============================================================================                 
-  // Auditoria                                                                                     
-  //==============================================================================                 
-  protected                                                                                        
-    procedure SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject); override;  
-    procedure SetCamposAlterados(Auditoria :TAuditoria; AntigoObjeto, Objeto :TObject); override;  
-    procedure SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject); override;  
-
+  //==============================================================================
+  // Auditoria
+  //==============================================================================
+  protected
+    procedure SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject); override;
+    procedure SetCamposAlterados(Auditoria :TAuditoria; AntigoObjeto, Objeto :TObject); override;
+    procedure SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject); override;
 end;                                                                                               
 
 implementation                                                                                     
@@ -52,23 +51,18 @@ var repositorio :TRepositorio;
     i :integer;
 begin
   ConferenciaPedido := (Objeto as TConferenciaPedido);
-  repositorio := nil;
-
+  repositorio       := nil;
   try
     repositorio := TFabricaRepositorio.GetRepositorio( TConferenciaItem.ClassName );
-
     if not assigned(ConferenciaPedido.Itens) then  EXIT;
 
     for i := 0 to ConferenciaPedido.Itens.Count - 1 do begin
-
       (ConferenciaPedido.Itens[i] as TConferenciaItem).codigo_conferencia := ConferenciaPedido.codigo;
-
       repositorio.Salvar( (ConferenciaPedido.Itens[i] as TConferenciaItem) )
     end;
 
   finally
     FreeAndNil( repositorio );
-    FreeAndNil( ConferenciaPedido );
   end;
 end;
 
@@ -76,13 +70,13 @@ function TRepositorioConferenciaPedido.Get(Dataset: TDataSet): TObject;
 var                                                                                                
   ConferenciaPedido :TConferenciaPedido;                                                 
 begin                                                                                              
-   ConferenciaPedido                := TConferenciaPedido.Create;
-   ConferenciaPedido.CODIGO         := self.FQuery.FieldByName('CODIGO'  ).AsInteger;
-   ConferenciaPedido.CODIGO_PEDIDO  := self.FQuery.FieldByName('CODIGO_PEDIDO'  ).AsInteger;
-   ConferenciaPedido.CODIGO_USUARIO := self.FQuery.FieldByName('CODIGO_USUARIO'  ).AsInteger;
-   ConferenciaPedido.tempo_decorrido          := self.FQuery.FieldByName('tempo_decorrido').AsFloat;
-   ConferenciaPedido.INICIO         := self.FQuery.FieldByName('INICIO'  ).AsDateTime;
-   ConferenciaPedido.FIM            := self.FQuery.FieldByName('FIM'  ).AsDateTime;
+   ConferenciaPedido                  := TConferenciaPedido.Create;
+   ConferenciaPedido.CODIGO           := self.FQuery.FieldByName('CODIGO'  ).AsInteger;
+   ConferenciaPedido.CODIGO_PEDIDO    := self.FQuery.FieldByName('CODIGO_PEDIDO'  ).AsInteger;
+   ConferenciaPedido.CODIGO_USUARIO   := self.FQuery.FieldByName('CODIGO_USUARIO'  ).AsInteger;
+   ConferenciaPedido.tempo_decorrido  := self.FQuery.FieldByName('tempo_decorrido').AsFloat;
+   ConferenciaPedido.INICIO           := self.FQuery.FieldByName('INICIO'  ).AsDateTime;
+   ConferenciaPedido.FIM              := self.FQuery.FieldByName('FIM'  ).AsDateTime;
 
    result := ConferenciaPedido;
 end;                                                                                               
@@ -130,7 +124,6 @@ begin
 
    if (ConferenciaPedidoAntigo.FIM <> ConferenciaPedidoNovo.FIM) then
    Auditoria.AdicionaCampoAlterado('FIM', DateToStr(ConferenciaPedidoAntigo.FIM), DateToStr(ConferenciaPedidoNovo.FIM) );
-
 end;                                                                                               
 
 procedure TRepositorioConferenciaPedido.SetCamposExcluidos(Auditoria: TAuditoria;        
@@ -213,6 +206,6 @@ begin
   result := 'update or insert into CONFERENCIA_PEDIDO                                             '+
             ' ( CODIGO, CODIGO_PEDIDO, CODIGO_USUARIO, TEMPO_DECORRIDO, INICIO, FIM)              '+
             ' Values ( :CODIGO, :CODIGO_PEDIDO, :CODIGO_USUARIO, :TEMPO_DECORRIDO, :INICIO, :FIM) '
-end;                                                                                               
+end;
 
-end.                                                                                               
+end.

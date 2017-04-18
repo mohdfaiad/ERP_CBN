@@ -17,7 +17,7 @@ inherited frmPedido: TfrmPedido
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet2
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
@@ -8280,14 +8280,13 @@ inherited frmPedido: TfrmPedido
       Visible = False
     end
     inline BuscaPedido1: TBuscaPedido
-      Left = 114
-      Top = 2
+      Left = 111
+      Top = 0
       Width = 307
       Height = 68
       TabOrder = 0
       OnExit = BuscaPedido1Exit
-      ExplicitLeft = 114
-      ExplicitTop = 2
+      ExplicitLeft = 111
       ExplicitWidth = 307
       ExplicitHeight = 68
       inherited btnBuscar: TBitBtn
@@ -8995,6 +8994,10 @@ inherited frmPedido: TfrmPedido
     object cdsItensObsItem: TStringField
       FieldName = 'ObsItem'
       Size = 200
+    end
+    object cdsItensDESMEMBRADO: TStringField
+      FieldName = 'DESMEMBRADO'
+      Size = 1
     end
   end
   object dsItens: TDataSource
