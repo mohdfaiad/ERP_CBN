@@ -824,6 +824,7 @@ begin
     if not BuscaCor1.Enabled then  BuscaCor1.Enabled := true;
 
     BuscaCor1.limpa;
+    buscacor1.edtReferencia.SetFocus;
     cbGenero.ItemIndex := -1;
 
   end;
@@ -1290,7 +1291,16 @@ end;
 procedure TfrmCadastroProduto.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+ { if (key = VK_ESCAPE) and gridConsulta.buscando then
+  begin
+    cds.Filtered := false;
+    key := 0;
+  end
+  else
+    inherited; }
+
   inherited;
+
   if key = VK_F1 then
     pagProdutos.ActivePageIndex := 0
   else if key = VK_F2 then
@@ -1714,7 +1724,7 @@ end;
 
 procedure TfrmCadastroProduto.DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if not cdsProdsKit.IsEmpty then
+  if not cdsProdsKit.IsEmpty and (key = VK_DELETE) then
     cdsProdsKit.Delete;
 end;
 

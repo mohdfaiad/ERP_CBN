@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
   Vcl.DBGrids, DBGridCBN, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.ButtonGroup, System.ImageList,
-  Vcl.ImgList, RLReport;
+  Vcl.ImgList, RLReport, RLFilters, RLPDFFilter;
 
 type
   TfrmDirecionarEntradas = class(TfrmPadrao)
@@ -15,7 +15,6 @@ type
     qryEntradas: TFDQuery;
     dsEntradas: TDataSource;
     Panel1: TPanel;
-    btnImprimir: TBitBtn;
     Label6: TLabel;
     edtLote: TCurrencyEdit;
     qryEntradasPRODUTO: TStringField;
@@ -23,7 +22,6 @@ type
     qryEntradasTAM: TStringField;
     qryEntradasQUANTIDADE: TSingleField;
     ImageList1: TImageList;
-    btnDirecionar: TBitBtn;
     qryEntradasDIRECIONADA: TStringField;
     qryDireciona: TFDQuery;
     RLReport1: TRLReport;
@@ -57,6 +55,13 @@ type
     RLLabel7: TRLLabel;
     RLDraw1: TRLDraw;
     RLLabel8: TRLLabel;
+    GroupBox1: TGroupBox;
+    Image1: TImage;
+    Label1: TLabel;
+    RLPDFFilter1: TRLPDFFilter;
+    RLLabel9: TRLLabel;
+    RLDBText7: TRLDBText;
+    qryDirecionadasREFERENCIA: TStringField;
     procedure FormShow(Sender: TObject);
     procedure gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure btnDirecionarClick(Sender: TObject);
@@ -116,9 +121,7 @@ begin
     TDBGridCBN(Sender).Canvas.FillRect(Rect);
 
     if qryEntradasDIRECIONADA.asString = 'S' then
-      ImageList1.Draw(TDBGridCBN(Sender).Canvas, Rect.Left +12, Rect.Top , 0, true)
-    else
-      ImageList1.Draw(TDBGridCBN(Sender).Canvas, Rect.Left +12, Rect.Top , 1, true);
+      ImageList1.Draw(TDBGridCBN(Sender).Canvas, Rect.Left +12, Rect.Top , 0, true);
   end;
 end;
 

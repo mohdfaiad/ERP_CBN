@@ -18,7 +18,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
     Top = 0
     Width = 822
     Height = 518
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     TabStop = False
@@ -93,8 +93,8 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item

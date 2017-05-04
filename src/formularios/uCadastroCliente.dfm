@@ -442,7 +442,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Top = 0
     Width = 880
     Height = 497
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -779,8 +779,8 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -1798,7 +1798,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101030004003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

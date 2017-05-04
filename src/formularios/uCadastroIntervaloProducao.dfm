@@ -17,7 +17,6 @@ inherited frmCadastroIntervaloProducao: TfrmCadastroIntervaloProducao
   inherited pgGeral: TPageControl
     Width = 525
     Height = 312
-    ActivePage = tsConsulta
     ExplicitWidth = 525
     ExplicitHeight = 312
     inherited tsConsulta: TTabSheet
@@ -25,8 +24,7 @@ inherited frmCadastroIntervaloProducao: TfrmCadastroIntervaloProducao
       ExplicitHeight = 284
       inherited gridConsulta: TDBGridCBN
         Width = 499
-        Height = 268
-        SalvaConfiguracoes = False
+        Height = 258
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 267

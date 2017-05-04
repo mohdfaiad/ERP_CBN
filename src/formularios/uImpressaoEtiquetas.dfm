@@ -3,17 +3,17 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
   Top = 194
   BorderStyle = bsSingle
   Caption = 'Impress'#227'o de Etiquetas'
-  ClientHeight = 576
+  ClientHeight = 593
   ClientWidth = 1090
   OldCreateOrder = True
   OnShow = FormShow
   ExplicitWidth = 1096
-  ExplicitHeight = 604
+  ExplicitHeight = 621
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport2: TRLReport
     Left = 56
-    Top = 139
+    Top = 155
     Width = 794
     Height = 1123
     Margins.LeftMargin = 6.000000000000000000
@@ -1691,7 +1691,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     Left = 8
     Top = 296
     Width = 825
-    Height = 223
+    Height = 238
     Caption = 
       ' Refer'#234'ncias a serem impressas  <Delete - Remove refer'#234'ncia da f' +
       'ila de impress'#227'o> '
@@ -1704,7 +1704,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     TabOrder = 7
     object Shape2: TShape
       Left = 6
-      Top = 195
+      Top = 211
       Width = 811
       Height = 22
       Brush.Color = 13750737
@@ -1713,7 +1713,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object labTotRef: TLabel
       Left = 510
-      Top = 199
+      Top = 215
       Width = 166
       Height = 13
       Caption = 'Quantidade total de etiquetas >'
@@ -1729,7 +1729,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
       Left = 6
       Top = 20
       Width = 811
-      Height = 173
+      Height = 192
       Color = clWhite
       DataSource = dsImp
       Font.Charset = DEFAULT_CHARSET
@@ -1802,7 +1802,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object edtQtde: TCurrencyEdit
       Left = 692
-      Top = 196
+      Top = 212
       Width = 90
       Height = 20
       AutoSize = False
@@ -1823,7 +1823,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     Left = 840
     Top = 296
     Width = 237
-    Height = 268
+    Height = 290
     Caption = ' Op'#231#245'es '
     Color = clBtnFace
     Font.Charset = DEFAULT_CHARSET
@@ -1836,7 +1836,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     TabOrder = 8
     object btnAdiciona: TSpeedButton
       Left = 16
-      Top = 51
+      Top = 47
       Width = 205
       Height = 42
       Caption = '[CTRL + A] Adicionar refer'#234'ncia'
@@ -1878,7 +1878,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object btnImprimirZebra: TSpeedButton
       Left = 16
-      Top = 104
+      Top = 97
       Width = 205
       Height = 42
       Caption = 'Imprimir - ZEBRA'
@@ -1961,7 +1961,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object btnLimpa: TSpeedButton
       Left = 16
-      Top = 208
+      Top = 195
       Width = 205
       Height = 42
       Caption = 'Limpar grid de refer'#234'ncias'
@@ -2044,7 +2044,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object btnImprimirLazer: TSpeedButton
       Left = 16
-      Top = 156
+      Top = 146
       Width = 205
       Height = 42
       Caption = 'Imprimir - LASER'
@@ -2125,9 +2125,50 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
       ParentFont = False
       OnClick = btnImprimirLazerClick
     end
+    object btnData: TSpeedButton
+      Left = 191
+      Top = 253
+      Width = 30
+      Height = 30
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFB97D4DB67130B36F31B5702FB36E30B36E30B56E2FB3
+        6E31B37032B56E2DB37034B3702FB4702EB36E31B77130B87D4FB96F22F7DBB4
+        EFD1B1D5881AF1D4B4F0D3AFD8922CF3DDC5EAC796D68B22F4E0C8EAC395D793
+        2BF2DDC6F0C887B5650ABE7D3DFFFFFFFFFFFFD69231FFFFFFFFFFFFDDA14BFF
+        FFFFFAF1E1D99845FFFFFFFAF2EEDD9F4DFFFFFFFFF1D3B86810C07724EBC081
+        E5B884D89229E5BA88E2B175D89126E5BA87E3B77BD99228E6C297E1AF6DDA97
+        33E6BE96E9BA73C07624C58442FFF9EDF7ECE2DE9F41FAF3E9F9F3E9E1AA59FC
+        FBFCF6E2C7DFA856FDFAF8F3DFC8E0A954FBF9F9FAE7C0C37A27CE945CFFFFF8
+        FAF2EAE2A84EFCF4EAF9EDD8E2AB53FDF8F3F5E3C5E2A84DFDF8F2F6E1CBE5B2
+        64FEFEFEFEF2D9CD8D4BD19451FBE8CDF3DFC9EBBB78F2DDC7F1D4B2E6B361F1
+        D6BBEFD2ACE5B464F4E3D1EFD0A4EABF83F5E4D6F9E0BFD09451D59E69FFFFFF
+        FFFFFFEFC992FFFFFFFFFFFFF1D1A2FFFFFFFDFAF7F0CEA3FFFFFFFDFAFCF0CE
+        9DFFFFFFFFFFF7D1944CD7A164FFF7DEF8E6CFF6D29AF8E5C6F7E1C3F1CD95F9
+        E4CCF6DDBBF1CB8EF8E6CEF6DFBCF6D6A1FAEADAFFF2D1D79D5BE4B575CC9557
+        943600C88B51F9D79CF2CD90F4D096F2CC8FF2CE8FF3D094F1CD91F9DA9BC78A
+        4E943500CE945AE3B578E6BE84C8925BD3850CC98849FCE5BAF8DDAFF9DCAEF9
+        DEAEFADEAFF9DCAFFADCADFCE5BCCA8B4DD3850AC78F5BE7BE84E3C097D7A66E
+        E5AB4DCE9251E9CEAFE8C7A3E7C8A4E8C7A4E7C7A3E7C7A3E7C7A3EACDAFCF97
+        54E5AB4DD3A26EE3C097FFFFFFE4C097F9D384C6873FFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFCA924DF7D384E4BF95FFFFFFFFFFFFE8CAA2
+        F1C87EDDB586FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE2BE
+        91EFC67EE7C7A1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      Layout = blGlyphTop
+      ParentFont = False
+      OnClick = btnDataClick
+    end
     object chkLimpar: TCheckBox
       Left = 16
-      Top = 24
+      Top = 21
       Width = 169
       Height = 17
       Caption = 'Limpar grid ap'#243's imprimir'
@@ -2139,10 +2180,24 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
       ParentFont = False
       TabOrder = 0
     end
+    object edtDataInteger: TCurrencyEdit
+      Left = 18
+      Top = 258
+      Width = 170
+      Height = 23
+      DisplayFormat = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+    end
   end
   object rgTipoEtiqueta: TRadioGroup
     Left = 199
-    Top = 521
+    Top = 537
     Width = 275
     Height = 50
     Columns = 2
@@ -2155,7 +2210,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
   end
   object gpbCaminhoLogo: TGroupBox
     Left = 480
-    Top = 520
+    Top = 536
     Width = 353
     Height = 50
     Caption = ' Nome da Logomarca '
@@ -2248,7 +2303,7 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
   end
   object GroupBox6: TGroupBox
     Left = 8
-    Top = 521
+    Top = 537
     Width = 185
     Height = 50
     TabOrder = 0
@@ -2366,6 +2421,10 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     end
     object cdsImpOS: TIntegerField
       FieldName = 'OS'
+    end
+    object cdsImpDATA: TStringField
+      FieldName = 'DATA'
+      Size = 1
     end
   end
   object dsImp: TDataSource
@@ -2530,6 +2589,6 @@ inherited frmImpressaoEtiquetas: TfrmImpressaoEtiquetas
     Interval = 400
     OnTimer = Timer1Timer
     Left = 160
-    Top = 528
+    Top = 544
   end
 end

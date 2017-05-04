@@ -1,9 +1,9 @@
 inherited frmDirecionarEntradas: TfrmDirecionarEntradas
   Caption = 'Direcionar Entradas'
   ClientHeight = 559
-  ClientWidth = 778
+  ClientWidth = 915
   OnShow = FormShow
-  ExplicitWidth = 794
+  ExplicitWidth = 931
   ExplicitHeight = 597
   PixelsPerInch = 96
   TextHeight = 13
@@ -24,7 +24,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
   object gridConsulta: TDBGridCBN
     Left = 16
     Top = 56
-    Width = 745
+    Width = 882
     Height = 409
     Hint = 
       'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
@@ -87,8 +87,8 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
     ConfCores.Titulo.Tipo.Style = []
     Ordenavel = True
-    TipoBusca.ListarApenasEncontrados = False
-    TipoBusca.QualquerParte = False
+    TipoBusca.ListarApenasEncontrados = True
+    TipoBusca.QualquerParte = True
     SalvaConfiguracoes = False
     Columns = <
       item
@@ -118,13 +118,36 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
       item
         Expanded = False
         FieldName = 'DIRECIONADA'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clBtnFace
+        Title.Font.Height = -11
+        Title.Font.Name = 'MS Sans Serif'
+        Title.Font.Style = []
         Width = 35
         Visible = True
       end>
   end
+  object edtLote: TCurrencyEdit
+    Left = 76
+    Top = 15
+    Width = 55
+    Height = 26
+    AutoSize = False
+    Ctl3D = False
+    DisplayFormat = '0'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 2
+  end
   object RLReport1: TRLReport
-    Left = 0
-    Top = 96
+    Left = 204
+    Top = 439
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -207,9 +230,9 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
         ParentColor = False
         Transparent = False
         object RLDBText1: TRLDBText
-          Left = 9
+          Left = 95
           Top = 4
-          Width = 302
+          Width = 306
           Height = 15
           AutoSize = False
           DataField = 'DESCRICAO'
@@ -224,9 +247,9 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
           Transparent = False
         end
         object RLDBText4: TRLDBText
-          Left = 319
+          Left = 407
           Top = 4
-          Width = 242
+          Width = 226
           Height = 15
           AutoSize = False
           DataField = 'COR'
@@ -241,7 +264,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
           Transparent = False
         end
         object RLDBText5: TRLDBText
-          Left = 583
+          Left = 654
           Top = 4
           Width = 28
           Height = 15
@@ -258,9 +281,9 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
           Transparent = False
         end
         object RLDBText6: TRLDBText
-          Left = 654
+          Left = 706
           Top = 3
-          Width = 88
+          Width = 44
           Height = 18
           Alignment = taRightJustify
           DataField = 'QTDENTRADA'
@@ -268,6 +291,23 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -15
+          Font.Name = 'Calibri'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+          Transparent = False
+        end
+        object RLDBText7: TRLDBText
+          Left = 1
+          Top = 4
+          Width = 86
+          Height = 15
+          AutoSize = False
+          DataField = 'REFERENCIA'
+          DataSource = dsDirecionadas
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
           Font.Name = 'Calibri'
           Font.Style = []
           ParentFont = False
@@ -366,7 +406,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
       Borders.DrawRight = False
       Borders.DrawBottom = False
       object RLLabel4: TRLLabel
-        Left = 6
+        Left = 94
         Top = 3
         Width = 57
         Height = 15
@@ -379,7 +419,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
         ParentFont = False
       end
       object RLLabel5: TRLLabel
-        Left = 316
+        Left = 404
         Top = 3
         Width = 26
         Height = 15
@@ -392,7 +432,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
         ParentFont = False
       end
       object RLLabel6: TRLLabel
-        Left = 562
+        Left = 634
         Top = 3
         Width = 62
         Height = 15
@@ -405,11 +445,24 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
         ParentFont = False
       end
       object RLLabel7: TRLLabel
-        Left = 666
+        Left = 706
         Top = 3
-        Width = 76
+        Width = 32
         Height = 15
-        Caption = 'QUANTIDADE'
+        Caption = 'QTDE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel9: TRLLabel
+        Left = 6
+        Top = 3
+        Width = 68
+        Height = 15
+        Caption = 'REFER'#202'NCIA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13
@@ -422,46 +475,65 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
   object Panel1: TPanel
     Left = 0
     Top = 512
-    Width = 778
+    Width = 915
     Height = 47
     Align = alBottom
     TabOrder = 1
-    object btnImprimir: TBitBtn
-      Left = 653
-      Top = 6
-      Width = 108
-      Height = 30
-      Caption = 'Imprimir'
-      TabOrder = 0
-      OnClick = btnImprimirClick
-    end
-    object btnDirecionar: TBitBtn
-      Left = 525
-      Top = 6
-      Width = 108
-      Height = 30
-      Caption = 'Direcionar'
-      TabOrder = 1
-      OnClick = btnDirecionarClick
-    end
   end
-  object edtLote: TCurrencyEdit
-    Left = 76
-    Top = 15
-    Width = 55
-    Height = 26
-    AutoSize = False
-    Ctl3D = False
-    DisplayFormat = '0'
-    Enabled = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentCtl3D = False
-    ParentFont = False
-    TabOrder = 2
+  object GroupBox1: TGroupBox
+    Left = 16
+    Top = 471
+    Width = 209
+    Height = 35
+    TabOrder = 4
+    object Image1: TImage
+      Left = 18
+      Top = 9
+      Width = 16
+      Height = 18
+      Picture.Data = {
+        07544269746D617036030000424D360300000000000036000000280000001000
+        0000100000000100180000000000000300000000000000000000000000000000
+        0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4EB1456DC066FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FF56B24F1CC63218B9218ECB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFF65B96019C33828E95829E34615B1139CD299
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF77BF7117C5
+        4025EB6A1FDD4C20DC3F29E03613A709B8DFB5FFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFF70BD6A16C74823EF791AE05B33E86532E4531FD92E2ADE2C
+        0FA004CEE9CCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF75BF7015CA5220F3891CE5
+        6C27EC6B46D15776E88333E4491FD7222AD8211FA415E0F1DEFFFFFFFFFFFFFF
+        FFFF6FC06916CF5D1CF99B17E87A26F07D43D36060B46036A92E87F59425DB2C
+        23DA1D27D31F2EA724FAFDF9FFFFFFFFFFFF4FB14829D66A1AF99E2EFA9845D7
+        696FBD6AFFFFFFE0F1E02AAA2784F98A26D82325DC1E26CF1D2BA221FFFFFFFF
+        FFFFFFFFFF54B04F30D76C4ADD7A77C072FFFFFFFFFFFFFFFFFFBFE2BF40BA3E
+        85FC821BD21228DC2021C8194AAF42FFFFFFFFFFFFFFFFFF63BA584DB044FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFADD9AD49C24783FF7E1BD2122AE0231FC41860
+        B959FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        98CF985ACB5281FF7C23DC1D1CBF1454B44CFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6FBC6F6CDC663AC63566BA66FF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFF60BB5E8ECE89FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFF}
+    end
+    object Label1: TLabel
+      Left = 40
+      Top = 9
+      Width = 130
+      Height = 17
+      Caption = 'Entradas direcionadas'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 5460819
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+    end
   end
   object qryEntradas: TFDQuery
     Connection = dm.FDConnection
@@ -523,7 +595,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Left = 352
     Top = 288
     Bitmap = {
-      494C010102001C00280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102001C00400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000004EB145006DC066000000000000000000000000000000
@@ -679,8 +751,9 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Connection = dm.FDConnection
     SQL.Strings = (
       
-        'select es.codigo, pro.descricao, iif(cor.desc_producao = '#39#39', cor' +
-        '.descricao, cor.desc_producao) cor, tam.descricao tam,'
+        'select es.codigo, pro.descricao, pro.referencia, iif(cor.desc_pr' +
+        'oducao = '#39#39', cor.descricao, cor.desc_producao) cor, tam.descrica' +
+        'o tam,'
       
         '       de.quantidade, iif(ped.codigo is null, '#39'ESTOQUE'#39', '#39'MP '#39'||' +
         'mp.numero_mapa||'#39' - Ped('#39'||ped.numpedido||'#39')'#39') destino, es.quant' +
@@ -756,10 +829,22 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
       FieldName = 'QTDENTRADA'
       Origin = 'QUANTIDADE'
     end
+    object qryDirecionadasREFERENCIA: TStringField
+      FieldName = 'REFERENCIA'
+      Size = 30
+    end
   end
   object dsDirecionadas: TDataSource
     DataSet = qryDirecionadas
     Left = 136
     Top = 304
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 
+      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
+      'ortes Inform'#225'tica'
+    DisplayName = 'Documento PDF'
+    Left = 496
+    Top = 472
   end
 end

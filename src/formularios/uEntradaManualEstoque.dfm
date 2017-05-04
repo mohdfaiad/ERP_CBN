@@ -4,12 +4,12 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Entrada/Sa'#237'da Manual de Estoque'
-  ClientHeight = 529
+  ClientHeight = 568
   ClientWidth = 691
   OldCreateOrder = True
   OnShow = FormShow
   ExplicitWidth = 697
-  ExplicitHeight = 557
+  ExplicitHeight = 596
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -51,7 +51,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   object Label5: TLabel
     Left = 54
-    Top = 309
+    Top = 349
     Width = 107
     Height = 17
     Caption = 'Data da produ'#231#227'o'
@@ -156,56 +156,6 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     ShowHint = True
     OnClick = btnNovoLoteClick
   end
-  inline BuscaProduto1: TBuscaProduto
-    Left = 18
-    Top = 88
-    Width = 587
-    Height = 57
-    TabOrder = 1
-    OnExit = BuscaProduto1Exit
-    ExplicitLeft = 18
-    ExplicitTop = 88
-    ExplicitHeight = 57
-    inherited StaticText3: TStaticText
-      Width = 33
-      Font.Style = []
-      ExplicitWidth = 33
-    end
-    inherited StaticText1: TStaticText
-      Width = 56
-      Font.Style = []
-      ExplicitWidth = 56
-    end
-    inherited StaticText2: TStaticText
-      Width = 41
-      Font.Style = []
-      ExplicitWidth = 41
-    end
-  end
-  inline BuscaCor1: TBuscaCor
-    Left = 18
-    Top = 164
-    Width = 425
-    Height = 52
-    TabOrder = 2
-    OnEnter = BuscaCor1Enter
-    ExplicitLeft = 18
-    ExplicitTop = 164
-    ExplicitWidth = 425
-    ExplicitHeight = 52
-    inherited StaticText2: TStaticText
-      Width = 52
-      Font.Style = []
-      Transparent = True
-      ExplicitWidth = 52
-    end
-    inherited StaticText1: TStaticText
-      Width = 56
-      Font.Style = []
-      Transparent = True
-      ExplicitWidth = 56
-    end
-  end
   object edtCodigoBarras: TEdit
     Left = 424
     Top = 34
@@ -222,7 +172,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   object rgTamanhos: TRadioGroup
     Left = -1
-    Top = 240
+    Top = 280
     Width = 695
     Height = 57
     Anchors = [akLeft, akTop, akRight]
@@ -256,7 +206,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 478
+    Top = 517
     Width = 691
     Height = 51
     Align = alBottom
@@ -496,7 +446,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   object pnlQuantidades: TPanel
     Left = 0
-    Top = 373
+    Top = 412
     Width = 691
     Height = 105
     Align = alBottom
@@ -627,7 +577,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   object dtpDataProducao: TDateTimePicker
     Left = 54
-    Top = 328
+    Top = 368
     Width = 121
     Height = 21
     Date = 42328.433801180550000000
@@ -637,13 +587,13 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   end
   inline ListaIntervalos: TListaCampo
     Left = 230
-    Top = 309
+    Top = 349
     Width = 353
     Height = 48
     TabOrder = 7
     Visible = False
     ExplicitLeft = 230
-    ExplicitTop = 309
+    ExplicitTop = 349
     ExplicitWidth = 353
     ExplicitHeight = 48
     inherited staTitulo: TLabel
@@ -679,5 +629,109 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     ParentFont = False
     TabOrder = 8
     OnChange = edtQtdEntradaChange
+  end
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 92
+    Width = 649
+    Height = 78
+    Caption = ' Produto '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    inline BuscaProduto1: TBuscaProduto
+      Left = 10
+      Top = 16
+      Width = 587
+      Height = 57
+      TabOrder = 0
+      OnExit = BuscaProduto1Exit
+      ExplicitLeft = 10
+      ExplicitTop = 16
+      ExplicitHeight = 57
+      inherited StaticText3: TStaticText
+        Width = 35
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ExplicitWidth = 35
+      end
+      inherited StaticText1: TStaticText
+        Width = 58
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ExplicitWidth = 58
+      end
+      inherited StaticText2: TStaticText
+        Width = 53
+        Caption = 'Descri'#231#227'o'
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ExplicitWidth = 53
+      end
+      inherited edtReferencia: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtDescricao: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtGrade: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 176
+    Width = 649
+    Height = 82
+    Caption = ' Cor '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    inline BuscaCor1: TBuscaCor
+      Left = 11
+      Top = 19
+      Width = 425
+      Height = 52
+      TabOrder = 0
+      OnEnter = BuscaCor1Enter
+      ExplicitLeft = 11
+      ExplicitTop = 19
+      ExplicitWidth = 425
+      ExplicitHeight = 52
+      inherited StaticText2: TStaticText
+        Width = 53
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        Transparent = True
+        ExplicitWidth = 53
+      end
+      inherited StaticText1: TStaticText
+        Width = 58
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        Transparent = True
+        ExplicitWidth = 58
+      end
+      inherited edtDescricao: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtReferencia: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+    end
   end
 end

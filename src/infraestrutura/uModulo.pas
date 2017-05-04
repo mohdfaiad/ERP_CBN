@@ -20,9 +20,9 @@ uses
 type
   Tdm = class(TDataModule)
     FDConnection: TFDConnection;
-    qryGenerica: TFDQuery;
     qryGenerica2: TFDQuery;
     FDTransaction1: TFDTransaction;
+    qryGenerica: TFDQuery;
 
   // Eventos
     procedure DataModuleCreate(Sender: TObject);

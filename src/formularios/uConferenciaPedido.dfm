@@ -3266,8 +3266,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -5335,8 +5335,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -6996,7 +6996,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C0101040009009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

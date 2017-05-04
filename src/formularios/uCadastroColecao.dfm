@@ -17,7 +17,6 @@ inherited frmCadastroColecao: TfrmCadastroColecao
   inherited pgGeral: TPageControl
     Width = 520
     Height = 287
-    ActivePage = tsConsulta
     ExplicitWidth = 520
     ExplicitHeight = 287
     inherited tsConsulta: TTabSheet
@@ -25,8 +24,7 @@ inherited frmCadastroColecao: TfrmCadastroColecao
       ExplicitHeight = 259
       inherited gridConsulta: TDBGridCBN
         Width = 494
-        Height = 243
-        SalvaConfiguracoes = False
+        Height = 233
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 242

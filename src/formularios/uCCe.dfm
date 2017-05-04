@@ -32,7 +32,7 @@ object frmCCe: TfrmCCe
     Top = 0
     Width = 960
     Height = 643
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -335,8 +335,8 @@ object frmCCe: TfrmCCe
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -1614,7 +1614,7 @@ object frmCCe: TfrmCCe
     Left = 28
     Top = 472
     Bitmap = {
-      494C010103000400100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000002C2BEB003D47EB003A42
       EB00393FE700393EE5003237E0001319DB001019D900292ED7003031D7002D2D

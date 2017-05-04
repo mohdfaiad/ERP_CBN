@@ -2,7 +2,7 @@ unit Funcoes;
 
 interface
 
-uses Controls, Printers;
+uses Controls, Printers, FireDAC.Comp.Client;
 
 function substituiString(S, localizar, substituir :String): String;
 
@@ -392,33 +392,40 @@ end;
 function Campo_por_campo(Tabela, campo_procurado, campo_referencia, valor_campo_referencia :String;
  const campo_referencia2 :String; const valor_referencia2 :String) :String;
 var segunda_condicao :String;
+    query :TFDQuery;
 begin
-  Result := '';
+  Result           := '';
+  try
+    query            := TFDQuery.Create(nil);
+    query.Connection := dm.FDConnection;
 
-  if campo_referencia2 <> '' then
-    segunda_condicao := ' AND '+campo_referencia2+' = :param2';
+    if campo_referencia2 <> '' then
+      segunda_condicao := ' AND '+campo_referencia2+' = :param2';
 
-  dm.qryGenerica.Close;
-  dm.qryGenerica.SQL.Text := 'SELECT first 1 '+campo_procurado+' FROM '+Tabela+
-                             ' WHERE '+campo_referencia+' = :param1'+
-                             segunda_condicao;
+    query.Close;
+    query.SQL.Text := 'SELECT first 1 '+campo_procurado+' FROM '+Tabela+
+                               ' WHERE '+campo_referencia+' = :param1'+
+                               segunda_condicao;
 
-  if not (copy(valor_campo_referencia,1,1)='0') and (strToIntDef(valor_campo_referencia, 0) > 0) then // se for numero
-    dm.qryGenerica.ParamByName('param1').AsInteger := strToInt(valor_campo_referencia)
-  else
-    dm.qryGenerica.ParamByName('param1').AsString  := valor_campo_referencia;
-
-  if campo_referencia2 <> '' then begin
-    if not (copy(valor_referencia2,1,1)='0') and (strToIntDef(valor_referencia2, 0) > 0) then // se for numero
-      dm.qryGenerica.ParamByName('param2').AsInteger := strToInt(valor_referencia2)
+    if not (copy(valor_campo_referencia,1,1)='0') and (strToIntDef(valor_campo_referencia, 0) > 0) then // se for numero
+      query.ParamByName('param1').AsInteger := strToInt(valor_campo_referencia)
     else
-      dm.qryGenerica.ParamByName('param2').AsString := valor_referencia2;
+      query.ParamByName('param1').AsString  := valor_campo_referencia;
 
+    if campo_referencia2 <> '' then begin
+      if not (copy(valor_referencia2,1,1)='0') and (strToIntDef(valor_referencia2, 0) > 0) then // se for numero
+        query.ParamByName('param2').AsInteger := strToInt(valor_referencia2)
+      else
+        query.ParamByName('param2').AsString := valor_referencia2;
+
+    end;
+    query.Open;
+
+    if not query.IsEmpty then
+      Result := query.fieldByName(campo_procurado).AsString;
+  finally
+    FreeAndNil(query);
   end;
-  dm.qryGenerica.Open;
-
-  if not dm.qryGenerica.IsEmpty then
-    Result := dm.qryGenerica.fieldByName(campo_procurado).AsString;
 end;
 
 //pode ser usada para recuperar ultimo registro cadastrado

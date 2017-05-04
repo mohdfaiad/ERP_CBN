@@ -310,8 +310,8 @@ inherited frmRelatorioReferencias: TfrmRelatorioReferencias
     ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
     ConfCores.Titulo.Tipo.Style = []
     Ordenavel = True
-    TipoBusca.ListarApenasEncontrados = False
-    TipoBusca.QualquerParte = False
+    TipoBusca.ListarApenasEncontrados = True
+    TipoBusca.QualquerParte = True
     SalvaConfiguracoes = True
     Columns = <
       item

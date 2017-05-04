@@ -1051,7 +1051,7 @@ begin
     cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
     cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Ped.Itens[i]).qtd_total;
     cdsItensObsItem.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).observacao;
-    cdsItensDESMEMBRADO.AsString   := IfThen(TItem(BuscaPedido1.Ped.Itens[i]).codigoKit > 0, 'S', 'N');
+    cdsItensDESMEMBRADO.AsString   := IfThen(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit > 0, 'S', 'N');
     cdsItens.Post;
   end;
 

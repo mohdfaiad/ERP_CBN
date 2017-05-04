@@ -15,11 +15,10 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
   inherited pgGeral: TPageControl
     Width = 527
     Height = 482
+    ActivePage = tsDados
     ExplicitWidth = 527
     ExplicitHeight = 482
     inherited tsConsulta: TTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
       ExplicitWidth = 519
       ExplicitHeight = 454
       inherited gridConsulta: TDBGridCBN
@@ -49,8 +48,9 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 437
-        Width = 222
+        Width = 519
         ExplicitTop = 437
+        ExplicitWidth = 519
       end
     end
     inherited tsDados: TTabSheet
@@ -87,7 +87,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           ExplicitTop = 426
         end
         object Label1: TLabel
-          Left = 159
+          Left = 152
           Top = 85
           Width = 182
           Height = 17
@@ -137,7 +137,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           ParentFont = False
         end
         object btnRemove: TSpeedButton
-          Left = 429
+          Left = 455
           Top = 81
           Width = 26
           Height = 25
@@ -225,7 +225,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           ParentFont = False
         end
         object btnAltera: TSpeedButton
-          Left = 397
+          Left = 423
           Top = 81
           Width = 26
           Height = 25
@@ -409,13 +409,13 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
             9B009B9B9B009B9B9B00536A5300034103000019000000230000002300000019
             000003410300536A53009B9B9B009B9B9B009B9B9B009B9B9B00}
           NumGlyphs = 2
-          TabOrder = 1
+          TabOrder = 2
           OnClick = btnAddClick
         end
         object edtCodigoMapa: TCurrencyEdit
           Left = 12
           Top = 28
-          Width = 99
+          Width = 97
           Height = 38
           TabStop = False
           Alignment = taCenter
@@ -429,7 +429,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           Font.Style = [fsBold]
           ParentFont = False
           ReadOnly = True
-          TabOrder = 2
+          TabOrder = 3
         end
         object edtCodigo: TCurrencyEdit
           Left = 48
@@ -437,7 +437,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           Width = 61
           Height = 21
           DisplayFormat = '0'
-          TabOrder = 3
+          TabOrder = 4
           Visible = False
         end
         object cbxPeso: TComboBox
@@ -446,7 +446,7 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
           Width = 50
           Height = 21
           ItemIndex = 0
-          TabOrder = 4
+          TabOrder = 1
           Text = '1'
           Items.Strings = (
             '1'
@@ -461,9 +461,9 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
             '10')
         end
         object gridPedidos: TDBGrid
-          Left = 159
+          Left = 152
           Top = 109
-          Width = 295
+          Width = 329
           Height = 332
           DataSource = dsPedidos
           TabOrder = 5
@@ -495,7 +495,13 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
                 '8'
                 '9'
                 '10')
-              Width = 86
+              Width = 63
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'PONTOS'
+              Width = 71
               Visible = True
             end>
         end
@@ -561,13 +567,17 @@ inherited frmCadastroMapaPedidos: TfrmCadastroMapaPedidos
     end
     object cdsPedidosPESO: TSmallintField
       FieldName = 'PESO'
+      OnChange = cdsPedidosPESOChange
+    end
+    object cdsPedidosPONTOS: TIntegerField
+      FieldName = 'PONTOS'
     end
   end
   object ImageList1: TImageList
     Left = 404
     Top = 232
     Bitmap = {
-      494C0101020014002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102001400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000BBE4C20070CF850027B747001EBA40001EBA400027B7470070CF8500BBE4

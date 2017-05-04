@@ -9,7 +9,7 @@ uses
   RLFilters, RLPDFFilter, frameBuscaEstado, RLXLSFilter, ComObj, FileCtrl,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, RLPreviewForm;
 
 type
   TfrmRelatorioClientes = class(TfrmPadrao)

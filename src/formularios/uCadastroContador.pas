@@ -39,7 +39,6 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
-    CheckBox1: TCheckBox;
     Fone1: TFone;
   private
     { Altera um registro existente no CDS de consulta }

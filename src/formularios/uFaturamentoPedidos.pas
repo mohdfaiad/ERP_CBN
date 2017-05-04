@@ -853,7 +853,7 @@ begin
        Pedido      := (Repositorio.Get(CodigoPedido) as TPedido);
 
        for nX := 0 to (Pedido.Itens.Count-1) do
-         if TItem(Pedido.Itens.Items[nX]).codigoKit > 0 then
+         if TItem(Pedido.Itens.Items[nX]).codigoProdutoKit > 0 then
          begin
            avisar('Pedido possui kits desmembrados, portanto só poderá ser faturado após a conferência ser completada.');
            cdsPedidos.Cancel;

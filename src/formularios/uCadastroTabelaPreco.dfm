@@ -8,6 +8,8 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
   ClientWidth = 428
   OldCreateOrder = True
   OnShow = FormShow
+  ExplicitWidth = 434
+  ExplicitHeight = 378
   PixelsPerInch = 96
   TextHeight = 13
   object panBotoes: TPanel
@@ -176,8 +178,6 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
       Height = 30
       Caption = 'Cancelar'
       Enabled = False
-      TabOrder = 0
-      OnClick = btnCancelarClick
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000FFFFFF00140E
@@ -246,6 +246,8 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         8C0000008E00000089009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
         9B009B9B9B009B9B9B000000890000008E0000008C009B9B9B00}
       NumGlyphs = 2
+      TabOrder = 0
+      OnClick = btnCancelarClick
     end
     object btnSalvar: TBitBtn
       Left = 319
@@ -254,8 +256,6 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
       Height = 30
       Caption = 'Salvar'
       Enabled = False
-      TabOrder = 1
-      OnClick = btnSalvarClick
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000C1761B00C275
@@ -324,6 +324,8 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         1E0090661900846324008B6B30008B703400896B2E008A6C2E008A6C2F008E6F
         32009373370092723700826026008751000099958E009B9B9B00}
       NumGlyphs = 2
+      TabOrder = 1
+      OnClick = btnSalvarClick
     end
   end
   object PageControl1: TPageControl
@@ -390,6 +392,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         TitleFont.Height = -11
         TitleFont.Name = 'MS Sans Serif'
         TitleFont.Style = []
+        BuscaHabilitada = True
         ConfCores.Normal.CorFonte = clWindowText
         ConfCores.Normal.CorFundo = 14803425
         ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
@@ -425,9 +428,9 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         ConfCores.Titulo.Tipo.Height = -11
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
-        BuscaHabilitada = True
+        Ordenavel = True
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item

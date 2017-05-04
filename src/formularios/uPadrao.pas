@@ -120,6 +120,12 @@ end;
 procedure TfrmPadrao.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+  if (ActiveControl is TDBGridCBN) and (ActiveControl as TDBGridCBN).buscando and (Key = VK_ESCAPE) then
+  begin
+    key := 0;
+    (ActiveControl as TDBGridCBN).DataSource.DataSet.Filtered := false;
+  end;
+
   if      (Key = VK_RETURN) then
     begin
        Shift := [];

@@ -156,7 +156,8 @@ begin
       cds.Locate('CODIGO', edtCodigo.Text, []);
     end;
 
-  mostra_dados;
+  if not cds.IsEmpty then
+    mostra_dados;
 end;
 
 procedure TfrmCadastroCores.btnIncluirClick(Sender: TObject);

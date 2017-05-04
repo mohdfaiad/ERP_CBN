@@ -214,7 +214,7 @@ begin
           status := stAlterando;
         end;
 
-        Cliente.Razao      := TRIM(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,10]));
+        Cliente.Razao      := TRIM(copy(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,10]),1,60));
         Cliente.Pessoa     := 'F';
         Cliente.Tipo       := 'C';
         Cliente.CPF_CNPJ   := TRIM(cpfCnpj);

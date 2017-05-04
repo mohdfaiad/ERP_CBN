@@ -575,7 +575,9 @@ begin
 
      if edtCodigoBarras.Enabled and edtCodigoBarras.Visible then edtCodigoBarras.SetFocus;
 
-     seleciona_caixas;
+     if assigned(BuscaPedido1.Ped.Conferencia) and (BuscaPedido1.Ped.Conferencia.Fim > 0) then
+       seleciona_caixas;
+
      lbEntrega.Caption       := DateToStr(BuscaPedido1.Ped.dt_entrega);
      lbLimiteEntrega.Caption := DateToStr(BuscaPedido1.Ped.dt_limite_entrega);
      lbCliente.Caption       := BuscaPedido1.Ped.Cliente.Razao;
@@ -1298,7 +1300,6 @@ begin
   end;
 
   cbCaixas.Tag := cbCaixas.Items.Count; //numero de caixas ja salvas nesse pedido
-
 end;
 
 procedure TfrmConferenciaPedido.btnFecharCaixaClick(Sender: TObject);
@@ -1954,7 +1955,7 @@ begin
           Item.qtd_12      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
           Item.qtd_14      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
           Item.qtd_UNICA   := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
-          Item.codigoKit   := dm.qryGenerica2.FieldByName('codigo_kit').AsInteger;
+          Item.codigoProdutoKit   := dm.qryGenerica2.FieldByName('codigo').AsInteger;
 
           repositorio.Salvar(Item);
           dm.qryGenerica2.Next;
@@ -1972,56 +1973,59 @@ var direcionamento :TDirecionamentoEntrada;
     repositorio    :TRepositorio;
     falta, qtdconferido :Real;
 begin
-  fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := 'select de.codigo, de.quantidade, de.quantidade_conf, de.conferido, es.codigo_produto, es.codigo_cor, es.codigo_tamanho '+
-                              '  from direcionamento_entrada de                                                                         '+
-                              ' inner join entradas_saidas es  on es.codigo = de.codigo_entrada                                         '+
-                              ' where de.codigo_pedido = :codped and (de.quantidade - de.quantidade_conf) > 0                           ';
-  fdm.qryGenerica.ParamByName('codped').AsInteger := BuscaPedido1.Ped.Codigo;
-  fdm.qryGenerica.Open;
+  try
+    fdm.qryGenerica.Close;
+    fdm.qryGenerica.SQL.Text := 'select de.codigo, de.quantidade, de.quantidade_conf, de.conferido, es.codigo_produto, es.codigo_cor, es.codigo_tamanho '+
+                                '  from direcionamento_entrada de                                                                         '+
+                                ' inner join entradas_saidas es  on es.codigo = de.codigo_entrada                                         '+
+                                ' where de.codigo_pedido = :codped and (de.quantidade - de.quantidade_conf) > 0                           ';
+    fdm.qryGenerica.ParamByName('codped').AsInteger := BuscaPedido1.Ped.Codigo;
+    fdm.qryGenerica.Open;
 
-  fdm.qryGenerica.Filtered := false;
-  fdm.qryGenerica.Filter   := 'conferido <> ''S''';
-  fdm.qryGenerica.Filtered := true;
+    fdm.qryGenerica.Filtered := false;
+    fdm.qryGenerica.Filter   := 'conferido <> ''S''';
+    fdm.qryGenerica.Filtered := true;
 
-  if fdm.qryGenerica.IsEmpty then
-    exit;
+    if fdm.qryGenerica.IsEmpty then
+      exit;
 
-  direcionamento := nil;
-  repositorio    := nil;
-  repositorio    := TFabricaRepositorio.GetRepositorio(TDirecionamentoEntrada.ClassName);
-  cdsConferidos.First;
-  while NOT cdsConferidos.Eof do
-  begin
-    qtdconferido := cdsConferidosQUANTIDADE.AsFloat;
-
-    while qtdconferido > 0 do
+    direcionamento := nil;
+    repositorio    := nil;
+    repositorio    := TFabricaRepositorio.GetRepositorio(TDirecionamentoEntrada.ClassName);
+    cdsConferidos.First;
+    while NOT cdsConferidos.Eof do
     begin
-      if fdm.qryGenerica.Locate('CODIGO_PRODUTO;CODIGO_COR;CODIGO_TAMANHO',varArrayOf([cdsConferidosCOD_PRODUTO.AsInteger,
-                                                                                       cdsConferidosCOD_COR.AsInteger,
-                                                                                       cdsConferidosCOD_TAMANHO.AsInteger])) then
+      qtdconferido := cdsConferidosQUANTIDADE.AsFloat;
+
+      while qtdconferido > 0 do
       begin
-        falta := Fdm.qryGenerica.FieldByName('quantidade').AsFloat - Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat;
-        {direcionamento                  := repositorio.Get(Fdm.qryGenerica.FieldByName('codigo').AsInteger);
-        direcionamento.quantidade_conf  := direcionamento.quantidade_conf + IfThen(qtdconferido > falta, falta, qtdconferido);
-        direcionamento.conferido        := IfThen(direcionamento.quantidade_conf = direcionamento.quantidade, 'S', 'N');
-        repositorio.Salvar(direcionamento);
+        if fdm.qryGenerica.Locate('CODIGO_PRODUTO;CODIGO_COR;CODIGO_TAMANHO',varArrayOf([cdsConferidosCOD_PRODUTO.AsInteger,
+                                                                                         cdsConferidosCOD_COR.AsInteger,
+                                                                                         cdsConferidosCOD_TAMANHO.AsInteger])) then
+        begin
+          falta := Fdm.qryGenerica.FieldByName('quantidade').AsFloat - Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat;
+          {direcionamento                  := repositorio.Get(Fdm.qryGenerica.FieldByName('codigo').AsInteger);
+          direcionamento.quantidade_conf  := direcionamento.quantidade_conf + IfThen(qtdconferido > falta, falta, qtdconferido);
+          direcionamento.conferido        := IfThen(direcionamento.quantidade_conf = direcionamento.quantidade, 'S', 'N');
+          repositorio.Salvar(direcionamento);
 
-        FreeAndNil(direcionamento);}
-        fdm.qryGenerica.Edit;
-        fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat := Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat + IfThen(qtdconferido > falta, falta, qtdconferido);
-        fdm.qryGenerica.FieldByName('conferido').AsString := IfThen(Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat = Fdm.qryGenerica.FieldByName('quantidade').AsFloat, 'S', 'N');
-        fdm.qryGenerica.Post;
+          FreeAndNil(direcionamento);}
+          fdm.qryGenerica.Edit;
+          fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat := Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat + IfThen(qtdconferido > falta, falta, qtdconferido);
+          fdm.qryGenerica.FieldByName('conferido').AsString := IfThen(Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat = Fdm.qryGenerica.FieldByName('quantidade').AsFloat, 'S', 'N');
+          fdm.qryGenerica.Post;
 
-        qtdconferido := qtdconferido - IfThen(falta > qtdconferido, qtdconferido, falta);
-      end
-      else
-        qtdconferido := 0;
+          qtdconferido := qtdconferido - IfThen(falta > qtdconferido, qtdconferido, falta);
+        end
+        else
+          qtdconferido := 0;
+      end;
+      cdsConferidos.Next;
     end;
-    cdsConferidos.Next;
-  end;
 
-  fdm.qryGenerica.Filtered := false;
+  finally
+    fdm.qryGenerica.Filtered := false;
+  end;
 end;
 
 procedure TfrmConferenciaPedido.AtualizaValoresConferenciaItem(
@@ -2533,7 +2537,7 @@ end;
 
 procedure TfrmConferenciaPedido.retornarProdutosAoKit(ConferenciaPedido :TConferenciaPedido);
 var
-  i: Integer;
+  i, codigoKit: Integer;
   itensRetornados :String;
   Item :TItem;
   ConferenciaItem :TConferenciaItem;
@@ -2545,19 +2549,21 @@ begin
     repconferencia := TFabricaRepositorio.GetRepositorio(TConferenciaItem.ClassName);
     for i := 0 to BuscaPedido1.Ped.Itens.Count -1 do
     begin
-      if (TItem(BuscaPedido1.Ped.Itens[i]).codigoKit > 0) then
+      if (TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit > 0) then
       begin
-        if(pos(intToStr(TItem(BuscaPedido1.Ped.Itens[i]).codigoKit), itensRetornados) = 0) then
+        codigoKit := strToIntDef(Campo_por_campo('PRODUTOS_KIT','CODIGO_KIT','CODIGO',intToStr(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit)) ,0);
+
+        if(pos(intToStr(codigoKit), itensRetornados) = 0) then
         begin
           dm.qryGenerica2.Close;
-          dm.qryGenerica2.SQL.Text := 'SELECT FIRST 1 * FROM PRODUTOS_KIT WHERE CODIGO_KIT = :CODIGO_KIT';
-          dm.qryGenerica2.ParamByName('CODIGO_KIT').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).codigoKit;
+          dm.qryGenerica2.SQL.Text := 'SELECT FIRST 1 * FROM PRODUTOS_KIT WHERE CODIGO = :CODIGO';
+          dm.qryGenerica2.ParamByName('CODIGO').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit;
           dm.qryGenerica2.Open;
 
-          itensRetornados  := itensRetornados + ',' + IntToStr(TItem(BuscaPedido1.Ped.Itens[i]).codigoKit);
+          itensRetornados  := itensRetornados + ',' + IntToStr(codigoKit);
           Item             := TItem.Create(false);
           Item.cod_pedido  := TItem(BuscaPedido1.Ped.Itens[i]).cod_pedido;
-          Item.cod_produto := TItem(BuscaPedido1.Ped.Itens[i]).codigoKit;
+          Item.cod_produto := dm.qryGenerica2.FieldByName('CODIGO_KIT').AsInteger;
           Item.cod_cor     := dm.qryGenerica2.FieldByName('CODIGO_COR_KIT').AsInteger;
           Item.preco       := TItem(BuscaPedido1.Ped.Itens[i]).preco;
           Item.qtd_RN      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
@@ -2594,7 +2600,6 @@ begin
           ConferenciaItem.qtd_12             := Item.qtd_12;
           ConferenciaItem.qtd_14             := Item.qtd_14;
           ConferenciaItem.qtd_UNICA          := trunc(Item.qtd_UNICA);
-
           repconferencia.Salvar(ConferenciaItem);
           FreeAndNil(Item);
         end;

@@ -10,8 +10,6 @@ uses
 
 type
   TfrmEntradaManualEstoque = class(TfrmPadrao)
-    BuscaProduto1: TBuscaProduto;
-    BuscaCor1: TBuscaCor;
     edtCodigoBarras: TEdit;
     Label1: TLabel;
     Shape1: TShape;
@@ -37,6 +35,10 @@ type
     Label6: TLabel;
     btnNovoLote: TSpeedButton;
     btnDirecionaEntradas: TBitBtn;
+    GroupBox1: TGroupBox;
+    BuscaProduto1: TBuscaProduto;
+    GroupBox2: TGroupBox;
+    BuscaCor1: TBuscaCor;
     procedure BuscaProduto1Exit(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
@@ -78,11 +80,8 @@ uses Estoque, Repositorio, FabricaRepositorio, uModulo, DB, EspecificacaoEstoque
 
 procedure TfrmEntradaManualEstoque.disponibiliza_tamanhos;
 begin
-  if BuscaProduto1.edtDescricao.Text = '' then begin
-    avisar('Favor selecionar o produto');
-    BuscaProduto1.edtReferencia.SetFocus;
+  if BuscaProduto1.edtDescricao.Text = '' then
     exit;
-  end;
 
   fdm.qryGenerica.Close;
   fdm.qryGenerica.SQL.Text := 'select gt.codtamanho, t.descricao from grade_tamanhos gt '+
@@ -283,6 +282,7 @@ begin
     edtCodigoBarras.SetFocus;
 
     salva_entradaSaida;
+    btnNovoLote.Enabled := true;
   end
   else
     Avisar('Erro ao salvar estoque!',1);

@@ -1405,8 +1405,8 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
       ConfCores.Titulo.Tipo.Style = []
       Ordenavel = True
-      TipoBusca.ListarApenasEncontrados = False
-      TipoBusca.QualquerParte = False
+      TipoBusca.ListarApenasEncontrados = True
+      TipoBusca.QualquerParte = True
       SalvaConfiguracoes = False
     end
     object grpAnalitico: TGroupBox
@@ -3182,7 +3182,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C0101060009005C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000

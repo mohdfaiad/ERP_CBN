@@ -417,8 +417,9 @@ begin
                                   ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                           '+
                                   ' left join cores              cor on cor.codigo = i.cod_cor                                     '+
                                   ' left join produtos           pro on pro.codigo = i.cod_produto                                 '+
+                                  ' left join pedidos            ped on ped.codigo = cp.codigo_pedido                              '+
 
-                                  ' where cp.fim < ''01.01.1900'' ' + condicoes +
+                                  ' where ped.cancelado <> ''S'' and cp.fim < ''01.01.1900'' ' + condicoes +
 
                                   ' group by pro.referencia, cor.referencia                                                        '+
                                   ' order by pro.referencia, cor.referencia                                                        ';

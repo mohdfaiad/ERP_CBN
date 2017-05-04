@@ -332,7 +332,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
     Top = 0
     Width = 597
     Height = 331
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -406,8 +406,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item

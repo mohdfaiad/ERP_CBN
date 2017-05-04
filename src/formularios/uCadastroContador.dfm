@@ -18,19 +18,10 @@ inherited frmCadastroContador: TfrmCadastroContador
       ExplicitWidth = 515
       inherited gridConsulta: TDBGridCBN
         Width = 497
-        Height = 353
       end
       inherited lblAjudaSelecionar: TStaticText
         Width = 515
         ExplicitWidth = 515
-      end
-      object CheckBox1: TCheckBox
-        Left = 32
-        Top = 360
-        Width = 97
-        Height = 17
-        Caption = 'CheckBox1'
-        TabOrder = 2
       end
     end
     inherited tsDados: TTabSheet

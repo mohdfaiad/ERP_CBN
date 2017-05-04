@@ -22,7 +22,7 @@ inherited frmCadastroGrupo: TfrmCadastroGrupo
       ExplicitHeight = 201
       inherited gridConsulta: TDBGridCBN
         Width = 521
-        Height = 185
+        Height = 175
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 184
@@ -32,6 +32,8 @@ inherited frmCadastroGrupo: TfrmCadastroGrupo
       end
     end
     inherited tsDados: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 539
       ExplicitHeight = 201
       inherited pnlDados: TPanel

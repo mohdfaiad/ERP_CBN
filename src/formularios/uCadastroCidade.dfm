@@ -15,7 +15,6 @@ inherited frmCadastroCidade: TfrmCadastroCidade
   inherited pgGeral: TPageControl
     Width = 549
     Height = 305
-    ActivePage = tsConsulta
     ExplicitWidth = 549
     ExplicitHeight = 305
     inherited tsConsulta: TTabSheet
@@ -23,7 +22,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
       ExplicitHeight = 277
       inherited gridConsulta: TDBGridCBN
         Width = 523
-        Height = 261
+        Height = 251
         Columns = <
           item
             Expanded = False

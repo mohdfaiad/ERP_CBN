@@ -128,7 +128,7 @@ begin
    else if (Key = VK_F4) and (self.btnAlterar.Enabled and self.btnAlterar.Visible) and (Shift = []) then self.EstadoTela := tetAlterar
 
    else
-     inherited FormKeyDown(Sender, Key, Shift);
+     FormKeyDown(Sender, Key, Shift);
 
 end;
 
@@ -138,7 +138,7 @@ begin
    if ((not self.cds.IsEmpty) and (self.gridConsulta.Focused) and (Key = VK_RETURN)) then
       self.ModalResult := mrOK
   else
-      inherited FormKeyDown(Sender, Key, Shift);
+    FormKeyDown(Sender, Key, Shift);
 end;
 
 procedure TfrmCadastroPadrao.CarregarDados(Especificacao :TEspecificacao);
@@ -372,8 +372,13 @@ end;
 procedure TfrmCadastroPadrao.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  inherited;
-  { teste }
+  if (key = VK_ESCAPE) and gridConsulta.buscando then
+  begin
+    cds.Filtered := false;
+    key := 0;
+  end
+  else
+    inherited;
 end;
 
 procedure TfrmCadastroPadrao.AlterarRegistroNoCDS(Registro: TObject);

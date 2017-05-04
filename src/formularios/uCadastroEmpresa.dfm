@@ -7,42 +7,44 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
   ExplicitWidth = 1184
   ExplicitHeight = 600
   PixelsPerInch = 96
-  TextHeight = 17
+  TextHeight = 13
   inherited pnlBotoes: TPanel
-    Top = 510
+    Top = 520
     Width = 1168
-    ExplicitTop = 510
+    ExplicitTop = 520
     ExplicitWidth = 1168
   end
   inherited pgGeral: TPageControl
     Width = 1168
-    Height = 510
+    Height = 520
     ExplicitWidth = 1168
-    ExplicitHeight = 510
+    ExplicitHeight = 520
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 1160
-      ExplicitHeight = 474
+      ExplicitHeight = 492
       inherited gridConsulta: TDBGridCBN
+        Left = 15
+        Top = 13
         Width = 1142
-        Height = 476
+        Height = 461
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 449
+        Top = 475
         Width = 1160
-        ExplicitTop = 449
+        ExplicitTop = 475
         ExplicitWidth = 1160
       end
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
-      ExplicitTop = 32
+      ExplicitTop = 24
       ExplicitWidth = 1160
-      ExplicitHeight = 474
+      ExplicitHeight = 492
       inherited pnlDados: TPanel
         Width = 1160
-        Height = 474
+        Height = 492
         ExplicitWidth = 1160
-        ExplicitHeight = 474
+        ExplicitHeight = 492
         object lblRazao: TLabel [0]
           Left = 17
           Top = 17
@@ -164,7 +166,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 17
           Top = 33
           Width = 449
-          Height = 29
+          Height = 21
           CharCase = ecUpperCase
           TabOrder = 0
         end
@@ -172,7 +174,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 473
           Top = 33
           Width = 113
-          Height = 29
+          Height = 21
           EditMask = '99\.999\.999/9999\-99;0; '
           MaxLength = 18
           TabOrder = 1
@@ -182,7 +184,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 609
           Top = 33
           Width = 99
-          Height = 29
+          Height = 21
           MaxLength = 12
           TabOrder = 2
           Text = ''
@@ -191,7 +193,7 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           Left = 720
           Top = 33
           Width = 88
-          Height = 29
+          Height = 21
           Enabled = False
           EditMask = '!99/99/9999;1; '
           MaxLength = 10
@@ -620,10 +622,10 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
           TabStop = True
         end
         object pgcConfiguracoes: TPageControl
-          Left = 831
-          Top = 0
+          Left = 830
+          Top = 1
           Width = 329
-          Height = 474
+          Height = 490
           ActivePage = tabPrincipal
           Align = alRight
           TabOrder = 9
@@ -1123,9 +1125,9 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
               TabOrder = 6
               object memoMensagem: TMemo
                 Left = 2
-                Top = 23
+                Top = 15
                 Width = 300
-                Height = 171
+                Height = 179
                 Hint = 'Mensagem do e-mail enviado. Exemplo: SEGUE EM ANEXO NF-E.'
                 Align = alClient
                 ParentShowHint = False

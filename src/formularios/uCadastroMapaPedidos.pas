@@ -39,6 +39,7 @@ type
     cdsPedidosPESO: TSmallintField;
     btnAltera: TSpeedButton;
     gridPedidos: TDBGrid;
+    cdsPedidosPONTOS: TIntegerField;
     procedure btnRemoveClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure gridPedidosEnter(Sender: TObject);
@@ -48,6 +49,7 @@ type
     procedure BuscaPedido1btnBuscarEnter(Sender: TObject);
     procedure gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure btnAlteraClick(Sender: TObject);
+    procedure cdsPedidosPESOChange(Sender: TField);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -70,6 +72,7 @@ type
   private
     procedure adicionaPedido;
     procedure removePedido;
+    procedure calculaPontuacao;
     { Persiste os dados no banco de dados }
     function GravarDados   :TObject;                   override;
 
@@ -154,6 +157,32 @@ begin
   BuscaPedido1.edtNumPedidoExit(Sender);
 end;
 
+procedure TfrmCadastroMapaPedidos.calculaPontuacao;
+begin
+  fdm.qryGenerica.Close;
+  fdm.qryGenerica.SQL.Text := 'select (sum((coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0)) + (coalesce(it.qtd_p,0) - coalesce(ci.qtd_p, 0)) + '+
+                              '(coalesce(it.qtd_m,0) - coalesce(ci.qtd_m, 0))   + (coalesce(it.qtd_g,0) - coalesce(ci.qtd_g, 0)) +             '+
+                              '(coalesce(it.qtd_1,0) - coalesce(ci.qtd_1, 0))   + (coalesce(it.qtd_2,0) - coalesce(ci.qtd_2, 0)) +             '+
+                              '(coalesce(it.qtd_3,0) - coalesce(ci.qtd_3, 0))   + (coalesce(it.qtd_4,0) - coalesce(ci.qtd_4, 0)) +             '+
+                              '(coalesce(it.qtd_6,0) - coalesce(ci.qtd_6, 0))   + (coalesce(it.qtd_8,0) - coalesce(ci.qtd_8, 0)) +             '+
+                              '(coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0)) + (coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0)) +           '+
+                              '(coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0)) + (coalesce(it.qtd_unica,0) - coalesce(ci.qtd_unica, 0)))      '+
+                              '* 2 * count(distinct it.cod_produto) * (ped.dt_limite_entrega - current_date) * 20 * pm.peso) / 1000 as PONTOS  '+
+                              '   from pedidos ped                                                                                             '+
+                              ' inner join pedidos_mapa       pm on pm.codigo_pedido = ped.codigo                                              '+
+                              ' inner join mapas              mp on mp.codigo = pm.codigo_mapa                                                 '+
+                              ' inner join itens              it on it.cod_pedido = pm.codigo_pedido                                           '+
+                              ' left  join conferencia_itens   ci on ci.codigo_item = it.codigo                                                '+
+                              ' where ped.codigo = :codped                                                                                     '+
+                              ' group by mp.numero_mapa, mp.criacao, ped.numpedido, ped.codigo, ped.dt_limite_entrega, pm.peso                 '+
+                              ' order by mp.criacao, mp.numero_mapa, PONTOS                                                                    ';
+
+  fdm.qryGenerica.ParamByName('codped').AsInteger := cdsPedidosCODIGO_PEDIDO.AsInteger;
+  fdm.qryGenerica.Open;
+
+  cdsPedidosPONTOS.AsInteger := fdm.qryGenerica.FieldByName('PONTOS').AsInteger;
+end;
+
 procedure TfrmCadastroMapaPedidos.CarregarDados;
 var
   Mapas        :TObjectList;
@@ -175,6 +204,12 @@ begin
     FreeAndNil(Repositorio);
     FreeAndNil(Mapas);
   end;
+end;
+
+procedure TfrmCadastroMapaPedidos.cdsPedidosPESOChange(Sender: TField);
+begin
+  inherited;
+  calculaPontuacao;
 end;
 
 procedure TfrmCadastroMapaPedidos.gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;

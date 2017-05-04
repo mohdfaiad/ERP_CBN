@@ -94,7 +94,7 @@ begin
    Item.observacao        := self.FQuery.FieldByName('OBSERVACAO'  ).AsString;
    Item.peso              := self.FQuery.FieldByName('PESO'        ).AsFloat;
    Item.devolvido         := self.FQuery.FieldByName('DEVOLVIDO'   ).AsString;
-   Item.codigoKit         := self.FQuery.FieldByName('codigo_kit'  ).AsInteger;
+   Item.codigoProdutoKit         := self.FQuery.FieldByName('codigo_kit'  ).AsInteger;
 
    result := Item;
 end;
@@ -176,8 +176,8 @@ begin
     Auditoria.AdicionaCampoAlterado('peso', FloatToStr(ItemAntigo.peso), floatToStr(ItemNovo.peso));
    if (ItemAntigo.devolvido <> ItemNovo.devolvido) then
     Auditoria.AdicionaCampoAlterado('devolvido', ItemAntigo.devolvido, ItemNovo.devolvido);
-   if (ItemAntigo.codigoKit <> ItemNovo.codigoKit) then
-    Auditoria.AdicionaCampoAlterado('codigo_kit', IntToStr(ItemAntigo.codigoKit), IntToStr(ItemNovo.codigoKit));
+   if (ItemAntigo.codigoProdutoKit <> ItemNovo.codigoProdutoKit) then
+    Auditoria.AdicionaCampoAlterado('codigo_kit', IntToStr(ItemAntigo.codigoProdutoKit), IntToStr(ItemNovo.codigoProdutoKit));
 end;
 
 procedure TRepositorioItem.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -212,7 +212,7 @@ begin
    Auditoria.AdicionaCampoExcluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoExcluido('PESO'             , FloatToStr(Item.peso)        );
    Auditoria.AdicionaCampoExcluido('devolvido'        , Item.devolvido                   );
-   Auditoria.AdicionaCampoExcluido('codigo_kit'       , intToStr(Item.codigoKit    )     );
+   Auditoria.AdicionaCampoExcluido('codigo_kit'       , intToStr(Item.codigoProdutoKit    )     );
 end;
 
 procedure TRepositorioItem.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -247,7 +247,7 @@ begin
    Auditoria.AdicionaCampoIncluido('OBSERVACAO'       , Item.observacao                   );
    Auditoria.AdicionaCampoIncluido('PESO'             , FloatToStr(Item.peso)        );
    Auditoria.AdicionaCampoIncluido('devolvido'        , Item.devolvido                   );
-   Auditoria.AdicionaCampoIncluido('codigo_kit'       , intToStr(Item.codigoKit    )     );
+   Auditoria.AdicionaCampoIncluido('codigo_kit'       , intToStr(Item.codigoProdutoKit    )     );
 end;
 
 procedure TRepositorioItem.SetIdentificador(Objeto: TObject;
@@ -293,7 +293,7 @@ begin
    inherited SetParametro('OBSERVACAO'       , Item.observacao);
    inherited SetParametro('PESO'             , Item.peso);
    inherited SetParametro('devolvido'        , Item.devolvido);
-   inherited SetParametro('codigo_kit'       , Item.codigoKit );
+   inherited SetParametro('codigo_kit'       , Item.codigoProdutoKit );
 end;
 
 function TRepositorioItem.SQLGet: String;

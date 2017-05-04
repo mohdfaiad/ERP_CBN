@@ -332,12 +332,16 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
     Top = 0
     Width = 704
     Height = 406
-    ActivePage = tsDados
+    ActivePage = tsConsulta
     Align = alClient
     TabOrder = 1
     OnChange = pgGeralChange
     object tsConsulta: TTabSheet
       Caption = 'F1 - Consulta'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         696
         378)
@@ -345,7 +349,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Left = 8
         Top = 8
         Width = 678
-        Height = 362
+        Height = 352
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -406,8 +410,8 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
       end
       object lblAjudaSelecionar: TStaticText
@@ -419,11 +423,16 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Alignment = taCenter
         Caption = 'Pressione ENTER para selecionar o registro'
         TabOrder = 1
+        ExplicitWidth = 222
       end
     end
     object tsDados: TTabSheet
       Caption = 'F2 - Dados'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlDados: TPanel
         Left = 0
         Top = 0

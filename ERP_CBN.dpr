@@ -448,7 +448,9 @@ uses
   EspecificacaoPedidosMapa in 'src\dominio\objetoValor\especificacao\EspecificacaoPedidosMapa.pas',
   uDirecionarEntradas in 'src\formularios\uDirecionarEntradas.pas' {frmDirecionarEntradas},
   DirecionamentoEntrada in 'src\dominio\entidade\DirecionamentoEntrada.pas',
-  RepositorioDirecionamentoEntrada in 'src\infraestrutura\persistencia\RepositorioDirecionamentoEntrada.pas';
+  RepositorioDirecionamentoEntrada in 'src\infraestrutura\persistencia\RepositorioDirecionamentoEntrada.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 {$R win7810.res}

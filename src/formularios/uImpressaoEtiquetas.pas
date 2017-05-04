@@ -102,6 +102,9 @@ type
     GroupBox6: TGroupBox;
     BuscaOS1: TBuscaOS;
     Timer1: TTimer;
+    btnData: TSpeedButton;
+    edtDataInteger: TCurrencyEdit;
+    cdsImpDATA: TStringField;
     procedure btnImprimirZebraClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridImpDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -129,6 +132,7 @@ type
     procedure BuscaOS1Exit(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnDataClick(Sender: TObject);
   private
     fCor2       :String;
     fCor        :String;
@@ -157,7 +161,7 @@ var
 implementation
 
 uses funcoes, repositorio, fabricaRepositorio, Produto, Cor, OrdemServico,
-  uModulo, Tamanho;
+  uModulo, Tamanho, Math;
 
 {$R *.dfm}
 
@@ -209,7 +213,7 @@ procedure TfrmImpressaoEtiquetas.imprimir;
 var
   F: TextFile;
   i, x, lin3, lin6, coluna, margem, margem_logo :integer;
-  cor1, cor2, codbar, prod1, prod2, tam, ref, nomeLogo, codcor, site, os :String;
+  cor1, cor2, codbar, prod1, prod2, tam, ref, nomeLogo, codcor, site, os, sigla :String;
 begin
   nomeLogo := '';
   site     := 'www.babyduck.com.br';
@@ -266,11 +270,12 @@ begin
 
         if os <> '0' then
         begin
-          memo1.Lines.Add('^FO'+intToStr(margem-(length('OS ')*12))       +',292^ADI,15,12^FDOS ^FS');
-          memo1.Lines.Add('^FO'+intToStr(margem-(length('OS '+os)*12))      +',292^ADI,15,12^FD'+os+'^FS');
+          sigla := IfThen(cdsImpDATA.AsString = 'S', ' ', 'OS ');
+          memo1.Lines.Add('^FO'+intToStr(margem-(length(sigla)*12))       +',292^ADI,15,12^FD'+sigla+' ^FS');
+          memo1.Lines.Add('^FO'+intToStr(margem-(length(sigla+os)*12))      +',292^ADI,15,12^FD'+os+'^FS');
         end;
         lin3 := lin3 + 285;  lin6 := lin6 + 285;  margem_logo := margem_logo + 282;
-
+//        memo1.Lines.SaveToFile('C:\Users\Allan\Desktop\teste.txt');
         inc(coluna);
 
          if (coluna = 4) or ((x = cdsImpQTDE.AsInteger)and(cdsImp.RecordCount = cdsImp.RecNo)) then begin
@@ -361,6 +366,7 @@ begin
 end;
 
 procedure TfrmImpressaoEtiquetas.adicionaLista(referencia, descricao, codbarras, cor, tamanho: String; quantidade, os: integer);
+var data :Real;
 begin
   if not cdsImp.Active then
     cdsImp.CreateDataSet;
@@ -377,7 +383,8 @@ begin
   //cdsImpGRADE.AsString      := cdsTamGRADE.AsString;
   cdsImpTAMANHO.AsString    := tamanho;
   cdsImpQTDE.asInteger      := quantidade;
-  cdsImpOS.AsInteger        := os;
+  cdsImpOS.AsInteger        := IfThen(os = 0, trunc(Date), os);
+  cdsImpDATA.AsString       := IfThen(os = 0, 'S', 'N');
   cdsImp.Post;
 
   edtQtde.AsInteger := edtQtde.AsInteger + cdsImpQTDE.AsInteger;
@@ -389,6 +396,12 @@ begin
   insereAFila;
   cdsCorAfterScroll(nil);
   GridCor.SetFocus;
+end;
+
+procedure TfrmImpressaoEtiquetas.btnDataClick(Sender: TObject);
+begin
+  if edtDataInteger.Value > 0 then
+    avisar(DateToStr(FloatToDateTime(edtDataInteger.Value)));
 end;
 
 procedure TfrmImpressaoEtiquetas.cdsProAfterScroll(DataSet: TDataSet);
@@ -564,7 +577,8 @@ end;
 
 procedure TfrmImpressaoEtiquetas.gridTamEnter(Sender: TObject);
 begin
-  cdsTam.RecNo := 1;
+  if not cdsTam.isempty then
+    cdsTam.RecNo := 1;
   gridTam.SelectedIndex := 0;
 end;
 

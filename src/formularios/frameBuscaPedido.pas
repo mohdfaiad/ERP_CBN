@@ -252,7 +252,7 @@ begin
       Item := TItem.Create;
 
       Item.codigo            := dm.qryGenerica.fieldByName('codigo').AsInteger;
-        Item.cod_pedido        := dm.qryGenerica.fieldByName('cod_pedido').AsInteger;
+      Item.cod_pedido        := dm.qryGenerica.fieldByName('cod_pedido').AsInteger;
       Item.cod_produto       := dm.qryGenerica.fieldByName('cod_produto').AsInteger;
       Item.cod_cor           := dm.qryGenerica.fieldByName('cod_cor').AsInteger;
       Item.preco             := dm.qryGenerica.fieldByName('preco').AsFloat;

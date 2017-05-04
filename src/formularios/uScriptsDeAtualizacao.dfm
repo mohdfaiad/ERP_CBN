@@ -8097,164 +8097,178 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
       'begin'
       '  for select mp.numero_mapa, mp.criacao,'
       
-        '       (sum((coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0)) + (' +
-        'coalesce(it.qtd_p,0) - coalesce(ci.qtd_p, 0)) +'
+        '      (sum((coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0)) + (c' +
+        'oalesce(it.qtd_p,0) - coalesce(ci.qtd_p, 0)) +'
       
-        '            (coalesce(it.qtd_m,0) - coalesce(ci.qtd_m, 0))   + (' +
-        'coalesce(it.qtd_g,0) - coalesce(ci.qtd_g, 0)) +'
+        '           (coalesce(it.qtd_m,0) - coalesce(ci.qtd_m, 0))   + (c' +
+        'oalesce(it.qtd_g,0) - coalesce(ci.qtd_g, 0)) +'
       
-        '            (coalesce(it.qtd_1,0) - coalesce(ci.qtd_1, 0))   + (' +
-        'coalesce(it.qtd_2,0) - coalesce(ci.qtd_2, 0)) +'
+        '           (coalesce(it.qtd_1,0) - coalesce(ci.qtd_1, 0))   + (c' +
+        'oalesce(it.qtd_2,0) - coalesce(ci.qtd_2, 0)) +'
       
-        '            (coalesce(it.qtd_3,0) - coalesce(ci.qtd_3, 0))   + (' +
-        'coalesce(it.qtd_4,0) - coalesce(ci.qtd_4, 0)) +'
+        '           (coalesce(it.qtd_3,0) - coalesce(ci.qtd_3, 0))   + (c' +
+        'oalesce(it.qtd_4,0) - coalesce(ci.qtd_4, 0)) +'
       
-        '            (coalesce(it.qtd_6,0) - coalesce(ci.qtd_6, 0))   + (' +
-        'coalesce(it.qtd_8,0) - coalesce(ci.qtd_8, 0)) +'
+        '           (coalesce(it.qtd_6,0) - coalesce(ci.qtd_6, 0))   + (c' +
+        'oalesce(it.qtd_8,0) - coalesce(ci.qtd_8, 0)) +'
       
-        '            (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0)) + (' +
-        'coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0)) +'
+        '           (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0)) + (c' +
+        'oalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0)) +'
       
-        '            (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0)) + (' +
-        'coalesce(it.qtd_unica,0) - coalesce(ci.qtd_unica, 0)))'
+        '           (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0)) + (c' +
+        'oalesce(it.qtd_unica,0) - coalesce(ci.qtd_unica, 0)))'
       
-        '         * 2 * count(distinct it.cod_produto) * (ped.dt_limite_e' +
-        'ntrega - current_date) * 20 * pm.peso) / 1000 as PONTOS,'
-      '    Sum(case :cod_tamanho'
+        '           * 2 * count(distinct it.cod_produto) * (ped.dt_limite' +
+        '_entrega - current_date) * 20 * pm.peso) / 1000 as PONTOS,'
+      '      Sum(case :cod_tamanho'
       
-        '     when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0' +
-        '))'
+        '           when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd' +
+        '_rn, 0))'
       
-        '     when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd_p, 0)' +
-        ')'
+        '           when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd' +
+        '_p, 0))'
       
-        '     when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd_m, 0)' +
-        ')'
+        '           when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd' +
+        '_m, 0))'
       
-        '     when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd_g, 0)' +
-        ')'
+        '           when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd' +
+        '_g, 0))'
       
-        '     when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd_1, 0)' +
-        ')'
+        '           when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd' +
+        '_1, 0))'
       
-        '     when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd_2, 0)' +
-        ')'
+        '           when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd' +
+        '_2, 0))'
       
-        '     when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd_3, 0)' +
-        ')'
+        '           when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd' +
+        '_3, 0))'
       
-        '     when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd_4, 0)' +
-        ')'
+        '           when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd' +
+        '_4, 0))'
       
-        '     when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd_6, 0)' +
-        ')'
+        '           when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd' +
+        '_6, 0))'
       
-        '     when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd_8, 0)' +
-        ')'
+        '           when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd' +
+        '_8, 0))'
       
-        '     when 11 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0' +
-        '))'
+        '           when 11 then (coalesce(it.qtd_unica,0) - coalesce(ci.' +
+        'qtd_unica, 0))'
       
-        '     when 12 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0' +
-        '))'
+        '           when 16 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd' +
+        '_10, 0))'
       
-        '     when 13 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0' +
-        '))'
+        '           when 17 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd' +
+        '_12, 0))'
       
-        '     when 14 then (coalesce(it.qtd_unica,0) - coalesce(ci.qtd_un' +
-        'ica, 0))'
-      '    end) disponivel, ped.codigo'
-      ''
-      '  from pedidos ped'
-      ''
+        '           when 18 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd' +
+        '_14, 0))'
+      '          end) disponivel, ped.codigo'
+      '      from pedidos ped'
       
-        '  inner join pedidos_mapa       pm on pm.codigo_pedido = ped.cod' +
-        'igo'
-      '  inner join mapas              mp on mp.codigo = pm.codigo_mapa'
+        '   inner join pedidos_mapa       pm on pm.codigo_pedido = ped.co' +
+        'digo'
       
-        '  inner join itens              it on it.cod_pedido = pm.codigo_' +
-        'pedido'
-      '  left join conferencia_itens   ci on ci.codigo_item = it.codigo'
-      ''
+        '   inner join mapas              mp on mp.codigo = pm.codigo_map' +
+        'a'
       
-        'where mp.finalizado <> '#39'S'#39' and it.cod_produto = :cod_pro and it.' +
-        'cod_cor = :cod_cor and'
-      '   ((case :cod_tamanho'
+        '   inner join itens              it on it.cod_pedido = pm.codigo' +
+        '_pedido'
       
-        '     when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd_rn, 0' +
-        '))'
+        '   left join conferencia_itens   ci on ci.codigo_item = it.codig' +
+        'o'
       
-        '     when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd_p, 0)' +
-        ')'
+        '  where mp.finalizado <> '#39'S'#39' and it.cod_produto = :cod_pro and i' +
+        't.cod_cor = :cod_cor'
+      '    and ((case :cod_tamanho'
       
-        '     when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd_m, 0)' +
-        ')'
+        '           when 1  then (coalesce(it.qtd_rn,0) - coalesce(ci.qtd' +
+        '_rn, 0))'
       
-        '     when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd_g, 0)' +
-        ')'
+        '           when 2  then (coalesce(it.qtd_p,0)  - coalesce(ci.qtd' +
+        '_p, 0))'
       
-        '     when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd_1, 0)' +
-        ')'
+        '           when 3  then (coalesce(it.qtd_m,0)  - coalesce(ci.qtd' +
+        '_m, 0))'
       
-        '     when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd_2, 0)' +
-        ')'
+        '           when 4  then (coalesce(it.qtd_g,0)  - coalesce(ci.qtd' +
+        '_g, 0))'
       
-        '     when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd_3, 0)' +
-        ')'
+        '           when 5  then (coalesce(it.qtd_1,0)  - coalesce(ci.qtd' +
+        '_1, 0))'
       
-        '     when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd_4, 0)' +
-        ')'
+        '           when 6  then (coalesce(it.qtd_2,0)  - coalesce(ci.qtd' +
+        '_2, 0))'
       
-        '     when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd_6, 0)' +
-        ')'
+        '           when 7  then (coalesce(it.qtd_3,0)  - coalesce(ci.qtd' +
+        '_3, 0))'
       
-        '     when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd_8, 0)' +
-        ')'
+        '           when 8  then (coalesce(it.qtd_4,0)  - coalesce(ci.qtd' +
+        '_4, 0))'
       
-        '     when 11 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd_10, 0' +
-        '))'
+        '           when 9  then (coalesce(it.qtd_6,0)  - coalesce(ci.qtd' +
+        '_6, 0))'
       
-        '     when 12 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd_12, 0' +
-        '))'
+        '           when 10 then (coalesce(it.qtd_8,0)  - coalesce(ci.qtd' +
+        '_8, 0))'
       
-        '     when 13 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd_14, 0' +
-        '))'
+        '           when 11 then (coalesce(it.qtd_unica,0) - coalesce(ci.' +
+        'qtd_unica, 0))'
       
-        '     when 14 then (coalesce(it.qtd_unica,0) - coalesce(ci.qtd_un' +
-        'ica, 0))'
-      '    end ) > 0)'
-      ''
+        '           when 16 then (coalesce(it.qtd_10,0) - coalesce(ci.qtd' +
+        '_10, 0))'
+      
+        '           when 17 then (coalesce(it.qtd_12,0) - coalesce(ci.qtd' +
+        '_12, 0))'
+      
+        '           when 18 then (coalesce(it.qtd_14,0) - coalesce(ci.qtd' +
+        '_14, 0))'
+      '          end ) > 0)'
       
         '  group by mp.numero_mapa, mp.criacao, ped.numpedido, ped.codigo' +
         ', ped.dt_limite_entrega, pm.peso'
       '  order by mp.criacao, mp.numero_mapa, PONTOS'
-      ''
-      '  into'
-      '    :num_mapa, :criacao, :pontos, :disponivel, :codigo_pedido'
+      'into'
+      '  :num_mapa, :criacao, :pontos, :disponivel, :codigo_pedido'
       '  do'
       '  begin'
-      '     em_espera = 0;'
-      '     select sum(de.quantidade) from direcionamento_entrada de'
+      '    em_espera = 0;'
+      '    select sum(de.quantidade) from direcionamento_entrada de'
       
         '     inner join entradas_saidas es on es.codigo = de.codigo_entr' +
         'ada'
       
-        '     where es.codigo_produto = :cod_pro and es.codigo_cor = :cod' +
-        '_cor and es.codigo_tamanho = :cod_tamanho'
+        '    where es.codigo_produto = :cod_pro and es.codigo_cor = :cod_' +
+        'cor and es.codigo_tamanho = :cod_tamanho'
       
-        '       and de.codigo_pedido = :codigo_pedido and de.conferido = ' +
-        #39'N'#39
+        '      and de.codigo_pedido = :codigo_pedido and de.conferido = '#39 +
+        'N'#39
+      '    group by es.codigo_produto, es.codigo_cor, es.codigo_tamanho'
+      '    into :em_espera;'
+      ''
+      '    disponivel = :disponivel - :em_espera;'
+      '    if (:disponivel > :quantidade) then'
+      '      alocado = quantidade;'
+      '    else'
+      '      alocado = disponivel;'
+      ''
+      '    if (alocado > 0) then'
+      '    begin'
       
-        '     group by es.codigo_produto, es.codigo_cor, es.codigo_tamanh' +
-        'o'
-      '     into :em_espera;'
+        '      insert into direcionamento_entrada values(0, :codigo_entra' +
+        'da, :codigo_pedido, :alocado, 0, '#39'N'#39');'
+      '      quantidade = quantidade - alocado;'
+      '    end'
       ''
-      '     disponivel = :disponivel - :em_espera;'
-      ''
-      '     if (:disponivel > :quantidade) then'
-      '       alocado = quantidade;'
-      '     else'
-      '       alocado = disponivel;'
+      '    if (quantidade = 0) then'
+      '      exit;   end'
+      '    if (quantidade > 0) then'
+      
+        '      insert into direcionamento_entrada values(0, :codigo_entra' +
+        'da, null, :quantidade, 0, '#39'S'#39');'
+      'suspend;'
+      'end'
+      '^'
       ''
       '     if (alocado > 0) then'
       '     begin'

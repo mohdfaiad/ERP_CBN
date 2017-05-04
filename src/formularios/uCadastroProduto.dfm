@@ -487,7 +487,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 797
     Height = 477
-    ActivePage = TabSheet6
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -705,8 +705,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -1597,8 +1597,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
@@ -2030,8 +2030,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
             ConfCores.Titulo.Tipo.Style = []
             Ordenavel = True
-            TipoBusca.ListarApenasEncontrados = False
-            TipoBusca.QualquerParte = False
+            TipoBusca.ListarApenasEncontrados = True
+            TipoBusca.QualquerParte = True
             SalvaConfiguracoes = False
             Columns = <
               item
@@ -2335,8 +2335,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
             ConfCores.Titulo.Tipo.Style = []
             Ordenavel = True
-            TipoBusca.ListarApenasEncontrados = False
-            TipoBusca.QualquerParte = False
+            TipoBusca.ListarApenasEncontrados = True
+            TipoBusca.QualquerParte = True
             SalvaConfiguracoes = False
             Columns = <
               item
@@ -2672,6 +2672,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Estoque'
       ImageIndex = 5
       OnEnter = TabSheet6Enter
+      ExplicitLeft = 8
+      ExplicitTop = 22
       DesignSize = (
         789
         449)
@@ -4560,7 +4562,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

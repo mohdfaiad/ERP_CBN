@@ -15,7 +15,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
     Top = 0
     Width = 858
     Height = 466
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -90,8 +90,8 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
         ConfCores.Titulo.Tipo.Style = []
         Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
+        TipoBusca.ListarApenasEncontrados = True
+        TipoBusca.QualquerParte = True
         SalvaConfiguracoes = False
         Columns = <
           item
