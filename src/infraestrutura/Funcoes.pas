@@ -422,7 +422,7 @@ begin
     query.Open;
 
     if not query.IsEmpty then
-      Result := query.fieldByName(campo_procurado).AsString;
+      Result := query.fields[0].AsString;
   finally
     FreeAndNil(query);
   end;

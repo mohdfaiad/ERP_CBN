@@ -1,4 +1,4 @@
-unit RepositorioConferenciaItem;                                                       
+unit RepositorioConferenciaItem;
 interface                                                                                          
 uses DB,
      Auditoria,
@@ -13,7 +13,8 @@ type
 
   protected                                                                                        
     function SQLGet                      :String;            override;                             
-    function SQLSalvar                   :String;            override;                             
+    function SQLSalvar                   :String;            override;
+    function CondicaoSQLGetAll           :String;            override;
     function SQLGetAll                   :String;            override;                             
     function SQLRemover                  :String;            override;                             
     function SQLGetExiste(campo: String): String;            override;                             
@@ -38,12 +39,17 @@ end;
 implementation                                                                                     
 
 uses                                                                                               
-  SysUtils,                                                                                        
+  SysUtils, System.StrUtils,
   ConferenciaItem;                                                                        
 
 { TRepositorioConferenciaItem }                                                      
 
-function TRepositorioConferenciaItem.Get(Dataset: TDataSet): TObject;                  
+function TRepositorioConferenciaItem.CondicaoSQLGetAll: String;
+begin
+  result := ' WHERE CODIGO_CONFERENCIA = '+FIdentificador;
+end;
+
+function TRepositorioConferenciaItem.Get(Dataset: TDataSet): TObject;
 var                                                                                                
   ConferenciaItem :TConferenciaItem;                                                 
 begin                                                                                              
@@ -75,9 +81,9 @@ begin
   result := TConferenciaItem(Objeto).Codigo;                                                 
 end;                                                                                               
 
-function TRepositorioConferenciaItem.GetNomeDaTabela: String;                          
+function TRepositorioConferenciaItem.GetNomeDaTabela: String;
 begin                                                                                              
-result := 'CONFERENCIA_ITENS';                                                                          
+result := 'CONFERENCIA_ITENS';
 end;                                                                                               
 
 function TRepositorioConferenciaItem.GetRepositorio: TRepositorio;                     
@@ -249,11 +255,11 @@ begin
 end;                                                                                               
 
 function TRepositorioConferenciaItem.SQLGetAll: String;                                
-begin                                                                                              
-  result := 'select * from CONFERENCIA_ITENS';                                                          
-end;                                                                                               
+begin
+  result := 'select * from CONFERENCIA_ITENS '+ IfThen(FIdentificador = '','', CondicaoSQLGetAll) +' order by codigo';
+end;
 
-function TRepositorioConferenciaItem.SQLGetExiste(campo: String): String;              
+function TRepositorioConferenciaItem.SQLGetExiste(campo: String): String;
 begin                                                                                              
   result := 'select '+ campo +' from CONFERENCIA_ITENS where '+ campo +' = :ncampo';                
 end;                                                                                               

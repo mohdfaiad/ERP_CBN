@@ -2537,8 +2537,8 @@ end;
 
 procedure TfrmConferenciaPedido.retornarProdutosAoKit(ConferenciaPedido :TConferenciaPedido);
 var
-  i, codigoKit: Integer;
-  itensRetornados :String;
+  i: Integer;
+  itensRetornados, codigoKit :String;
   Item :TItem;
   ConferenciaItem :TConferenciaItem;
   repositorio :TRepositorio;
@@ -2551,16 +2551,16 @@ begin
     begin
       if (TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit > 0) then
       begin
-        codigoKit := strToIntDef(Campo_por_campo('PRODUTOS_KIT','CODIGO_KIT','CODIGO',intToStr(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit)) ,0);
+        codigoKit := Campo_por_campo('PRODUTOS_KIT','CODIGO_KIT||''-''||CODIGO_COR_KIT','CODIGO',intToStr(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit));
 
-        if(pos(intToStr(codigoKit), itensRetornados) = 0) then
+        if(pos(codigoKit, itensRetornados) = 0) then
         begin
           dm.qryGenerica2.Close;
           dm.qryGenerica2.SQL.Text := 'SELECT FIRST 1 * FROM PRODUTOS_KIT WHERE CODIGO = :CODIGO';
           dm.qryGenerica2.ParamByName('CODIGO').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit;
           dm.qryGenerica2.Open;
 
-          itensRetornados  := itensRetornados + ',' + IntToStr(codigoKit);
+          itensRetornados  := itensRetornados + ',' + codigoKit;
           Item             := TItem.Create(false);
           Item.cod_pedido  := TItem(BuscaPedido1.Ped.Itens[i]).cod_pedido;
           Item.cod_produto := dm.qryGenerica2.FieldByName('CODIGO_KIT').AsInteger;

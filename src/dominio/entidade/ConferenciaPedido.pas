@@ -95,10 +95,10 @@ begin
    Especificacao  := nil;
    
    try
-      if not Assigned(self.FItens) then begin
+      if not Assigned(self.FItens) and (self.FCodigo > 0) then begin
         Especificacao         := TEspecificacaoItensConferenciaPedido.Create(self);
         Repositorio           := TFabricaRepositorio.GetRepositorio(TConferenciaItem.ClassName);
-        self.FItens           := Repositorio.GetListaPorEspecificacao(Especificacao);
+        self.FItens           := Repositorio.GetListaPorEspecificacao(Especificacao, inttostr(self.Fcodigo));
       end;
 
       result := self.FItens;
