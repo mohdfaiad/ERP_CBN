@@ -582,7 +582,7 @@ end;
 procedure TfrmMonitorControleNFe.gridKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-   if (Key = VK_SPACE) then begin
+   if (Key = VK_SPACE) and not(cds.IsEmpty) and not grid.buscando then begin
 
       keybd_event(VK_BACK, 0, 0, 0);
 

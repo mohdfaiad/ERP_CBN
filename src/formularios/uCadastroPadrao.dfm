@@ -1,6 +1,7 @@
 inherited frmCadastroPadrao: TfrmCadastroPadrao
   Left = 161
   Top = 107
+  Caption = 'Cadastro Padr'#227'o'
   ClientHeight = 448
   ClientWidth = 704
   OldCreateOrder = True
@@ -338,10 +339,6 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
     OnChange = pgGeralChange
     object tsConsulta: TTabSheet
       Caption = 'F1 - Consulta'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         696
         378)
@@ -423,16 +420,11 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Alignment = taCenter
         Caption = 'Pressione ENTER para selecionar o registro'
         TabOrder = 1
-        ExplicitWidth = 222
       end
     end
     object tsDados: TTabSheet
       Caption = 'F2 - Dados'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnlDados: TPanel
         Left = 0
         Top = 0

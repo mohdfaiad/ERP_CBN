@@ -11,8 +11,6 @@ uses
 
 type
   TfrmCadastroMapaPedidos = class(TfrmCadastroPadrao)
-    BuscaPedido1: TBuscaPedido;
-    btnAdd: TBitBtn;
     Label1: TLabel;
     Shape1: TShape;
     Label2: TLabel;
@@ -34,22 +32,17 @@ type
     cdsPedidosFATURADO: TStringField;
     edtCodigo: TCurrencyEdit;
     cdsNUMERO_MAPA: TIntegerField;
-    cbxPeso: TComboBox;
-    Label4: TLabel;
     cdsPedidosPESO: TSmallintField;
-    btnAltera: TSpeedButton;
     gridPedidos: TDBGrid;
-    cdsPedidosPONTOS: TIntegerField;
+    btnSelecionar: TBitBtn;
+    cdsPedidosPONTOS: TFloatField;
     procedure btnRemoveClick(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
     procedure gridPedidosEnter(Sender: TObject);
     procedure gridPedidosExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure BuscaPedido1edtNumPedidoExit(Sender: TObject);
-    procedure BuscaPedido1btnBuscarEnter(Sender: TObject);
     procedure gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure btnAlteraClick(Sender: TObject);
     procedure cdsPedidosPESOChange(Sender: TField);
+    procedure btnSelecionarClick(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -87,25 +80,23 @@ var
 
 implementation
 
-uses Mapa, repositorio, fabricarepositorio, PedidoMapa, funcoes;
+uses Mapa, repositorio, fabricarepositorio, PedidoMapa, funcoes, Pedido, uBuscaPedidos;
 
 {$R *.dfm}
 
 procedure TfrmCadastroMapaPedidos.adicionaPedido;
+var Pedido :TPedido;
 begin
-  if cdsPedidos.Locate('CODIGO_PEDIDO',BuscaPedido1.Ped.Codigo, []) then
-    cdsPedidos.Edit
-  else
+  for Pedido in frmBuscaPedidos.Pedidos do
+  begin
     cdsPedidos.Append;
-  cdsPedidosCODIGO_PEDIDO.AsInteger := BuscaPedido1.Ped.Codigo;
-  cdsPedidosNUMPEDIDO.AsString      := BuscaPedido1.edtNumPedido.Text;
-  cdsPedidosFATURADO.AsString       := 'N';
-  cdsPedidosPESO.AsInteger          := StrToInt(cbxPeso.Items[cbxPeso.ItemIndex]);
-  cdsPedidos.Post;
-
-  BuscaPedido1.limpa;
-  BuscaPedido1.edtNumPedido.Clear;
-  gridPedidos.SetFocus;
+    cdsPedidosCODIGO_PEDIDO.AsInteger := Pedido.Codigo;
+    cdsPedidosNUMPEDIDO.AsString      := Pedido.numpedido;
+    cdsPedidosFATURADO.AsString       := 'N';
+    cdsPedidosPESO.AsInteger          := 1;
+    cdsPedidosPONTOS.AsFloat          := Pedido.pontos;
+    cdsPedidos.Post;
+  end;
 end;
 
 procedure TfrmCadastroMapaPedidos.AlterarRegistroNoCDS(Registro: TObject);
@@ -124,37 +115,21 @@ begin
   self.cds.Post;
 end;
 
-procedure TfrmCadastroMapaPedidos.btnAddClick(Sender: TObject);
-begin
-  if assigned(BuscaPedido1.Ped) then
-    adicionaPedido;
-end;
-
-procedure TfrmCadastroMapaPedidos.btnAlteraClick(Sender: TObject);
-begin
-  BuscaPedido1.numped := cdsPedidosNUMPEDIDO.AsString;
-  cbxPeso.ItemIndex   := cbxPeso.Items.IndexOf(cdsPedidosPeso.AsString);
-  cbxPeso.SetFocus;
-end;
-
 procedure TfrmCadastroMapaPedidos.btnRemoveClick(Sender: TObject);
 begin
   if confirma('Confirma remoção do pedido nº '+cdsPedidosNUMPEDIDO.AsString+' do mapa nº '+cdsCODIGO.AsString+'?') then
     removePedido;
 end;
 
-procedure TfrmCadastroMapaPedidos.BuscaPedido1btnBuscarEnter(Sender: TObject);
+procedure TfrmCadastroMapaPedidos.btnSelecionarClick(Sender: TObject);
 begin
-  if not assigned(BuscaPedido1.Ped) then
-    BuscaPedido1.btnBuscar.Click
-  else
-    btnAdd.Click;
-end;
+  frmBuscaPedidos := TfrmBuscaPedidos.Create(nil);
 
-procedure TfrmCadastroMapaPedidos.BuscaPedido1edtNumPedidoExit(Sender: TObject);
-begin
-  inherited;
-  BuscaPedido1.edtNumPedidoExit(Sender);
+  if frmBuscaPedidos.showModal = mrOk then
+    adicionaPedido;
+
+  frmBuscaPedidos.Release;
+  frmBuscaPedidos := nil;
 end;
 
 procedure TfrmCadastroMapaPedidos.calculaPontuacao;
@@ -229,25 +204,23 @@ end;
 procedure TfrmCadastroMapaPedidos.gridPedidosEnter(Sender: TObject);
 begin
   btnRemove.Enabled := not cdsPedidos.IsEmpty;
-  btnAltera.Enabled := not cdsPedidos.IsEmpty;
 end;
 
 procedure TfrmCadastroMapaPedidos.gridPedidosExit(Sender: TObject);
 begin
   btnRemove.Enabled := false;
-  btnAltera.Enabled := false;
 end;
 
 procedure TfrmCadastroMapaPedidos.ExecutarDepoisAlterar;
 begin
   inherited;
-  BuscaPedido1.edtNumPedido.SetFocus;
+  btnSelecionar.SetFocus;
 end;
 
 procedure TfrmCadastroMapaPedidos.ExecutarDepoisIncluir;
 begin
   inherited;
-  BuscaPedido1.edtNumPedido.SetFocus;
+  btnSelecionar.SetFocus;
 end;
 
 procedure TfrmCadastroMapaPedidos.FormCreate(Sender: TObject);
@@ -255,7 +228,6 @@ begin
   inherited;
   cdsPedidosDeletados.CreateDataSet;
   cdsPedidos.CreateDataSet;
-  BuscaPedido1.excluiPedidosNoMapa := true;
 end;
 
 function TfrmCadastroMapaPedidos.geraNumeroMapa: Integer;
@@ -347,8 +319,6 @@ end;
 procedure TfrmCadastroMapaPedidos.LimparDados;
 begin
   inherited;
-  BuscaPedido1.limpa;
-  BuscaPedido1.edtNumPedido.Clear;
   edtCodigoMapa.AsInteger := geraNumeroMapa;
   if cdsPedidos.Active then
     cdsPedidos.EmptyDataSet;
@@ -410,7 +380,7 @@ begin
 
   if cdsPedidos.IsEmpty then begin
     avisar('Ao menos um pedido deve ser adicionado ao mapa');
-    BuscaPedido1.edtNumPedido.SetFocus;
+    btnSelecionar.SetFocus;
   end
   else
     result := true;

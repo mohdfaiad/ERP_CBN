@@ -62,6 +62,8 @@ type
     RLLabel9: TRLLabel;
     RLDBText7: TRLDBText;
     qryDirecionadasREFERENCIA: TStringField;
+    btnImprimir: TSpeedButton;
+    btnDirecionar: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure btnDirecionarClick(Sender: TObject);

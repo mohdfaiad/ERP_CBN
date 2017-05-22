@@ -10,7 +10,8 @@ object dm: Tdm
       'Password=masterkey'
       'Port=3050'
       'Server=localhost'
-      'User_Name=sysdba')
+      'User_Name=sysdba'
+      'Database=C:\Sistemas\Delphi\ERP_CBN\Dados\base.FDB')
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.AssignedValues = [uvEDelete, uvEUpdate, uvUpdateChngFields, uvCountUpdatedRecords, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable]
     UpdateOptions.CheckRequired = False

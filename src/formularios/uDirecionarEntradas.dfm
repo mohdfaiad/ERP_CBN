@@ -21,130 +21,6 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     ParentFont = False
     Transparent = True
   end
-  object gridConsulta: TDBGridCBN
-    Left = 16
-    Top = 56
-    Width = 882
-    Height = 409
-    Hint = 
-      'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
-      'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
-      '4 para configurar o tipo de busca'#13'Pressione Ctrl + Alt + F5 para' +
-      ' recarregar o grid'
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    Color = 14803425
-    DataSource = dsEntradas
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-    ParentFont = False
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 0
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
-    TitleFont.Style = []
-    OnDrawColumnCell = gridConsultaDrawColumnCell
-    BuscaHabilitada = True
-    ConfCores.Normal.CorFonte = clWindowText
-    ConfCores.Normal.CorFundo = 14803425
-    ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
-    ConfCores.Normal.Tipo.Color = clWindowText
-    ConfCores.Normal.Tipo.Height = -11
-    ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
-    ConfCores.Normal.Tipo.Style = []
-    ConfCores.Zebrada.CorFonte = clWindowText
-    ConfCores.Zebrada.CorFundo = clWhite
-    ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
-    ConfCores.Zebrada.Tipo.Color = clWindowText
-    ConfCores.Zebrada.Tipo.Height = -11
-    ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
-    ConfCores.Zebrada.Tipo.Style = []
-    ConfCores.Selecao.CorFonte = clWindowText
-    ConfCores.Selecao.CorFundo = 16037533
-    ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
-    ConfCores.Selecao.Tipo.Color = clWindowText
-    ConfCores.Selecao.Tipo.Height = -11
-    ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
-    ConfCores.Selecao.Tipo.Style = []
-    ConfCores.Destacado.CorFonte = 8650884
-    ConfCores.Destacado.CorFundo = clWhite
-    ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
-    ConfCores.Destacado.Tipo.Color = 8650884
-    ConfCores.Destacado.Tipo.Height = -11
-    ConfCores.Destacado.Tipo.Name = 'Lucida Console'
-    ConfCores.Destacado.Tipo.Style = [fsBold]
-    ConfCores.Titulo.CorFonte = clWindowText
-    ConfCores.Titulo.CorFundo = clBtnFace
-    ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
-    ConfCores.Titulo.Tipo.Color = clWindowText
-    ConfCores.Titulo.Tipo.Height = -11
-    ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
-    ConfCores.Titulo.Tipo.Style = []
-    Ordenavel = True
-    TipoBusca.ListarApenasEncontrados = True
-    TipoBusca.QualquerParte = True
-    SalvaConfiguracoes = False
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'PRODUTO'
-        Width = 297
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'COR'
-        Width = 229
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'TAM'
-        Width = 39
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'QUANTIDADE'
-        Width = 77
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'DIRECIONADA'
-        Title.Font.Charset = DEFAULT_CHARSET
-        Title.Font.Color = clBtnFace
-        Title.Font.Height = -11
-        Title.Font.Name = 'MS Sans Serif'
-        Title.Font.Style = []
-        Width = 35
-        Visible = True
-      end>
-  end
-  object edtLote: TCurrencyEdit
-    Left = 76
-    Top = 15
-    Width = 55
-    Height = 26
-    AutoSize = False
-    Ctl3D = False
-    DisplayFormat = '0'
-    Enabled = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentCtl3D = False
-    ParentFont = False
-    TabOrder = 2
-  end
   object RLReport1: TRLReport
     Left = 204
     Top = 439
@@ -472,6 +348,130 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
       end
     end
   end
+  object gridConsulta: TDBGridCBN
+    Left = 16
+    Top = 56
+    Width = 882
+    Height = 409
+    Hint = 
+      'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
+      'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
+      '4 para configurar o tipo de busca'#13'Pressione Ctrl + Alt + F5 para' +
+      ' recarregar o grid'
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Color = 14803425
+    DataSource = dsEntradas
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnDrawColumnCell = gridConsultaDrawColumnCell
+    BuscaHabilitada = True
+    ConfCores.Normal.CorFonte = clWindowText
+    ConfCores.Normal.CorFundo = 14803425
+    ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+    ConfCores.Normal.Tipo.Color = clWindowText
+    ConfCores.Normal.Tipo.Height = -11
+    ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+    ConfCores.Normal.Tipo.Style = []
+    ConfCores.Zebrada.CorFonte = clWindowText
+    ConfCores.Zebrada.CorFundo = clWhite
+    ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+    ConfCores.Zebrada.Tipo.Color = clWindowText
+    ConfCores.Zebrada.Tipo.Height = -11
+    ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+    ConfCores.Zebrada.Tipo.Style = []
+    ConfCores.Selecao.CorFonte = clWindowText
+    ConfCores.Selecao.CorFundo = 16037533
+    ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+    ConfCores.Selecao.Tipo.Color = clWindowText
+    ConfCores.Selecao.Tipo.Height = -11
+    ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+    ConfCores.Selecao.Tipo.Style = []
+    ConfCores.Destacado.CorFonte = 8650884
+    ConfCores.Destacado.CorFundo = clWhite
+    ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+    ConfCores.Destacado.Tipo.Color = 8650884
+    ConfCores.Destacado.Tipo.Height = -11
+    ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+    ConfCores.Destacado.Tipo.Style = [fsBold]
+    ConfCores.Titulo.CorFonte = clWindowText
+    ConfCores.Titulo.CorFundo = clBtnFace
+    ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+    ConfCores.Titulo.Tipo.Color = clWindowText
+    ConfCores.Titulo.Tipo.Height = -11
+    ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+    ConfCores.Titulo.Tipo.Style = []
+    Ordenavel = True
+    TipoBusca.ListarApenasEncontrados = True
+    TipoBusca.QualquerParte = True
+    SalvaConfiguracoes = False
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'PRODUTO'
+        Width = 297
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'COR'
+        Width = 229
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TAM'
+        Width = 39
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'QUANTIDADE'
+        Width = 77
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DIRECIONADA'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clBtnFace
+        Title.Font.Height = -11
+        Title.Font.Name = 'MS Sans Serif'
+        Title.Font.Style = []
+        Width = 35
+        Visible = True
+      end>
+  end
+  object edtLote: TCurrencyEdit
+    Left = 76
+    Top = 15
+    Width = 55
+    Height = 26
+    AutoSize = False
+    Ctl3D = False
+    DisplayFormat = '0'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 2
+  end
   object Panel1: TPanel
     Left = 0
     Top = 512
@@ -479,6 +479,24 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Height = 47
     Align = alBottom
     TabOrder = 1
+    ExplicitLeft = -8
+    ExplicitTop = 427
+    object btnImprimir: TSpeedButton
+      Left = 769
+      Top = 9
+      Width = 129
+      Height = 30
+      Caption = 'Imprimir'
+      OnClick = btnImprimirClick
+    end
+    object btnDirecionar: TSpeedButton
+      Left = 617
+      Top = 9
+      Width = 129
+      Height = 30
+      Caption = 'Direcionar'
+      OnClick = btnDirecionarClick
+    end
   end
   object GroupBox1: TGroupBox
     Left = 16
@@ -595,7 +613,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Left = 352
     Top = 288
     Bitmap = {
-      494C010102001C00400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102001C00440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000004EB145006DC066000000000000000000000000000000

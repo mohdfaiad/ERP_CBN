@@ -96,7 +96,7 @@ inherited frmContasPagar: TfrmContasPagar
   inherited pgGeral: TPageControl
     Width = 998
     Height = 562
-    ActivePage = tsConsulta
+    ActivePage = tsDados
     ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
@@ -999,6 +999,7 @@ inherited frmContasPagar: TfrmContasPagar
             Width = 89
             Height = 21
             AutoSize = False
+            DecimalPlaces = 3
             DisplayFormat = ',0.00;-,0.00'
             Enabled = False
             Font.Charset = DEFAULT_CHARSET

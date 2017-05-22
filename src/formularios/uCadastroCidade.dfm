@@ -21,6 +21,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
       ExplicitWidth = 541
       ExplicitHeight = 277
       inherited gridConsulta: TDBGridCBN
+        Top = 7
         Width = 523
         Height = 251
         Columns = <
@@ -50,8 +51,6 @@ inherited frmCadastroCidade: TfrmCadastroCidade
       end
     end
     inherited tsDados: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 541
       ExplicitHeight = 277
       inherited pnlDados: TPanel

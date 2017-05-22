@@ -88,6 +88,9 @@ type
     Fone2: TFone;
     Fone1: TFone;
     FoneFax: TFone;
+    edtNomeFantasia: TEdit;
+    Label12: TLabel;
+    cdsNOME_FANTASIA: TStringField;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -211,7 +214,7 @@ begin
   FoneFax.Fone 	        := cdsFAX.AsString;
   edtEmail.text         := cdsEmail.AsString;
   memObs.text 	        := cdsObservacao.AsString;
-
+  edtNomeFantasia.Text  := cdsNOME_FANTASIA.AsString;
 end;
 
 procedure TfrmCadastroTransportadora.TabSheet2Enter(Sender: TObject);
@@ -246,6 +249,7 @@ procedure TfrmCadastroTransportadora.limpaCampos;
 begin
   edtcodigo.Text := '0';
   edtRazao.Clear;
+  edtNomeFantasia.Clear;
   edtCpf.Clear;
   edtRg.Clear;
   edtDtCad.text := dateToStr(date);
@@ -262,7 +266,7 @@ begin
   Fone2.limpa;
   FoneFax.limpa;
   edtEmail.Clear;
-  memObs.Clear; 	        
+  memObs.Clear;
 end;
 
 procedure TfrmCadastroTransportadora.btnCancelarClick(Sender: TObject);
@@ -345,6 +349,7 @@ begin
  Transportadora.Email                := edtEmail.text;
  Transportadora.Observacao           := memObs.text;
  Transportadora.Tipo                 := 'T';
+ Transportadora.NomeFantasia         := edtNomeFantasia.Text;
 
  Rep.Salvar(Transportadora);
 

@@ -423,7 +423,8 @@ end;
 procedure TfrmCadastroPadrao.FormShow(Sender: TObject);
 begin
   inherited;
-
+  pgGeral.ActivePageIndex := 1;
+  pgGeral.ActivePageIndex := 0;
   if self.cds.Active then  self.cds.First;
   self.gridConsulta.SetFocus;
 end;

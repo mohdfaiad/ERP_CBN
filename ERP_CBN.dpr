@@ -450,7 +450,8 @@ uses
   DirecionamentoEntrada in 'src\dominio\entidade\DirecionamentoEntrada.pas',
   RepositorioDirecionamentoEntrada in 'src\infraestrutura\persistencia\RepositorioDirecionamentoEntrada.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  uBuscaPedidos in 'src\formularios\uBuscaPedidos.pas' {frmBuscaPedidos};
 
 {$R *.res}
 {$R win7810.res}
@@ -467,6 +468,7 @@ begin
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrmDirecionarEntradas, frmDirecionarEntradas);
+  Application.CreateForm(TfrmBuscaPedidos, frmBuscaPedidos);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

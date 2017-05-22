@@ -78,6 +78,7 @@ type
     function getvalor_ipi: Real;
     function getvalor_pis: Real;
     function getNaturezaOperacao: TNaturezaOperacao;
+    function getValorLiquido: Real;
 
   public
     property Materia               :TMateria read getMateria;
@@ -111,6 +112,7 @@ type
     property valor_ipi             :Real     read getvalor_ipi;
     property valor_pis             :Real     read getvalor_pis;
     property valor_cofins          :Real     read getvalor_cofins;
+    property valor_liquido         :Real     read getValorLiquido;
 
     property NaturezaOperacao      :TNaturezaOperacao read getNaturezaOperacao;
 
@@ -121,7 +123,7 @@ end;
 
 implementation
 
-uses Repositorio, FabricaRepositorio, EspecificacaoNaturezaComCFOPIgualA, Funcoes;
+uses Repositorio, FabricaRepositorio, EspecificacaoNaturezaComCFOPIgualA, Funcoes, math;
 
 { TItemNfMateria }
 
@@ -183,6 +185,13 @@ end;
 function TItemNfMateria.GetOrigem: integer;
 begin
   Result := TTipoOrigemMercadoriaUtilitario.DeEnumeradoParaInteger(Forigem)
+end;
+
+function TItemNfMateria.getValorLiquido: Real;
+begin
+  result := 0;
+  result := Fvalor_bruto + Fvalor_frete + Fvalor_seguro + Fvalor_outras_despesas - Fvalor_desconto +
+            IfThen(Fbase_ipi > 0, Fper_ipi * Fbase_ipi / 100, 0);
 end;
 
 function TItemNfMateria.getvalor_cofins: Real;

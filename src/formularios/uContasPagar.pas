@@ -1052,7 +1052,7 @@ begin
    for i := 0 to NotaFiscal.Itens.Count - 1 do
    begin
      BuscaMateria1.codMateria := TItemNFMateria(NotaFiscal.Itens[i]).codigo_materia;
-     edtPrecoCusto.Value      := TItemNFMateria(NotaFiscal.Itens[i]).valor_unitario;
+     edtPrecoCusto.Value      := TItemNFMateria(NotaFiscal.Itens[i]).valor_liquido / TItemNFMateria(NotaFiscal.Itens[i]).quantidade;
      edtQuantidade.Value      := TItemNFMateria(NotaFiscal.Itens[i]).quantidade;
      btnSalva.Click;
    end;

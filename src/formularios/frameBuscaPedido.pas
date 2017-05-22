@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Mask, RxToolEdit, RxCurrEdit, Buttons, ObjetoGenerico, Pedido, Contnrs, Item, TipoBuscaPedido,
-  ExtCtrls;
+  ExtCtrls, Datasnap.DBClient;
 
 type
   TBuscaPedido = class(TFrame)
@@ -56,9 +56,11 @@ type
     property BuscaParaConferencia :Boolean read FBuscaParaConferencia write SetBuscaParaConferencia;
     property pedidosLoja          :Boolean read FPedidosLoja     write FPedidosLoja;
     property excluiPedidosNoMapa  :Boolean read FExcluiPedidosNoMapa   write FExcluiPedidosNoMapa;
-    
+
     procedure limpa;
-    
+
+  public
+    destructor destroy;override;
   end;
 
 implementation
@@ -86,8 +88,7 @@ begin
   if FExcluiPedidosNoMapa then
     condicao_mapa := ' and (pm.codigo is null) ';
 
-  if Pedido = nil then
-    Pedido := TObjetoGenerico.Create;
+  Pedido := TObjetoGenerico.Create;
 
   Pedido.SQL := 'Select first 1 p.*, pf.codigo_nota_fiscal from Pedidos p       '+
                 ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo '+
@@ -99,7 +100,10 @@ begin
                                //condição para bloquear a seleção de pedidos bloqueados
   if not (Pedido.BuscaVazia) {and (Pedido.getCampo('codigo_nota_fiscal').AsFloat = 0)} then begin
 
-    if FPed = nil then  FPed := TPedido.Create;
+    if assigned(FPed) then
+      FreeAndNil(FPed);
+
+    FPed := TPedido.Create;
 
     edtNumPedido.Text   := Pedido.getCampo('numpedido').AsString;
     self.codigo         := Pedido.getCampo('codigo').AsInteger;
@@ -148,6 +152,14 @@ begin
     FreeAndNil(Pedido);
 end;
 
+destructor TBuscaPedido.destroy;
+begin
+  if Assigned(FPed) then
+    FreeAndNil(FPed);
+
+  inherited;
+end;
+
 procedure TBuscaPedido.Setcodigo(const Value: integer);
 begin
   Fcodigo := Value;
@@ -159,7 +171,7 @@ begin
 end;
 
 procedure TBuscaPedido.btnBuscarClick(Sender: TObject);
-var campoRetorno, condicao_tipo, condicao_mapa, SQL :String;
+var campoRetorno, condicao_tipo, condicao_mapa, condicao_cancelado, SQL :String;
 begin
   campoRetorno  := 'NUMPEDIDO';
   condicao_tipo := '';
@@ -168,6 +180,9 @@ begin
                                                             ' and ( (pf.codigo is null) and ((p.despachado is null) or (p.despachado <> ''S'')) ) '));
   if FPedidosLoja then
     condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
+
+  if not self.FpermiteCancelado then
+    condicao_cancelado := ' and ((p.cancelado is null) or (p.cancelado <> ''S'')) ';
 
   if FExcluiPedidosNoMapa then
     condicao_mapa := ' and (pm.codigo is null) ';
@@ -180,7 +195,7 @@ begin
            ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo                      '+
            ' left join nfce on nfce.codigo_pedido = p.codigo                                    '+
            ' left join pedidos_mapa pm on pm.codigo_pedido = p.codigo                           '+
-           ' where (1=1) '+ condicao_tipo+ condicao_mapa +
+           ' where (1=1) '+ condicao_tipo+ condicao_mapa + condicao_cancelado +
            ' order by p.dt_representante                                                        ';
   end
   else
@@ -195,7 +210,9 @@ begin
   frmPesquisaSimples.Align := alClient;
   if frmPesquisaSimples.ShowModal = mrOk then
     buscaPedido(frmPesquisaSimples.cds_retorno.Fields[0].AsString);
+
   frmPesquisaSimples.Release;
+  frmPesquisaSimples := nil;
 end;
 
 procedure TBuscaPedido.limpa;

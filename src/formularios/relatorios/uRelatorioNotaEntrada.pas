@@ -192,12 +192,14 @@ begin
   result := 0;
 
   dm.qryGenerica.Close;
-  dm.qryGenerica.SQL.Text := 'select sum(im.valor_bruto) valor_bruto from itens_nf_materia im '+
-                             ' where im.codigo_nota_fiscal = :codigo                          ';
+  dm.qryGenerica.SQL.Text := 'select sum(im.valor_bruto + im.valor_frete + im.valor_seguro + im.valor_outras_despesas - im.valor_desconto + '+
+                             '           iif(im.base_ipi > 0, im.per_ipi * im.base_ipi / 100, 0) '+
+                             '          ) valor_total from itens_nf_materia im                   '+
+                             ' where im.codigo_nota_fiscal = :codigo                             ';
   dm.qryGenerica.ParamByName('codigo').AsInteger := codigo_nota;
   dm.qryGenerica.Open;
 
-  result := dm.qryGenerica.fieldByName('valor_bruto').AsFloat;
+  result := dm.qryGenerica.fieldByName('valor_total').AsFloat;
 end;
 
 procedure TfrmRelatorioNotaEntrada.SpeedButton1Click(Sender: TObject);

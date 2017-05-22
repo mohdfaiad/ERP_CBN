@@ -2,20 +2,20 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
   Left = 194
   Top = 66
   Caption = 'Cadastro de Transportadoras'
-  ClientHeight = 509
+  ClientHeight = 547
   ClientWidth = 858
   OldCreateOrder = True
   OnShow = FormShow
   ExplicitWidth = 874
-  ExplicitHeight = 547
+  ExplicitHeight = 585
   PixelsPerInch = 96
   TextHeight = 13
   object pagTransportadoras: TPageControl
     Left = 0
     Top = 0
     Width = 858
-    Height = 466
-    ActivePage = TabSheet1
+    Height = 504
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -23,12 +23,12 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       OnExit = TabSheet1Exit
       DesignSize = (
         850
-        438)
+        476)
       object gridTransportadoras: TDBGridCBN
         Left = 8
         Top = 8
         Width = 832
-        Height = 422
+        Height = 460
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -169,11 +169,11 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         ParentFont = False
       end
       object Label3: TLabel
-        Left = 400
-        Top = 17
-        Width = 22
+        Left = 28
+        Top = 65
+        Width = 28
         Height = 13
-        Caption = 'CGC'
+        Caption = 'CNPJ'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 3355443
         Font.Height = -11
@@ -182,8 +182,8 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         ParentFont = False
       end
       object Label4: TLabel
-        Left = 552
-        Top = 17
+        Left = 164
+        Top = 65
         Width = 9
         Height = 13
         Caption = 'IE'
@@ -195,8 +195,8 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 744
-        Top = 17
+        Left = 304
+        Top = 65
         Width = 73
         Height = 13
         Caption = 'Data Cadastro'
@@ -206,10 +206,11 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+        Visible = False
       end
       object Label16: TLabel
         Left = 25
-        Top = 331
+        Top = 379
         Width = 65
         Height = 13
         Caption = 'Observa'#231#245'es'
@@ -222,7 +223,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       end
       object lblAsterisco: TLabel
         Left = 7
-        Top = 415
+        Top = 447
         Width = 11
         Height = 32
         Caption = '*'
@@ -235,7 +236,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       end
       object lblCamposObrigatorios: TLabel
         Left = 21
-        Top = 419
+        Top = 451
         Width = 127
         Height = 17
         Caption = 'Campos Obrigat'#243'rios'
@@ -260,8 +261,8 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         ParentFont = False
       end
       object Label17: TLabel
-        Left = 387
-        Top = 7
+        Left = 15
+        Top = 55
         Width = 11
         Height = 32
         Caption = '*'
@@ -272,37 +273,51 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label12: TLabel
+        Left = 442
+        Top = 17
+        Width = 78
+        Height = 13
+        Caption = 'Nome Fantasia'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 3355443
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtRazao: TEdit
         Left = 24
         Top = 33
-        Width = 339
+        Width = 390
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
       end
       object edtRg: TMaskEdit
-        Left = 552
-        Top = 33
-        Width = 100
+        Left = 164
+        Top = 81
+        Width = 117
         Height = 21
         MaxLength = 12
-        TabOrder = 2
+        TabOrder = 3
         Text = ''
       end
       object edtDtCad: TMaskEdit
-        Left = 744
-        Top = 33
+        Left = 304
+        Top = 81
         Width = 88
         Height = 21
         Enabled = False
         EditMask = '!99/99/9999;1; '
         MaxLength = 10
-        TabOrder = 3
+        TabOrder = 4
         Text = '  /  /    '
+        Visible = False
       end
       object GroupBox1: TGroupBox
         Left = 24
-        Top = 65
+        Top = 113
         Width = 809
         Height = 164
         Caption = ' Endere'#231'o '
@@ -312,7 +327,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 5
         object Label6: TLabel
           Left = 16
           Top = 24
@@ -589,7 +604,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       end
       object GroupBox2: TGroupBox
         Left = 24
-        Top = 241
+        Top = 289
         Width = 809
         Height = 81
         Caption = '   Telefone / Contato '
@@ -599,7 +614,7 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 6
         object Label15: TLabel
           Left = 400
           Top = 27
@@ -700,10 +715,10 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       end
       object memObs: TMemo
         Left = 24
-        Top = 348
+        Top = 396
         Width = 809
         Height = 49
-        TabOrder = 6
+        TabOrder = 7
       end
       object edtCodigo: TEdit
         Left = 176
@@ -716,14 +731,14 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 8
         Text = '0'
         Visible = False
       end
       object edtCpf: TEdit
-        Left = 397
-        Top = 33
-        Width = 119
+        Left = 25
+        Top = 81
+        Width = 116
         Height = 21
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -731,13 +746,21 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
+        TabOrder = 2
+      end
+      object edtNomeFantasia: TEdit
+        Left = 442
+        Top = 33
+        Width = 390
+        Height = 21
+        CharCase = ecUpperCase
         TabOrder = 1
       end
     end
   end
   object panBotoes: TPanel
     Left = 0
-    Top = 466
+    Top = 504
     Width = 858
     Height = 43
     Align = alBottom
@@ -1055,16 +1078,14 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
   end
   object ds: TDataSource
     DataSet = cds
-    Left = 708
-    Top = 8
+    Left = 676
   end
   object cds: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dsp'
     AfterScroll = cdsAfterScroll
-    Left = 748
-    Top = 8
+    Left = 716
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -1155,18 +1176,20 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
       FieldName = 'NUMERO'
       Size = 10
     end
+    object cdsNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Size = 60
+    end
   end
   object dsp: TDataSetProvider
     DataSet = qry
-    Left = 788
-    Top = 8
+    Left = 756
   end
   object qry: TFDQuery
     SQL.Strings = (
       'SELECT * FROM pessoas p                           '
       ' left join enderecos en on en.codpessoa = p.codigo'
       ' where p.tipo = '#39'T'#39'                            ')
-    Left = 672
-    Top = 8
+    Left = 640
   end
 end

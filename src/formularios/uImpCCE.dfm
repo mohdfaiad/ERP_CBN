@@ -830,7 +830,7 @@ object frm_impCCE: Tfrm_impCCE
         '  left join pessoas           des     on des.codigo = nf.codigo_' +
         'destinatario'
       
-        '  left join enderecos         edr_des on edr_des.codpessoa = emi' +
+        '  left join enderecos         edr_des on edr_des.codpessoa = des' +
         '.codigo'
       
         '  left join cidades           cid_des on cid_des.codibge = edr_d' +

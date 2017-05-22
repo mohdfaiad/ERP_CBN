@@ -90,6 +90,9 @@ type
     qryCOMPLEMENTO: TStringField;
     qryCIDADE: TStringField;
     qryQUANTIDADE_VOLUMES: TBCDField;
+    rldbFantasia: TRLDBText;
+    qryTRANSPORTADORA: TStringField;
+    cdsTRANSPORTADORA: TStringField;
     procedure btnImprimirClick(Sender: TObject);
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -173,14 +176,18 @@ begin
   if not (FDigitar) then  preencheDoBD
                     else  preencheDigitado;
 
-  RLReport1.PreviewModal;
-  cds.EmptyDataSet;
+  if not cds.IsEmpty then
+  begin
+    RLReport1.PreviewModal;
+    cds.EmptyDataSet;
+  end;
 end;
 
 procedure TfrmImpressaoEtiquetaCaixa.ConfiguraLayout;
 begin
 
    imgPAC.Visible       := (rgLayout.ItemIndex <> 0);
+   rldbFantasia.Visible := (rgLayout.ItemIndex = 0);
 
    rlbNF.Visible        := (rgLayout.ItemIndex <> 2);
    rldbNumNota.Visible  := (rgLayout.ItemIndex <> 2);
@@ -232,6 +239,7 @@ begin
     cdsCEP.AsString                 := edtCep.Text;
     cdsCIDADE.AsString              := edtCidade.Text;
     cdsQUANTIDADE_VOLUMES.AsInteger := edtQtd.AsInteger;
+    cdsNUMERO_CX.AsInteger          := cds.RecordCount + 1;
     cdsCOMPLEMENTO.AsString         := edtComplemento.Text;
     cds.Post;
   end;
@@ -284,6 +292,7 @@ begin
     cdsNUMERO_CX.AsInteger          := num_caixa;
     cdsNUM_PEDIDO.AsString          := cdsVolumesNUMPEDIDO.AsString;
     cdsCOMPLEMENTO.AsString         := qryCOMPLEMENTO.AsString;
+    cdsTRANSPORTADORA.AsString      := qryTRANSPORTADORA.AsString;
 
     { Se já tiver montado todas as etiquetas de determinado pedido, recomeça a contagem }
     if not(cdsVolumes.IsEmpty) and (cdsVolumesCOUNT.AsInteger = num_caixa) then begin

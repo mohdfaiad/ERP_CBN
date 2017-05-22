@@ -60,6 +60,7 @@ type
     Fcod_pedido_matriz: Integer;
     Fdesconto_comiss: Real;
     FEmpresa :TEmpresa;
+    FPontos :Real;
 
     procedure Setacrescimo(const Value: Real);
     procedure Setaprovacao(const Value: String);
@@ -159,6 +160,7 @@ type
     property cod_pedido_matriz :Integer      read Fcod_pedido_matriz write Setcod_pedido_matriz;
     property cancelado         :String       read Fcancelado write Setcancelado;
     property volumes           :Integer      read FVolumes           write FVolumes;
+    property pontos            :Real         read FPontos            write FPontos;
 
   public
     property FormaPagamento   :TFormaPagamento    read GetFormaPagamento;

@@ -3123,51 +3123,56 @@ var produto, refpro, num_caixa :String;
     preco :Real;
     excluiu :Boolean;
 begin
+//  try
+    produto   := cdsItensPRODUTO.AsString;
+    refpro    := cdsItensREFPRO.AsString;
+    num_caixa := cdsItensNUM_CAIXA.AsString;
+    tipo      := cdsItensTIPO.AsInteger;
+    codpro    := cdsItensCODPRO.AsInteger;
+    preco     := cdsItensPreco.AsFloat;
 
-  produto   := cdsItensPRODUTO.AsString;
-  refpro    := cdsItensREFPRO.AsString;
-  num_caixa := cdsItensNUM_CAIXA.AsString;
-  tipo      := cdsItensTIPO.AsInteger;
-  codpro    := cdsItensCODPRO.AsInteger;
-  preco     := cdsItensPreco.AsFloat;
+    atualiza_quantidade_item(cdsitensCODIGO.AsInteger, quantidade, tamanho, excluiu);
 
-  atualiza_quantidade_item(cdsitensCODIGO.AsInteger, quantidade, tamanho, excluiu);
+    if excluiu then
+      cdsItens.Delete
+    else
+    begin
+      cdsitens.Edit;
+      cdsItens.FieldByName('QTD_'+tamanho).AsInteger      := cdsItens.FieldByName('QTD_'+tamanho).AsInteger - quantidade;
+      cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger := cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger - quantidade;
+      cdsItens.Post;
+    end;
 
-  if excluiu then
-    cdsItens.Delete
-  else
-  begin
-    cdsitens.Edit;
-    cdsItens.FieldByName('QTD_'+tamanho).AsInteger      := cdsItens.FieldByName('QTD_'+tamanho).AsInteger - quantidade;
-    cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger := cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger - quantidade;
+    if not cdsItens.Locate('CODPRO;CODCOR',varArrayOf([codpro,codigo_cor]),[]) then
+    begin
+      cdsItens.Append;
+      cdsItensCODIGO.AsInteger   := insere_altera_item(BuscaPedido1.Ped.Codigo, codpro, codigo_cor, quantidade, preco, tamanho);
+      cdsItensPRODUTO.AsString   := produto;
+      cdsItensREFPRO.AsString    := refpro;
+      cdsItensNUM_CAIXA.AsString := num_caixa;
+      cdsItensTIPO.AsInteger     := tipo;
+      cdsItensCODPRO.AsInteger   := codpro;
+      cdsItensCODCOR.AsInteger   := codigo_cor;
+      cdsItensREFCOR.AsString    := refcor;
+      cdsItensCOR.AsString       := cor;
+      cdsItensC_I.AsString       := 'S';
+      cdsItensCONFERIDO.AsString := 'S';
+    end
+    else begin
+      cdsItens.Edit;
+      insere_altera_item(BuscaPedido1.Ped.Codigo, codpro, codigo_cor, quantidade, preco, tamanho, cdsItensCodigo.asInteger);
+    end;
+
+    cdsItens.FieldByName('QTD_'+tamanho).AsInteger      := quantidade;
+    cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger := cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger + quantidade;
     cdsItens.Post;
-  end;
-
-  if not cdsItens.Locate('CODPRO;CODCOR',varArrayOf([codpro,codigo_cor]),[]) then
-  begin
-
-    cdsItens.Append;
-    cdsItensCODIGO.AsInteger   := insere_altera_item(BuscaPedido1.Ped.Codigo, codpro, codigo_cor, quantidade, preco, tamanho);
-    cdsItensPRODUTO.AsString   := produto;
-    cdsItensREFPRO.AsString    := refpro;
-    cdsItensNUM_CAIXA.AsString := num_caixa;
-    cdsItensTIPO.AsInteger     := tipo;
-    cdsItensCODPRO.AsInteger   := codpro;
-    cdsItensCODCOR.AsInteger   := codigo_cor;
-    cdsItensREFCOR.AsString    := refcor;
-    cdsItensCOR.AsString       := cor;
-    cdsItensC_I.AsString       := 'S';
-    cdsItensCONFERIDO.AsString := 'S';
-  end
-  else begin
-    cdsItens.Edit;
-    insere_altera_item(BuscaPedido1.Ped.Codigo, codpro, codigo_cor, quantidade, preco, tamanho, cdsItensCodigo.asInteger);
-  end;
-
-  cdsItens.FieldByName('QTD_'+tamanho).AsInteger      := quantidade;
-  cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger := cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger + quantidade;
-
-  cdsItens.Post;
+ { Except
+    on e :Exception do
+    begin
+      avisar('Erro ao substituir item genérico'+ #13#10 +e.Message);
+      dm.LogErros.AdicionaErro('uConferenciaPedido','Substituir Item Genérico', e.Message);
+    end;
+  end;   }
 end;
 
 procedure TfrmConferenciaPedido.Timer2Timer(Sender: TObject);
@@ -3227,6 +3232,7 @@ procedure TfrmConferenciaPedido.atualiza_quantidade_item(coditem, quantidade: in
 var repositorio :TRepositorio;
     Item        :TItem;
 begin
+  //try
   try
     excluiu     := false;
     repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
@@ -3243,9 +3249,9 @@ begin
      7  : Item.qtd_4     := Item.qtd_4     - quantidade;
      8  : Item.qtd_6     := Item.qtd_6     - quantidade;
      9  : Item.qtd_8     := Item.qtd_8     - quantidade;
-     10 : Item.qtd_10    := Item.qtd_10     - quantidade;
-     11 : Item.qtd_12    := Item.qtd_12     - quantidade;
-     12 : Item.qtd_14    := Item.qtd_14     - quantidade;
+     10 : Item.qtd_10    := Item.qtd_10    - quantidade;
+     11 : Item.qtd_12    := Item.qtd_12    - quantidade;
+     12 : Item.qtd_14    := Item.qtd_14    - quantidade;
      13 : Item.qtd_UNICA := Item.qtd_UNICA - quantidade;
     end;
 
@@ -3257,6 +3263,13 @@ begin
     else
       repositorio.Salvar(Item);
 
+{  Except
+    on e :Exception do
+    begin
+      avisar('Erro ao atualizar item genérico'+ #13#10 +e.Message);
+      dm.LogErros.AdicionaErro('uConferenciaPedido', 'Atualizar Item Genérico', e.Message);
+    end;
+  end;   }
   Finally
     FreeAndNil(repositorio);
     FreeAndNil(Item);

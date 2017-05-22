@@ -3,17 +3,17 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
   Top = 178
   BorderStyle = bsSingle
   Caption = 'Impressao das etiquetas dos volumes'
-  ClientHeight = 652
-  ClientWidth = 1151
+  ClientHeight = 432
+  ClientWidth = 409
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 1157
-  ExplicitHeight = 680
+  ExplicitWidth = 415
+  ExplicitHeight = 460
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
-    Left = 416
-    Top = 275
+    Left = 0
+    Top = 299
     Width = 794
     Height = 1123
     Margins.TopMargin = 35.000000000000000000
@@ -319,12 +319,28 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
         ParentFont = False
         Text = ''
       end
+      object rldbFantasia: TRLDBText
+        Left = 546
+        Top = 9
+        Width = 104
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'TRANSPORTADORA'
+        DataSource = ds
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
     end
   end
   object rgLayout: TRadioGroup
     Left = 0
     Top = 0
-    Width = 1151
+    Width = 409
     Height = 97
     Align = alTop
     Caption = ' Selecione o Layout da etiqueta: '
@@ -340,13 +356,13 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
     ParentFont = False
     TabOrder = 1
     Visible = False
-    ExplicitWidth = 384
+    ExplicitWidth = 1151
   end
   object rgDados: TGroupBox
     Left = 0
     Top = 97
-    Width = 1151
-    Height = 272
+    Width = 409
+    Height = 280
     Align = alTop
     Caption = ' Dados da Etiqueta '
     Font.Charset = DEFAULT_CHARSET
@@ -357,7 +373,7 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
     ParentFont = False
     TabOrder = 3
     Visible = False
-    ExplicitWidth = 384
+    ExplicitWidth = 1041
     object Label2: TLabel
       Left = 10
       Top = 24
@@ -476,7 +492,7 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
       ParentFont = False
     end
     object Label11: TLabel
-      Left = 10
+      Left = 11
       Top = 184
       Width = 74
       Height = 13
@@ -641,18 +657,18 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
   end
   object Panel1: TPanel
     Left = 0
-    Top = 611
-    Width = 1151
+    Top = 391
+    Width = 409
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 95
-    ExplicitWidth = 384
+    ExplicitTop = 611
+    ExplicitWidth = 1151
     DesignSize = (
-      1151
+      409
       41)
     object btnImprimir: TSpeedButton
-      Left = 946
+      Left = 204
       Top = 5
       Width = 193
       Height = 30
@@ -809,6 +825,10 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
       FieldName = 'COMPLEMENTO'
       Size = 200
     end
+    object cdsTRANSPORTADORA: TStringField
+      FieldName = 'TRANSPORTADORA'
+      Size = 60
+    end
   end
   object cdsVolumes: TClientDataSet
     Aggregates = <>
@@ -832,13 +852,17 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
     Connection = dm.FDConnection
     SQL.Strings = (
       
-        'select nf.codigo, nf.numero_nota_fiscal, p.razao, e.logradouro, ' +
-        'e.numero, e.bairro, e.cep, e.complemento ,(c.nome ||'#39'/'#39'|| est.si' +
-        'gla) cidade, vn.quantidade_volumes'
+        'select nf.codigo, nf.numero_nota_fiscal, p.razao, t.nome_fantasi' +
+        'a transportadora, e.logradouro, e.numero, e.bairro, e.cep, e.com' +
+        'plemento ,(c.nome ||'#39'/'#39'|| est.sigla) cidade, vn.quantidade_volum' +
+        'es'
       'from notas_fiscais nf'
       
         'left join pessoas               p   on p.codigo              =  ' +
         'nf.codigo_destinatario'
+      
+        'left join pessoas               t   on t.codigo              =  ' +
+        'nf.codigo_transportadora'
       
         'left join enderecos             e   on e.codpessoa           =  ' +
         'p.codigo'
@@ -941,6 +965,10 @@ inherited frmImpressaoEtiquetaCaixa: TfrmImpressaoEtiquetaCaixa
       ReadOnly = True
       Precision = 18
       Size = 2
+    end
+    object qryTRANSPORTADORA: TStringField
+      FieldName = 'TRANSPORTADORA'
+      Size = 60
     end
   end
   object qryVolumes: TFDQuery

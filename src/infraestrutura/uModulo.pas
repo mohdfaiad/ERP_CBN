@@ -117,6 +117,7 @@ procedure Tdm.DataModuleCreate(Sender: TObject);
 var
   Aplicacao :TApplication;
 begin
+   FDConnection.Params.Database         := '';
    Aplicacao                            := (self.Owner as TApplication);
    self.FNomeDoExecutavel               := ExtractFilePath(Aplicacao.ExeName);
    self.FLogErros                       := TLogErros.Create(self.DiretorioSistema);
