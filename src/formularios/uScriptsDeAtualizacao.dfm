@@ -8322,4 +8322,1155 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 196
     WordWrap = False
   end
+  object versao197: TMemo
+    Left = 201
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CONTAS_PAGAR'
+      'ADD DESC_ACRESC NUMERIC(15,2)'
+      '^')
+    TabOrder = 197
+    WordWrap = False
+  end
+  object versao199: TMemo
+    Left = 249
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE PROCEDURE COMPRAS_CLIENTE_PERIODO ('
+      '    codcli integer,'
+      '    dt_ini date,'
+      '    dt_fim date)'
+      'returns ('
+      '    qtd_compras integer,'
+      '    vlr_compras numeric(15,2))'
+      'as'
+      'begin'
+      
+        '  SELECT SUM( IIF(PED.despachado = '#39'S'#39', PED.valor_total, TNF.VAL' +
+        'OR_TOTAL) ), COUNT( PED.codigo )'
+      '  FROM PEDIDOS PED'
+      
+        '  LEFT JOIN pedidos_faturados    PF  ON PF.codigo_pedido = PED.c' +
+        'odigo'
+      
+        '  LEFT JOIN notas_fiscais        NF  ON NF.codigo = PF.codigo_no' +
+        'ta_fiscal'
+      
+        '  LEFT JOIN totais_notas_fiscais TNF ON TNF.codigo_nota_fiscal =' +
+        ' PF.codigo_nota_fiscal'
+      
+        '  LEFT join notas_fiscais_nfe_retorno nfr on nfr.codigo_nota_fis' +
+        'cal = nf.codigo'
+      
+        '  WHERE (PED.cod_cliente = :codcli) AND (PED.despachado = '#39'S'#39' OR' +
+        ' NOT ((NFR.codigo_nota_fiscal IS NULL) AND (NFR.status = '#39'100'#39'))' +
+        ' ) AND'
+      
+        '        ((:dt_ini <= IIF(PED.despachado = '#39'S'#39', PED.dt_despacho, ' +
+        'cast(NF.data_emissao as date))) or (:dt_ini is null)) AND'
+      
+        '        ((:dt_fim >= IIF(PED.despachado = '#39'S'#39', PED.dt_despacho, ' +
+        'cast(NF.data_emissao as date))) or (:dt_fim is null))'
+      '  GROUP BY PED.cod_cliente'
+      '  order by PED.cod_cliente'
+      '    INTO'
+      '  :vlr_compras, :qtd_compras;'
+      ''
+      '  suspend;'
+      'end'
+      '^'
+      'update totais_notas_fiscais tnf set tnf.valor_total ='
+      ''
+      '(select iif(position('#39'<vNF>'#39', nfe.xml) > 0,'
+      
+        '                substring(nfe.xml from position('#39'<vNF>'#39', nfe.xml' +
+        ')+5 for (position('#39'</vNF>'#39', nfe.xml)-position('#39'<vNF>'#39', nfe.xml)-' +
+        '5)),'
+      '                '#39'0'#39')'
+      '  from notas_fiscais_nfe nfe'
+      ' where nfe.codigo_nota_fiscal = tnf.codigo_nota_fiscal)'
+      '^')
+    TabOrder = 198
+    WordWrap = False
+  end
+  object versao198: TMemo
+    Left = 225
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE TOTAIS_NOTAS_FISCAIS'
+      'ADD VALOR_TOTAL NUMERIC(15,2)'
+      '^')
+    TabOrder = 199
+    WordWrap = False
+  end
+  object versao200: TMemo
+    Left = 273
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CLIENTES'
+      'ADD CODREPRESENTANTE INTEGER'
+      '^'
+      'ALTER TABLE CLIENTES'
+      'ADD BLOQUEADO CHAR(1)'
+      '^'
+      'ALTER TABLE CLIENTES'
+      'ADD MOTIVO_BLOQUEIO VARCHAR(500)'
+      '^')
+    TabOrder = 200
+    WordWrap = False
+  end
+  object versao201: TMemo
+    Left = 297
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      
+        'update clientes cli set cli.codrepresentante = (select cr.cod_re' +
+        'presentante from cliente_representante cr where cr.cod_cliente =' +
+        ' cli.codcli)'
+      '^'
+      
+        'update clientes cli set cli.bloqueado = (select p.bloqueado from' +
+        ' pessoas p where p.codigo = cli.codcli)'
+      
+        '                , cli.motivo_bloqueio = (select p.motivo_bloq fr' +
+        'om pessoas p where p.codigo = cli.codcli)'
+      '^')
+    TabOrder = 201
+    WordWrap = False
+  end
+  object versao202: TMemo
+    Left = 321
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PESSOAS DROP BLOQUEADO'
+      '^')
+    TabOrder = 202
+    WordWrap = False
+  end
+  object versao203: TMemo
+    Left = 345
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      '   SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      '     WHERE DR.codigo_representante = :cod_rep'
+      '       INTO'
+      '     :rep_ecommerce;'
+      ''
+      '   if (:rep_ecommerce = '#39'S'#39') then'
+      '   begin'
+      
+        '     SELECT ((PED.valor_total+tnf.frete+tnf.seguro+tnf.outras_de' +
+        'spesas)-'
+      
+        '            (((PED.valor_total+tnf.frete+tnf.seguro+tnf.outras_d' +
+        'espesas)* PED.desconto_comiss)/100)),'
+      
+        '            ((PED.valor_total+tnf.desconto+tnf.frete+tnf.seguro+' +
+        'tnf.outras_despesas-((PED.valor_total* PED.desconto_comiss)/100)' +
+        '))'
+      '       FROM pedidos PED'
+      
+        '     LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PE' +
+        'D.codigo'
+      
+        '     LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo' +
+        '_nota_fiscal'
+      
+        '     LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisc' +
+        'al = NF.codigo'
+      ''
+      '     WHERE PED.codigo = :cod_pedido'
+      '       INTO'
+      '     :total_liquido, :total_bruto;'
+      '   end'
+      '   else'
+      '   begin'
+      
+        '     SELECT (PED.valor_total-((PED.valor_total* PED.desconto_com' +
+        'iss)/100)),'
+      
+        '            ((PED.valor_total-((PED.valor_total* PED.desconto_co' +
+        'miss)/100)) + PED.valor_frete)'
+      '       FROM pedidos PED'
+      
+        '     LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PE' +
+        'D.codigo'
+      
+        '     LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo' +
+        '_nota_fiscal'
+      
+        '     LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisc' +
+        'al = NF.codigo'
+      ''
+      
+        '     WHERE PED.codigo = :cod_pedido       INTO     :total_liquid' +
+        'o, :total_bruto;'
+      '   end'
+      '   suspend;'
+      'end'
+      '^')
+    TabOrder = 203
+    WordWrap = False
+  end
+  object versao204: TMemo
+    Left = 369
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      '   SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      '     WHERE DR.codigo_representante = :cod_rep'
+      '       INTO'
+      '     :rep_ecommerce;'
+      ''
+      '   if (:rep_ecommerce = '#39'S'#39') then'
+      '   begin'
+      
+        '     SELECT ((PED.valor_total+tnf.frete+tnf.seguro+tnf.outras_de' +
+        'spesas)-'
+      
+        '            (((PED.valor_total+tnf.frete+tnf.seguro+tnf.outras_d' +
+        'espesas)* PED.desconto_comiss)/100)),'
+      
+        '            ((PED.valor_total+tnf.desconto+tnf.frete+tnf.seguro+' +
+        'tnf.outras_despesas-((PED.valor_total* PED.desconto_comiss)/100)' +
+        '))'
+      '       FROM pedidos PED'
+      
+        '     LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PE' +
+        'D.codigo'
+      
+        '     LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo' +
+        '_nota_fiscal'
+      
+        '     LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisc' +
+        'al = NF.codigo'
+      ''
+      '     WHERE PED.codigo = :cod_pedido'
+      '       INTO'
+      '     :total_liquido, :total_bruto;'
+      '   end'
+      '   else'
+      '   begin'
+      
+        '     SELECT (PED.valor_total-((PED.valor_total* PED.desconto_com' +
+        'iss)/100)),'
+      
+        '            ((PED.valor_total-((PED.valor_total* PED.desconto_co' +
+        'miss)/100)) + PED.valor_frete + PED.desconto + PED.desconto_fpgt' +
+        'o + PED.desconto_itens - PED.acrescimo)'
+      '       FROM pedidos PED'
+      
+        '     LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PE' +
+        'D.codigo'
+      
+        '     LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo' +
+        '_nota_fiscal'
+      
+        '     LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisc' +
+        'al = NF.codigo'
+      ''
+      '     WHERE PED.codigo = :cod_pedido'
+      '       INTO'
+      '     :total_liquido, :total_bruto;'
+      '   end'
+      '   suspend;'
+      'end'
+      '^')
+    TabOrder = 204
+    WordWrap = False
+  end
+  object versao205: TMemo
+    Left = 393
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ESTOQUE'
+      'ADD SETOR SMALLINT'
+      '^')
+    TabOrder = 205
+    WordWrap = False
+  end
+  object versao206: TMemo
+    Left = 417
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'update estoque set setor = 1'
+      '^'
+      'ALTER PROCEDURE ALTERA_ESTOQUE ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    qtd_rn integer,'
+      '    qtd_p integer,'
+      '    qtd_m integer,'
+      '    qtd_g integer,'
+      '    qtd_1 integer,'
+      '    qtd_2 integer,'
+      '    qtd_3 integer,'
+      '    qtd_4 integer,'
+      '    qtd_6 integer,'
+      '    qtd_8 integer,'
+      '    qtd_10 integer,'
+      '    qtd_12 integer,'
+      '    qtd_14 integer,'
+      '    qtd_unica integer,'
+      '    multiplicador integer,'
+      '    setor smallint)'
+      'as'
+      'begin'
+      'if (:qtd_rn > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        'rn * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 1 and est.setor = :setor;'
+      'end'
+      'if (:qtd_p > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        'p * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 2 and est.setor = :setor;'
+      'end'
+      'if (:qtd_m > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        'm * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 3 and est.setor = :setor;'
+      'end'
+      'if (:qtd_g > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        'g * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 4 and est.setor = :setor;'
+      'end'
+      'if (:qtd_1 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '1 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 5 and est.setor = :setor;'
+      'end'
+      'if (:qtd_2 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '2 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 6 and est.setor = :setor;'
+      'end'
+      'if (:qtd_3 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '3 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 7 and est.setor = :setor;'
+      'end'
+      'if (:qtd_4 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '4 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 8 and est.setor = :setor;'
+      'end'
+      'if (:qtd_6 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '6 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 9 and est.setor = :setor;'
+      'end   if (:qtd_8 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '8 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 10 and est.setor = :setor;'
+      'end'
+      'if (:qtd_10 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '10 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 16 and est.setor = :setor;'
+      'end'
+      'if (:qtd_12 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '12 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 17 and est.setor = :setor;'
+      'end'
+      'if (:qtd_14 > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        '14 * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 18 and est.setor = :setor;'
+      'end'
+      'if (:qtd_unica > 0) then begin'
+      
+        'UPDATE ESTOQUE est set est.quantidade = (est.quantidade + (:qtd_' +
+        'unica * :multiplicador))'
+      
+        'where est.codigo_produto = :cod_produto and est.codigo_cor = :co' +
+        'd_cor and est.codigo_tamanho = 11 and est.setor = :setor;'
+      'end'
+      'suspend;'
+      'end'
+      '^')
+    TabOrder = 206
+    WordWrap = False
+  end
+  object versao207: TMemo
+    Left = 441
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE BAIXA_PEDIDO_ESTOQUE ('
+      '    codped integer,'
+      '    multiplicador integer)'
+      'as'
+      'declare variable q_14 integer;'
+      'declare variable ped_ecommerce char(1);'
+      'declare variable tipo char(1);'
+      'declare variable setor smallint;'
+      'declare variable q_12 integer;'
+      'declare variable q_10 integer;'
+      'declare variable cod_produto_kit integer;'
+      'declare variable q_rn integer;'
+      'declare variable q_p integer;'
+      'declare variable q_m integer;'
+      'declare variable q_g integer;'
+      'declare variable q_1 integer;'
+      'declare variable q_2 integer;'
+      'declare variable q_3 integer;'
+      'declare variable q_4 integer;'
+      'declare variable q_6 integer;'
+      'declare variable q_8 integer;'
+      'declare variable q_unica integer;'
+      'declare variable cod_produto integer;'
+      'declare variable cod_cor integer;'
+      'declare variable teste varchar(10);'
+      'declare variable prokit char(1);'
+      'declare variable corkit char(1);'
+      'declare variable cod_cor_kit integer;'
+      'begin'
+      '  ped_ecommerce = '#39'N'#39';'
+      '  select dr.rep_ecommerce from pedidos ped'
+      
+        '    inner join dados_representante dr on dr.codigo_representante' +
+        ' = ped.cod_repres'
+      '    where ped.codigo = :codped'
+      '  into'
+      '    :ped_ecommerce;'
+      ''
+      
+        '  for select i.cod_produto, i.cod_cor, ci.qtd_rn, ci.qtd_p, ci.q' +
+        'td_m, ci.qtd_g, ci.qtd_1, ci.qtd_2, ci.qtd_3, ci.qtd_4,'
+      
+        '             ci.qtd_6, ci.qtd_8, ci.qtd_10, ci.qtd_12, ci.qtd_14' +
+        ', ci.qtd_unica, pro.kit, cor.kit, pro.tipo'
+      '  from conferencia_itens ci'
+      '  inner join itens i        on ci.codigo_item = i.codigo'
+      '  inner join pedidos p      on p.codigo = i.cod_pedido'
+      '  inner join produtos pro   on pro.codigo = i.cod_produto'
+      '  inner join cores cor      on cor.codigo = i.cod_cor'
+      
+        '     where (p.codigo = :codped)    order by i.cod_produto, i.cod' +
+        '_cor'
+      '  into'
+      
+        '     :cod_produto, :cod_cor, :q_rn, :q_p, :q_m, :q_g, :q_1, :q_2' +
+        ', :q_3, :q_4, :q_6, :q_8, :q_10, :q_12, :q_14, :q_unica, :prokit' +
+        ', :corkit, :tipo    do'
+      '  begin'
+      '    if ((ped_ecommerce = '#39'S'#39') and (tipo = '#39'E'#39')) then'
+      '      setor = 2;'
+      '    else'
+      '      setor = 1;'
+      ''
+      '    if (:prokit = '#39'S'#39') then'
+      '    begin'
+      
+        '      for select pk.codigo_produto, pk.codigo_cor from produtos_' +
+        'kit pk'
+      
+        '      where pk.codigo_kit = :cod_produto and pk.codigo_cor_kit =' +
+        ' :cod_cor'
+      '        into'
+      '      :cod_produto_kit, :cod_cor_kit         do'
+      '      begin'
+      
+        '         execute procedure altera_estoque(:cod_produto_kit, :cod' +
+        '_cor_kit, :q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_' +
+        '6, :q_8, :q_10, :q_12, :q_14, :q_unica, :multiplicador, :setor);'
+      '      end'
+      '    end'
+      '    else'
+      
+        '      execute procedure altera_estoque(:cod_produto, :cod_cor, :' +
+        'q_rn, :q_p, :q_m,  :q_g,  :q_1, :q_2, :q_3, :q_4, :q_6, :q_8, :q' +
+        '_10, :q_12, :q_14, :q_unica, :multiplicador, :setor);'
+      '    end'
+      'end'
+      '^')
+    TabOrder = 207
+    WordWrap = False
+  end
+  object versao208: TMemo
+    Left = 465
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE PREVISAO_ESTOQUE ('
+      '    codigo_cor integer,'
+      '    codigo_produto integer,'
+      '    dt_ini date,'
+      '    dt_fim date,'
+      '    inclui_nfaturado char(1))'
+      'returns ('
+      '    dias_14 numeric(15,4),'
+      '    dias_12 numeric(15,4),'
+      '    dias_10 numeric(15,4),'
+      '    data_inicial date,'
+      '    dias_rn numeric(15,4),'
+      '    dias_p numeric(15,4),'
+      '    dias_m numeric(15,4),'
+      '    dias_g numeric(15,4),'
+      '    dias_1 numeric(15,4),'
+      '    dias_2 numeric(15,4),'
+      '    dias_3 numeric(15,4),'
+      '    dias_4 numeric(15,4),'
+      '    dias_6 numeric(15,4),'
+      '    dias_8 numeric(15,4),'
+      '    dias_unica numeric(15,4))'
+      'as'
+      'declare variable mes_inicial integer;'
+      'declare variable codigo_tamanho integer;'
+      'declare variable dias_ativo integer;'
+      'declare variable quantidade numeric(15,2);'
+      'begin'
+      
+        '  for select SUM(it.qtd_rn), SUM(it.qtd_p), SUM(it.qtd_m), SUM(i' +
+        't.qtd_g), SUM(it.qtd_1), SUM(it.qtd_2), SUM(it.qtd_3),'
+      
+        '             SUM(it.qtd_4), SUM(it.qtd_6), SUM(it.qtd_8), SUM(it' +
+        '.qtd_unica), SUM(it.qtd_10), SUM(it.qtd_12), SUM(it.qtd_14),  MI' +
+        'N(ped.dt_cadastro)'
+      '  from itens it'
+      '  left join pedidos  ped on ped.codigo = it.cod_pedido'
+      
+        '  left join pedidos_faturados pf on pf.codigo_pedido = ped.codig' +
+        'o'
+      
+        '  left join notas_fiscais nf on nf.codigo = pf.codigo_nota_fisca' +
+        'l'
+      
+        '  left join dados_representante dr on dr.codigo_representante = ' +
+        'ped.cod_repres'
+      '  left join produtos pro on pro.codigo = it.cod_produto'
+      
+        '  where it.cod_produto = :codigo_produto and it.cod_cor = :codig' +
+        'o_cor'
+      
+        '    and ( (not (pf.codigo is null) or (ped.despachado = '#39'S'#39') ) o' +
+        'r ('#39'S'#39' = :inclui_nfaturado)  )'
+      
+        '    and not (ped.cancelado = '#39'S'#39') and ped.dt_cadastro between :d' +
+        't_ini and :dt_fim'
+      
+        '    and ((dr.codigo is null) or (dr.rep_ecommerce <> '#39'S'#39') or ((d' +
+        'r.rep_ecommerce = '#39'S'#39')and(pro.tipo = '#39'L'#39')))'
+      '  into'
+      
+        '    :dias_rn, :dias_p, :dias_m, :dias_g, :dias_1, :dias_2, :dias' +
+        '_3, :dias_4, :dias_6, :dias_8, :dias_unica, :dias_10, :dias_12, ' +
+        ':dias_14, :data_inicial'
+      '  do'
+      '  begin'
+      '     dias_ativo = dt_fim - dt_ini;'
+      '     for select e.codigo_tamanho, e.quantidade from estoque e'
+      
+        '       where e.codigo_produto = :codigo_produto and e.codigo_cor' +
+        ' = :codigo_cor'
+      '     into'
+      '       :codigo_tamanho, :quantidade'
+      '     do'
+      '     begin'
+      '       if (:codigo_tamanho = 1) then begin'
+      '         if (dias_rn = 0) then'
+      '           dias_rn = 999999;'
+      '         else begin'
+      '           dias_rn = dias_rn / dias_ativo;'
+      '           dias_rn = :quantidade / dias_rn;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 2) then begin'
+      '         if (dias_p = 0) then'
+      '           dias_p = 999999;'
+      '         else begin'
+      '           dias_p  = dias_p  / dias_ativo;'
+      '           dias_p = :quantidade / dias_p;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 3) then begin'
+      '         if (dias_m = 0) then'
+      '           dias_m = 999999;'
+      '         else begin'
+      '           dias_m = dias_m  / dias_ativo;'
+      '           dias_m = :quantidade / dias_m;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 4) then begin'
+      '         if (dias_g = 0) then'
+      '           dias_g = 999999;'
+      '         else begin'
+      '           dias_g  = dias_g  / dias_ativo;'
+      '           dias_g = :quantidade / dias_g;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 5) then begin'
+      '         if (dias_1 = 0) then'
+      '           dias_1 = 999999;'
+      '         else begin'
+      '           dias_1  = dias_1  / dias_ativo;'
+      '           dias_1 = :quantidade / dias_1;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 6) then begin'
+      '         if (dias_2 = 0) then'
+      '           dias_2 = 999999;'
+      '         else begin'
+      '           dias_2  = dias_2  / dias_ativo;'
+      '           dias_2 = :quantidade / dias_2;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 7) then begin'
+      '         if (dias_3 = 0) then'
+      '           dias_3 = 999999;'
+      '         else begin'
+      '           dias_3  = dias_3  / dias_ativo;'
+      '           dias_3 = :quantidade / dias_3;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 8) then begin'
+      '         if (dias_4 = 0) then'
+      '           dias_4 = 999999;'
+      '         else begin'
+      '           dias_4  = dias_4  / dias_ativo;'
+      '           dias_4 = :quantidade / dias_4;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 9) then begin'
+      '         if (dias_6 = 0) then'
+      '           dias_6 = 999999;'
+      '         else begin'
+      '           dias_6  = dias_6  / dias_ativo;'
+      '           dias_6 = :quantidade / dias_6;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 10) then begin'
+      '         if (dias_8 = 0) then'
+      '           dias_8 = 999999;'
+      '         else begin'
+      '           dias_8  = dias_8  / dias_ativo;'
+      '           dias_8 = :quantidade / dias_8;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 11) then begin'
+      '         if (dias_unica = 0) then'
+      '           dias_unica = 999999;'
+      '         else begin'
+      '           dias_unica  = dias_unica  / dias_ativo;'
+      '           dias_unica = :quantidade / dias_unica;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 16) then begin'
+      '         if (dias_10 = 0) then'
+      '           dias_10 = 999999;'
+      '         else begin'
+      '           dias_10  = dias_10  / dias_ativo;'
+      '           dias_10 = :quantidade / dias_10;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 17) then begin'
+      '         if (dias_12 = 0) then'
+      '           dias_12 = 999999;'
+      '         else begin'
+      '           dias_12  = dias_12  / dias_ativo;'
+      '           dias_12 = :quantidade / dias_12;'
+      '         end'
+      '       end'
+      '       else if (:codigo_tamanho = 18) then begin'
+      '         if (dias_14 = 0) then'
+      '           dias_14 = 999999;'
+      '         else begin'
+      '           dias_14  = dias_14  / dias_ativo;'
+      '           dias_14 = :quantidade / dias_14;'
+      '         end'
+      '       end'
+      '     end'
+      '  end'
+      '  suspend;'
+      'end'
+      '^'
+      'ALTER PROCEDURE ESTOQUE_POR_REFERENCIA ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    cor_pai char(1))'
+      'returns ('
+      '    q_14 integer,'
+      '    q_12 integer,'
+      '    q_10 integer,'
+      '    q_rn integer,'
+      '    q_p integer,'
+      '    q_m integer,'
+      '    q_g integer,'
+      '    q_1 integer,'
+      '    q_2 integer,'
+      '    q_3 integer,'
+      '    q_4 integer,'
+      '    q_6 integer,'
+      '    q_8 integer,'
+      '    q_unica integer)'
+      'as'
+      'declare variable quantidade integer;'
+      'declare variable cod_tamanho integer;'
+      'begin'
+      
+        '  q_rn = 0;   q_p  = 0;   q_m  = 0;   q_g  = 0;    q_1  = 0;    ' +
+        'q_2  = 0;    q_3  = 0;'
+      
+        '  q_4  = 0;   q_6  = 0;   q_8  = 0;   q_10  = 0;   q_12  = 0;   ' +
+        'q_14  = 0;   q_unica  = 0;'
+      '  if (:cor_pai = '#39'S'#39') then begin'
+      
+        '    FOR SELECT SUM( CAST(E.QUANTIDADE as INTEGER)) quantidade, E' +
+        '.CODIGO_TAMANHO FROM ESTOQUE E'
+      '      left join cores cor       on cor.codigo = e.codigo_cor'
+      
+        '      left join cores_filhas cf on cf.codigo_cor_pai = cor.codig' +
+        'o'
+      
+        '    WHERE E.CODIGO_PRODUTO = :cod_produto     AND cf.codigo_cor_' +
+        'pai = :cod_cor AND e.setor = 1'
+      '    group by 2'
+      '       INTO'
+      '    :quantidade, :cod_tamanho     DO'
+      '    BEGIN'
+      '      if (:cod_tamanho = 1) then'
+      '        q_rn    = :quantidade;'
+      '      else if (:cod_tamanho = 2) then'
+      '        q_p     = :quantidade;'
+      '      else if (:cod_tamanho = 3) then'
+      '        q_m     = :quantidade;'
+      '      else if (:cod_tamanho = 4) then'
+      '        q_g     = :quantidade;'
+      '      else if (:cod_tamanho = 5) then'
+      '        q_1     = :quantidade;'
+      '      else if (:cod_tamanho = 6) then'
+      '        q_2     = :quantidade;'
+      '      else if (:cod_tamanho = 7) then'
+      '        q_3     = :quantidade;'
+      '      else if (:cod_tamanho = 8) then'
+      '        q_4     = :quantidade;'
+      '      else if (:cod_tamanho = 9) then'
+      '        q_6     = :quantidade;'
+      '      else if (:cod_tamanho = 10) then'
+      '        q_8     = :quantidade;'
+      '      else if (:cod_tamanho = 11) then'
+      '        q_unica = :quantidade;'
+      '      else if (:cod_tamanho = 16) then'
+      '        q_10    = :quantidade;'
+      '      else if (:cod_tamanho = 17) then'
+      '        q_12    = :quantidade;'
+      '      else if (:cod_tamanho = 18) then'
+      '        q_14    = :quantidade;'
+      '    END'
+      '  end'
+      '  else begin'
+      '    FOR SELECT E.QUANTIDADE, E.CODIGO_TAMANHO FROM ESTOQUE E'
+      '    WHERE E.CODIGO_PRODUTO = :cod_produto'
+      '      AND E.CODIGO_COR = :cod_cor AND e.setor = 1'
+      '    INTO'
+      '      :quantidade, :cod_tamanho         DO'
+      '    BEGIN'
+      '      if (:cod_tamanho = 1) then'
+      '        q_rn    = :quantidade;'
+      '      else if (:cod_tamanho = 2) then'
+      '        q_p     = :quantidade;'
+      '      else if (:cod_tamanho = 3) then'
+      '        q_m     = :quantidade;'
+      '      else if (:cod_tamanho = 4) then'
+      '        q_g     = :quantidade;'
+      '      else if (:cod_tamanho = 5) then'
+      '        q_1     = :quantidade;'
+      '      else if (:cod_tamanho = 6) then'
+      '        q_2     = :quantidade;'
+      '      else if (:cod_tamanho = 7) then'
+      '        q_3     = :quantidade;'
+      '      else if (:cod_tamanho = 8) then'
+      '        q_4     = :quantidade;'
+      '      else if (:cod_tamanho = 9) then'
+      '        q_6     = :quantidade;'
+      '      else if (:cod_tamanho = 10) then'
+      '        q_8     = :quantidade;'
+      '      else if (:cod_tamanho = 11) then'
+      '        q_unica = :quantidade;'
+      '      else if (:cod_tamanho = 16) then'
+      '        q_10    = :quantidade;'
+      '      else if (:cod_tamanho = 17) then'
+      '        q_12    = :quantidade;'
+      '      else if (:cod_tamanho = 18) then'
+      '        q_14    = :quantidade;'
+      '    END'
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 208
+    WordWrap = False
+  end
+  object versao209: TMemo
+    Left = 489
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE PROCEDURE ALTERA_CRIA_ESTOQUE ('
+      '    quantidade integer,'
+      '    codproduto integer,'
+      '    codcor integer,'
+      '    codtamanho integer,'
+      '    setor smallint)'
+      'as'
+      'declare variable codestoque integer;'
+      'begin'
+      '  codestoque = 0;'
+      '  SELECT COALESCE(E.codigo, 0) FROM ESTOQUE E'
+      
+        '  WHERE E.codigo_produto = :codproduto AND E.codigo_cor = :codco' +
+        'r AND E.codigo_tamanho = :codtamanho AND E.setor = :setor'
+      '    INTO'
+      '  :codestoque;'
+      ''
+      '  if (codestoque = 0) then'
+      '  begin'
+      
+        '    INSERT INTO ESTOQUE values(:codestoque, :codproduto, :codtam' +
+        'anho, :codcor, :quantidade, :setor);'
+      '  end'
+      '  else'
+      '  begin'
+      
+        '    UPDATE ESTOQUE est set est.quantidade = (est.quantidade + :q' +
+        'uantidade)'
+      '    where est.codigo = :codestoque;'
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 209
+    WordWrap = False
+  end
+  object versao210: TMemo
+    Left = 513
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE ALTERA_ESTOQUE ('
+      '    cod_produto integer,'
+      '    cod_cor integer,'
+      '    qtd_rn integer,'
+      '    qtd_p integer,'
+      '    qtd_m integer,'
+      '    qtd_g integer,'
+      '    qtd_1 integer,'
+      '    qtd_2 integer,'
+      '    qtd_3 integer,'
+      '    qtd_4 integer,'
+      '    qtd_6 integer,'
+      '    qtd_8 integer,'
+      '    qtd_10 integer,'
+      '    qtd_12 integer,'
+      '    qtd_14 integer,'
+      '    qtd_unica integer,'
+      '    multiplicador integer,'
+      '    setor smallint)'
+      'as'
+      'begin'
+      '  if (:qtd_rn > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_rn * :multiplicad' +
+        'or, :cod_produto, :cod_cor, 1, :setor);'
+      '  if (:qtd_p > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_p * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 2, :setor);'
+      '  if (:qtd_m > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_m * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 3, :setor);'
+      '  if (:qtd_g > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_g * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 4, :setor);'
+      '  if (:qtd_1 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_1 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 5, :setor);'
+      '  if (:qtd_2 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_2 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 6, :setor);'
+      '  if (:qtd_3 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_3 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 7, :setor);'
+      '  if (:qtd_4 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_4 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 8, :setor);'
+      '  if (:qtd_6 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_6 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 9, :setor);'
+      '  if (:qtd_8 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_8 * :multiplicado' +
+        'r, :cod_produto, :cod_cor, 10, :setor);'
+      '  if (:qtd_unica > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_unica * :multipli' +
+        'cador, :cod_produto, :cod_cor, 11, :setor);'
+      '  if (:qtd_10 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_10 * :multiplicad' +
+        'or, :cod_produto, :cod_cor, 16, :setor);'
+      '  if (:qtd_12 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_12 * :multiplicad' +
+        'or, :cod_produto, :cod_cor, 17, :setor);'
+      '  if (:qtd_14 > 0) then'
+      
+        '    execute procedure altera_cria_estoque(:qtd_14 * :multiplicad' +
+        'or, :cod_produto, :cod_cor, 18, :setor);'
+      '  suspend;'
+      'end'
+      '^'
+      'DROP TRIGGER ESTOQUE_BU0'
+      '^')
+    TabOrder = 210
+    WordWrap = False
+  end
+  object versao211: TMemo
+    Left = 537
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable desconto_comissao numeric(15,2);'
+      'declare variable total numeric(15,2);'
+      'declare variable outras_despesas numeric(15,2);'
+      'declare variable desconto numeric(15,2);'
+      'declare variable seguro numeric(15,2);'
+      'declare variable frete numeric(15,2);'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      
+        '  total =0; frete =0; desconto =0; seguro =0; outras_despesas =0' +
+        '; desconto_comissao =0;'
+      '  SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      
+        '  WHERE DR.codigo_representante = :cod_rep        INTO      :rep' +
+        '_ecommerce;'
+      ''
+      '  if (:rep_ecommerce = '#39'S'#39') then begin'
+      
+        '    SELECT PED.valor_total, coalesce(tnf.frete,0), coalesce(tnf.' +
+        'desconto,0), coalesce(tnf.seguro,0), coalesce(tnf.outras_despesa' +
+        's,0), coalesce(ped.desconto_comiss,0)'
+      '    FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      
+        '    LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo_' +
+        'nota_fiscal'
+      
+        '    LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisca' +
+        'l = NF.codigo'
+      ''
+      '    WHERE PED.codigo = :cod_pedido        INTO'
+      
+        '      :total, :frete, :desconto, :seguro, :outras_despesas, :des' +
+        'conto_comissao;'
+      ''
+      
+        '      total_liquido = (:total+:frete+:seguro+:outras_despesas) -' +
+        ' (((:total+:frete+:seguro+:outras_despesas)*:desconto_comissao)/' +
+        '100);'
+      
+        '      total_bruto = (:total+:frete+:seguro+:outras_despesas) - (' +
+        '(:total * :desconto_comissao)/100);'
+      '  end'
+      '  else begin'
+      
+        '    SELECT (PED.valor_total-((PED.valor_total* PED.desconto_comi' +
+        'ss)/100)),'
+      
+        '    ((PED.valor_total-((PED.valor_total* PED.desconto_comiss)/10' +
+        '0)) + PED.valor_frete + PED.desconto + PED.desconto_fpgto + PED.' +
+        'desconto_itens - PED.acrescimo)'
+      '    FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      '    WHERE PED.codigo = :cod_pedido        INTO'
+      '      :total_liquido, :total_bruto;'
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 211
+    WordWrap = False
+  end
+  object versao212: TMemo
+    Left = 561
+    Top = 260
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable desconto_comissao numeric(15,2);'
+      'declare variable total numeric(15,2);'
+      'declare variable outras_despesas numeric(15,2);'
+      'declare variable desconto numeric(15,2);'
+      'declare variable seguro numeric(15,2);'
+      'declare variable frete numeric(15,2);'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      
+        '  total =0; frete =0; desconto =0; seguro =0; outras_despesas =0' +
+        '; desconto_comissao =0;'
+      '  SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      
+        '  WHERE DR.codigo_representante = :cod_rep        INTO      :rep' +
+        '_ecommerce;'
+      ''
+      '  if (:rep_ecommerce = '#39'S'#39') then begin'
+      
+        '    SELECT PED.valor_total, coalesce(tnf.frete,0), coalesce(tnf.' +
+        'desconto,0), coalesce(tnf.seguro,0), coalesce(tnf.outras_despesa' +
+        's,0), coalesce(ped.desconto_comiss,0)'
+      '    FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      
+        '    LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo_' +
+        'nota_fiscal'
+      
+        '    LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fisca' +
+        'l = NF.codigo'
+      ''
+      '    WHERE PED.codigo = :cod_pedido        INTO'
+      
+        '      :total, :frete, :desconto, :seguro, :outras_despesas, :des' +
+        'conto_comissao;'
+      ''
+      
+        '      total_liquido = (:total+:frete+:seguro+:outras_despesas) -' +
+        ' (((:total+:frete+:seguro+:outras_despesas)*:desconto_comissao)/' +
+        '100);'
+      
+        '      total_bruto = (:total+:frete+:seguro+:outras_despesas) - (' +
+        '(:total * :desconto_comissao)/100);'
+      '  end'
+      '  else begin'
+      
+        '    SELECT (PED.valor_total-((PED.valor_total* PED.desconto_comi' +
+        'ss)/100)),'
+      
+        '    ((PED.valor_total-((PED.valor_total* PED.desconto_comiss)/10' +
+        '0)) + PED.valor_frete + PED.desconto + PED.desconto_fpgto + PED.' +
+        'desconto_itens - PED.acrescimo)'
+      '    FROM pedidos PED'
+      
+        '    LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED' +
+        '.codigo'
+      '    WHERE PED.codigo = :cod_pedido        INTO'
+      '      :total_liquido, :total_bruto;'
+      '  end'
+      '  suspend;'
+      'end'
+      '^')
+    TabOrder = 212
+    WordWrap = False
+  end
 end

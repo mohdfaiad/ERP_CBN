@@ -57,7 +57,7 @@ type
     Label8: TLabel;
     edtParcela: TCurrencyEdit;
     lbParcelas: TLabel;
-    edtTotalConta: TCurrencyEdit;
+    edtTotalItens: TCurrencyEdit;
     Label10: TLabel;
     rgEntrada: TRadioGroup;
     edtVencimento: TMaskEdit;
@@ -125,6 +125,18 @@ type
     chkDebAutomatico: TCheckBox;
     cdsTITULAR_CONTA: TStringField;
     cdsNUMERO_CONTA: TStringField;
+    Label20: TLabel;
+    edtTotalConta: TCurrencyEdit;
+    lbDiferenca: TLabel;
+    edtDiferenca: TCurrencyEdit;
+    pnlAlteraParcela: TPanel;
+    dtpVencimento: TDateTimePicker;
+    Label21: TLabel;
+    edtValorVencimento: TCurrencyEdit;
+    Label22: TLabel;
+    Shape4: TShape;
+    btnConfirma: TBitBtn;
+    btnAborta: TSpeedButton;
     procedure btnNovoClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -163,6 +175,11 @@ type
     procedure DBGridCBN2DblClick(Sender: TObject);
     procedure chkDebitoAutClick(Sender: TObject);
     procedure chkDebAutomaticoClick(Sender: TObject);
+    procedure edtTotalContaChange(Sender: TObject);
+    procedure edtDiferencaChange(Sender: TObject);
+    procedure btnAbortaClick(Sender: TObject);
+    procedure dtpVencimentoExit(Sender: TObject);
+    procedure btnConfirmaClick(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -201,7 +218,7 @@ type
     procedure extornaRecebimento;
     procedure calculaTotalConta;
     procedure cancelaConta;
-    procedure alterarVencimento;
+    procedure alteraParcela;
 
     function totaisDiferentes :boolean;
     function CarregaPelaNota(codigo :integer; const trocaAba :Boolean = true) :Boolean;
@@ -258,49 +275,9 @@ begin
      BuscaMateria1.edtCodigo.SetFocus;
 end;
 
-procedure TfrmContasPagar.alterarVencimento;
-var data :TDateTime;
-    limite_min, limite_max :Boolean;
+procedure TfrmContasPagar.btnAbortaClick(Sender: TObject);
 begin
- try
-
-   data := StrToDateDef(chamaInput('DATE', 'Digite o novo vencimento'), 0);
-   if data = 0 then
-     raise Exception.Create('Data não informada. Operação abortada.');
-
-   limite_min := true;
-   limite_max := true;
-
-   if cdsParcelas.RecNo > 1 then
-   begin
-     cdsParcelas.Prior;
-     limite_min := data > cdsParcelasVENCIMENTO.AsDateTime;
-     cdsParcelas.Next;
-   end;
-
-   if cdsParcelas.RecNo < cdsParcelas.RecordCount then
-   begin
-     cdsParcelas.Next;
-     limite_max := data < cdsParcelasVENCIMENTO.AsDateTime;
-     cdsParcelas.Prior;
-   end;
-
-   if not limite_min then
-     avisar('Vencimento informado inválido, pois deve ser maior que o vencimento da parcela anterior.')
-   else if not limite_max then
-     avisar('Vencimento informado inválido, pois deve ser menor que o vencimento da parcela seguinte.')
-   else
-   begin
-     cdsParcelas.Edit;
-     cdsParcelasVENCIMENTO.AsDateTime := data;
-     cdsParcelas.Post;
-   end;
-
- except
-   on e :Exception do
-     avisar(e.Message);
- end;
-
+  pnlAlteraParcela.Visible := false;
 end;
 
 procedure TfrmContasPagar.btnCancelaClick(Sender: TObject);
@@ -353,6 +330,55 @@ begin
     if pnlDados.Enabled then
       btnNovo.SetFocus;
   end;  
+end;
+
+procedure TfrmContasPagar.alteraParcela;
+var vlrParcelasRestantes, vlrParcelasAnteriores :Real;
+    resto :Real;
+    registroAlterado, qtdParcelas :integer;
+begin
+ try
+   vlrParcelasAnteriores := 0;
+   qtdParcelas           := edtParcela.AsInteger - 1;
+   registroAlterado      := cdsParcelas.RecNo;
+   cdsParcelas.Edit;
+   cdsParcelasVENCIMENTO.AsDateTime := dtpVencimento.Date;
+   cdsParcelasVALOR.AsFloat         := edtValorVencimento.Value;
+   cdsParcelas.Post;
+
+   if (registroAlterado > 1) and (registroAlterado < cdsParcelas.recordcount) then
+   begin
+     while cdsParcelas.RecNo > 1 do
+     begin
+       cdsParcelas.Prior;
+       vlrParcelasAnteriores := vlrParcelasAnteriores + cdsParcelasVALOR.AsFloat;
+       dec(qtdParcelas);
+     end;
+   end;
+
+   vlrParcelasAnteriores := vlrParcelasAnteriores + edtValorVencimento.Value;
+   vlrParcelasRestantes  := roundto((edtTotalConta.Value - vlrParcelasAnteriores) / qtdParcelas,-2);
+   resto                 := (edtTotalConta.Value - vlrParcelasAnteriores) - (vlrParcelasRestantes * qtdParcelas);
+
+   if not (registroAlterado = cdsParcelas.RecordCount) then
+     cdsParcelas.RecNo := registroAlterado
+   else
+     cdsParcelas.First;
+   while not cdsParcelas.Eof do
+   begin
+     if cdsParcelas.RecNo <> registroAlterado then
+     begin
+       cdsParcelas.Edit;
+       cdsParcelasVALOR.AsFloat := vlrParcelasRestantes + resto;
+       cdsParcelas.Post;
+       resto := 0;
+     end;
+     cdsParcelas.Next;
+   end;
+ Except
+   on e :Exception do
+     avisar('Erro ao alterar parcela'+#13#10+e.Message);
+ end;
 end;
 
 procedure TfrmContasPagar.AlterarRegistroNoCDS(Registro: TObject);
@@ -468,6 +494,7 @@ begin
      Conta.valor                    := self.edtTotalConta.Value;
      Conta.observacao               := self.edtObservacao.Text;
      Conta.codContaBanco            := BuscaContaBanco1.edtCodigo.AsInteger;
+     Conta.desc_acresc              := edtDiferenca.Value;
 
      Repositorio.Salvar(Conta);
 
@@ -585,6 +612,9 @@ begin
   edtVencimento.Clear;
   BuscaNotaFiscal1.Enabled := true;
   BuscaNotaFiscal1.btnBusca.Visible := true;
+  edtTotalItens.Clear;
+  edtTotalConta.Clear;
+  edtDiferenca.Clear;
 end;
 
 procedure TfrmContasPagar.MostrarDados;
@@ -620,7 +650,6 @@ begin
       chkDebitoAut.Enabled := false;
 
     BuscaContaBanco1.codConta           := Conta.codContaBanco;
-    edtTotalConta.Value                 := Conta.valor;
 
     for i := 0 to conta.ItensConta.Count -1 do
     begin
@@ -631,6 +660,8 @@ begin
       edtPrecoCusto.Value      := TItemConta(conta.ItensConta[i]).preco_custo;
       btnSalva.Click;
     end;
+
+    edtTotalConta.Value                 := Conta.valor;
 
     if assigned(conta.Parcelas) then
       for i := 0 to Conta.Parcelas.Count - 1 do
@@ -651,7 +682,7 @@ begin
       edtParcela.AsInteger := Conta.Parcelas.Count;
 
       BuscaNotaFiscal1.btnBusca.Visible := false;
-      BuscaNotaFiscal1.Enabled := false;
+      BuscaNotaFiscal1.Enabled := false
   Except
     FreeAndNil(Conta);
     FreeAndNil(RepositorioConta);
@@ -841,19 +872,21 @@ end;
 
 procedure TfrmContasPagar.edtValorChange(Sender: TObject);
 begin
-  edtTotalConta.Value := edtValor.Value;
+  //edtTotalConta.Value := edtValor.Value;
 end;
 
 procedure TfrmContasPagar.calculaTotalConta;
 begin
-  edtTotalConta.Clear;
+  edtTotalItens.Clear;
   cdsItensConta.First;
   while not cdsItensConta.Eof do
   begin
-    edtTotalConta.Value := edtTotalConta.Value + roundTo(cdsItensContaQUANTIDADE.AsFloat * cdsItensContaCUSTO.AsFloat, -2);
+    edtTotalItens.Value := edtTotalItens.Value + roundTo(cdsItensContaQUANTIDADE.AsFloat * cdsItensContaCUSTO.AsFloat, -2);
 
     cdsItensConta.Next;
   end;
+
+  edtTotalConta.Value := edtTotalItens.Value;
 end;
 
 procedure TfrmContasPagar.edtPagoChange(Sender: TObject);
@@ -869,18 +902,68 @@ begin
           cbxStatus.ItemIndex := 2;
 end;
 
+procedure TfrmContasPagar.edtTotalContaChange(Sender: TObject);
+begin
+   edtDiferenca.Value := edtTotalConta.Value - edtTotalItens.Value;
+end;
+
 procedure TfrmContasPagar.edtValorPagoChange(Sender: TObject);
 begin
   if edtValorPago.Value > edtValorPendente.Value then
     edtValorPago.Value := edtValorPendente.Value;
 end;
 
+procedure TfrmContasPagar.dtpVencimentoExit(Sender: TObject);
+var data :TDateTime;
+    limite_min, limite_max :Boolean;
+begin
+ try
+   data := dtpVencimento.Date;
+   limite_min := true;
+   limite_max := true;
+
+   if cdsParcelas.RecNo > 1 then
+   begin
+     cdsParcelas.Prior;
+     limite_min := data > cdsParcelasVENCIMENTO.AsDateTime;
+     cdsParcelas.Next;
+   end;
+
+   if cdsParcelas.RecNo < cdsParcelas.RecordCount then
+   begin
+     cdsParcelas.Next;
+     limite_max := data < cdsParcelasVENCIMENTO.AsDateTime;
+     cdsParcelas.Prior;
+   end;
+
+   if not limite_min then
+   begin
+     avisar('Vencimento informado inválido, pois deve ser maior que o vencimento da parcela anterior.',2);
+     dtpVencimento.SetFocus;
+   end
+   else if not limite_max then
+   begin
+     avisar('Vencimento informado inválido, pois deve ser menor que o vencimento da parcela seguinte.',2);
+     dtpVencimento.SetFocus;
+   end;
+
+ except
+   on e :Exception do
+     avisar(e.Message);
+ end;
+end;
+
 procedure TfrmContasPagar.DBGridCBN2DblClick(Sender: TObject);
 begin
-  if cdsParcelasSTATUS.AsString <> 'Q' then
-    alterarVencimento
+  if cdsParcelasVALOR_PAGO.AsFloat = 0 then
+  begin
+    pnlAlteraParcela.Visible := true;
+    dtpVencimento.Date       := cdsParcelasVENCIMENTO.AsDateTime;
+    edtValorVencimento.Value := cdsParcelasVALOR.AsFloat;
+    dtpVencimento.SetFocus;
+  end
   else
-    avisar('Uma parcela QUITADA, não pode ter o vencimento alterado.');
+    avisar('Uma parcela já recebida, não pode ser alterada.');
 end;
 
 procedure TfrmContasPagar.DBGridCBN2DrawColumnCell(Sender: TObject;
@@ -993,6 +1076,25 @@ begin
   lbVencimento.Visible     := false;
 end;
 
+procedure TfrmContasPagar.btnConfirmaClick(Sender: TObject);
+begin
+  if edtValorVencimento.Value <= 0 then
+  begin
+    avisar('Um valor precisa ser informado');
+    edtValorVencimento.SetFocus;
+  end
+  else if edtValorVencimento.Value < ((edtTotalConta.Value * 10)/100) then
+  begin
+    avisar('Valor da parcela abaixo do mínimo');
+    edtValorVencimento.SetFocus;
+  end
+  else
+  begin
+    alteraParcela;
+    btnAborta.Click;
+  end;
+end;
+
 procedure TfrmContasPagar.btnSalvarClick(Sender: TObject);
 begin
   inherited;
@@ -1021,6 +1123,7 @@ begin
    lbVencimento.Visible     := (EstadoTela = tetIncluir) or (edtPago.Value = 0);
    edtParcela.enabled       := (EstadoTela = tetIncluir);
    btnCancelaConta.Enabled  := (EstadoTela = tetConsultar) or (EstadoTela = tetSalvar);
+   edtTotalConta.Enabled    := (EstadoTela = tetIncluir) or (edtPago.Value = 0);
 
    btnNovo.Enabled   := (EstadoTela = tetIncluir) or (edtPago.Value = 0);
    btnEditar.Enabled := (EstadoTela = tetIncluir) or (edtPago.Value = 0);
@@ -1232,6 +1335,13 @@ procedure TfrmContasPagar.SpeedButton1Click(Sender: TObject);
 begin
   inherited;
   BuscaFornecedor2.limpa;
+end;
+
+procedure TfrmContasPagar.edtDiferencaChange(Sender: TObject);
+begin
+  edtDiferenca.Visible := edtDiferenca.Value <> 0;
+  lbDiferenca.Visible  := edtDiferenca.Value <> 0;
+  lbDiferenca.Caption  := IfThen(edtDiferenca.Value > 0, 'Acréscimo', 'Desconto');
 end;
 
 procedure TfrmContasPagar.edtIntervaloChange(Sender: TObject);

@@ -150,11 +150,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         end
         inherited StaticText2: TStaticText
           Left = 113
-          Width = 40
+          Width = 35
           Caption = 'Raz'#227'o'
           Font.Color = 4737096
           ExplicitLeft = 113
-          ExplicitWidth = 40
+          ExplicitWidth = 35
         end
         inherited btnBuscar: TBitBtn
           Left = 85
@@ -624,12 +624,12 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Pen.Style = psClear
       end
       object Label13: TLabel
-        Left = 10
+        Left = 151
         Top = 9
-        Width = 84
+        Width = 69
         Height = 17
         Anchors = [akTop, akRight]
-        Caption = 'Quant. Pe'#231'as:'
+        Caption = 'Qtd. Pe'#231'as:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
         Font.Height = -13
@@ -639,12 +639,12 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
       end
       object Label19: TLabel
-        Left = 206
+        Left = 302
         Top = 10
-        Width = 80
+        Width = 65
         Height = 17
         Anchors = [akTop, akRight]
-        Caption = 'Quant. Itens:'
+        Caption = 'Qtd. Itens:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
         Font.Height = -13
@@ -668,6 +668,36 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         ParentFont = False
         Transparent = True
         ExplicitLeft = 918
+      end
+      object Label12: TLabel
+        Left = 6
+        Top = 9
+        Width = 84
+        Height = 17
+        Anchors = [akTop, akRight]
+        Caption = 'Qtd. Pedidos:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 11447982
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = True
+      end
+      object lbContPedidos: TLabel
+        Left = 95
+        Top = 9
+        Width = 7
+        Height = 17
+        Anchors = [akTop, akRight]
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 14737632
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = True
       end
       object edtQuantidadePedidos: TEdit
         Left = 180
@@ -697,7 +727,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           745
           38)
         object Label10: TLabel
-          Left = 3
+          Left = 31
           Top = 3
           Width = 153
           Height = 17
@@ -710,7 +740,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
-          ExplicitLeft = 24
         end
         object Label11: TLabel
           Left = 520
@@ -729,7 +758,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           ExplicitLeft = 618
         end
         object Label4: TLabel
-          Left = 10
+          Left = 38
           Top = 21
           Width = 189
           Height = 13
@@ -742,10 +771,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = []
           ParentFont = False
           Transparent = True
-          ExplicitLeft = 31
         end
         object Label20: TLabel
-          Left = 279
+          Left = 291
           Top = 5
           Width = 127
           Height = 23
@@ -758,7 +786,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
-          ExplicitLeft = 377
         end
         object DBEdit3: TDBEdit
           Left = 640
@@ -779,9 +806,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           TabOrder = 0
         end
         object DBEdit4: TDBEdit
-          Left = 161
+          Left = 189
           Top = 2
-          Width = 117
+          Width = 98
           Height = 21
           Anchors = [akTop, akRight]
           BorderStyle = bsNone
@@ -797,7 +824,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           TabOrder = 1
         end
         object DBEdit5: TDBEdit
-          Left = 383
+          Left = 395
           Top = 4
           Width = 95
           Height = 21
@@ -816,9 +843,9 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         end
       end
       object DBEdit1: TDBEdit
-        Left = 102
+        Left = 227
         Top = 8
-        Width = 98
+        Width = 68
         Height = 21
         Anchors = [akTop, akRight]
         BorderStyle = bsNone
@@ -834,7 +861,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         TabOrder = 2
       end
       object DBEdit2: TDBEdit
-        Left = 294
+        Left = 373
         Top = 8
         Width = 71
         Height = 21
@@ -3172,17 +3199,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 456
     Top = 239
   end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 424
-    Top = 240
-  end
   object ImageList1: TImageList
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3521,6 +3542,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     end
     object cdsTOTAL_BRUTO: TBCDField
       FieldName = 'TOTAL_BRUTO'
+      DisplayFormat = ' ,0.00; -,0.00'
       Size = 2
     end
     object cdsSTATUS: TStringField

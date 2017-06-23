@@ -2,6 +2,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
   Caption = 'Recebimento do Pedido'
   ClientHeight = 388
   ClientWidth = 885
+  OnShow = FormShow
   ExplicitWidth = 901
   ExplicitHeight = 426
   PixelsPerInch = 96
@@ -189,7 +190,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Width = 885
     Height = 61
     Align = alBottom
-    TabOrder = 5
+    TabOrder = 6
     DesignSize = (
       885
       61)
@@ -199,7 +200,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
       Width = 200
       Height = 35
       Anchors = [akTop, akRight]
-      Caption = ' [ F6 ] Confirmar'
+      Caption = ' [ F7 ] Confirmar'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -15
@@ -274,7 +275,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
         000003410300536A53009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       OnClick = btnConfirmarClick
     end
     object btnVoltar: TBitBtn
@@ -358,7 +359,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
         0000591F0000785D53009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       ParentFont = False
-      TabOrder = 0
+      TabOrder = 1
       OnClick = btnVoltarClick
     end
   end
@@ -376,7 +377,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Font.Style = []
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 7
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -450,7 +451,7 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 7
+    TabOrder = 8
   end
   object btnLanca: TBitBtn
     Left = 272
@@ -550,22 +551,36 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     MaxLength = 14
     ParentCtl3D = False
     ParentFont = False
-    TabOrder = 8
+    TabOrder = 5
     OnChange = edtCpfChange
     OnExit = edtCpfExit
     OnKeyDown = edtCpfKeyDown
     OnKeyPress = edtCpfKeyPress
+  end
+  object Memo1: TMemo
+    Left = 136
+    Top = 256
+    Width = 185
+    Height = 89
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 9
+    Visible = False
   end
   object cdsMoedas: TClientDataSet
     Aggregates = <>
     Params = <>
     Left = 568
     Top = 112
+    object cdsMoedasCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
     object cdsMoedasMOEDA: TStringField
       FieldName = 'MOEDA'
     end
     object cdsMoedasVALOR: TFloatField
       FieldName = 'VALOR'
+      DisplayFormat = 'R$ ,0.00;R$ -,0.00'
     end
     object cdsMoedasCODIGO_MOEDA: TIntegerField
       FieldName = 'CODIGO_MOEDA'

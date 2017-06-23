@@ -27,7 +27,7 @@ object frmGeraCotacao: TfrmGeraCotacao
     ExplicitWidth = 485
     inherited gpbEmpresa: TGroupBox
       Width = 485
-      ExplicitTop = 8
+      ExplicitWidth = 485
     end
   end
   object GroupBox1: TGroupBox
@@ -70,66 +70,39 @@ object frmGeraCotacao: TfrmGeraCotacao
       Font.Style = []
       ParentFont = False
     end
-    inline BuscaPessoa1: TBuscaPessoa
-      Left = 9
-      Top = 17
-      Width = 468
-      Height = 42
-      AutoSize = True
-      TabOrder = 0
-      OnExit = BuscaPessoa1Exit
-      ExplicitLeft = 9
-      ExplicitTop = 17
-      ExplicitWidth = 468
-      ExplicitHeight = 42
-      inherited StaticText1: TStaticText
-        Width = 37
-        Height = 19
-        Font.Style = []
-        ExplicitWidth = 37
-        ExplicitHeight = 19
-      end
-      inherited edtCodigo: TCurrencyEdit
-        Top = 18
-        ExplicitTop = 18
-      end
-      inherited StaticText2: TStaticText
-        Width = 36
-        Height = 19
-        Font.Style = []
-        ExplicitWidth = 36
-        ExplicitHeight = 19
-      end
-      inherited btnBuscar: TBitBtn
-        Top = 16
-        ExplicitTop = 16
-      end
-      inherited edtRazao: TEdit
-        Left = 102
-        Top = 18
-        Width = 366
-        Height = 24
-        ExplicitLeft = 102
-        ExplicitTop = 18
-        ExplicitWidth = 366
-        ExplicitHeight = 24
-      end
-    end
     object edtCidade: TEdit
       Left = 8
       Top = 82
       Width = 390
-      Height = 21
+      Height = 24
       ReadOnly = True
-      TabOrder = 1
+      TabOrder = 0
     end
     object edtEstado: TEdit
       Left = 406
       Top = 82
       Width = 70
-      Height = 21
+      Height = 24
       ReadOnly = True
+      TabOrder = 1
+    end
+    inline BuscaCliente: TBuscaCliente
+      Left = 9
+      Top = 19
+      Width = 473
+      Height = 41
       TabOrder = 2
+      OnExit = BuscaClienteExit
+      ExplicitLeft = 9
+      ExplicitTop = 19
+      ExplicitWidth = 473
+      ExplicitHeight = 41
+      inherited edtRazao: TEdit
+        Width = 366
+        Height = 24
+        ExplicitWidth = 366
+        ExplicitHeight = 24
+      end
     end
   end
   object GroupBox2: TGroupBox
@@ -304,7 +277,6 @@ object frmGeraCotacao: TfrmGeraCotacao
     Height = 45
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 344
     DesignSize = (
       517
       45)

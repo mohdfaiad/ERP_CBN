@@ -12,9 +12,10 @@ type
     FCodigoProduto :integer;
     FCodigocor     :integer;
     FCodigoTamanho :integer;
+    FSetor         :integer;
 
   public
-    constructor Create(Codigo_produto, codigo_cor, codigo_tamanho :integer);
+    constructor Create(setor, Codigo_produto, codigo_cor, codigo_tamanho :integer);
 
   public
     function SatisfeitoPor(Objeto :TObject): Boolean; override;
@@ -27,11 +28,12 @@ uses Estoque;
 { TEspecificacaoEstoquePorProdutoCorTamanho }
 
 constructor TEspecificacaoEstoquePorProdutoCorTamanho.Create(
-  Codigo_produto, codigo_cor, codigo_tamanho: integer);
+  setor, Codigo_produto, codigo_cor, codigo_tamanho: integer);
 begin
   self.FCodigoProduto := Codigo_produto;
   self.FCodigocor     := codigo_cor;
   self.FCodigoTamanho := codigo_tamanho;
+  self.FSetor         := setor;
 end;
 
 function TEspecificacaoEstoquePorProdutoCorTamanho.SatisfeitoPor(
@@ -42,7 +44,8 @@ begin
    Estoque := (Objeto as TEstoque);
 
    result  := (Estoque.codigo_produto = self.FCodigoProduto) and
-              (Estoque.codigo_tamanho = self.FCodigoTamanho);
+              (Estoque.codigo_tamanho = self.FCodigoTamanho) and
+              (Estoque.setor = self.FSetor);
 
    if not result then exit;           
 

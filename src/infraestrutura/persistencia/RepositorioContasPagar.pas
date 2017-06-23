@@ -54,6 +54,7 @@ begin
    ContasPagar.valor          := self.FQuery.FieldByName('valor').AsFloat;
    ContasPagar.observacao     := self.FQuery.FieldByName('observacao').AsString;
    ContasPagar.codContaBanco  := self.FQuery.FieldByName('cod_conta_banco').AsInteger;
+   ContasPagar.desc_acresc    := self.FQuery.FieldByName('desc_acresc').AsFloat;
 
    result := ContasPagar;
 end;
@@ -115,6 +116,9 @@ begin
 
    if (ContasPagarAntigo.codContaBanco <> ContasPagarNovo.codContaBanco) then
      Auditoria.AdicionaCampoAlterado('cod_Conta_Banco', IntToStr(ContasPagarAntigo.codContaBanco), IntToStr(ContasPagarNovo.codContaBanco));
+
+   if (ContasPagarAntigo.desc_acresc <> ContasPagarNovo.desc_acresc) then
+     Auditoria.AdicionaCampoAlterado('desc_acresc', FloatToStr(ContasPagarAntigo.desc_acresc), FloatToStr(ContasPagarNovo.desc_acresc));
 end;
 
 procedure TRepositorioContasPagar.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -133,6 +137,7 @@ begin
   Auditoria.AdicionaCampoExcluido('valor'         , FloatToStr(ContasPagar.valor));
   Auditoria.AdicionaCampoExcluido('observacao'    , ContasPagar.observacao);
   Auditoria.AdicionaCampoExcluido('cod_conta_banco', IntToStr(ContasPagar.codContaBanco));
+  Auditoria.AdicionaCampoExcluido('desc_acresc'    , FloatToStr(ContasPagar.desc_acresc));
 end;
 
 procedure TRepositorioContasPagar.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -140,17 +145,18 @@ var
   ContasPagar :TContasPagar;
 begin
   ContasPagar := (Objeto as TContasPagar);
-  Auditoria.AdicionaCampoIncluido('codigo'        ,    IntToStr(ContasPagar.codigo));
-  Auditoria.AdicionaCampoIncluido('codigo_nf'     ,    IntToStr(ContasPagar.codigo_nf));
-  Auditoria.AdicionaCampoIncluido('dt_documento'  ,    DateTimeToStr(ContasPagar.dt_documento));
-  Auditoria.AdicionaCampoIncluido('dt_lancamento' ,    DateTimeToStr(ContasPagar.dt_lancamento));
-  Auditoria.AdicionaCampoIncluido('num_documento' ,    IntToStr(ContasPagar.num_documento));
-  Auditoria.AdicionaCampoIncluido('cod_fornecedor',    IntToStr(ContasPagar.cod_fornecedor));
-  Auditoria.AdicionaCampoIncluido('status'        ,    ContasPagar.status);
-  Auditoria.AdicionaCampoIncluido('desc_status'   ,    ContasPagar.desc_status);
-  Auditoria.AdicionaCampoIncluido('valor'         ,    FloatToStr(ContasPagar.valor));
-  Auditoria.AdicionaCampoIncluido('observacao'    ,    ContasPagar.observacao);
+  Auditoria.AdicionaCampoIncluido('codigo'        ,  IntToStr(ContasPagar.codigo));
+  Auditoria.AdicionaCampoIncluido('codigo_nf'     ,  IntToStr(ContasPagar.codigo_nf));
+  Auditoria.AdicionaCampoIncluido('dt_documento'  ,  DateTimeToStr(ContasPagar.dt_documento));
+  Auditoria.AdicionaCampoIncluido('dt_lancamento' ,  DateTimeToStr(ContasPagar.dt_lancamento));
+  Auditoria.AdicionaCampoIncluido('num_documento' ,  IntToStr(ContasPagar.num_documento));
+  Auditoria.AdicionaCampoIncluido('cod_fornecedor',  IntToStr(ContasPagar.cod_fornecedor));
+  Auditoria.AdicionaCampoIncluido('status'        ,  ContasPagar.status);
+  Auditoria.AdicionaCampoIncluido('desc_status'   ,  ContasPagar.desc_status);
+  Auditoria.AdicionaCampoIncluido('valor'         ,  FloatToStr(ContasPagar.valor));
+  Auditoria.AdicionaCampoIncluido('observacao'    ,  ContasPagar.observacao);
   Auditoria.AdicionaCampoIncluido('cod_conta_banco', IntToStr(ContasPagar.codContaBanco));
+  Auditoria.AdicionaCampoIncluido('desc_acresc'    , FloatToStr(ContasPagar.desc_acresc));
 end;
 
 procedure TRepositorioContasPagar.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -170,12 +176,13 @@ begin
 
   self.FQuery.ParamByName('dt_documento').AsDateTime   := ContasPagar.dt_documento;
   self.FQuery.ParamByName('dt_lancamento').AsDateTime  := ContasPagar.dt_lancamento;
-  self.FQuery.ParamByName('num_documento').AsInteger  := ContasPagar.num_documento;
-  self.FQuery.ParamByName('cod_fornecedor').AsInteger := ContasPagar.cod_fornecedor;
-  self.FQuery.ParamByName('status').AsString         := ContasPagar.status;
-  self.FQuery.ParamByName('desc_status').AsString    := ContasPagar.desc_status;
-  self.FQuery.ParamByName('valor').AsFloat          := ContasPagar.valor;
-  self.FQuery.ParamByName('observacao').AsString     := ContasPagar.observacao;
+  self.FQuery.ParamByName('num_documento').AsInteger   := ContasPagar.num_documento;
+  self.FQuery.ParamByName('cod_fornecedor').AsInteger  := ContasPagar.cod_fornecedor;
+  self.FQuery.ParamByName('status').AsString           := ContasPagar.status;
+  self.FQuery.ParamByName('desc_status').AsString      := ContasPagar.desc_status;
+  self.FQuery.ParamByName('valor').AsFloat             := ContasPagar.valor;
+  self.FQuery.ParamByName('observacao').AsString       := ContasPagar.observacao;
+  self.FQuery.ParamByName('desc_acresc').AsFloat       := ContasPagar.desc_acresc;
 
   if ContasPagar.codContaBanco > 0 then
     self.FQuery.ParamByName('cod_conta_banco').AsInteger := ContasPagar.codContaBanco
@@ -205,8 +212,8 @@ end;
 
 function TRepositorioContasPagar.SQLSalvar: String;
 begin
-  result := 'update or insert into CONTAS_PAGAR (CODIGO ,CODIGO_NF ,DT_DOCUMENTO ,DT_LANCAMENTO ,NUM_DOCUMENTO ,COD_FORNECEDOR ,STATUS ,DESC_STATUS ,VALOR ,OBSERVACAO, COD_CONTA_BANCO) '+
-           '                      values ( :CODIGO , :CODIGO_NF , :DT_DOCUMENTO , :DT_LANCAMENTO , :NUM_DOCUMENTO , :COD_FORNECEDOR , :STATUS , :DESC_STATUS , :VALOR ,:OBSERVACAO , :COD_CONTA_BANCO) ';
+  result := 'update or insert into CONTAS_PAGAR (CODIGO ,CODIGO_NF ,DT_DOCUMENTO ,DT_LANCAMENTO ,NUM_DOCUMENTO ,COD_FORNECEDOR ,STATUS ,DESC_STATUS ,VALOR ,OBSERVACAO, COD_CONTA_BANCO, DESC_ACRESC) '+
+            '                      values ( :CODIGO , :CODIGO_NF , :DT_DOCUMENTO , :DT_LANCAMENTO , :NUM_DOCUMENTO , :COD_FORNECEDOR , :STATUS , :DESC_STATUS , :VALOR ,:OBSERVACAO , :COD_CONTA_BANCO, :DESC_ACRESC) ';
 end;
 
 end.

@@ -205,6 +205,22 @@ type
     versao194: TMemo;
     versao195: TMemo;
     versao196: TMemo;
+    versao197: TMemo;
+    versao199: TMemo;
+    versao198: TMemo;
+    versao200: TMemo;
+    versao201: TMemo;
+    versao202: TMemo;
+    versao203: TMemo;
+    versao204: TMemo;
+    versao205: TMemo;
+    versao206: TMemo;
+    versao207: TMemo;
+    versao208: TMemo;
+    versao209: TMemo;
+    versao210: TMemo;
+    versao211: TMemo;
+    versao212: TMemo;
 
   private
 

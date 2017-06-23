@@ -9,7 +9,7 @@ uses
   frameBuscaTabelaPreco, RLParser, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, RLFilters, RLPDFFilter;
+  FireDAC.Comp.Client, RLFilters;
 
 type
     TfrmRelatorioTotalizarEstoque = class(TfrmPadrao)
@@ -147,7 +147,6 @@ type
     qryEstoqueReservadoQTD_UNICA: TLargeintField;
     qryEstoqueReservadoREFPRODUTO: TStringField;
     qryEstoqueReservadoREFCOR: TStringField;
-    RLPDFFilter1: TRLPDFFilter;
     chkSomenteLoja: TCheckBox;
     cdsEstoqueQTD_10: TIntegerField;
     cdsEstoqueQTD_12: TIntegerField;
@@ -189,6 +188,7 @@ type
     RLLabel41: TRLLabel;
     RLLabel42: TRLLabel;
     RLDraw6: TRLDraw;
+    rgpSetor: TRadioGroup;
     procedure FormShow(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure RLDBResult4BeforePrint(Sender: TObject; var Text: String;
@@ -245,7 +245,7 @@ begin
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.TotalizarEstoque;
-var cWhere, Cor, Produto : String;
+var cWhere, Cor, Produto, condicaoSetor : String;
     i  : Integer;
     quantidade :Real;
 begin
@@ -279,6 +279,9 @@ begin
   if chkSomenteLoja.Checked then
     cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or PRODUTOS.referencia like ''%LOJA%'')';
 
+  if rgpSetor.ItemIndex < 2 then
+    condicaoSetor := IfThen(rgpSetor.ItemIndex = 0, ' and ESTOQUE.SETOR = 1 ',' and ESTOQUE.SETOR = 2 ');
+
 
   Qry.Close;
   Qry.SQL.Clear;
@@ -290,7 +293,7 @@ begin
               'LEFT OUTER JOIN PRODUTOS ON (PRODUTOS.CODIGO = ESTOQUE.CODIGO_PRODUTO)                           '+
               'LEFT OUTER JOIN TAMANHOS ON (TAMANHOS.CODIGO = ESTOQUE.CODIGO_TAMANHO)                           '+
               'LEFT OUTER JOIN CORES ON (CORES.CODIGO = ESTOQUE.CODIGO_COR)                                     '+
-              cWhere+ ' and ESTOQUE.QUANTIDADE > 0                                                              '+
+              cWhere+{ ' and (ESTOQUE.QUANTIDADE > 0) '+} condicaoSetor +
               'ORDER BY 1, CORES.REFERENCIA');
 
   Qry.Open;
@@ -418,8 +421,18 @@ begin
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.subtrai_estoque_reservado;
-var condicoes :String;
+var condicoes, joinsEcommerce, condicaoEcommerce :String;
 begin
+  if rgpSetor.ItemIndex in [1,0] then
+  begin
+    joinsEcommerce   := 'inner join pessoas            rep on rep.codigo = ped.cod_repres         '+
+                        'left join  dados_representante dr on dr.codigo_representante = rep.codigo';
+
+    if rgpSetor.ItemIndex = 1 then
+      condicaoEcommerce := ' and dr.rep_ecommerce = ''S'' and pro.tipo = ''E'' '
+    else
+      condicaoEcommerce := ' and (dr.codigo is null) or (dr.rep_ecommerce <> ''S'') or ((dr.rep_ecommerce = ''S'') and (pro.tipo = ''L'')) '
+  end;
 
   if BuscaProduto2.edtReferencia.Text <> '' then
     condicoes := ' and i.cod_produto = '+IntToStr(BuscaProduto2.CodigoProduto);
@@ -440,8 +453,8 @@ begin
                                   ' left join cores              cor on cor.codigo = i.cod_cor                                     '+
                                   ' left join produtos           pro on pro.codigo = i.cod_produto                                 '+
                                   ' left join pedidos            ped on ped.codigo = cp.codigo_pedido                              '+
-
-                                  ' where ped.cancelado <> ''S'' and cp.fim < ''01.01.1900'' ' + condicoes +
+                                   joinsEcommerce +
+                                  ' where ped.cancelado <> ''S'' and cp.fim < ''01.01.1900'' ' + condicoes + condicaoEcommerce +
 
                                   ' group by pro.referencia, cor.referencia                                                        '+
                                   ' order by pro.referencia, cor.referencia                                                        ';
@@ -458,79 +471,77 @@ begin
     begin
       cdsEstoque.Edit;
 
-      if cdsEstoqueQTD_RN.AsInteger > 0 then begin
+      if cdsEstoqueQTD_RN.AsInteger <> 0 then begin
         cdsEstoqueQTD_RN.AsInteger    := cdsEstoqueQTD_RN.AsInteger - qryEstoqueReservadoQTD_RN.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_RN.AsInteger;
       end;
       
-      if cdsEstoqueQTD_P.AsInteger > 0 then begin
+      if cdsEstoqueQTD_P.AsInteger <> 0 then begin
         cdsEstoqueQTD_P.AsInteger := cdsEstoqueQTD_P.AsInteger - qryEstoqueReservadoQTD_P.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_P.AsInteger;
       end;
 
-      if cdsEstoqueQTD_M.AsInteger > 0 then begin
+      if cdsEstoqueQTD_M.AsInteger <> 0 then begin
         cdsEstoqueQTD_M.AsInteger := cdsEstoqueQTD_M.AsInteger - qryEstoqueReservadoQTD_M.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_M.AsInteger;
       end;
 
-      if cdsEstoqueQTD_G.AsInteger > 0 then begin
+      if cdsEstoqueQTD_G.AsInteger <> 0 then begin
         cdsEstoqueQTD_G.AsInteger := cdsEstoqueQTD_G.AsInteger - qryEstoqueReservadoQTD_G.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_G.AsInteger;
       end;
 
-      if cdsEstoqueQTD_1.AsInteger > 0 then begin
+      if cdsEstoqueQTD_1.AsInteger <> 0 then begin
         cdsEstoqueQTD_1.AsInteger := cdsEstoqueQTD_1.AsInteger - qryEstoqueReservadoQTD_1.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_1.AsInteger;
       end;
 
-      if cdsEstoqueQTD_2.AsInteger > 0 then begin
+      if cdsEstoqueQTD_2.AsInteger <> 0 then begin
         cdsEstoqueQTD_2.AsInteger := cdsEstoqueQTD_2.AsInteger - qryEstoqueReservadoQTD_2.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_2.AsInteger;
       end;
 
-      if cdsEstoqueQTD_3.AsInteger > 0 then begin
+      if cdsEstoqueQTD_3.AsInteger <> 0 then begin
         cdsEstoqueQTD_3.AsInteger := cdsEstoqueQTD_3.AsInteger - qryEstoqueReservadoQTD_3.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_3.AsInteger;
       end;
 
-      if cdsEstoqueQTD_4.AsInteger > 0 then begin
+      if cdsEstoqueQTD_4.AsInteger <> 0 then begin
         cdsEstoqueQTD_4.AsInteger := cdsEstoqueQTD_4.AsInteger - qryEstoqueReservadoQTD_4.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_4.AsInteger;
       end;
 
-      if cdsEstoqueQTD_6.AsInteger > 0 then begin
+      if cdsEstoqueQTD_6.AsInteger <> 0 then begin
         cdsEstoqueQTD_6.AsInteger := cdsEstoqueQTD_6.AsInteger - qryEstoqueReservadoQTD_6.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_6.AsInteger;
       end;
 
-      if cdsEstoqueQTD_8.AsInteger > 0 then begin
+      if cdsEstoqueQTD_8.AsInteger <> 0 then begin
         cdsEstoqueQTD_8.AsInteger := cdsEstoqueQTD_8.AsInteger - qryEstoqueReservadoQTD_8.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_8.AsInteger;
       end;
 
-      if cdsEstoqueQTD_10.AsInteger > 0 then begin
+      if cdsEstoqueQTD_10.AsInteger <> 0 then begin
         cdsEstoqueQTD_10.AsInteger := cdsEstoqueQTD_10.AsInteger - qryEstoqueReservadoQTD_10.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_10.AsInteger;
       end;
 
-      if cdsEstoqueQTD_12.AsInteger > 0 then begin
+      if cdsEstoqueQTD_12.AsInteger <> 0 then begin
         cdsEstoqueQTD_12.AsInteger := cdsEstoqueQTD_8.AsInteger - qryEstoqueReservadoQTD_12.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_12.AsInteger;
       end;
 
-      if cdsEstoqueQTD_14.AsInteger > 0 then begin
+      if cdsEstoqueQTD_14.AsInteger <> 0 then begin
         cdsEstoqueQTD_14.AsInteger := cdsEstoqueQTD_14.AsInteger - qryEstoqueReservadoQTD_14.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_14.AsInteger;
       end;
 
-      if cdsEstoqueQTD_UNICA.AsInteger > 0 then begin
+      if cdsEstoqueQTD_UNICA.AsInteger <> 0 then begin
         cdsEstoqueQTD_UNICA.AsInteger := cdsEstoqueQTD_UNICA.AsInteger - qryEstoqueReservadoQTD_UNICA.AsInteger;
         cdsEstoqueQTD_TOTAL.AsInteger := cdsEstoqueQTD_TOTAL.AsInteger - qryEstoqueReservadoQTD_UNICA.AsInteger;
       end;
-
       cdsEstoque.Post;
     end;
-
     qryEstoqueReservado.Next;
   end;
 

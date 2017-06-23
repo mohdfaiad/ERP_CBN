@@ -58,7 +58,6 @@ type
     cdsFONE2: TStringField;
     cdsFAX: TStringField;
     cdsOBSERVACAO: TStringField;
-    cdsBLOQUEADO: TStringField;
     cdsMOTIVO_BLOQ: TStringField;
     cdsTIPO: TStringField;
     cdsCODIGO_1: TIntegerField;
@@ -161,10 +160,12 @@ begin
   if not (cds.Active) or (cds.IsEmpty) then
     exit;
 
+  cds.AfterScroll := nil;
   self.Tag := 2;
   pagTransportadoras.ActivePageIndex := 0;
   gridTransportadoras.SetFocus;
   pagTransportadoras.ActivePageIndex := 1;
+  cds.AfterScroll := cdsAfterScroll;
 end;
 
 procedure TfrmCadastroTransportadora.alterar;

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, DateUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, RLReport, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  RLFilters, RLPDFFilter, Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, frameBuscaPessoa, Vcl.ComCtrls, Vcl.Buttons, Vcl.ExtCtrls;
+  RLFilters, Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, frameBuscaPessoa, Vcl.ComCtrls, Vcl.Buttons, Vcl.ExtCtrls;
 
 type
   TfrmFechaComissaoECommerce = class(TfrmPadrao)
@@ -36,7 +36,6 @@ type
     Label7: TLabel;
     edtRepasse: TCurrencyEdit;
     BitBtn2: TBitBtn;
-    RLPDFFilter1: TRLPDFFilter;
     qry: TFDQuery;
     ds: TDataSource;
     RLReport1: TRLReport;

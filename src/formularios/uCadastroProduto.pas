@@ -303,6 +303,7 @@ type
     cdsProdsKitCONT: TIntegerField;
     cdsCoresKitCONT: TIntegerField;
     btnClonar: TSpeedButton;
+    cdsEstoqueSETOR: TStringField;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -1442,7 +1443,7 @@ begin
 
   dm.qryGenerica.Close;
   dm.qryGenerica.SQL.Text := 'SELECT PRODUTOS.REFERENCIA||'' - ''||PRODUTOS.DESCRICAO AS PRODUTO,'+
-                             'cor.referencia ,cor.descricao COR, tam.descricao TAMANHO, es.quantidade FROM ESTOQUE es '+
+                             'cor.referencia ,cor.descricao COR, tam.descricao TAMANHO, es.quantidade, es.setor FROM ESTOQUE es '+
                              'left JOIN produtos on PRODUTOS.CODIGO = es.CODIGO_PRODUTO '+
                              'left join tamanhos tam on tam.codigo = es.codigo_tamanho                       '+
                              'left join cores    cor on cor.codigo = es.codigo_cor                           '+
@@ -1456,7 +1457,9 @@ begin
   dm.qryGenerica.First;
   while not dm.qryGenerica.Eof do begin
 
-    if (cor <> dm.qryGenerica.fieldByName('COR').AsString) then
+    if (cor <> dm.qryGenerica.fieldByName('COR').AsString) or
+    ( (cor = dm.qryGenerica.fieldByName('COR').AsString) and
+      (IfThen(dm.qryGenerica.fieldByName('setor').AsInteger = 1, 'FÁBRICA','E-COMMERCE') <> cdsEstoqueSETOR.AsString)) then
       cdsEstoque.Append
     else
       cdsEstoque.Edit;
@@ -1464,6 +1467,8 @@ begin
     cdsEstoquePRODUTO.AsString    := dm.qryGenerica.fieldByName('PRODUTO').AsString;
     cdsEstoqueCOR.AsString        := dm.qryGenerica.fieldByName('COR').AsString;
     cdsEstoqueREFERENCIA.AsString := dm.qryGenerica.fieldByName('referencia').AsString;
+    cdsEstoqueSETOR.AsString      := IfThen(dm.qryGenerica.fieldByName('setor').AsInteger = 1, 'FÁBRICA', 'E-COMMERCE');
+
 
     for i := 1 to cdsEstoque.Fields.Count - 1 do begin
 
@@ -1682,11 +1687,7 @@ end;
 
 procedure TfrmCadastroProduto.comKitChange(Sender: TObject);
 begin
-  {BuscaProduto1.visible := comKit.ItemIndex = 0;
-  BuscaCor2.Visible     := comKit.ItemIndex = 0;
-  btnAddKit.visible     := comKit.ItemIndex = 0;
-  gridKits.visible      := comKit.ItemIndex = 0;}
-  tbsKits.TabVisible    := comKit.ItemIndex = 0;
+  tbsKits.enabled   := comKit.ItemIndex = 0;
 end;
 
 procedure TfrmCadastroProduto.DBGrid2CellClick(Column: TColumn);

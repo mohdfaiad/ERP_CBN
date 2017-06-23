@@ -1213,12 +1213,11 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
       ExplicitWidth = 377
       ExplicitHeight = 47
       inherited StaticText1: TStaticText
-        Width = 54
-        Height = 20
+        Width = 48
+        Height = 21
         Font.Height = -13
-        Transparent = True
-        ExplicitWidth = 54
-        ExplicitHeight = 20
+        ExplicitWidth = 48
+        ExplicitHeight = 21
       end
       inherited edtCodigo: TCurrencyEdit
         Top = 19
@@ -1231,15 +1230,14 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
       end
       inherited StaticText2: TStaticText
         Left = 83
-        Width = 106
-        Height = 20
+        Width = 92
+        Height = 21
         Caption = 'Representante'
         Font.Height = -13
-        Transparent = True
         Visible = False
         ExplicitLeft = 83
-        ExplicitWidth = 106
-        ExplicitHeight = 20
+        ExplicitWidth = 92
+        ExplicitHeight = 21
       end
       inherited btnBuscar: TBitBtn
         Left = 53
@@ -1507,12 +1505,6 @@ inherited frmFechaComissaoECommerce: TfrmFechaComissaoECommerce
     ParentFont = False
     ReadOnly = True
     TabOrder = 9
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 352
-    Top = 256
   end
   object qry: TFDQuery
     Connection = dm.FDConnection

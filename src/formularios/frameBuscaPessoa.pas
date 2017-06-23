@@ -87,7 +87,7 @@ begin
      pessoa := TObjetoGenerico.Create;
 
    pessoa.SQL := 'Select first 1 p.codigo, p.razao, p.email, cr.cod_representante, rep.razao representante, dr.percentagem_comissao, '+
-                 '               p.bloqueado, cid.nome cidade, p.cpf_cnpj ,est.sigla uf, p.motivo_bloq '+FCamposAdicionais+' from pessoas p '+
+                 '               cid.nome cidade, p.cpf_cnpj ,est.sigla uf, p.motivo_bloq '+FCamposAdicionais+' from pessoas p '+
                   FTabelaAdicional +
                  ' left join cliente_representante cr on cr.cod_cliente = p.codigo      '+
                  ' left join pessoas rep on rep.codigo = cr.cod_representante           '+
@@ -98,17 +98,6 @@ begin
                  ' where p.'+campoRetorno+'='+ codigo + ' and p.tipo = '''+FTipoPessoaID+'''';
 
    if not pessoa.BuscaVazia then begin
-
-     if pessoa.getCampo('bloqueado').AsString = 'B' then
-     begin
-       frmPadrao.avisar('Este cliente está bloqueado.'+#13#10+'Motivo: '+pessoa.getCampo('motivo_bloq').AsString);
-       limpa;
-       edtCodigo.SetFocus;
-       exit;
-     end
-     else if pessoa.getCampo('bloqueado').AsString = 'P' then
-       frmPadrao.avisar('Este cliente possui pendência.'+#13#10+'Pendência: '+pessoa.getCampo('motivo_bloq').AsString);
-
      Fcod_pessoa    := pessoa.getCampo('codigo').AsString;
      edtCodigo.Text := pessoa.getCampo('codigo').AsString;
      edtRazao.Text  := pessoa.getCampo('razao').AsString;

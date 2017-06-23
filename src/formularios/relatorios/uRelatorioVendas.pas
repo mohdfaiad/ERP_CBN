@@ -5,8 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, ComCtrls, StdCtrls, frameBuscaPessoa, Buttons, ExtCtrls,
-  RLReport, DB, tipoPessoa,
-  RLPDFFilter, RLFilters, RLXLSFilter, ImgList, Grids, DBGrids, DBGridCBN,
+  RLReport, DB, tipoPessoa, RLFilters, RLXLSFilter, ImgList, Grids, DBGrids, DBGridCBN,
   Mask, DBCtrls, Provider, DBClient, Repositorio, frameBuscaProduto,
   frameBuscaCor, System.ImageList, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
@@ -17,7 +16,6 @@ type
   TfrmRelatorioVendas = class(TfrmPadrao)
     DataSource1: TDataSource;
     RLXLSFilter1: TRLXLSFilter;
-    RLPDFFilter1: TRLPDFFilter;
     ImageList1: TImageList;
     cds: TClientDataSet;
     DataSetProvider1: TDataSetProvider;
@@ -286,6 +284,8 @@ type
     ImprimirDanfe1: TMenuItem;
     cdsCODIGO_NOTA_FISCAL: TIntegerField;
     cdsTOTAL_BRUTO: TBCDField;
+    Label12: TLabel;
+    lbContPedidos: TLabel;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -457,11 +457,10 @@ begin
   else if rgTipoData.ItemIndex = 1 then  tipo_data := ' P.DT_REPRESENTANTE '
   else if rgTipoData.ItemIndex = 2 then  tipo_data := ' P.DT_RECEBIMENTO '
   else if rgTipoData.ItemIndex = 3 then  tipo_data := ' P.DT_LIMITE_ENTREGA'
-  else if rgTipoData.ItemIndex = 4 then  tipo_data := ' iif( not(PF.codigo is null),      '+
-                                                      '      CAST(nf.data_saida as Date), '+
-                                                      '      P.dt_despacho)               ';
+  else if rgTipoData.ItemIndex = 4 then  condicao_data := ' AND ((CAST(nf.data_saida as Date) BETWEEN :DTI AND :DTF ) or (p.dt_despacho between :dti and :dtf))  ';
 
-  condicao_data := ' AND ('+ tipo_data + ' BETWEEN :DTI AND :DTF ) '+#13#10;
+  if condicao_data = '' then
+    condicao_data := ' AND ('+ tipo_data + ' BETWEEN :DTI AND :DTF ) '+#13#10;
 
   if BuscaPessoa1.edtCodigo.AsInteger <= 0 then
     condicao_representante := ''
@@ -812,6 +811,8 @@ begin
     ClientDataSet1.Open;
     configura_analitico;
   end;
+
+  lbContPedidos.Caption := intToStr(cds.RecordCount);
 
   if (cds.IsEmpty) and (ClientDataSet1.IsEmpty) then begin
       avisar('Não foram encontrados registros com os filtros fornecidos');

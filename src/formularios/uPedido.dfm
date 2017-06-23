@@ -23,10 +23,6 @@ inherited frmPedido: TfrmPedido
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1037
         428)
@@ -247,9 +243,9 @@ inherited frmPedido: TfrmPedido
           ParentFont = False
           TabOrder = 3
           inline BuscaTransportadora: TBuscaPessoa
-            Left = 8
+            Left = 16
             Top = 15
-            Width = 491
+            Width = 483
             Height = 38
             AutoSize = True
             Font.Charset = ANSI_CHARSET
@@ -259,39 +255,27 @@ inherited frmPedido: TfrmPedido
             Font.Style = []
             ParentFont = False
             TabOrder = 0
-            ExplicitLeft = 8
+            ExplicitLeft = 16
             ExplicitTop = 15
-            ExplicitWidth = 491
+            ExplicitWidth = 483
             inherited StaticText1: TStaticText
-              Width = 42
-              Font.Name = 'Segoe UI'
               Font.Style = []
-              ExplicitWidth = 42
             end
             inherited edtCodigo: TCurrencyEdit
-              Left = 8
               Width = 70
-              ExplicitLeft = 8
               ExplicitWidth = 70
             end
             inherited StaticText2: TStaticText
-              Left = 110
               Width = 53
               Caption = 'Descri'#231#227'o'
-              Font.Name = 'Segoe UI'
               Font.Style = []
-              ExplicitLeft = 110
               ExplicitWidth = 53
             end
-            inherited btnBuscar: TBitBtn
-              Left = 79
-              ExplicitLeft = 79
-            end
             inherited edtRazao: TEdit
-              Left = 110
+              Left = 102
               Width = 381
               Height = 23
-              ExplicitLeft = 110
+              ExplicitLeft = 102
               ExplicitWidth = 381
               ExplicitHeight = 23
             end
@@ -3778,10 +3762,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet2: TTabSheet
       Caption = 'F2 - Digita'#231#227'o'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbDadosItem: TGroupBox
         Left = 6
         Top = 11
@@ -4462,10 +4442,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet3: TTabSheet
       Caption = 'F3 - Itens'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Shape2: TShape
         Left = 4
         Top = 375
@@ -5752,58 +5728,6 @@ inherited frmPedido: TfrmPedido
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
-    object Label9: TLabel
-      Left = 608
-      Top = 51
-      Width = 129
-      Height = 13
-      Caption = 'Representante associado'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Transparent = True
-    end
-    object btnAssociaRep: TSpeedButton
-      Left = 999
-      Top = 63
-      Width = 26
-      Height = 24
-      Hint = 'Associar Representante'
-      Glyph.Data = {
-        36030000424D3603000000000000360000002800000010000000100000000100
-        18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
-        EBEBEB9292924F4F4F6F6F6FDDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFDEDEDE6E6E6E5959598A8A8A6D6D6D5A5A5AC8
-        C8C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0F0F0646464
-        6E6E6EEAEAEAE6E6E6E8E8E88D8D8D555555CBCBCBFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFF8585855D5D5DEDEDEDAEAEAE454545656565E6E6E68B
-        8B8B676767EDEDEDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4F4F4F8D8D8D
-        E4E4E43E3E3E9B9B9B6969695F5F5FDADADA5F5F5FBDBDBDFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFF7171716E6E6EE2E2E26464646969696363635454545D
-        5D5D5D5D5DC0C0C0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDADADA5D5D5D
-        828282E4E4E4646464505050D1D1D1707070494949B7B7B7C3C3C3BDBDBDECEC
-        ECFFFFFFFFFFFFFFFFFFFFFFFFCDCDCD5B5B5B828282DADADA626262686868DD
-        DDDD7070704B4B4B5E5E5E606060686868CCCCCCFFFFFFFFFFFFFFFFFFFFFFFF
-        D0D0D06262626363635D5D5D4D4D4D696969DCDCDC6F6F6F5C5C5CDCDCDC8989
-        89545454CACACAFFFFFFFFFFFFFFFFFFFFFFFFF6F6F6C4C4C4C1C1C1BCBCBC49
-        4949696969D3D3D3525252626262E9E9E98B8B8B5D5D5DDADADAFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFC5C5C56161616363634F4F4F6565656666666666
-        66E6E6E66A6A6A757575FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBBBBB60
-        6060DADADA646464696969A5A5A53D3D3DE1E1E1909090464646FFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFF3F3F3616161838383E3E3E36464643F3F3FA1A1
-        A1EFEFEF5E5E5E888888FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCD
-        CDCD595959838383E4E4E4DDDDDDE9E9E9707070646464E0E0E0FFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCCCCC5C5C5C6A6A6A8C8C8C5B5B
-        5B6E6E6EE2E2E2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFDFDFDF7B7B7B525252909090EEEEEEFFFFFFFFFFFF}
-      ParentShowHint = False
-      ShowHint = True
-      Visible = False
-      OnClick = btnAssociaRepClick
-    end
     object btnInfCli: TSpeedButton
       Left = 999
       Top = 21
@@ -8331,48 +8255,55 @@ inherited frmPedido: TfrmPedido
         ExplicitTop = 46
       end
     end
-    object edtRepresentante: TEdit
-      Left = 609
-      Top = 66
-      Width = 385
-      Height = 21
-      TabStop = False
-      ReadOnly = True
+    inline BuscaCliente: TBuscaCliente
+      Left = 508
+      Top = 8
+      Width = 488
+      Height = 40
       TabOrder = 1
-      OnChange = edtRepresentanteChange
-    end
-    inline BuscaCliente: TBuscaPessoa
-      Left = 477
-      Top = 7
-      Width = 516
-      Height = 38
-      AutoSize = True
-      TabOrder = 2
       OnExit = BuscaClienteExit
-      ExplicitLeft = 477
-      ExplicitTop = 7
-      ExplicitWidth = 516
+      ExplicitLeft = 508
+      ExplicitTop = 8
+      ExplicitWidth = 488
+      ExplicitHeight = 40
       inherited StaticText1: TStaticText
-        Color = clBtnFace
-      end
-      inherited edtCodigo: TCurrencyEdit
-        Width = 86
-        ExplicitWidth = 86
+        Width = 40
+        Caption = 'Cliente'
+        ExplicitWidth = 40
       end
       inherited StaticText2: TStaticText
-        Left = 134
-        Color = clBtnFace
-        ExplicitLeft = 134
-      end
-      inherited btnBuscar: TBitBtn
-        Left = 95
-        ExplicitLeft = 95
+        Visible = False
       end
       inherited edtRazao: TEdit
-        Left = 132
-        Width = 384
-        ExplicitLeft = 132
-        ExplicitWidth = 384
+        Width = 385
+        ExplicitWidth = 385
+      end
+    end
+    inline buscaRepresentante: TbuscaRepresentante
+      Left = 508
+      Top = 52
+      Width = 489
+      Height = 38
+      TabOrder = 2
+      OnExit = buscaRepresentanteExit
+      ExplicitLeft = 508
+      ExplicitTop = 52
+      ExplicitWidth = 489
+      ExplicitHeight = 38
+      inherited StaticText2: TStaticText [0]
+        Visible = False
+      end
+      inherited StaticText1: TStaticText [1]
+        Width = 186
+        Caption = 'Representante associado ao cliente'
+        ExplicitWidth = 186
+      end
+      inherited edtCodigo: TCurrencyEdit [2]
+      end
+      inherited edtRazao: TEdit
+        Width = 385
+        OnChange = buscaRepresentante1edtRazaoChange
+        ExplicitWidth = 385
       end
     end
   end

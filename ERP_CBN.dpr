@@ -451,7 +451,12 @@ uses
   RepositorioDirecionamentoEntrada in 'src\infraestrutura\persistencia\RepositorioDirecionamentoEntrada.pas',
   Vcl.Themes,
   Vcl.Styles,
-  uBuscaPedidos in 'src\formularios\uBuscaPedidos.pas' {frmBuscaPedidos};
+  uBuscaPedidos in 'src\formularios\uBuscaPedidos.pas' {frmBuscaPedidos},
+  framePeriodo in 'src\formularios\framePeriodo.pas' {Periodo: TFrame},
+  Representante in 'src\dominio\entidade\Representante.pas',
+  RepositorioRepresentante in 'src\infraestrutura\persistencia\RepositorioRepresentante.pas',
+  frameBuscaRepresentante in 'src\formularios\frameBuscaRepresentante.pas' {buscaRepresentante: TFrame},
+  EnviaEmail in 'src\dominio\entidade\EnviaEmail.pas';
 
 {$R *.res}
 {$R win7810.res}

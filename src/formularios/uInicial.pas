@@ -8,7 +8,7 @@ uses
   frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math,
   ServicoVerificadorSistemaEmManutencao, uImpressaoEtiquetasCoppel, uEntradaNota,
   IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts,
-  RLReport, System.ImageList, System.StrUtils, DBGridCBN;
+  RLReport, System.ImageList, System.StrUtils, DBGridCBN, RLPreviewForm, RLFilters, RLPDFFilter;
 
 type
   TfrmInicial = class(TfrmPadrao)
@@ -129,6 +129,8 @@ type
     FechaComissoEcommerce1: TMenuItem;
     ApplicationEvents1: TApplicationEvents;
     Mapas1: TMenuItem;
+    RLPDFFilter1: TRLPDFFilter;
+    RLPreviewSetup1: TRLPreviewSetup;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -214,6 +216,7 @@ type
     procedure FechaComissoEcommerce1Click(Sender: TObject);
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
     procedure Mapas1Click(Sender: TObject);
+    procedure RLPreviewSetup1Send(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -500,6 +503,13 @@ begin
         Avisar(e.Message);
       end;
   end;
+end;
+
+procedure TfrmInicial.RLPreviewSetup1Send(Sender: TObject);
+begin
+  inherited;
+  if Sender is TRLReport then
+    avisar('teste');
 end;
 
 procedure TfrmInicial.Fornecedores1Click(Sender: TObject);

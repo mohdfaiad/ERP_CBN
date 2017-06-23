@@ -157,9 +157,7 @@ inherited frmRelatorioComissoesRepresentantes: TfrmRelatorioComissoesRepresentan
       ExplicitTop = 24
       ExplicitWidth = 383
       inherited StaticText1: TStaticText
-        Width = 37
         Font.Style = []
-        ExplicitWidth = 37
       end
       inherited edtCodigo: TCurrencyEdit
         Width = 53
@@ -167,11 +165,11 @@ inherited frmRelatorioComissoesRepresentantes: TfrmRelatorioComissoesRepresentan
       end
       inherited StaticText2: TStaticText
         Left = 86
-        Width = 65
+        Width = 67
         Caption = 'Raz'#227'o social'
         Font.Style = []
         ExplicitLeft = 86
-        ExplicitWidth = 65
+        ExplicitWidth = 67
       end
       inherited btnBuscar: TBitBtn
         Left = 55
@@ -1118,13 +1116,5 @@ inherited frmRelatorioComissoesRepresentantes: TfrmRelatorioComissoesRepresentan
       Precision = 18
       Size = 2
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 264
-    Top = 128
   end
 end

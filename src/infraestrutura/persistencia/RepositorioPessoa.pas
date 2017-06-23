@@ -48,7 +48,7 @@ implementation
 
 uses
   SysUtils,
-  Pessoa, StrUtils,DadosRepresentante, FabricaRepositorio;
+  Pessoa, StrUtils,DadosRepresentante, Endereco, FabricaRepositorio;
 
 { TRepositorioPessoa }
 
@@ -65,11 +65,13 @@ begin
    Pessoa := (Objeto as TPessoa);
    Repositorio := nil;
    try
-     if Assigned(Pessoa.DadosRepresentante) then begin
-       Repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
-       Pessoa.DadosRepresentante.codigo_representante := Pessoa.Codigo;
-       Repositorio.Salvar(Pessoa.DadosRepresentante);
+     if assigned(Pessoa.Endereco) then
+     begin
+       Repositorio := TFabricaRepositorio.GetRepositorio(TEndereco.ClassName);
+       Pessoa.Endereco.codpessoa := Pessoa.Codigo;
+       Repositorio.Salvar(Pessoa.Endereco);
      end;
+
    finally
      FreeAndNil(Repositorio);
    end;
@@ -92,8 +94,6 @@ begin
    Pessoa.Fax          := self.FQuery.FieldByName('fax'       ).AsString;
    Pessoa.Email        := self.FQuery.FieldByName('email'     ).AsString;
    Pessoa.Observacao   := self.FQuery.FieldByName('observacao').AsString;
-   Pessoa.Bloqueado    := self.FQuery.FieldByName('Bloqueado').AsString;
-   Pessoa.MotivoBloq   := self.FQuery.FieldByName('Motivo_Bloq').AsString;
    Pessoa.NomeFantasia := self.FQuery.FieldByName('nome_fantasia').AsString;
 
    result := Pessoa;
@@ -161,12 +161,6 @@ begin
    if (PessoaAntigo.Observacao <> PessoaNovo.Observacao) then
     Auditoria.AdicionaCampoAlterado('observacao', PessoaAntigo.Observacao, PessoaNovo.Observacao);
 
-   if (PessoaAntigo.Bloqueado <> PessoaNovo.Bloqueado) then
-    Auditoria.AdicionaCampoAlterado('Bloqueado', PessoaAntigo.Bloqueado, PessoaNovo.Bloqueado);
-
-   if (PessoaAntigo.MotivoBloq <> PessoaNovo.MotivoBloq) then
-    Auditoria.AdicionaCampoAlterado('Motivo_Bloq', PessoaAntigo.MotivoBloq, PessoaNovo.MotivoBloq);
-
    if (PessoaAntigo.NomeFantasia <> PessoaNovo.NomeFantasia) then
     Auditoria.AdicionaCampoAlterado('nome_fantasia', PessoaAntigo.NomeFantasia, PessoaNovo.NomeFantasia);
 end;
@@ -190,8 +184,6 @@ begin
    Auditoria.AdicionaCampoExcluido('fax'       , Pessoa.Fax);
    Auditoria.AdicionaCampoExcluido('email'     , Pessoa.Email);
    Auditoria.AdicionaCampoExcluido('observacao', Pessoa.Observacao);
-   Auditoria.AdicionaCampoExcluido('Bloqueado' , Pessoa.Bloqueado);
-   Auditoria.AdicionaCampoExcluido('Motivo_Bloq', Pessoa.MotivoBloq);
    Auditoria.AdicionaCampoExcluido('nome_fantasia' , Pessoa.NomeFantasia);
 end;
 
@@ -214,8 +206,6 @@ begin
    Auditoria.AdicionaCampoIncluido('fax'       , Pessoa.Fax);
    Auditoria.AdicionaCampoIncluido('email'     , Pessoa.Email);
    Auditoria.AdicionaCampoIncluido('observacao', Pessoa.Observacao);
-   Auditoria.AdicionaCampoIncluido('Bloqueado' , Pessoa.Bloqueado);
-   Auditoria.AdicionaCampoIncluido('Motivo_Bloq', Pessoa.MotivoBloq);
    Auditoria.AdicionaCampoIncluido('nome_fantasia' , Pessoa.NomeFantasia);
 end;
 
@@ -245,8 +235,6 @@ begin
    self.FQuery.ParamByName('fax').AsString          := Pessoa.Fax;
    self.FQuery.ParamByName('email').AsString        := Pessoa.Email;
    self.FQuery.ParamByName('observacao').AsString   := Pessoa.Observacao;
-   self.FQuery.ParamByName('bloqueado').AsString    := Pessoa.bloqueado;
-   self.FQuery.ParamByName('motivo_bloq').AsString  := Pessoa.MotivoBloq;
    self.FQuery.ParamByName('nome_fantasia').AsString := Pessoa.NomeFantasia;
 end;
 
@@ -272,9 +260,9 @@ end;
 
 function TRepositorioPessoa.SQLSalvar: String;
 begin
-  result := 'update or insert into Pessoas                                                                                        '+
-            '(codigo, razao, pessoa, tipo, cpf_cnpj, rg_ie, dtCadastro, fone1, fone2, fax, email, observacao, bloqueado, motivo_bloq, nome_fantasia)                     '+
-            ' Values (:codigo, :razao, :pessoa, :tipo, :cpf_cnpj, :rg_ie, :dtCadastro, :fone1, :fone2, :fax, :email, :observacao, :bloqueado, :motivo_bloq, :nome_fantasia) ';
+  result := 'update or insert into Pessoas                                                                                                       '+
+            '(codigo, razao, pessoa, tipo, cpf_cnpj, rg_ie, dtCadastro, fone1, fone2, fax, email, observacao, nome_fantasia)                     '+
+            ' Values (:codigo, :razao, :pessoa, :tipo, :cpf_cnpj, :rg_ie, :dtCadastro, :fone1, :fone2, :fax, :email, :observacao, :nome_fantasia) ';
 end;
 
 end.

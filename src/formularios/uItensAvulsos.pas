@@ -152,7 +152,7 @@ end;
 
 constructor TfrmItensAvulsos.Create(NotaFiscal: TNotaFiscal);
 var
-  EspecificacaoClientePorCodigoPessoa :TEspecificacao;
+ // EspecificacaoClientePorCodigoPessoa :TEspecificacao;
   RepositorioCliente                  :TRepositorio;
   Cliente                             :TCliente;
 begin
@@ -165,11 +165,11 @@ begin
    self.FNotaFiscal           := NotaFiscal;
    self.FItemAvulsoTemporario := nil;
 
-   EspecificacaoClientePorCodigoPessoa := TEspecificacaoClientePorCodigoPessoa.Create(self.FNotaFiscal.Destinatario.Codigo);
+//   EspecificacaoClientePorCodigoPessoa := TEspecificacaoClientePorCodigoPessoa.Create(self.FNotaFiscal.Destinatario.Codigo);
    RepositorioCliente                  := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
 
    try
-     Cliente := (RepositorioCliente.GetPorEspecificacao(EspecificacaoClientePorCodigoPessoa) as TCliente);
+     Cliente := TCliente(RepositorioCliente.Get(self.FNotaFiscal.Destinatario.Codigo));
 
      if Assigned(Cliente) then begin
        self.BuscaTabelaPreco.codTabela           := IntToStr(Cliente.TabelaPreco.Codigo);
@@ -177,7 +177,7 @@ begin
        self.BuscaTabelaPreco.edtDescricao.Text   := Cliente.TabelaPreco.Descricao;
      end;
    finally
-     FreeAndNil(EspecificacaoClientePorCodigoPessoa);
+   //  FreeAndNil(EspecificacaoClientePorCodigoPessoa);
      FreeAndNil(RepositorioCliente);
      FreeAndNil(Cliente);
    end;
@@ -336,8 +336,12 @@ begin
      Repositorio := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
      Produto     := (Repositorio.Get(self.BuscaProduto.CodigoProduto) as TProduto);
 
-     if Assigned(Produto) and Assigned(Produto.Grade) then
-       self.LiberarTamanhos(Produto.Grade);
+     if Assigned(Produto) then
+     begin
+       if Assigned(Produto.Grade) then
+         self.LiberarTamanhos(Produto.Grade);
+       BuscaCor.edtReferencia.SetFocus;
+     end;
 
      self.FItemAvulsoTemporario.Produto := Produto;
      self.FItemAvulsoTemporario.Preco   := self.BuscaProduto.preco;

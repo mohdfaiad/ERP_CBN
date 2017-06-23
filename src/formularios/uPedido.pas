@@ -11,7 +11,7 @@ uses
   ExtCtrls, Mask, RxToolEdit, RxCurrEdit, Menus, Pedido, Item, Repositorio, pngimage,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, frameBuscaCliente, frameBuscaRepresentante;
 
 type
   TfrmPedido = class(TfrmPadrao)
@@ -74,8 +74,6 @@ type
     btnCancelar: TSpeedButton;
     cdsItemDel: TClientDataSet;
     cdsItemDelCOD_ITEM: TIntegerField;
-    edtRepresentante: TEdit;
-    Label9: TLabel;
     btnSalvar: TSpeedButton;
     btnImprimir: TSpeedButton;
     Label10: TLabel;
@@ -84,8 +82,6 @@ type
     btnImprimirPedido: TSpeedButton;
     Label12: TLabel;
     edtTotPedidoBruto: TCurrencyEdit;
-    btnAssociaRep: TSpeedButton;
-    BuscaCliente: TBuscaPessoa;
     btnInfCli: TSpeedButton;
     cdsItensRefCor: TStringField;
     GroupBox2: TGroupBox;
@@ -185,6 +181,8 @@ type
     edtValorFrete: TCurrencyEdit;
     Label20: TLabel;
     cdsItensDESMEMBRADO: TStringField;
+    BuscaCliente: TBuscaCliente;
+    buscaRepresentante: TbuscaRepresentante;
     procedure FormCreate(Sender: TObject);
     procedure cbAprovacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -217,7 +215,6 @@ type
     procedure BuscaProduto1Exit(Sender: TObject);
     procedure edtValorItensKeyPress(Sender: TObject; var Key: Char);
     procedure btnImprimirPedidoClick(Sender: TObject);
-    procedure btnAssociaRepClick(Sender: TObject);
     procedure btnInfCliClick(Sender: TObject);
     procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -247,7 +244,8 @@ type
     procedure BuscaCor1edtReferenciaChange(Sender: TObject);
     procedure btnImprimeVersoClick(Sender: TObject);
     procedure btnGerarCotacaoClick(Sender: TObject);
-    procedure edtRepresentanteChange(Sender: TObject);
+    procedure buscaRepresentante1edtRazaoChange(Sender: TObject);
+    procedure buscaRepresentanteExit(Sender: TObject);
 
   private
     Pedido :TPedido;
@@ -301,7 +299,6 @@ uses Math, FabricaRepositorio, StrUtils, uRelatorioExpedicao, PermissoesAcesso, 
 procedure TfrmPedido.FormCreate(Sender: TObject);
 begin
   inherited;
-  BuscaCliente.TipoPessoa        := tpCliente;
   BuscaTransportadora.TipoPessoa := tpTransportadora;
   FPedidoTricae := false;
 end;
@@ -475,7 +472,7 @@ begin
   frmGeraCotacao := TfrmGeraCotacao.Create(nil);
 
   frmGeraCotacao.BuscaEmpresa1.codEmpresa := StrToInt(BuscaEmpresa.edtCodigo.Text);
-  frmGeraCotacao.BuscaPessoa1.cod_pessoa  := BuscaCliente.cod_pessoa;
+  frmGeraCotacao.BuscaCliente.codigo      := BuscaCliente.Cliente.Codigo;
   frmGeraCotacao.edtValor.Value           := edtTotPedido.Value;
   frmGeraCotacao.numPedido                := self.BuscaPedido1.edtNumPedido.Text;
 
@@ -769,11 +766,6 @@ begin
     key := #0;
 end;
 
-procedure TfrmPedido.edtRepresentanteChange(Sender: TObject);
-begin
-  PedidoTricae := (pos('TRICAE',edtRepresentante.Text) > 0);
-end;
-
 procedure TfrmPedido.edtPercDescontoChange(Sender: TObject);
 begin
   if not (ActiveControl = edtPercDesconto) then exit;
@@ -799,15 +791,16 @@ procedure TfrmPedido.btnSalvarClick(Sender: TObject);
 begin
  try
  try
-   self.Fdm.conexao.TxOptions.AutoCommit      := false;
-   self.Fdm.FDConnection.TxOptions.AutoCommit := false;
-
    if verificaObrigatoriosPedido then
+   begin
+     self.Fdm.conexao.TxOptions.AutoCommit      := false;
+     self.Fdm.FDConnection.TxOptions.AutoCommit := false;
+
      salvar;
 
-
-   self.Fdm.conexao.Commit;
-   self.Fdm.FDConnection.Commit;
+     self.Fdm.conexao.Commit;
+     self.Fdm.FDConnection.Commit;
+   end;
 
  Except
   on e : Exception do
@@ -873,7 +866,7 @@ begin
      Pedido.cod_filial        := StrToIntDef(BuscaEmpresa.edtCodigo.Text,0);
      Pedido.cod_cliente       := BuscaCliente.edtCodigo.AsInteger;
      Pedido.cod_transp        := BuscaTransportadora.edtCodigo.AsInteger;
-     Pedido.cod_repres        := StrToIntDef(BuscaCliente.cod_rep,0);
+     Pedido.cod_repres        := buscaRepresentante.codigo;
      Pedido.dt_cadastro       := dtpCadastro.DateTime;
      Pedido.dt_representante  := dtpRepresentante.DateTime;
      Pedido.dt_recebimento    := dtpRecebido.DateTime;
@@ -984,8 +977,8 @@ begin
   edtDescontoPedido.Value                := 0;
   edtAcrescimoPedido.Value               := 0;
 
-  BuscaCliente.cod_pessoa                := intToStr(BuscaPedido1.Ped.cod_cliente);
-  edtRepresentante.Text                  := BuscaCliente.razao_rep;
+  BuscaCliente.codigo                    := BuscaPedido1.Ped.cod_cliente;
+  buscaRepresentante.codigo              := BuscaPedido1.Ped.cod_repres;
   BuscaEmpresa.codEmpresa                := BuscaPedido1.Ped.cod_filial;
   
   BuscaFormaPagamento1.codigoFormaPagamento := BuscaPedido1.Ped.cod_forma_pag;
@@ -1061,7 +1054,6 @@ begin
   btnGerarCotacao.Enabled   := true;
   btnImprimeVerso.Enabled   := true;
   btnInfCli.Visible         := true;
-  btnAssociaRep.Visible     := true;
 
   if not (BuscaPedido1.pedido_faturado) and (pnlNAlteravelCabecalho.Enabled) then
     BuscaEmpresa.btnBusca.SetFocus
@@ -1069,46 +1061,43 @@ end;
 
 function TfrmPedido.verificaObrigatoriosPedido: Boolean;
 begin
-  Result := true;
+  Result := false;
 
   try
     if ( BuscaPedido1.edtNumPedido.Text = '' ) then begin
+      pagPedido.activePageIndex := 0;
       BuscaPedido1.edtNumPedido.SetFocus;
       avisar('O número do pedido não foi informado!');
-      Result := false;
     end
     else if not (BuscaEmpresa.edtCodigo.Text <> '0') then begin
       pagPedido.activePageIndex := 0;
       BuscaEmpresa.edtCodigo.SetFocus;
       avisar('Favor selecionar filial para prosseguir com o pedido');
-      Result := false;
     end
     else if not (BuscaFormaPagamento1.edtCodigo.Value > 0) then begin
       pagPedido.activePageIndex := 0;
       BuscaFormaPagamento1.edtCodigo.SetFocus;
       avisar('Favor selecionar forma de pagamento para prosseguir com o pedido');
-      Result := false;
     end
     else if not (BuscaTabelaPreco1.edtCodigo.Value > 0) then begin
       pagPedido.activePageIndex := 0;
       BuscaTabelaPreco1.edtCodigo.SetFocus;
       avisar('Favor selecionar tabela de preço para prosseguir com o pedido');
-      Result := false;
     end
     else if not (BuscaTransportadora.edtCodigo.Value > 0) then begin
       pagPedido.activePageIndex := 0;
       BuscaTransportadora.edtCodigo.SetFocus;
       avisar('Favor selecionar transportadora para prosseguir com o pedido');
-      Result := false;
     end
     else if not (BuscaCliente.edtCodigo.Value > 0) then begin
+      pagPedido.ActivePageIndex := 0;
       BuscaCliente.edtCodigo.SetFocus;
       avisar('Favor selecionar cliente para prosseguir com o pedido');
-      Result := false;
     end
-    else if (BuscaCliente.cod_rep = '') or (BuscaCliente.cod_rep = '0') then begin
-      avisar('Pedido não pode ser salvo sem um representante associado ao cliente');
-      Result := false;
+    else if not assigned(buscaRepresentante.Representante) then begin
+      avisar('Favor selecionar representante para prosseguir com o pedido');
+      pagPedido.ActivePageIndex := 0;
+      buscaRepresentante.edtCodigo.SetFocus;
     end
   {  else if edtPercComissao.Value <= 0 then begin
       avisar('Favor informar a percentagem de comissão do representante');
@@ -1120,12 +1109,11 @@ begin
       edtAprovado.Enabled := true;
       edtAprovado.SetFocus;
       avisar('Favor informar quem aprovou o pedido');
-      Result := false;
     end
-    else if not ( cdsItens.Active ) or ( cdsItens.IsEmpty ) then begin
-      avisar('Nenhum item foi adicionado ao pedido. Operação Cancelada.');
-      Result := false;
-    end;
+    else if not ( cdsItens.Active ) or ( cdsItens.IsEmpty ) then
+      avisar('Nenhum item foi adicionado ao pedido. Operação Cancelada.')
+    else
+      result := true;
 
   except
     on E: EInvalidOperation do begin
@@ -1177,7 +1165,7 @@ begin
            BuscaPedido1.limpa;
            BuscaPedido1.edtNumPedido.Clear;
            BuscaCliente.limpa;
-           edtRepresentante.Clear;
+           buscaRepresentante.limpa;
          end
          else begin
            BuscaPedido1.limpa;
@@ -1245,7 +1233,7 @@ begin
   edtDescComiss.Clear;
   edtDtAprovacao.Clear;
   edtPreco.Clear;
-  edtRepresentante.Clear;
+  buscaRepresentante.limpa;
   edtDataDespacho.Clear;
   edtTotPedido.Clear;
   edtTotItens.Clear;
@@ -1292,27 +1280,33 @@ begin
       BuscaEmpresa.edtCodigo.SetFocus
     else
       BuscaPedido1.edtNumPedido.SetFocus;
-  btnAssociaRep.Visible := false;
+
   btnInfCli.Visible     := false;
 
-  if ( StrToIntDef(BuscaCliente.cod_pessoa,0) > 0 ) then begin
+  if assigned(BuscaCliente.Cliente) then begin
     if (self.TAG = 0) then
     begin
-      BuscaTabelaPreco1.codTabela               := intToStr(BuscaCliente.tab_preco);
-      BuscaFormaPagamento1.codigoFormaPagamento := BuscaCliente.forma_pgto;
+      BuscaTabelaPreco1.codTabela               := intToStr(BuscaCliente.Cliente.CodTabelaPreco);
+      BuscaFormaPagamento1.codigoFormaPagamento := BuscaCliente.Cliente.CodFormasPgto;
     end;
 
-    if (BuscaCliente.cod_rep = '') or (BuscaCliente.cod_rep = '0') then
-      avisar('Atenção! Cliente não possui representante associado, assim, o pedido não poderá ser concluído.');
+   { if not assigned(buscaRepresentante.Representante) then
+    begin
+      avisar('Atenção! Nenhum representante foi selecionado, assim, o pedido não poderá ser concluído.');
+      buscaRepresentante.edtCodigo.SetFocus;
+    end; }
 
-    btnAssociaRep.Visible := true;
     btnInfCli.Visible     := true;
   end;
 
-  edtRepresentante.Text := BuscaCliente.razao_rep;
+  {se estiver na tela de alteração do pedido e o rep. salvo no pedido for diferente do atualmente vinculado ao cliente...}
+  if assigned(BuscaPedido1.Ped) and assigned(BuscaCliente.Cliente) and (BuscaPedido1.Ped.cod_repres <> BuscaCliente.Cliente.Representante.Codigo) then
+    buscaRepresentante.codigo := BuscaPedido1.Ped.cod_repres
+  else if assigned(BuscaCliente.Cliente) and assigned(BuscaCliente.Cliente.Representante) then
+    buscaRepresentante.codigo := BuscaCliente.Cliente.Representante.Codigo;
 
-  if BuscaCliente.percComissaoRep > 0 then
-    edtPercComissao.Value := BuscaCliente.percComissaoRep;
+  if assigned(buscaRepresentante.Representante) and assigned(buscaRepresentante.Representante.DadosRepresentante) and (buscaRepresentante.Representante.DadosRepresentante.percentagem_comissao > 0) then
+    edtPercComissao.Value := BuscaRepresentante.Representante.DadosRepresentante.percentagem_comissao;
 end;
 
 procedure TfrmPedido.gridItensKeyDown(Sender: TObject; var Key: Word;
@@ -1425,6 +1419,18 @@ begin
     DBGrid1.ReadOnly := false;
 end;
 
+procedure TfrmPedido.buscaRepresentante1edtRazaoChange(Sender: TObject);
+begin
+  PedidoTricae := (pos('TRICAE', buscaRepresentante.edtRazao.Text) > 0);
+end;
+
+procedure TfrmPedido.buscaRepresentanteExit(Sender: TObject);
+begin
+  inherited;
+  if assigned(buscaRepresentante.Representante) and assigned(buscaRepresentante.Representante.DadosRepresentante) and (buscaRepresentante.Representante.DadosRepresentante.percentagem_comissao > 0) then
+    edtPercComissao.Value := BuscaRepresentante.Representante.DadosRepresentante.percentagem_comissao;
+end;
+
 procedure TfrmPedido.calculaTotais;
 begin
   if not cdsItens.active then   cdsItens.CreateDataSet;
@@ -1480,19 +1486,6 @@ begin
  end;
 
  frmRelatorioPedidoVenda.Release;
-end;
-
-procedure TfrmPedido.btnAssociaRepClick(Sender: TObject);
-begin
-  try
-    self.AbreForm(TfrmCadastroCliente, paCadastroCliente);
-    buscacliente.edtCodigo.SetFocus;
-  except
-    on e : Exception do
-      begin
-        Avisar(e.Message);
-      end;
-  end;
 end;
 
 procedure TfrmPedido.btnInfCliClick(Sender: TObject);
@@ -1585,7 +1578,6 @@ begin
   TabSheet2.Enabled              := boleana;
   gridItens.Enabled              := boleana;
   BuscaCliente.Enabled           := boleana;
-  btnAssociaRep.Enabled          := boleana;
   imgFaturado.Visible            := not boleana;
   lbfaturado.Visible             := not boleana;
 
@@ -1604,7 +1596,8 @@ end;
 procedure TfrmPedido.BuscaFormaPagamento1Exit(Sender: TObject);
 begin
   calculaTotais;
-  if (BuscaFormaPagamento1.edtDescricao.Text <> '') and (BuscaCliente.percComissaoRep <= 0) then
+  if (BuscaFormaPagamento1.edtDescricao.Text <> '') and assigned(buscaRepresentante.Representante) and assigned(buscaRepresentante.Representante.DadosRepresentante)
+  and (buscaRepresentante.Representante.DadosRepresentante.percentagem_comissao <= 0) then
     edtPercComissao.Value := BuscaFormaPagamento1.FormaPagamento.Perc_Comissao;
 end;
 

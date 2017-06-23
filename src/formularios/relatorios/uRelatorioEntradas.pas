@@ -9,7 +9,7 @@ uses
   ComCtrls, Grids, DBGrids, ACBrNFe, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, RLFilters, RLPDFFilter;
+  FireDAC.Comp.Client, RLFilters;
 
 type
   TfrmRelatorioEntradas = class(TfrmPadrao)
@@ -191,7 +191,6 @@ type
     TOT_PECAS_TOTAIS: TRLLabel;
     RLLabel30: TRLLabel;
     rlReferencias: TRLLabel;
-    RLPDFFilter1: TRLPDFFilter;
     procedure btnImprimirClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RLDBText2BeforePrint(Sender: TObject; var Text: String;

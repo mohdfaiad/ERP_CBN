@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
   Vcl.DBGrids, DBGridCBN, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.ButtonGroup, System.ImageList,
-  Vcl.ImgList, RLReport, RLFilters, RLPDFFilter;
+  Vcl.ImgList, RLReport, RLFilters;
 
 type
   TfrmDirecionarEntradas = class(TfrmPadrao)
@@ -58,7 +58,6 @@ type
     GroupBox1: TGroupBox;
     Image1: TImage;
     Label1: TLabel;
-    RLPDFFilter1: TRLPDFFilter;
     RLLabel9: TRLLabel;
     RLDBText7: TRLDBText;
     qryDirecionadasREFERENCIA: TStringField;

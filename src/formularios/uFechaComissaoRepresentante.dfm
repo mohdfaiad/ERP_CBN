@@ -9,6 +9,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
   OldCreateOrder = True
   Position = poDefault
   OnShow = FormShow
+  ExplicitTop = -24
   ExplicitWidth = 1119
   ExplicitHeight = 711
   PixelsPerInch = 96
@@ -97,11 +98,11 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     end
     inherited StaticText2: TStaticText
       Left = 83
-      Width = 87
+      Width = 79
       Caption = 'Representante'
       Visible = False
       ExplicitLeft = 83
-      ExplicitWidth = 87
+      ExplicitWidth = 79
     end
     inherited btnBuscar: TBitBtn
       Left = 53
@@ -4517,6 +4518,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     Height = 36
     Align = alBottom
     TabOrder = 6
+    ExplicitTop = 648
     object lbEnvio: TLabel
       Left = 842
       Top = 9
@@ -5270,12 +5272,6 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     object cdsRemovidosCODIGO_LANCAMENTO: TIntegerField
       FieldName = 'CODIGO_LANCAMENTO'
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 352
-    Top = 256
   end
   object qryQuinzena2: TFDQuery
     Connection = dm.FDConnection

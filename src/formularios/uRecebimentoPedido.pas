@@ -34,6 +34,8 @@ type
     Label7: TLabel;
     lbCpf: TLabel;
     edtCpf: TEdit;
+    cdsMoedasCODIGO: TIntegerField;
+    Memo1: TMemo;
     procedure btnVoltarClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -49,8 +51,10 @@ type
     procedure edtCpfKeyPress(Sender: TObject; var Key: Char);
     procedure edtCpfKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure cmbMoedaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     FCc: Boolean;
+    FFinalizaRapido :Boolean;
 
     function verificaObrigatorios :Boolean;
 
@@ -61,6 +65,7 @@ type
     procedure salvaRecebimentoPedido(codigoPedido :Integer);
 
     property cc :Boolean read FCc write FCc;
+    property finalizaRapido :Boolean read FFinalizaRapido write FFinalizaRapido;
   end;
 
 var
@@ -83,7 +88,7 @@ begin
   if edtValorRestante.Value = 0 then
     self.ModalResult := mrOk
   else
-    avisar('Ainda resta um valor a ser pago.');
+    avisar('Ainda resta um valor a ser pago. [ '+FormatFloat('R$ ,0.00; -,0.00', edtValorRestante.Value)+' ]');
 end;
 
 procedure TfrmRecebimentoPedido.btnVoltarClick(Sender: TObject);
@@ -175,11 +180,22 @@ procedure TfrmRecebimentoPedido.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if (key = VK_F10) or (key = VK_F6) then
+  if (key = VK_F7) or (key = VK_F10) then
   begin
     if (key = VK_F10) and (edtCpf.Text = '') then
       FCc := false;
     btnConfirmar.Click;
+  end;
+end;
+
+procedure TfrmRecebimentoPedido.FormShow(Sender: TObject);
+begin
+  if FFinalizaRapido then
+  begin
+    edtValorPago.Value := edtValorRestante.Value;
+    cmbMoeda.ItemIndex := 1;
+    btnLanca.Click;
+    edtCpf.SetFocus;
   end;
 end;
 
@@ -205,7 +221,7 @@ end;
 
 procedure TfrmRecebimentoPedido.salvaRecebimentoPedido(codigoPedido: Integer);
 var repositorio :TRepositorio;
-    movimento :TMovimento;
+    movimento   :TMovimento;
 begin
   repositorio := nil;
   movimento := nil;
@@ -216,13 +232,29 @@ begin
     cdsMoedas.First;
     while not cdsMoedas.Eof do
     begin
-      movimento := TMovimento.Create;
+      movimento               := TMovimento.Create;
+      movimento.codigo        := cdsMoedasCODIGO.AsInteger;
       movimento.tipo_moeda    := cdsMoedasCODIGO_MOEDA.AsInteger;
       movimento.codigo_pedido := codigoPedido;
       movimento.data          := now;
       movimento.valor_pago    := cdsMoedasVALOR.AsFloat;
 
+      if movimento.valor_pago = 0 then
+      begin
+        avisar('Erro ao salvar valor do pagamento, mantenha a tela e contate o suporte.');
+        Memo1.Text := 'nº moedas = '+intToStr(cdsMoedas.RecordCount)+#13#10+
+                      'pedido '+ intToStr(codigoPedido)+#13#10+
+                      'total = '+floatToStr(edtTotalPedido.Value)+#13#10+
+                      'restante = '+floatToStr(edtValorRestante.Value);
+        memo1.Lines.SaveToFile(ExtractFilePath(Application.ExeName)+'\logPagamento.txt');
+      end;
+
+
       repositorio.Salvar(movimento);
+
+      cdsMoedas.Edit;
+      cdsMoedasCODIGO.AsInteger := movimento.codigo;
+      cdsMoedas.Post;
 
       FreeAndNil(movimento);
       cdsMoedas.Next;

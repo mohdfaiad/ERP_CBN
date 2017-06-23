@@ -15,6 +15,7 @@ type
     Fcodigo_cor: integer;
     Fcodigo_tamanho: integer;
     Fquantidade: Real;
+    FSetor: integer;
    // FQtd_reservada: Real;
 
     procedure Setcodigo(const Value: integer);
@@ -25,6 +26,7 @@ type
  //   procedure SetQtd_reservada(const Value: Real);
 
   public
+    property setor          :integer read FSetor          write FSetor;
     property codigo         :integer read Fcodigo         write Setcodigo;
     property codigo_produto :integer read Fcodigo_produto write Setcodigo_produto;
     property codigo_tamanho :integer read Fcodigo_tamanho write Setcodigo_tamanho;
@@ -33,7 +35,7 @@ type
   //  property qtd_reservada  :Real    read FQtd_reservada  write SetQtd_reservada;
 
   public
-    constructor create(const cod_produto :integer =0; const cod_cor :integer =0; const cod_tamanho :integer =0);overload;
+    constructor create(setor :integer; const cod_produto :integer =0; const cod_cor :integer =0; const cod_tamanho :integer =0);overload;
 
     {quando se quer diminuir, basta que o parametro seja passado com sinal negativo}
     procedure atualiza_estoque(quantidade :Real);
@@ -50,8 +52,8 @@ procedure TEstoque.atualiza_estoque(quantidade: Real);
 begin
   self.Fquantidade := self.Fquantidade + quantidade;
 
-  if self.Fquantidade < 0 then
-    self.Fquantidade := 0;
+  {if self.Fquantidade < 0 then
+    self.Fquantidade := 0;    }
 end;
 
 {procedure TEstoque.atualiza_estoque_reservado(quantidade: Real);
@@ -62,7 +64,7 @@ begin
     self.FQtd_reservada := 0;
 end;}
 
-constructor TEstoque.create(const cod_produto, cod_cor, cod_tamanho: integer);
+constructor TEstoque.create(setor :integer; const cod_produto, cod_cor, cod_tamanho: integer);
 var
    Estoque       :TEstoque;
    repositorio   :TRepositorio;
@@ -73,7 +75,8 @@ begin
    Especificacao := nil;
  try
    repositorio    := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cod_produto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(setor,
+                                                                      cod_produto,
                                                                       cod_cor,
                                                                       cod_tamanho);
 
@@ -83,6 +86,7 @@ begin
      self := Estoque
    else
    begin
+     self.FSetor          := setor;
      self.Fcodigo_produto := cod_produto;
      self.Fcodigo_cor     := cod_cor;
      self.codigo_tamanho  := cod_tamanho;

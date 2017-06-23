@@ -713,10 +713,10 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           9B00}
       end
       object gridClientes: TDBGridCBN
-        Left = 9
-        Top = 6
+        Left = 3
+        Top = 39
         Width = 854
-        Height = 433
+        Height = 403
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -740,7 +740,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         TitleFont.Height = -11
         TitleFont.Name = 'MS Sans Serif'
         TitleFont.Style = []
+        OnCellClick = gridClientesCellClick
         OnDrawColumnCell = gridClientesDrawColumnCell
+        OnKeyDown = gridClientesKeyDown
         OnTitleClick = gridClientesTitleClick
         BuscaHabilitada = True
         ConfCores.Normal.CorFonte = clWindowText
@@ -793,7 +795,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           item
             Alignment = taLeftJustify
             Expanded = False
-            FieldName = 'CODCLI'
+            FieldName = 'CODIGO'
             Title.Alignment = taCenter
             Title.Caption = 'C'#243'digo'
             Width = 47
@@ -1674,16 +1676,18 @@ inherited frmCadastroCliente: TfrmCadastroCliente
       FieldName = 'CODIGO'
       Required = True
     end
-    object cdsCODCLI: TIntegerField
-      FieldName = 'CODCLI'
-      Required = True
+    object cdsRAZAO: TStringField
+      FieldName = 'RAZAO'
+      Size = 60
     end
     object cdsPESSOA: TStringField
       FieldName = 'PESSOA'
+      FixedChar = True
       Size = 1
     end
     object cdsTIPO: TStringField
       FieldName = 'TIPO'
+      FixedChar = True
       Size = 1
     end
     object cdsCPF_CNPJ: TStringField
@@ -1709,85 +1713,94 @@ inherited frmCadastroCliente: TfrmCadastroCliente
       FieldName = 'FAX'
       Size = 15
     end
+    object cdsEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Size = 250
+    end
     object cdsOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
       Size = 200
     end
     object cdsBLOQUEADO: TStringField
       FieldName = 'BLOQUEADO'
+      FixedChar = True
       Size = 1
     end
-    object cdsMOTIVO_BLOQ: TStringField
-      FieldName = 'MOTIVO_BLOQ'
+    object cdsMOTIVO_BLOQUEIO: TStringField
+      FieldName = 'MOTIVO_BLOQUEIO'
       Size = 500
     end
-    object cdsCODTABELAPRECO: TIntegerField
-      FieldName = 'CODTABELAPRECO'
-    end
-    object cdsCODFORMASPGTO: TIntegerField
-      FieldName = 'CODFORMASPGTO'
-    end
-    object cdsCODIGO2: TIntegerField
-      FieldName = 'CODIGO2'
-      Required = True
+    object cdsNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Size = 60
     end
     object cdsCODIGO_1: TIntegerField
       FieldName = 'CODIGO_1'
-      Required = True
+      ReadOnly = True
     end
     object cdsCODPESSOA: TIntegerField
       FieldName = 'CODPESSOA'
-      Required = True
+      ReadOnly = True
     end
     object cdsLOGRADOURO: TStringField
       FieldName = 'LOGRADOURO'
+      ReadOnly = True
       Size = 80
+    end
+    object cdsNUMERO: TStringField
+      FieldName = 'NUMERO'
+      ReadOnly = True
+      Size = 10
     end
     object cdsBAIRRO: TStringField
       FieldName = 'BAIRRO'
-      Size = 30
+      ReadOnly = True
+      Size = 50
     end
     object cdsCODCIDADE: TIntegerField
       FieldName = 'CODCIDADE'
+      ReadOnly = True
     end
     object cdsCEP: TStringField
       FieldName = 'CEP'
+      ReadOnly = True
       Size = 10
     end
     object cdsPAIS: TStringField
       FieldName = 'PAIS'
+      ReadOnly = True
       Size = 25
     end
     object cdsCOMPLEMENTO: TStringField
       FieldName = 'COMPLEMENTO'
-      Size = 100
+      ReadOnly = True
+      Size = 200
     end
-    object cdsCODREP: TIntegerField
-      FieldName = 'CODREP'
+    object cdsCODCLI: TIntegerField
+      FieldName = 'CODCLI'
       ReadOnly = True
     end
-    object cdsCODIGO3: TIntegerField
-      FieldName = 'CODIGO3'
-      Required = True
+    object cdsCODTABELAPRECO: TIntegerField
+      FieldName = 'CODTABELAPRECO'
+      ReadOnly = True
+    end
+    object cdsCODFORMASPGTO: TIntegerField
+      FieldName = 'CODFORMASPGTO'
+      ReadOnly = True
     end
     object cdsCODTRANSPORTADORA: TIntegerField
       FieldName = 'CODTRANSPORTADORA'
-    end
-    object cdsNUMERO: TStringField
-      FieldName = 'NUMERO'
-      Size = 10
-    end
-    object cdsRAZAO: TStringField
-      FieldName = 'RAZAO'
-      Size = 60
-    end
-    object cdsEMAIL: TStringField
-      FieldName = 'EMAIL'
-      Size = 250
+      ReadOnly = True
     end
     object cdsFUNCIONARIO: TStringField
       FieldName = 'FUNCIONARIO'
+      ReadOnly = True
+      FixedChar = True
       Size = 1
+    end
+    object cdsCODREPRESENTANTE: TIntegerField
+      FieldName = 'CODREPRESENTANTE'
+      ReadOnly = True
     end
   end
   object dsp: TDataSetProvider
@@ -1798,7 +1811,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C0101030004003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, TipoPessoa, ExtCtrls, ComCtrls,
   StdCtrls, DB, DBClient, Provider, Buttons, RLReport, NotaFiscal, frameBuscaEmpresa,
-  RLFilters, RLPDFFilter;
+  RLFilters;
 
 type
   TfrmRelatorioNotaEntrada = class(TfrmPadrao)
@@ -58,7 +58,6 @@ type
     RLDraw1: TRLDraw;
     RLLabel14: TRLLabel;
     SpeedButton1: TSpeedButton;
-    RLPDFFilter1: TRLPDFFilter;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

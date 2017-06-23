@@ -7,7 +7,7 @@ uses
   Dialogs, uPadrao, ExtCtrls, ComCtrls, StdCtrls, Buttons, Grids, DBGrids,
   DBGridCBN, frameBuscaProduto, frameBuscaPedido, DB, DBClient,
   RLReport, pngimage, TipoBuscaPedido,
-  RLFilters, RLPDFFilter, Provider, frameBuscaCor, FireDAC.Stan.Intf,
+  RLFilters, Provider, frameBuscaCor, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client;
@@ -92,7 +92,6 @@ type
     RLLabel18: TRLLabel;
     RLLabel19: TRLLabel;
     RLSystemInfo5: TRLSystemInfo;
-    RLPDFFilter1: TRLPDFFilter;
     RLGroup3: TRLGroup;
     RLBand9: TRLBand;
     RLDraw15: TRLDraw;

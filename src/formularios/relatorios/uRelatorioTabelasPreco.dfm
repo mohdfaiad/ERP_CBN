@@ -2,8 +2,8 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
   Left = 0
   Top = 0
   Caption = 'Relatorio de Tabela de Precos'
-  ClientHeight = 188
-  ClientWidth = 506
+  ClientHeight = 155
+  ClientWidth = 490
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -294,16 +294,18 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
   end
   object Panel1: TPanel
     Left = 0
-    Top = 149
-    Width = 506
+    Top = 116
+    Width = 490
     Height = 39
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 554
+    ExplicitWidth = 829
     DesignSize = (
-      506
+      490
       39)
     object btnImprimir: TSpeedButton
-      Left = 326
+      Left = 310
       Top = 5
       Width = 169
       Height = 30
@@ -381,7 +383,7 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
       ExplicitLeft = 314
     end
     object btnSair: TSpeedButton
-      Left = 145
+      Left = 129
       Top = 5
       Width = 169
       Height = 30
@@ -483,7 +485,8 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
       '                              group by grp2.codigo'
       
         '                              order by grp2.codigo) > 1, col.des' +
-        'cricao, '#39#39') "GRUPO"'
+        'cricao, '#39#39') "GRUPO",'
+      'iif(position('#39'1/1'#39' in  grp.descricao) > 0, 2, 1)  ordemGrupo'
       ''
       'from tabelas_preco tp'
       ' left join produto_tabela_preco ptp on ptp.codtabela = tp.codigo'
@@ -494,8 +497,9 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
       ''
       
         'where tp.codigo = :codigoTabela and pro.ativo = '#39'S'#39' and pro.kit ' +
-        '<> '#39'S'#39
-      'order by grp.codigo, col.codigo')
+        '<> '#39'S'#39' and pro.ativo = '#39'S'#39' and position('#39'KIT'#39' in grp.descricao) ' +
+        '= 0'
+      'order by ordemGrupo, col.descricao, grp.codigo')
     Left = 168
     Top = 64
     ParamData = <
@@ -567,6 +571,9 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
       ReadOnly = True
       Size = 131
     end
+    object qryORDEMGRUPO: TIntegerField
+      FieldName = 'ORDEMGRUPO'
+    end
   end
   object ds: TDataSource
     DataSet = qry
@@ -576,14 +583,6 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
   object RLXLSXFilter1: TRLXLSXFilter
     DisplayName = 'Planilha Excel'
     Left = 288
-    Top = 72
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 392
     Top = 72
   end
   object RLRichFilter1: TRLRichFilter

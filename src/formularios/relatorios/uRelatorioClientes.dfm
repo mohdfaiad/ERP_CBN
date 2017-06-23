@@ -4,24 +4,24 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio de Clientes por Representante'
-  ClientHeight = 410
-  ClientWidth = 494
+  ClientHeight = 470
+  ClientWidth = 496
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 500
-  ExplicitHeight = 438
+  ExplicitWidth = 502
+  ExplicitHeight = 498
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 11
-    Top = 312
+    Top = 376
     Width = 244
     Height = 13
     Caption = 'Informe o diret'#243'rio em que o arquivo ser'#225' salvo'
   end
   object RLReport1: TRLReport
-    Left = 456
-    Top = 208
+    Left = 27
+    Top = 155
     Width = 1123
     Height = 794
     Margins.LeftMargin = 5.000000000000000000
@@ -39,6 +39,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Font.Style = []
     PageSetup.Orientation = poLandscape
     Visible = False
+    BeforePrint = RLReport1BeforePrint
     object RLBand1: TRLBand
       Left = 20
       Top = 39
@@ -51,7 +52,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
       Borders.DrawRight = False
       Borders.DrawBottom = True
       object RLSystemInfo3: TRLSystemInfo
-        Left = 584
+        Left = 864
         Top = 61
         Width = 87
         Height = 16
@@ -74,14 +75,14 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         ParentFont = False
       end
       object RLSystemInfo1: TRLSystemInfo
-        Left = 376
+        Left = 656
         Top = 61
         Width = 39
         Height = 16
         Text = ''
       end
       object RLSystemInfo2: TRLSystemInfo
-        Left = 507
+        Left = 787
         Top = 61
         Width = 39
         Height = 16
@@ -89,7 +90,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         Text = ''
       end
       object RLLabel4: TRLLabel
-        Left = 337
+        Left = 617
         Top = 61
         Width = 37
         Height = 16
@@ -102,7 +103,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         ParentFont = False
       end
       object RLLabel5: TRLLabel
-        Left = 467
+        Left = 747
         Top = 61
         Width = 38
         Height = 16
@@ -115,21 +116,21 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         ParentFont = False
       end
       object RLLabel6: TRLLabel
-        Left = 593
+        Left = 873
         Top = 61
         Width = 35
         Height = 16
         Caption = 'P'#225'g.:'
       end
       object RLLabel7: TRLLabel
-        Left = 672
+        Left = 952
         Top = 61
         Width = 8
         Height = 16
         Caption = '/'
       end
       object RLSystemInfo4: TRLSystemInfo
-        Left = 681
+        Left = 961
         Top = 61
         Width = 112
         Height = 16
@@ -145,6 +146,32 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
           '________________________________________________________________' +
           '________________________________________________________________' +
           '___________________________'
+      end
+      object RLLabel18: TRLLabel
+        Left = 5
+        Top = 61
+        Width = 58
+        Height = 16
+        Caption = 'Per'#237'odo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPeriodo: TRLLabel
+        Left = 65
+        Top = 61
+        Width = 52
+        Height = 16
+        Caption = 'Per'#237'odo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
       end
     end
     object RLBand3: TRLBand
@@ -295,9 +322,9 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
           ParentColor = False
           Transparent = False
           object RLDBText1: TRLDBText
-            Left = 66
+            Left = 54
             Top = 4
-            Width = 367
+            Width = 307
             Height = 15
             AutoSize = False
             DataField = 'RAZAO'
@@ -305,67 +332,67 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText2: TRLDBText
-            Left = 434
+            Left = 369
             Top = 4
-            Width = 66
-            Height = 15
+            Width = 52
+            Height = 14
             Alignment = taCenter
             DataField = 'CPF_CNPJ'
             DataSource = dsClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText3: TRLDBText
-            Left = 541
+            Left = 584
             Top = 4
-            Width = 44
-            Height = 15
+            Width = 38
+            Height = 14
             Alignment = taCenter
             DataField = 'FONE1'
             DataSource = dsClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText4: TRLDBText
-            Left = 3
+            Left = 4
             Top = 4
-            Width = 52
-            Height = 15
+            Width = 46
+            Height = 14
             Alignment = taCenter
             DataField = 'CODIGO'
             DataSource = dsClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText7: TRLDBText
-            Left = 611
+            Left = 646
             Top = 4
-            Width = 246
+            Width = 238
             Height = 15
             AutoSize = False
             DataField = 'LOGRADOURO'
@@ -373,16 +400,16 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText8: TRLDBText
-            Left = 863
+            Left = 887
             Top = 4
-            Width = 75
+            Width = 48
             Height = 15
             AutoSize = False
             DataField = 'NUMERO'
@@ -390,16 +417,16 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
           end
           object RLDBText9: TRLDBText
-            Left = 921
+            Left = 937
             Top = 4
-            Width = 160
+            Width = 144
             Height = 15
             AutoSize = False
             DataField = 'BAIRRO'
@@ -407,11 +434,47 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = []
             ParentFont = False
             Text = ''
             Transparent = False
+          end
+          object RLDBText10: TRLDBText
+            Left = 451
+            Top = 4
+            Width = 38
+            Height = 14
+            AutoSize = False
+            DataField = 'QTD_COMPRAS'
+            DataSource = dsClientes
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Calibri'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+            BeforePrint = RLDBText10BeforePrint
+          end
+          object RLDBText11: TRLDBText
+            Left = 475
+            Top = 4
+            Width = 78
+            Height = 14
+            Alignment = taRightJustify
+            DataField = 'VLR_COMPRAS'
+            DataSource = dsClientes
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Calibri'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+            Transparent = False
+            BeforePrint = RLDBText11BeforePrint
           end
         end
         object RLBand6: TRLBand
@@ -477,83 +540,97 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
           object RLLabel10: TRLLabel
             Left = 3
             Top = 4
-            Width = 58
-            Height = 16
+            Width = 46
+            Height = 15
             Caption = 'CLIENTE'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
           end
           object RLLabel11: TRLLabel
-            Left = 433
+            Left = 367
             Top = 4
-            Width = 68
-            Height = 16
+            Width = 56
+            Height = 15
             Caption = 'CPF/CNPJ'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
           end
           object RLLabel14: TRLLabel
-            Left = 542
+            Left = 443
             Top = 4
-            Width = 39
-            Height = 16
-            Caption = 'FONE'
+            Width = 99
+            Height = 15
+            Caption = 'COMPRAS  TOTAL'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
           end
           object RLLabel3: TRLLabel
-            Left = 609
+            Left = 645
             Top = 4
-            Width = 33
-            Height = 16
+            Width = 27
+            Height = 15
             Caption = 'Rua:'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 2894892
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
           end
           object RLLabel15: TRLLabel
-            Left = 863
+            Left = 887
             Top = 4
             Width = 22
-            Height = 16
+            Height = 15
             Caption = 'N'#186':'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 2894892
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
           end
           object RLLabel17: TRLLabel
-            Left = 921
+            Left = 937
             Top = 4
-            Width = 47
-            Height = 16
+            Width = 40
+            Height = 15
             Caption = 'Bairro:'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 2894892
             Font.Height = -13
-            Font.Name = 'Arial'
+            Font.Name = 'Calibri'
+            Font.Style = [fsBold]
+            ParentFont = False
+            Transparent = False
+          end
+          object RLLabel2: TRLLabel
+            Left = 585
+            Top = 4
+            Width = 33
+            Height = 15
+            Caption = 'FONE'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Calibri'
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
@@ -564,7 +641,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object gpbCidade: TGroupBox
     Left = 10
-    Top = 152
+    Top = 216
     Width = 474
     Height = 85
     Caption = ' Cidade '
@@ -574,7 +651,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 2
     inline BuscaCidade1: TBuscaCidade
       Left = 16
       Top = 18
@@ -625,7 +702,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Left = 10
     Top = 7
     Width = 474
-    Height = 89
+    Height = 78
     Caption = ' Representante '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -648,10 +725,10 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         Font.Color = 4079166
       end
       inherited StaticText2: TStaticText
-        Width = 79
+        Width = 68
         Caption = 'Raz'#227'o Social'
         Font.Color = 4079166
-        ExplicitWidth = 79
+        ExplicitWidth = 68
       end
       inherited edtRazao: TEdit
         Width = 343
@@ -661,16 +738,18 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object Panel1: TPanel
     Left = 0
-    Top = 371
-    Width = 494
+    Top = 431
+    Width = 496
     Height = 39
     Align = alBottom
-    TabOrder = 2
+    TabOrder = 3
+    ExplicitTop = 640
+    ExplicitWidth = 1194
     DesignSize = (
-      494
+      496
       39)
     object btnImprimir: TSpeedButton
-      Left = 314
+      Left = 316
       Top = 5
       Width = 169
       Height = 30
@@ -745,9 +824,10 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
+      ExplicitLeft = 314
     end
     object btnSair: TSpeedButton
-      Left = 133
+      Left = 135
       Top = 5
       Width = 169
       Height = 30
@@ -822,11 +902,12 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         0000562600004F1E00006B3600007B48000085550000804F0000}
       NumGlyphs = 2
       OnClick = btnSairClick
+      ExplicitLeft = 133
     end
   end
   object rgFiltroClientes: TRadioGroup
     Left = 10
-    Top = 242
+    Top = 306
     Width = 474
     Height = 43
     Caption = ' Filtro de Clientes '
@@ -835,11 +916,11 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Items.Strings = (
       'INCLUIR clientes bloqueados'
       'EXCLUIR clientes bloqueados')
-    TabOrder = 3
+    TabOrder = 4
   end
   object gpbEstado: TGroupBox
     Left = 10
-    Top = 152
+    Top = 216
     Width = 474
     Height = 85
     Caption = ' Estado '
@@ -849,7 +930,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 5
     Visible = False
     inline BuscaEstado1: TBuscaEstado
       Left = 14
@@ -886,7 +967,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object rgpFiltro: TRadioGroup
     Left = 10
-    Top = 102
+    Top = 166
     Width = 474
     Height = 47
     Caption = ' Filtrar por: '
@@ -900,7 +981,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object edtCaminhoPlanilha: TEdit
     Left = 11
-    Top = 328
+    Top = 392
     Width = 430
     Height = 21
     Color = clWhite
@@ -909,7 +990,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object btnCaminho: TBitBtn
     Left = 450
-    Top = 326
+    Top = 390
     Width = 33
     Height = 25
     Enabled = False
@@ -986,30 +1067,54 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object chkGeraPlanilha: TCheckBox
     Left = 198
-    Top = 289
+    Top = 353
     Width = 291
     Height = 17
     Caption = 'Gerar planilha do excel com o resultado do relat'#243'rio'
     TabOrder = 9
     OnClick = chkGeraPlanilhaClick
   end
+  inline Periodo: TPeriodo
+    Left = 0
+    Top = 87
+    Width = 487
+    Height = 74
+    TabOrder = 1
+    ExplicitTop = 87
+    ExplicitWidth = 487
+    ExplicitHeight = 74
+    inherited grpPeriodo: TGroupBox
+      Left = 242
+      Top = 3
+      Width = 242
+      Caption = ' Per'#237'odo da compra '
+      ExplicitLeft = 242
+      ExplicitTop = 3
+      ExplicitWidth = 242
+    end
+  end
+  object rgpFiltroCompras: TRadioGroup
+    Left = 10
+    Top = 90
+    Width = 224
+    Height = 68
+    Caption = ' '
+    ItemIndex = 2
+    Items.Strings = (
+      'Clientes COM compras efetuadas'
+      'Clientes SEM compras efetuadas'
+      'Ambos os clientes')
+    TabOrder = 11
+  end
   object dsClientes: TDataSource
     DataSet = qryClientes
     Left = 56
-    Top = 184
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 354
-    Top = 128
+    Top = 200
   end
   object RLXLSFilter1: TRLXLSFilter
     DisplayName = 'Planilha Excel'
     Left = 314
-    Top = 176
+    Top = 192
   end
   object qryClientes: TFDQuery
     Connection = dm.FDConnection
@@ -1020,7 +1125,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
       
         '       en.codcidade, est.sigla uf, en.logradouro, en.numero, en.' +
         'bairro, rep.razao representante, cid.nome || '#39' - '#39' || est.sigla ' +
-        'cidade'
+        'cidade, ccp.qtd_compras, ccp.vlr_compras'
       ''
       '  from pessoas cli'
       ''
@@ -1037,16 +1142,29 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
         '  left join cidades               cid on cid.codibge = en.codcid' +
         'ade'
       '  left join estados               est on est.codigo = cid.codest'
+      
+        '  left join COMPRAS_CLIENTE_PERIODO(cli.codigo, :dti, :dtf) CCP ' +
+        'on (1=1)'
       ''
       
         '   where  en.codcidade = :cod_cid  and iif(cli.bloqueado is null' +
         ', '#39'N'#39', cli.bloqueado) <> :bloq'
-      ''
+      '       and (CCP.qtd_compras > 0)'
       '   order by cr.cod_representante, en.codcidade'
       '')
     Left = 16
-    Top = 184
+    Top = 200
     ParamData = <
+      item
+        Name = 'DTI'
+        DataType = ftDate
+        ParamType = ptInput
+      end
+      item
+        Name = 'DTF'
+        DataType = ftDate
+        ParamType = ptInput
+      end
       item
         Name = 'COD_CID'
         DataType = ftInteger
@@ -1144,6 +1262,22 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
       ProviderFlags = []
       ReadOnly = True
       Size = 77
+    end
+    object qryClientesQTD_COMPRAS: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTD_COMPRAS'
+      Origin = 'QTD_COMPRAS'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryClientesVLR_COMPRAS: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VLR_COMPRAS'
+      Origin = 'VLR_COMPRAS'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
 end

@@ -2,7 +2,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   Left = 0
   Top = 0
   Caption = 'Transferencia de Estoque'
-  ClientHeight = 562
+  ClientHeight = 603
   ClientWidth = 694
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,22 +13,21 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   OldCreateOrder = False
   DesignSize = (
     694
-    562)
+    603)
   PixelsPerInch = 96
   TextHeight = 13
   object Shape2: TShape
     Left = -11
-    Top = 408
+    Top = 464
     Width = 705
-    Height = 80
+    Height = 72
     Anchors = [akLeft, akTop, akRight]
     Brush.Color = 15395562
     Pen.Color = 14211288
-    ExplicitWidth = 630
   end
   object Label1: TLabel
     Left = 8
-    Top = 6
+    Top = 57
     Width = 367
     Height = 17
     Caption = 'Informe a refer'#234'ncia de origem da transfer'#234'ncia de estoque'
@@ -41,7 +40,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label2: TLabel
     Left = 8
-    Top = 206
+    Top = 257
     Width = 345
     Height = 17
     Caption = 'Informe a refer'#234'ncia que receber'#225' o estoque transferido'
@@ -54,7 +53,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label4: TLabel
     Left = 66
-    Top = 414
+    Top = 470
     Width = 97
     Height = 17
     Caption = 'Estoque origem'
@@ -68,7 +67,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label3: TLabel
     Left = 528
-    Top = 412
+    Top = 468
     Width = 99
     Height = 17
     Caption = 'Estoque destino'
@@ -82,7 +81,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label5: TLabel
     Left = 294
-    Top = 414
+    Top = 470
     Width = 92
     Height = 17
     Caption = 'Qtde. Transferir'
@@ -96,7 +95,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label6: TLabel
     Left = 219
-    Top = 438
+    Top = 494
     Width = 27
     Height = 17
     Caption = '>>>'
@@ -110,7 +109,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object Label7: TLabel
     Left = 448
-    Top = 438
+    Top = 494
     Width = 27
     Height = 17
     Caption = '>>>'
@@ -122,15 +121,43 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     ParentFont = False
     Transparent = True
   end
+  object Label8: TLabel
+    Left = 449
+    Top = 145
+    Width = 31
+    Height = 17
+    Caption = 'Setor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object Label9: TLabel
+    Left = 447
+    Top = 343
+    Width = 31
+    Height = 17
+    Caption = 'Setor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
   inline BuscaProduto1: TBuscaProduto
     Left = 10
-    Top = 32
+    Top = 83
     Width = 587
     Height = 52
     TabOrder = 0
     OnExit = BuscaProduto1Exit
     ExplicitLeft = 10
-    ExplicitTop = 32
+    ExplicitTop = 83
     ExplicitHeight = 52
     inherited StaticText3: TStaticText
       Width = 33
@@ -152,15 +179,15 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     end
   end
   inline BuscaCor1: TBuscaCor
-    Left = 10
-    Top = 88
+    Left = 8
+    Top = 139
     Width = 425
     Height = 46
     TabOrder = 1
     OnEnter = BuscaCor1Enter
     OnExit = BuscaCor1Exit
-    ExplicitLeft = 10
-    ExplicitTop = 88
+    ExplicitLeft = 8
+    ExplicitTop = 139
     ExplicitWidth = 425
     ExplicitHeight = 46
     inherited StaticText2: TStaticText
@@ -174,17 +201,22 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
       Font.Style = []
       ExplicitWidth = 56
     end
+    inherited btnBusca: TBitBtn
+      Top = 22
+      ExplicitTop = 22
+    end
     inherited edtDescricao: TEdit
       Left = 125
-      Top = 26
-      OnChange = BuscaCor1edtDescricaoChange
+      Top = 23
+      Width = 295
       ExplicitLeft = 125
-      ExplicitTop = 26
+      ExplicitTop = 23
+      ExplicitWidth = 295
     end
   end
   object rgTamanhos1: TRadioGroup
     Left = 0
-    Top = 140
+    Top = 191
     Width = 694
     Height = 50
     Anchors = [akLeft, akTop, akRight]
@@ -217,13 +249,14 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   inline BuscaProduto2: TBuscaProduto
     Left = 10
-    Top = 232
-    Width = 587
+    Top = 283
+    Width = 556
     Height = 52
     TabOrder = 3
     OnExit = BuscaProduto2Exit
     ExplicitLeft = 10
-    ExplicitTop = 232
+    ExplicitTop = 283
+    ExplicitWidth = 556
     ExplicitHeight = 52
     inherited StaticText3: TStaticText
       Width = 33
@@ -246,13 +279,14 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   inline BuscaCor2: TBuscaCor
     Left = 10
-    Top = 288
+    Top = 339
     Width = 425
     Height = 46
     TabOrder = 4
     OnEnter = BuscaCor2Enter
+    OnExit = BuscaCor2Exit
     ExplicitLeft = 10
-    ExplicitTop = 288
+    ExplicitTop = 339
     ExplicitWidth = 425
     ExplicitHeight = 46
     inherited StaticText2: TStaticText
@@ -266,13 +300,14 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
       Font.Style = []
       ExplicitWidth = 56
     end
-    inherited edtDescricao: TEdit
-      OnChange = BuscaCor2edtDescricaoChange
+    inherited btnBusca: TBitBtn
+      Top = 22
+      ExplicitTop = 22
     end
   end
   object rgTamanhos2: TRadioGroup
     Left = 0
-    Top = 343
+    Top = 394
     Width = 694
     Height = 50
     Anchors = [akLeft, akTop, akRight]
@@ -305,7 +340,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object edtEstoqueDestino: TCurrencyEdit
     Left = 528
-    Top = 435
+    Top = 491
     Width = 109
     Height = 26
     AutoSize = False
@@ -323,7 +358,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object edtEstoqueOrigem: TCurrencyEdit
     Left = 66
-    Top = 435
+    Top = 491
     Width = 109
     Height = 26
     AutoSize = False
@@ -342,7 +377,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object edtQtdTransferir: TCurrencyEdit
     Left = 295
-    Top = 435
+    Top = 491
     Width = 109
     Height = 26
     AutoSize = False
@@ -360,7 +395,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 511
+    Top = 552
     Width = 694
     Height = 51
     Align = alBottom
@@ -523,7 +558,7 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object edtCodEstoque1: TCurrencyEdit
     Left = 8
-    Top = 467
+    Top = 507
     Width = 48
     Height = 21
     AutoSize = False
@@ -533,12 +568,61 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   end
   object edtCodEstoque2: TCurrencyEdit
     Left = 471
-    Top = 467
+    Top = 523
     Width = 48
     Height = 21
     AutoSize = False
     DisplayFormat = '0'
     TabOrder = 11
     Visible = False
+  end
+  object cbxSetorOrigem: TComboBox
+    Left = 448
+    Top = 164
+    Width = 118
+    Height = 21
+    Style = csDropDownList
+    Enabled = False
+    ItemIndex = 0
+    TabOrder = 12
+    Text = 'F'#225'brica'
+    Items.Strings = (
+      'F'#225'brica'
+      'E-Commerce')
+  end
+  object cbxSetorDestino: TComboBox
+    Left = 446
+    Top = 362
+    Width = 118
+    Height = 21
+    Style = csDropDownList
+    Enabled = False
+    ItemIndex = 0
+    TabOrder = 13
+    Text = 'F'#225'brica'
+    Items.Strings = (
+      'F'#225'brica'
+      'E-Commerce')
+  end
+  object rgpOpcaoTransferencia: TRadioGroup
+    Left = 8
+    Top = 1
+    Width = 677
+    Height = 48
+    Caption = ' Op'#231#245'es de transfer'#234'ncia '
+    Columns = 3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ItemIndex = 0
+    Items.Strings = (
+      'F'#225'brica para F'#225'brica'
+      'F'#225'brica para E-Commerce'
+      'E-Commerce para F'#225'brica')
+    ParentFont = False
+    TabOrder = 14
+    OnClick = rgpOpcaoTransferenciaClick
   end
 end

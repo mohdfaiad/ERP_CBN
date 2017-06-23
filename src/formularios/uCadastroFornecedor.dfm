@@ -1205,10 +1205,6 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
       FieldName = 'OBSERVACAO'
       Size = 200
     end
-    object cdsBLOQUEADO: TStringField
-      FieldName = 'BLOQUEADO'
-      Size = 1
-    end
     object cdsMOTIVO_BLOQ: TStringField
       FieldName = 'MOTIVO_BLOQ'
       Size = 500

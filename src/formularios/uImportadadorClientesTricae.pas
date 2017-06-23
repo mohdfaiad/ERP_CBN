@@ -50,7 +50,7 @@ type
 
 CONST
   TABELA_PRECO    = 'TABELA_PRECO=';
-  REPRESENTANTE   = 'REPRESENTANTE=';
+  _REPRESENTANTE   = 'REPRESENTANTE=';
   FORMA_PAGAMENTO = 'FORMA_PAGAMENTO=';
   TRANSPORTADORA  = 'TRANSPORTADORA=';
 
@@ -61,7 +61,7 @@ implementation
 
 uses Pessoa, repositorio, fabricarepositorio, EspecificacaoPessoaPorCpfCnpj, Endereco, Cliente, Cliente_Representante,
      EspecificacaoCidadePorNome, Cidade, Funcoes, uModulo, EspecificacaoClientePorCodigoPessoa, EspecificacaoEnderecoComPessoaIgualA,
-     EspecificacaoClienteHasRepresentantePorCodPessoa;
+     EspecificacaoClienteHasRepresentantePorCodPessoa, Representante;
 
 {$R *.dfm}
 
@@ -137,20 +137,15 @@ end;
 
 procedure TfrmImportadadorClientesTricae.btnImportarClick(Sender: TObject);
 var Excel, Sheet: OleVariant;
-  i, CInc, CAlt :integer;
-  Cliente :TPessoa;
+  i, CInc, CAlt, codigoPessoa :integer;
+  Cliente :TCliente;
   repositorio :TRepositorio;
   repositorioCliente :TRepositorio;
   especificacao :TEspecificacaoPessoaPorCpfCnpj;
   especificacaoCidade :TEspecificacaoCidadePorNome;
   cpfCnpj, cidade, estado :String;
-  Endereco :TEndereco;
-  InfoCliente :TCliente;
-  Cliente_Representante :TCliente_Representante;
   CidadeCliente :TCidade;
   EspecificacaoCliente       :TEspecificacaoClientePorCodigoPessoa;
-  EspecificacaoEndereco      :TEspecificacaoEnderecoComPessoaIgualA;
-  EspecificacaoRepresentante :TEspecificacaoClienteHasRepresentantePorCodPessoa;
   Status :TStatus;
 begin
   Aguarda('Importando clientes, aguarde...');
@@ -175,8 +170,6 @@ begin
 
      repositorio   := nil;
      Cliente       := nil;
-     InfoCliente   := nil;
-     Endereco      := nil;
      CidadeCliente := nil;
      i             := 2;
      CInc          := 0;
@@ -184,8 +177,6 @@ begin
      mmoLog.Lines.Clear;
      lbClientesAlt.Caption := '0';
      lbClientesInc.Caption := '0';
-
-    // Sheet := Excel.Workbooks[1].WorkSheets[''];
 
      while Excel.WorkBooks[1].Sheets[1].Cells[i,2].value > 0 do
      begin
@@ -196,12 +187,12 @@ begin
         if length(cpfCnpj) = 10 then
           cpfCnpj := '0'+ cpfCnpj;
 
-        repositorioCliente := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-        especificacao      := TEspecificacaoPessoaPorCpfCnpj.Create(cpfCnpj);
-        Cliente            := TPessoa(repositorioCliente.GetPorEspecificacao(especificacao, cpfCnpj));
+        repositorioCliente := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+        codigoPessoa       := strToIntDef(Campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',cpfCnpj),0);
+        Cliente            := TCliente(repositorioCliente.Get(codigoPessoa));
 
         if not assigned(Cliente) then
-          Cliente := TPessoa.Create;
+          Cliente := TCliente.Create;
 
         if Cliente.codigo = 0 then
         begin
@@ -226,77 +217,39 @@ begin
 
         Cliente.Observacao := 'CLIENTE TRICAE';
 
-        if Status = stAlterando then
-        begin
-          EspecificacaoEndereco := TEspecificacaoEnderecoComPessoaIgualA.Create(Cliente);
-          repositorio           := TFabricaRepositorio.GetRepositorio(TEndereco.ClassName);
-          Endereco              := TEndereco( repositorio.GetPorEspecificacao(EspecificacaoEndereco, IntTostr(Cliente.codigo)) );
-        end
-        else
-          Endereco := TEndereco.Create;
+        if not assigned(Cliente.Endereco) then
+          Cliente.Endereco := TEndereco.Create;
 
         cidade               := TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,18]));
         estado               := TRIM(Excel.WorkBooks[1].Sheets[1].Cells[i,14]);
+
         especificacaoCidade  := TEspecificacaoCidadePorNome.Create( RemoveAcento(cidade), estado);
         repositorio          := TFabricaRepositorio.GetRepositorio(TCidade.ClassName);
         CidadeCliente        := TCIdade(repositorio.GetPorEspecificacao(especificacaoCidade));
         try
-          Endereco.CodCidade   := CidadeCliente.codibge;
+          Cliente.Endereco.CodCidade   := CidadeCliente.codibge;
         except
           mmoLog.Lines.Add('Atenção! Nome de cidade inválido: "'+ cidade + '". Cadastro de cidade pendente,');
           mmoLog.Lines.Add('para o cliente '+inttostr(Cliente.codigo)+' - "'+AnsiUpperCase(Cliente.Razao)+'" < < <');
         end;
 
+        if assigned(Cliente.Endereco) then
+        begin
+          Cliente.Endereco.Logradouro  := getRua( TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,11])) );
+          Cliente.Endereco.Numero      := getNumero( TRIM(Excel.WorkBooks[1].Sheets[1].Cells[i,11] ));
+          Cliente.Endereco.Bairro      := TRIM(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,13]));
+          Cliente.Endereco.CEP         := substituiString( Excel.WorkBooks[1].Sheets[1].Cells[i,19], '-', '');
+          Cliente.Endereco.Pais        := 'BRASIL';
+          Cliente.Endereco.Complemento := TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,12]));
+        end;
+
+
+        Cliente.CodTabelaPreco    := ListaTabelaPreco.CodCampo;
+        Cliente.CodFormasPgto     := ListaFormaPagamento.CodCampo;
+        Cliente.CodTransportadora := ListaTransportadora.CodCampo;
+        Cliente.CodRepresentante  := ListaRepresentante.CodCampo;
+
         repositorioCliente.Salvar(Cliente);
-
-        if assigned(Endereco) then
-        begin
-          Endereco.codpessoa   := Cliente.Codigo;
-          Endereco.Logradouro  := getRua( TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,11])) );
-          Endereco.Numero      := getNumero( TRIM(Excel.WorkBooks[1].Sheets[1].Cells[i,11] ));
-          Endereco.Bairro      := TRIM(AnsiUpperCase( Excel.WorkBooks[1].Sheets[1].Cells[i,13]));
-          Endereco.CEP         := substituiString( Excel.WorkBooks[1].Sheets[1].Cells[i,19], '-', '');
-          Endereco.Pais        := 'BRASIL';
-          Endereco.Complemento := TRIM(AnsiUpperCase(Excel.WorkBooks[1].Sheets[1].Cells[i,12]));
-
-          repositorio := TFabricaRepositorio.GetRepositorio(TEndereco.ClassName);
-          repositorio.Salvar(Endereco);
-        end;
-
-        repositorio           := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
-        if Status = stAlterando then
-        begin
-          EspecificacaoCliente  := TEspecificacaoClientePorCodigoPessoa.Create(Cliente.Codigo);
-          InfoCliente           := TCliente( repositorio.GetPorEspecificacao(EspecificacaoCliente, IntTostr(Cliente.codigo)) );
-        end;
-
-        if not assigned(InfoCliente) then
-          InfoCliente := TCliente.Create;
-
-        InfoCliente.CodCli            := Cliente.Codigo;
-        InfoCliente.CodTabelaPreco    := ListaTabelaPreco.CodCampo;
-        InfoCliente.CodFormasPgto     := ListaFormaPagamento.CodCampo;
-        InfoCliente.CodTransportadora := ListaTransportadora.CodCampo;
-
-        repositorio.Salvar(InfoCliente);
-
-        FreeAndNil(InfoCliente);
-
-        repositorio := TFabricaRepositorio.GetRepositorio(TCliente_Representante.ClassName);
-        if Status = stAlterando then
-        begin
-          EspecificacaoRepresentante := TEspecificacaoClienteHasRepresentantePorCodPessoa.Create(Cliente.Codigo);
-          Cliente_Representante      := TCliente_Representante( repositorio.GetPorEspecificacao(EspecificacaoRepresentante, IntTostr(Cliente.codigo)) );
-        end;
-
-        if not assigned(Cliente_Representante) then
-          Cliente_Representante := TCliente_Representante.Create;
-
-        Cliente_Representante.cod_cliente       := Cliente.Codigo;
-        Cliente_Representante.cod_representante := ListaRepresentante.CodCampo;
-
-        repositorio.Salvar(Cliente_Representante);
-        FreeAndNil(Cliente_Representante);
 
         lbClientesInc.Caption := IntToStr(CInc);
         lbClientesAlt.Caption := IntToStr(CAlt);
@@ -320,9 +273,6 @@ begin
     FreeAndNil(repositorio);
     FreeAndNil(repositorioCliente);
     FreeAndNil(Cliente);
-    FreeAndNil(Endereco);
-    FreeAndNil(InfoCliente);
-    FreeAndNil(Cliente_Representante);    
     FreeAndNil(CidadeCliente);
 
     Excel := Unassigned;
@@ -374,7 +324,7 @@ begin
     Rewrite(arq);
 
     Writeln(arq, TABELA_PRECO + IntToStr(ListaTabelaPreco.CodCampo));
-    Writeln(arq, REPRESENTANTE+ IntToStr(ListaRepresentante.CodCampo));
+    Writeln(arq, _REPRESENTANTE+ IntToStr(ListaRepresentante.CodCampo));
     Writeln(arq, FORMA_PAGAMENTO+ IntToStr(ListaFormaPagamento.CodCampo));
     Writeln(arq, TRANSPORTADORA+ IntToStr(ListaTransportadora.CodCampo));
 
@@ -400,7 +350,7 @@ begin
 
        if pos(TABELA_PRECO, linha) > 0 then
          ListaTabelaPreco.CodCampo := StrToInt( copy(linha, pos('=',linha)+1, 5) )
-       else if pos(REPRESENTANTE, linha) > 0 then
+       else if pos(_REPRESENTANTE, linha) > 0 then
          ListaRepresentante.CodCampo := StrToInt( copy(linha, pos('=',linha)+1, 5) )
        else if pos(FORMA_PAGAMENTO, linha) > 0 then
          ListaFormaPagamento.CodCampo := StrToInt( copy(linha, pos('=',linha)+1, 5) )

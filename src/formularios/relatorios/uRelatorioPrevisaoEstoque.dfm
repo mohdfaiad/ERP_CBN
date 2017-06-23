@@ -2,11 +2,11 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
   Left = 381
   Top = 211
   Caption = 'Relat'#243'rio de previs'#227'o de estoque'
-  ClientHeight = 323
-  ClientWidth = 630
+  ClientHeight = 309
+  ClientWidth = 629
   OnShow = FormShow
-  ExplicitWidth = 646
-  ExplicitHeight = 361
+  ExplicitWidth = 645
+  ExplicitHeight = 347
   PixelsPerInch = 96
   TextHeight = 13
   object RLReport1: TRLReport
@@ -421,18 +421,18 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
   end
   object Panel1: TPanel
     Left = 0
-    Top = 284
-    Width = 630
+    Top = 270
+    Width = 629
     Height = 39
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 270
-    ExplicitWidth = 628
+    ExplicitTop = 284
+    ExplicitWidth = 630
     DesignSize = (
-      630
+      629
       39)
     object btnImprimir: TSpeedButton
-      Left = 450
+      Left = 449
       Top = 5
       Width = 169
       Height = 30
@@ -510,7 +510,7 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
       ExplicitLeft = 448
     end
     object SpeedButton1: TSpeedButton
-      Left = 269
+      Left = 268
       Top = 5
       Width = 169
       Height = 30
@@ -779,14 +779,6 @@ inherited frmRelatorioPrevisaoEstoque: TfrmRelatorioPrevisaoEstoque
   object dsPrevisao: TDataSource
     DataSet = qryPrevisao
     Left = 48
-    Top = 8
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 90
     Top = 8
   end
   object qryPrevisao: TFDQuery

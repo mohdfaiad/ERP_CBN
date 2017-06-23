@@ -357,6 +357,7 @@ type
     cdsConferidosCOD_COR: TIntegerField;
     cdsConferidosCOD_TAMANHO: TIntegerField;
     cdsConferidosQUANTIDADE: TFloatField;
+    cdsItensTIPO_COR: TStringField;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -468,6 +469,7 @@ type
 
     function  busca_estoque(codproduto :String; codcor :integer; Tamanho:String) :Real;
     procedure busca_estoque_reservado(codproduto :String; codcor :integer);
+    procedure busca_estoque_normal(codproduto :String; codcor :integer);
 
     { mostra o estoque da referencia selecionada no grid }
     procedure mostra_estoque;
@@ -855,24 +857,34 @@ end;
 procedure TfrmConferenciaPedido.btnSalvarClick(Sender: TObject);
 begin
  try
+   dm.conexao.TxOptions.AutoCommit := false;
    if not assigned(self.BuscaPedido1.Ped) then EXIT;
    if not ((cdsItensConferidos.Active) or (cdsItensConferidos.IsEmpty)) and not(FVisualizarConferencia) then begin
      avisar('Não é possível salvar conferência, pois nenhum item foi conferido.');
      Exit;
    end;
 
-   pnlBotoes.Enabled := false;
-   Aguarda('Salvando Conferência...');
-   if Salvar_conferencia then begin
-     avisar('Conferencia salva com sucesso');
-
-     if chManterConferencia.Checked then
-       reinicia_pedido
-     else
-       self.btnCancelar.Click;
+   try
+     pnlBotoes.Enabled := false;
+     Aguarda('Salvando Conferência...');
+     if Salvar_conferencia then begin
+       avisar('Conferencia salva com sucesso');
+       dm.conexao.Commit;
+       if chManterConferencia.Checked then
+         reinicia_pedido
+       else
+         self.btnCancelar.Click;
+     end
+   Except
+     on e :Exception do
+     begin
+       dm.conexao.Rollback;
+       avisar(e.message);
+     end;
    end;
 
  finally
+   dm.conexao.TxOptions.AutoCommit := true;
    pnlBotoes.Enabled := true;
    self.FimAguarda('');
  end;
@@ -961,15 +973,13 @@ begin
 
    atualizaTabelaDirecionamento;
 
-
    //se foi 100% conferido
    if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then
    begin
      atualiza_estoque( BuscaPedido1.Ped.codigo, -1);
      retornarProdutosAoKit(ConferenciaPedido);
    end;
-
-   result := true;
+   result             := true;
 
  finally
    freeAndNil( repositorio );
@@ -2330,11 +2340,16 @@ end;
 
 procedure TfrmConferenciaPedido.atualiza_estoque(codigo_pedido :integer; operacao :integer);
 begin
-  dm.qryGenerica.Close;
-  dm.qryGenerica.SQL.Text := 'execute procedure baixa_pedido_estoque('+intToStr(codigo_pedido)+', :multiplicador)';
-  // multiplicador determina se os itens conferidos dão baixa no estoque (-1), ou se retornam pro estoque (+1)
-  dm.qryGenerica.ParamByName('multiplicador').AsInteger := -1;
-  dm.qryGenerica.ExecSQL;
+  try
+    dm.qryGenerica.Close;
+    dm.qryGenerica.SQL.Text := 'execute procedure baixa_pedido_estoque('+intToStr(codigo_pedido)+', :multiplicador)';
+    // multiplicador determina se os itens conferidos dão baixa no estoque (-1), ou se retornam pro estoque (+1)
+    dm.qryGenerica.ParamByName('multiplicador').AsInteger := -1;
+    dm.qryGenerica.ExecSQL;
+  Except
+     on e :Exception do
+       raise Exception.Create('Erro ao atualizar estoque.'+#13#10+e.message);
+  end;
 end;
 
 procedure TfrmConferenciaPedido.Busca_tamanhos(var cds: TClientDataSet);
@@ -2627,35 +2642,50 @@ begin
   codigo_produto := verificaSeEKit(cdsItensCodPro.AsInteger);
 
   busca_estoque_reservado(codigo_produto, cdsItensCodCor.AsInteger);
+  busca_estoque_normal(codigo_produto, cdsItensCodCor.AsInteger);
 
-  edtRN.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'RN') -
+  dm.qryGenerica.First;
+  edtRN.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_RN').AsInteger;
-  edtP.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'P') -
+  dm.qryGenerica.Next;
+  edtP.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_P').AsInteger;
-  edtM.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'M') -
+  dm.qryGenerica.Next;
+  edtM.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_M').AsInteger;
-  edtG.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'G') -
+  dm.qryGenerica.Next;
+  edtG.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_G').AsInteger;
-  edt1.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '1') -
+  dm.qryGenerica.Next;
+  edt1.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_1').AsInteger;
-  edt2.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '2') -
+  dm.qryGenerica.Next;
+  edt2.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_2').AsInteger;
-  edt3.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '3') -
+  dm.qryGenerica.Next;
+  edt3.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_3').AsInteger;
-  edt4.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '4') -
+  dm.qryGenerica.Next;
+  edt4.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_4').AsInteger;
-  edt6.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '6') -
+  dm.qryGenerica.Next;
+  edt6.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_6').AsInteger;
-  edt8.Value     := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '8') -
+  dm.qryGenerica.Next;
+  edt8.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_8').AsInteger;
-  edt10.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '10') -
-                    dm.qryGenerica2.fieldByName('QTD_10').AsInteger;
-  edt12.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '12') -
-                    dm.qryGenerica2.fieldByName('QTD_12').AsInteger;
-  edt14.Value    := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, '14') -
-                    dm.qryGenerica2.fieldByName('QTD_14').AsInteger;
-  edtUNICA.Value := busca_estoque(codigo_produto, cdsItensCodCor.AsInteger, 'UNICA') -
+  dm.qryGenerica.Next;
+  edtUNICA.Value := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
                     dm.qryGenerica2.fieldByName('QTD_UNICA').AsInteger;
+  dm.qryGenerica.Next;
+  edt10.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
+                    dm.qryGenerica2.fieldByName('QTD_10').AsInteger;
+  dm.qryGenerica.Next;
+  edt12.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
+                    dm.qryGenerica2.fieldByName('QTD_12').AsInteger;
+  dm.qryGenerica.Next;
+  edt14.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
+                    dm.qryGenerica2.fieldByName('QTD_14').AsInteger;
 
 end;
 
@@ -2961,22 +2991,102 @@ begin
   end;
 end;
 
-procedure TfrmConferenciaPedido.busca_estoque_reservado(codproduto :String; codcor: integer);
+procedure TfrmConferenciaPedido.busca_estoque_normal(codproduto: String; codcor: integer);
+var estoqueEcommerce :Boolean;
+    setor :integer;
 begin
+  estoqueEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and
+                      (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                      (cdsItensTIPO_COR.AsString = 'E');
+
+  setor := IfThen(estoqueEcommerce, 2,1);
+
+  if pos(',',codproduto) = 0 then
+      if ( Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',codproduto) = '2' )
+      and (codcor in [55,66]) then
+        codcor := 0;
+
+  dm.qryGenerica.Close;
+  dm.qryGenerica.SQL.Text :=  '  select sum(e.quantidade) quantidade, 1 TAMANHO from estoque e                                   '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 1 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 2 TAM_P from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 2 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 3 TAM_M from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 3 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 4 TAM_G from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 4 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 5 TAM_1 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 5 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 6 TAM_2 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 6 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 7 TAM_3 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 7 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 8 TAM_4 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 8 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 9 TAM_6 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 9 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 10 TAM_8 from estoque e                                      '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 10 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 11 TAM_UNICA from estoque e                                  '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 11 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 16 TAM_10 from estoque e                                     '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 16 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 17 TAM_12 from estoque e                                     '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 17 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              '    union all                                                                                                       '+
+                              'select sum(e.quantidade) quantidade, 18 TAM_14 from estoque e                                     '+
+                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 18 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
+                              'order by 2                                                                                                          ';
+
+   dm.qryGenerica.ParamByName('codcor').AsInteger := codcor;
+   dm.qryGenerica.ParamByName('s').AsInteger := setor;
+   dm.qryGenerica.open;
+end;
+
+procedure TfrmConferenciaPedido.busca_estoque_reservado(codproduto :String; codcor: integer);
+var estoqueEcommerce :boolean;
+  joinsEcommerce, condicaoEcommerce :string;
+begin
+  estoqueEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and
+                      (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                      (cdsItensTIPO_COR.AsString = 'E');
+
+  if estoqueEcommerce then
+  begin
+    joinsEcommerce   := 'inner join pedidos            ped on ped.codigo = i.cod_pedido           '+
+                      'inner join pessoas            rep on rep.codigo = ped.cod_repres         '+
+                      'left join  dados_representante dr on dr.codigo_representante = rep.codigo';
+
+    condicaoEcommerce := ' and dr.rep_ecommerce = ''S'' and pro.tipo = ''E'' ';
+  end;
+
   dm.qryGenerica2.Close;
-  dm.qryGenerica2.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G, '+
-                              ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,         '+
-                              ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_8) QTD_10, sum(ci.qtd_8) QTD_12,      '+
-                              ' sum(ci.qtd_8) QTD_14, sum(ci.qtd_unica) QTD_unica                                           '+
-                              ' from ITENS i                                                                                '+
-                              ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                                '+
-                              ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                        '+
-                              ' left join cores              cor on cor.codigo = i.cod_cor                                  '+
-                              ' left join produtos           pro on pro.codigo = i.cod_produto                              '+
+  dm.qryGenerica2.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,  '+
+                              ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,          '+
+                              ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_8) QTD_10, sum(ci.qtd_8) QTD_12,        '+
+                              ' sum(ci.qtd_8) QTD_14, sum(ci.qtd_unica) QTD_unica                                            '+
+                              ' from ITENS i                                                                                 '+
+                              ' inner join conferencia_itens  ci on ci.codigo_item = i.codigo                                '+
+                              ' inner join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                        '+
+                              ' inner join cores              cor on cor.codigo = i.cod_cor                                  '+
+                              ' inner join produtos           pro on pro.codigo = i.cod_produto                              '+
+                                joinsEcommerce +
 
                               { < 01/01/1990 pois a data padrao do fb é 30/12/1899, significando conferencia em aberto }
                               ' where cp.fim < ''01.01.1900'' and i.cod_produto in (' + codproduto + ')' +
-                                IfThen(codcor in [55,66],'','   and cor.codigo = ' + IntToStr(codcor)) +
+                                IfThen(codcor in [55,66],'','   and cor.codigo = ' + IntToStr(codcor)) + condicaoEcommerce +
                               { quando é 55 ou 66 significa cor generica, então soma-se o estoque das cores que se enquadram }
 
                               ' group by pro.referencia, cor.referencia                                                     '+

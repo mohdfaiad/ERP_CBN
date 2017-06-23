@@ -5269,6 +5269,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object TabSheet2: TTabSheet
       Caption = 'Itens Conferidos'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         1076
         394)
@@ -6996,7 +7000,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900C80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7422,6 +7426,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsItensCODIGO_KIT: TIntegerField
       FieldName = 'CODIGO_KIT'
     end
+    object cdsItensTIPO_COR: TStringField
+      FieldName = 'TIPO_COR'
+      Size = 1
+    end
   end
   object Timer2: TTimer
     Enabled = False
@@ -7449,7 +7457,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         'o) = '#39#39'), cor.descricao, cor.desc_producao|| '#39' '#39' ||cor.cor) cor,'
       
         '       cor.referencia refcor, ci.numero_caixa num_caixa, pro.cod' +
-        '_tipo tipo, i.preco, codigo_kit,'
+        '_tipo tipo, i.preco, codigo_kit, pro.tipo tipo_cor,'
       ''
       '       i.qtd_rn qtd_rn_o,'
       '       i.qtd_p qtd_p_o,'

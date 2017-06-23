@@ -8,20 +8,19 @@ object BuscaPessoa: TBuscaPessoa
   object StaticText1: TStaticText
     Left = 0
     Top = 0
-    Width = 43
+    Width = 42
     Height = 17
     Caption = 'C'#243'digo'
     Color = clWhite
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
     TabOrder = 1
-    Transparent = False
   end
   object edtCodigo: TCurrencyEdit
     Left = 0
@@ -37,20 +36,19 @@ object BuscaPessoa: TBuscaPessoa
   object StaticText2: TStaticText
     Left = 102
     Top = 0
-    Width = 43
+    Width = 40
     Height = 17
     Caption = 'Cliente'
     Color = clWhite
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
     TabOrder = 2
-    Transparent = False
   end
   object btnBuscar: TBitBtn
     Left = 71

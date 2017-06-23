@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, ComObj,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Vcl.Buttons, Vcl.ExtCtrls, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, frameBuscaTabelaPreco, RLReport, RLFilters, RLXLSFilter, uPadrao, RLXLSXFilter, RLPreviewForm, RLRichFilter, RLPDFFilter;
+  FireDAC.Comp.Client, frameBuscaTabelaPreco, RLReport, RLFilters, RLXLSFilter, uPadrao, RLXLSXFilter, RLPreviewForm, RLRichFilter;
 
 type
   TfrmRelatorioTabelasPreco = class(TfrmPadrao)
@@ -42,10 +42,10 @@ type
     RLLabel7: TRLLabel;
     RLLabel8: TRLLabel;
     RLXLSXFilter1: TRLXLSXFilter;
-    RLPDFFilter1: TRLPDFFilter;
     RLRichFilter1: TRLRichFilter;
     RLLabel2: TRLLabel;
     rlbTitulo: TRLLabel;
+    qryORDEMGRUPO: TIntegerField;
     procedure btnImprimirClick(Sender: TObject);
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnSairClick(Sender: TObject);
@@ -60,6 +60,9 @@ var
   frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco;
 
 implementation
+
+uses
+  System.StrUtils;
 
 {$R *.dfm}
 
@@ -102,8 +105,8 @@ end;
 
 procedure TfrmRelatorioTabelasPreco.gerarPlanilha(caminho :String);
 var objExcel,Sheet,Chart,s : Variant;
-    cTitulo, grupo : string;
-    i, linha : integer;
+    cTitulo, grupo, colecao : string;
+    i, linha, ordem : integer;
 begin
  try
    cTitulo := 'Tabelas de Preço';
@@ -111,6 +114,7 @@ begin
    objExcel.Visible := False;
    objExcel.Caption := cTitulo;
    objExcel.DisplayAlerts := False;
+
 
    objExcel.Workbooks.Add;
    objExcel.Workbooks[1].Sheets.Add;
@@ -124,9 +128,28 @@ begin
    Sheet.Range['A1'].VerticalAlignment := 2;
    Sheet.Range['A1'].RowHeight := 60;
 
+   Sheet.cells.font.size := 10;
+   ordem := 0;
+   colecao := '';
+
    linha := 2;
    qry.First;
    while not qry.Eof do begin
+     if (ordem <> qryORDEMGRUPO.AsInteger) or (colecao <> IfThen(qryCOLECAO.AsString = 'VERAO', 'VERAO', 'INVERNO')) then
+     begin
+       Sheet.Range['A'+intToStr(linha)+':E'+intToStr(linha)].Mergecells := True;
+       inc(linha);
+       ordem := qryORDEMGRUPO.AsInteger;
+       colecao := IfThen(qryCOLECAO.AsString = 'VERAO', 'VERAO', 'INVERNO');
+
+       Sheet.Range['A'+intToStr(linha)+':E'+intToStr(linha)].Mergecells := True;
+       Sheet.Range['A'+intToStr(linha)] := colecao + IfThen(ordem = 1, ' 2/1', ' 1/1');
+       Sheet.Range['A'+intToStr(linha)].HorizontalAlignment := 3;
+       Sheet.Range['A'+intToStr(linha)].font.size      := 12; // Tamanho da Fonte
+       Sheet.Range['A'+intToStr(linha)].font.bold      := true; // Negrito
+       Sheet.Range['A'+intToStr(linha)].Interior.Color := $00F7F7F7; // Cor da Célula
+     end;
+
      if grupo <> qryGRUPO.AsString then
      begin
        Sheet.Range['A'+intToStr(linha)+':E'+intToStr(linha)].Mergecells := True;
@@ -137,15 +160,15 @@ begin
        Sheet.Cells[linha,1].font.bold  := true;
        inc(linha);
        Sheet.Range['A'+intToStr(linha)] := 'REF.';
-       Sheet.Range['A'+intToStr(linha)].ColumnWidth := 20;
+       Sheet.Range['A'+intToStr(linha)].ColumnWidth := 16;
        Sheet.Range['B'+intToStr(linha)] := 'DESCRIÇÃO';
-       Sheet.Range['B'+intToStr(linha)].ColumnWidth := 65;
+       Sheet.Range['B'+intToStr(linha)].ColumnWidth := 42;
        Sheet.Range['C'+intToStr(linha)] := 'TAMANHO';
-       Sheet.Range['C'+intToStr(linha)].ColumnWidth := 20;
+       Sheet.Range['C'+intToStr(linha)].ColumnWidth := 9;
        Sheet.Range['D'+intToStr(linha)] := 'CORES';
-       Sheet.Range['D'+intToStr(linha)].ColumnWidth := 30;
+       Sheet.Range['D'+intToStr(linha)].ColumnWidth := 13;
        Sheet.Range['E'+intToStr(linha)] := 'PREÇO';
-       Sheet.Range['E'+intToStr(linha)].ColumnWidth := 20;
+       Sheet.Range['E'+intToStr(linha)].ColumnWidth := 7;
        Sheet.Range['A'+intToStr(linha)+':E'+intToStr(linha)].font.bold  := true;
        Sheet.Range['A'+intToStr(linha)+':E'+intToStr(linha)].font.color := $00BD895E;
        inc(linha);
@@ -153,12 +176,12 @@ begin
 
      Sheet.Cells[linha,1].NumberFormat := '@';
      Sheet.Cells[linha,1] := qryREFERENCIA.AsString;
-     Sheet.Cells[linha,2] := qryDESCRICAO.AsString;
+     Sheet.Cells[linha,2] := copy(qryDESCRICAO.AsString,1,50);
      Sheet.Cells[linha,3].NumberFormat := '@';
-     Sheet.Cells[linha,3] := qryGRADE.AsString ;
+     Sheet.Cells[linha,3] := ' '+qryGRADE.AsString ;
      // Formata o Numero para se tornar MOEDA
      Sheet.Cells[linha,4] := qryDESC_TIPO_COR.AsString;
-     Sheet.Cells[linha,5].NumberFormat := 'R$ #.##0,00_);(R$ #.##0,00)';
+     Sheet.Cells[linha,5].NumberFormat := ' #.##0,00_);( #.##0,00)';
      Sheet.Cells[linha,5] := qryPRECO.AsFloat;
      qry.Next;
 
@@ -167,7 +190,7 @@ begin
 
    // Formatando o Cabeçalho
    Sheet.Range['A1','E1'].font.name      := 'Verdana'; // Fonte
-   Sheet.Range['A1','E1'].font.size      := 12; // Tamanho da Fonte
+   Sheet.Range['A1','E1'].font.size      := 11; // Tamanho da Fonte
    Sheet.Range['A1','E1'].font.bold      := true; // Negrito
   // Sheet.Range['A1','E1'].font.italic    := true; // Italico
    Sheet.Range['A1','E1'].font.color     := $00F0E4DB; // Cor da Fonte

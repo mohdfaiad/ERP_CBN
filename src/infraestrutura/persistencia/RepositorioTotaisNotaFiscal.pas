@@ -124,6 +124,7 @@ begin
    inherited SetParametro('desconto',                   Obj.Descontos);
    inherited SetParametro('outras_despesas',            Obj.OutrasDespesas);
    inherited SetParametro('percentual_desconto_fatura', Obj.PercentualDescontoFatura);
+   inherited SetParametro('valor_total',                Obj.TotalNF);
 end;
 
 function TRepositorioTotaisNotaFiscal.SQLGet: String;
@@ -144,9 +145,9 @@ end;
 function TRepositorioTotaisNotaFiscal.SQLSalvar: String;
 begin
    result := 'update or insert into '+self.GetNomeDaTabela+'  (codigo_nota_fiscal,  frete, seguro,     '+
-                                                           '   desconto, outras_despesas, percentual_desconto_fatura)              '+
-                                                      'values (:codigo_nota_fiscal,  :frete,  :seguro, '+
-                                                           '   :desconto, :outras_despesas, :percentual_desconto_fatura)           ';
+                                                           '   desconto, outras_despesas, percentual_desconto_fatura, valor_total)     '+
+                                                           ' values (:codigo_nota_fiscal,  :frete,  :seguro, '+
+                                                           '   :desconto, :outras_despesas, :percentual_desconto_fatura, :valor_total) ';
 end;
 
 end.

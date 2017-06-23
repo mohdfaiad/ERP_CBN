@@ -55,7 +55,7 @@ uses
   ExcecaoSistemaEmManutencao;
 
 const
-  VERSAO_SISTEMA = 196;
+  VERSAO_SISTEMA = 212;
 
 
 { TServicoAtualizadorBD }

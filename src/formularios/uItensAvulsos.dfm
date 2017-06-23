@@ -63,7 +63,6 @@ inherited frmItensAvulsos: TfrmItensAvulsos
       ParentColor = False
       ParentFont = False
       TabOrder = 4
-      Transparent = False
     end
     inline BuscaProduto: TBuscaProduto
       Left = 16
@@ -129,12 +128,6 @@ inherited frmItensAvulsos: TfrmItensAvulsos
       TabOrder = 0
       ExplicitLeft = 16
       ExplicitTop = 13
-      inherited StaticText1: TStaticText
-        TabOrder = 1
-      end
-      inherited edtCodigo: TCurrencyEdit
-        TabOrder = 0
-      end
     end
   end
   object lblPercentualDesconto: TStaticText

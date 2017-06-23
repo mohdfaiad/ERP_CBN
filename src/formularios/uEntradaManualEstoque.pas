@@ -39,6 +39,8 @@ type
     BuscaProduto1: TBuscaProduto;
     GroupBox2: TGroupBox;
     BuscaCor1: TBuscaCor;
+    cbxSetor: TComboBox;
+    Label7: TLabel;
     procedure BuscaProduto1Exit(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
@@ -54,6 +56,7 @@ type
     procedure BuscaCor1Enter(Sender: TObject);
     procedure btnNovoLoteClick(Sender: TObject);
     procedure btnDirecionaEntradasClick(Sender: TObject);
+    procedure cbxSetorChange(Sender: TObject);
 
   private
     procedure mostra_estoque_atual;
@@ -61,6 +64,8 @@ type
     function busca_por_codigoBarras :Boolean;
     function salvar_estoque :Boolean;
     procedure salva_entradaSaida;
+
+    function validaObrigatoriedades :Boolean;
 
   public
     entrada_saida :Integer;
@@ -170,7 +175,8 @@ begin
    codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
 
    repositorio    := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(BuscaProduto1.CodigoProduto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cbxSetor.ItemIndex+1,
+                                                                      BuscaProduto1.CodigoProduto,
                                                                       BuscaCor1.CodigoCor,
                                                                       codigo_tamanho);
 
@@ -242,26 +248,8 @@ end;
 procedure TfrmEntradaManualEstoque.btnSalvarClick(Sender: TObject);
 var ent_sai :String;
 begin
-  if rgTamanhos.ItemIndex < 0 then begin
-    avisar('Favor, informar o tamanho');
-    rgTamanhos.SetFocus;
-    Exit;
-  end
-  else if not (edtQtdEntrada.Value > 0) then begin
-    avisar('A quantidade de entrada não foi informada');
-    edtQtdEntrada.SetFocus;
-    Exit;
-  end
-  else if (edtQtdEntrada.Value > 1000) then begin
-    avisar('Quantidade de entrada inválida!');
-    edtQtdEntrada.SetFocus;
-    Exit;
-  end
-  else if (ListaIntervalos.Visible) and (ListaIntervalos.CodCampo <= 0) then begin
-    avisar('Intervalo de produção deve ser informado');
-    ListaIntervalos.comListaCampo.SetFocus;
-    Exit;
-  end;
+  if not validaObrigatoriedades then
+    exit;
 
   ent_sai := IfThen(chkSaida.Checked, 'saída', 'entrada');
   
@@ -310,7 +298,8 @@ begin
    codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
 
    repositorio := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(codigo_produto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cbxSetor.ItemIndex+1,
+                                                                      codigo_produto,
                                                                       codigo_cor,
                                                                       codigo_tamanho);
 
@@ -322,6 +311,7 @@ begin
    Estoque.codigo_produto := codigo_produto;
    Estoque.codigo_cor     := codigo_cor;
    Estoque.codigo_tamanho := codigo_tamanho;
+   Estoque.setor          := cbxSetor.ItemIndex+1;
 
    Estoque.quantidade     := Estoque.quantidade + IfThen(chkSaida.Checked, (edtQtdEntrada.Value * -1), edtQtdEntrada.Value);
 
@@ -342,7 +332,7 @@ begin
   end
   else if (BuscaCor1.edtDescricao.Text = '') then begin
     avisar('A Cor deve ser informada');
-    BuscaCor1.edtDescricao.SetFocus;
+    BuscaCor1.edtReferencia.SetFocus;
   end
   else if (rgTamanhos.ItemIndex < 0) then begin
     avisar('O Tamanho deve ser informado');
@@ -370,6 +360,11 @@ begin
   end;
 
   edtCodigoBarras.SetFocus;
+end;
+
+procedure TfrmEntradaManualEstoque.cbxSetorChange(Sender: TObject);
+begin
+  mostra_estoque_atual;
 end;
 
 procedure TfrmEntradaManualEstoque.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -428,6 +423,30 @@ begin
    FreeAndNil(repositorio);
    FreeAndNil(EntradaSaida);
  end;
+end;
+
+function TfrmEntradaManualEstoque.validaObrigatoriedades: Boolean;
+begin
+  result := false;
+
+  if rgTamanhos.ItemIndex < 0 then begin
+    avisar('Favor, informar o tamanho');
+    rgTamanhos.SetFocus;
+  end
+  else if not (edtQtdEntrada.Value > 0) then begin
+    avisar('A quantidade de entrada não foi informada');
+    edtQtdEntrada.SetFocus;
+  end
+  else if (edtQtdEntrada.Value > 1000) then begin
+    avisar('Quantidade de entrada inválida!');
+    edtQtdEntrada.SetFocus;
+  end
+  else if (ListaIntervalos.Visible) and (ListaIntervalos.CodCampo <= 0) then begin
+    avisar('Intervalo de produção deve ser informado');
+    ListaIntervalos.comListaCampo.SetFocus;
+  end
+  else
+    result := true;
 end;
 
 procedure TfrmEntradaManualEstoque.BuscaCor1Enter(Sender: TObject);

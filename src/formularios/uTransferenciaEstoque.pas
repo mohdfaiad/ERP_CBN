@@ -32,11 +32,14 @@ type
     btnLimpar: TBitBtn;
     edtCodEstoque1: TCurrencyEdit;
     edtCodEstoque2: TCurrencyEdit;
+    cbxSetorOrigem: TComboBox;
+    Label8: TLabel;
+    cbxSetorDestino: TComboBox;
+    Label9: TLabel;
+    rgpOpcaoTransferencia: TRadioGroup;
     procedure BuscaProduto1edtDescricaoChange(Sender: TObject);
-    procedure BuscaCor1edtDescricaoChange(Sender: TObject);
     procedure rgTamanhos1Click(Sender: TObject);
     procedure BuscaProduto2edtDescricaoChange(Sender: TObject);
-    procedure BuscaCor2edtDescricaoChange(Sender: TObject);
     procedure rgTamanhos2Click(Sender: TObject);
     procedure edtQtdTransferirChange(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
@@ -46,6 +49,8 @@ type
     procedure BuscaCor1Exit(Sender: TObject);
     procedure BuscaProduto1Exit(Sender: TObject);
     procedure BuscaProduto2Exit(Sender: TObject);
+    procedure rgpOpcaoTransferenciaClick(Sender: TObject);
+    procedure BuscaCor2Exit(Sender: TObject);
   private
     FEstoqueOrigem :Real;
     FEstoqueDestino :Real;
@@ -53,7 +58,7 @@ type
     procedure mostraEstoqueOrigem;
     procedure mostraEstoqueDestino;
     procedure EfetuaTransferencia;
-    procedure AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade :integer);
+    procedure AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade, setor :integer);
     procedure habilitaTamanhos(radGroup :TRadioGroup; grade :TGrade);
   public
     { Public declarations }
@@ -68,24 +73,25 @@ uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, 
 
 {$R *.dfm}
 
-procedure TfrmTransferenciaEstoque.AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade: integer);
+procedure TfrmTransferenciaEstoque.AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade, setor: integer);
 var Estoque     :TEstoque;
     repositorio :TRepositorio;
     Especificacao :TEspecificacaoEstoquePorProdutoCorTamanho;
 begin
   Estoque     := nil;
   repositorio := nil;
-
  try
    repositorio := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(codigo_produto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(setor,
+                                                                      codigo_produto,
                                                                       codigo_cor,
                                                                       codigo_tamanho);
 
    Estoque     := TEstoque( repositorio.GetPorEspecificacao( Especificacao, intToStr(codigo_produto)) );
 
    if not assigned(Estoque) then
-     Estoque := TEstoque.create(codigo_produto,
+     Estoque := TEstoque.create(setor,
+                                codigo_produto,
                                 codigo_cor,
                                 codigo_tamanho);
 
@@ -115,6 +121,22 @@ end;
 
 procedure TfrmTransferenciaEstoque.btnSalvarClick(Sender: TObject);
 begin
+  if (rgpOpcaoTransferencia.ItemIndex = 0) and
+     (BuscaProduto1.codproduto = BuscaProduto2.codproduto) and
+     (BuscaCor1.codCor = BuscaCor2.codCor) and
+     (rgTamanhos1.ItemIndex = rgTamanhos2.ItemIndex) then
+  begin
+    avisar('Atenção! Uma transferência não pode ser efetuada entre uma mesma peça do mesmo setor.');
+    rgTamanhos2.ItemIndex := -1;
+    exit;
+  end;
+
+  if edtEstoqueOrigem.Value = 0 then
+  begin
+    avisar('Não existe estoque de origem a ser transferido');
+    exit;
+  end;
+
   if edtQtdTransferir.Value = 0 then
   begin
     avisar('Nenhuma quantidade foi informada');
@@ -124,15 +146,6 @@ begin
 
   if confirma('Confirma transferência?') then
     EfetuaTransferencia;
-end;
-
-procedure TfrmTransferenciaEstoque.BuscaCor1edtDescricaoChange(Sender: TObject);
-begin
-  if BuscaCor1.edtDescricao.Text <> '' then
-  begin
-    mostraEstoqueOrigem;
-   // keybd_event(VK_TAB, 0, 0, 0);
-  end;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaCor1Enter(Sender: TObject);
@@ -145,18 +158,26 @@ procedure TfrmTransferenciaEstoque.BuscaCor1Exit(Sender: TObject);
 begin
   inherited;
   BuscaCor1.FrameExit(Sender);
-end;
 
-procedure TfrmTransferenciaEstoque.BuscaCor2edtDescricaoChange(Sender: TObject);
-begin
-  if BuscaCor1.edtDescricao.Text <> '' then
-    mostraEstoqueDestino;
+  if (BuscaCor1.edtDescricao.Text <> '') then
+  begin
+    mostraEstoqueOrigem;
+    if (rgpOpcaoTransferencia.ItemIndex <> 0) then
+      BuscaCor2.codCor := BuscaCor1.edtReferencia.Text;
+  end;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaCor2Enter(Sender: TObject);
 begin
   BuscaCor2.FiltroProduto := BuscaProduto2.codproduto;
   BuscaCor2.ApareceKits   := IfThen(BuscaProduto2.Kit,'S','N');
+end;
+
+procedure TfrmTransferenciaEstoque.BuscaCor2Exit(Sender: TObject);
+begin
+  inherited;
+  if BuscaCor2.edtDescricao.Text <> '' then
+    mostraEstoqueDestino;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaProduto1edtDescricaoChange(
@@ -171,7 +192,11 @@ begin
   inherited;
   BuscaProduto1.FrameExit(Sender);
   if assigned(BuscaProduto1.Prod) then
+  begin
     habilitaTamanhos(rgTamanhos1, BuscaProduto1.Prod.Grade);
+    if rgpOpcaoTransferencia.ItemIndex <> 0 then
+      BuscaProduto2.codproduto := BuscaProduto1.edtReferencia.Text;
+  end;
 end;
 
 procedure TfrmTransferenciaEstoque.BuscaProduto2edtDescricaoChange(
@@ -207,13 +232,15 @@ begin
   AlteraEstoque(StrToInt(BuscaProduto1.codproduto),
                 StrToInt(BuscaCor1.codCor),
                 StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos1.Items[rgTamanhos1.itemIndex]) ),
-                (edtQtdTransferir.AsInteger * -1));
+                (edtQtdTransferir.AsInteger * -1),
+                cbxSetorOrigem.ItemIndex+1);
 
   {atualiza estoque destino}
   AlteraEstoque(StrToInt(BuscaProduto2.codproduto),
                 StrToInt(BuscaCor2.codCor),
                 StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]) ),
-                edtQtdTransferir.AsInteger);
+                edtQtdTransferir.AsInteger,
+                cbxSetorDestino.ItemIndex+1);
 
   Avisar('Transferência efetuada com sucesso!');
   btnLimpar.Click;
@@ -245,7 +272,8 @@ begin
    codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos1.Items[rgTamanhos1.itemIndex]) );
 
    repositorio    := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(BuscaProduto1.CodigoProduto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cbxSetorOrigem.ItemIndex+1,
+                                                                      BuscaProduto1.CodigoProduto,
                                                                       BuscaCor1.CodigoCor,
                                                                       codigo_tamanho);
 
@@ -268,6 +296,31 @@ begin
  end;
 end;
 
+procedure TfrmTransferenciaEstoque.rgpOpcaoTransferenciaClick(Sender: TObject);
+begin
+   if rgpOpcaoTransferencia.ItemIndex = 0 then
+   begin
+     cbxSetorOrigem.ItemIndex  := 0;
+     cbxSetorDestino.ItemIndex := 0;
+   end
+   else if rgpOpcaoTransferencia.ItemIndex = 1 then
+   begin
+     cbxSetorOrigem.ItemIndex  := 0;
+     cbxSetorDestino.ItemIndex := 1;
+   end
+   else if rgpOpcaoTransferencia.ItemIndex = 2 then
+   begin
+     cbxSetorOrigem.ItemIndex  := 1;
+     cbxSetorDestino.ItemIndex := 0;
+   end;
+
+   BuscaProduto2.Enabled := rgpOpcaoTransferencia.ItemIndex = 0;
+   BuscaCor2.Enabled     := rgpOpcaoTransferencia.ItemIndex = 0;
+   rgTamanhos2.Enabled   := rgpOpcaoTransferencia.ItemIndex = 0;
+
+
+end;
+
 procedure TfrmTransferenciaEstoque.mostraEstoqueDestino;
 var Estoque     :TEstoque;
     repositorio :TRepositorio;
@@ -282,7 +335,8 @@ begin
    codigo_tamanho := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]) );
 
    repositorio    := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(BuscaProduto2.CodigoProduto,
+   Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cbxSetorDestino.ItemIndex+1,
+                                                                      BuscaProduto2.CodigoProduto,
                                                                       BuscaCor2.CodigoCor,
                                                                       codigo_tamanho);
 
@@ -309,12 +363,33 @@ end;
 
 procedure TfrmTransferenciaEstoque.rgTamanhos1Click(Sender: TObject);
 begin
+  if (rgpOpcaoTransferencia.ItemIndex = 0) and
+     (BuscaProduto1.codproduto = BuscaProduto2.codproduto) and
+     (BuscaCor1.codCor = BuscaCor2.codCor) and
+     (rgTamanhos1.ItemIndex = rgTamanhos2.ItemIndex) then
+  begin
+    avisar('Atenção! Uma transferência não pode ser efetuada entre uma mesma peça do mesmo setor.');
+    rgTamanhos2.ItemIndex := -1;
+  end;
+
   mostraEstoqueOrigem;
-  BuscaProduto2.edtReferencia.SetFocus;
+  if BuscaProduto2.Enabled then
+    BuscaProduto2.edtReferencia.SetFocus;
+
+  if rgpOpcaoTransferencia.ItemIndex <> 0 then
+    rgTamanhos2.ItemIndex := rgTamanhos1.ItemIndex;
 end;
 
 procedure TfrmTransferenciaEstoque.rgTamanhos2Click(Sender: TObject);
 begin
+  if (rgpOpcaoTransferencia.ItemIndex = 0) and
+     (BuscaProduto1.codproduto = BuscaProduto2.codproduto) and
+     (BuscaCor1.codCor = BuscaCor2.codCor) and
+     (rgTamanhos1.ItemIndex = rgTamanhos2.ItemIndex) then
+  begin
+    avisar('Atenção! Uma transferência não pode ser efetuada entre uma mesma peça do mesmo setor.');
+    rgTamanhos2.ItemIndex := -1;
+  end;
   mostraEstoqueDestino;
 end;
 

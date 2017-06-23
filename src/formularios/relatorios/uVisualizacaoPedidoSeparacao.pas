@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Pedido, DB, DBClient, RLReport, pngimage, RLFilters, RLPDFFilter;
+  Dialogs, Pedido, DB, DBClient, RLReport, pngimage, RLFilters;
 
 type
   TfrmVisualizacaoPedidoSeparacao = class(TForm)
@@ -105,7 +105,6 @@ type
     RLLabel4: TRLLabel;
     RLDBText14: TRLDBText;
     lbindica: TRLLabel;
-    RLPDFFilter1: TRLPDFFilter;
     cdsItensQTD_UNICA: TIntegerField;
     cdsItensQTD_UNICA_O: TBCDField;
     RLDraw13: TRLDraw;

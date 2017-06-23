@@ -6,13 +6,12 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.StdCtrls, Vcl.Mask, Vcl.FileCtrl,
   RxToolEdit, RxCurrEdit, frameBuscaPessoa, frameBuscaEmpresa, Vcl.Buttons,
-  Vcl.ExtCtrls, TipoPessoa;
+  Vcl.ExtCtrls, TipoPessoa, frameBuscaCliente;
 
 type
   TfrmGeraCotacao = class(TfrmPadrao)
     BuscaEmpresa1: TBuscaEmpresa;
     GroupBox1: TGroupBox;
-    BuscaPessoa1: TBuscaPessoa;
     Label1: TLabel;
     edtCidade: TEdit;
     edtEstado: TEdit;
@@ -30,13 +29,13 @@ type
     pnlBotoes: TPanel;
     btnSair: TSpeedButton;
     btnImprimir: TSpeedButton;
+    BuscaCliente: TBuscaCliente;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnSelecionaClick(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure BuscaPessoa1Exit(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
+    procedure BuscaClienteExit(Sender: TObject);
   private
     FNumPedido: String;
     { Private declarations }
@@ -62,8 +61,8 @@ begin
   Writeln(arq, 'PESO: '+FloatToStr(edtPeso.Value)+' KG   VOL: '+IntTostr(edtVolume.AsInteger));
   Writeln(arq, 'VALOR: '+FloatToStr(edtValor.Value));
   Writeln(arq, 'EMPRESA: '+BuscaEmpresa1.Empresa.CPF_CNPJ);
-  Writeln(arq, 'CNPJ: '+BuscaPessoa1.cnpj);
-  Writeln(arq, BuscaPessoa1.edtRazao.Text);
+  Writeln(arq, 'CNPJ: '+BuscaCliente.Cliente.CPF_CNPJ);
+  Writeln(arq, BuscaCliente.edtRazao.Text);
   CloseFile(arq);
 
   avisar('Cotação gerada com sucesso!');
@@ -71,7 +70,7 @@ end;
 
 procedure TfrmGeraCotacao.btnSairClick(Sender: TObject);
 begin
-self.Close;
+  self.Close;
 end;
 
 procedure TfrmGeraCotacao.btnSelecionaClick(Sender: TObject);
@@ -83,18 +82,13 @@ begin
     edtCaminho.Text := caminho;
 end;
 
-procedure TfrmGeraCotacao.BuscaPessoa1Exit(Sender: TObject);
+procedure TfrmGeraCotacao.BuscaClienteExit(Sender: TObject);
 begin
-  if BuscaPessoa1.edtRazao.Text <> '' then
+  if BuscaCliente.edtRazao.Text <> '' then
   begin
-     edtCidade.Text                 := BuscaPessoa1.Cidade;
-     edtEstado.Text                 := BuscaPessoa1.UF;
+     edtCidade.Text                 := BuscaCliente.Cliente.Endereco.Cidade.nome;
+     edtEstado.Text                 := BuscaCliente.Cliente.Endereco.Cidade.estado.sigla;
   end;
-end;
-
-procedure TfrmGeraCotacao.FormCreate(Sender: TObject);
-begin
-   BuscaPessoa1.TipoPessoa        := tpCliente;
 end;
 
 procedure TfrmGeraCotacao.FormKeyDown(Sender: TObject; var Key: Word;
@@ -106,7 +100,7 @@ end;
 
 procedure TfrmGeraCotacao.FormShow(Sender: TObject);
 begin
-  self.BuscaPessoa1Exit(nil);
+  self.BuscaClienteExit(nil);
 end;
 
 end.

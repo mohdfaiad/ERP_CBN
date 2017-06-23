@@ -26,9 +26,6 @@ type
     FEmail      :String;
     FObservacao :String;
     FEndereco   :TEndereco;
-    FBloqueado: String;
-    FMotivoBloq: String;
-    FDadosRepresentante :TDadosRepresentante;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetRazao      (const value :String);
@@ -46,7 +43,6 @@ type
   public
     function GetIsPessoaJuridica  :Boolean;
     function GetIsPessoaFisica    :Boolean;
-    function GetDadosRepresentante: TDadosRepresentante;
     function GetEndereco          :TEndereco;
 
   public
@@ -67,12 +63,9 @@ type
     property Fax          :String    read FFax          write SetFax;
     property Email        :String    read FEmail        write SetEmail;
     property Observacao   :String    read FObservacao   write SetObservacao;
-    property Bloqueado    :String    read FBloqueado    write FBloqueado;
-    property MotivoBloq   :String    read FMotivoBloq   write FMotivoBloq;
 
   public
-    property Endereco           :TEndereco  read GetEndereco;
-    property DadosRepresentante :TDadosRepresentante read GetDadosRepresentante write FDadosRepresentante;
+    property Endereco           :TEndereco  read GetEndereco write FEndereco;
     property IsPessoaJuridica   :Boolean    read GetIsPessoaJuridica;
     property IsPessoaFisica     :Boolean    read GetIsPessoaFisica;
 end;
@@ -83,8 +76,7 @@ uses
     Repositorio,
     FabricaRepositorio,
     Especificacao,
-    EspecificacaoEnderecoComPessoaIgualA,
-    EspecificacaoDadosRepresentantePorCodPessoa;
+    EspecificacaoEnderecoComPessoaIgualA;
 
 { TPessoa }
 
@@ -96,28 +88,7 @@ end;
 destructor TPessoa.Destroy;
 begin
    FreeAndNil(self.FEndereco);
-   FreeAndNil(self.FDadosRepresentante);
   inherited;
-end;
-
-function TPessoa.GetDadosRepresentante: TDadosRepresentante;
-var
-  Repositorio   :TRepositorio;
-  Especificacao :TEspecificacaoDadosRepresentantePorCodPessoa;
-begin
-   if not Assigned(self.FDadosRepresentante) then begin
-     Repositorio   := nil;
-
-     try
-       Repositorio              := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
-       Especificacao            := TEspecificacaoDadosRepresentantePorCodPessoa.Create(self.Codigo);
-       self.FDadosRepresentante := (Repositorio.GetPorEspecificacao(Especificacao) as TDadosRepresentante);
-     finally
-       FreeAndNil(Repositorio);
-     end;
-   end;
-
-   result := self.FDadosRepresentante;
 end;
 
 function TPessoa.GetEndereco: TEndereco;

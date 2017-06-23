@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, contNrs,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, RLReport, Data.DB, Datasnap.DBClient, Vcl.Imaging.pngimage, RLFilters, RLPDFFilter;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, RLReport, Data.DB, Datasnap.DBClient, Vcl.Imaging.pngimage, RLFilters;
 
 type
   TfrmProtocoloEntrega = class(TfrmPadrao)
@@ -40,7 +40,6 @@ type
     RLDraw6: TRLDraw;
     RLDraw7: TRLDraw;
     RLDraw10: TRLDraw;
-    RLPDFFilter1: TRLPDFFilter;
   private
     { Private declarations }
   public

@@ -23,6 +23,7 @@ type
     FNotaFiscal :TNotaFiscal;
     FCodContaBanco: integer;
     FContaBanco :TContaBanco;
+    FDesc_acresc :Real;
 
     function GetItensConta: TObjectList;
     function GetParcelasConta: TObjectList;
@@ -41,6 +42,7 @@ type
     property valor                 :Real read Fvalor                 write Fvalor;
     property observacao            :String read Fobservacao            write Fobservacao;
     property codContaBanco         :integer read FCodContaBanco        write FCodContaBanco;
+    property desc_acresc           :Real read FDesc_acresc           write FDesc_acresc;
 
     property NotaFiscal            :TNotaFiscal read GetNotaFiscal;
     property ItensConta            :TObjectList read GetItensConta;

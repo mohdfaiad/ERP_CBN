@@ -37,7 +37,7 @@ var
 begin
    C := (Cliente as TCliente);
 
-   result := (C.CodCli = self.FCodigoPessoa);
+   result := (C.Codigo = self.FCodigoPessoa);
 end;
 
 end.

@@ -5,44 +5,51 @@ interface
 uses
   SysUtils,
   Contnrs,
-  TabelaPreco;
+  TabelaPreco, Pessoa, Representante;
 
 type
-  TCliente = class
+  TCliente = class(TPessoa)
 
   private
-    FCodigo          :Integer;
-    FCodCli          :Integer;
+    FCodigoCliente   :Integer;
     FCodTabelaPreco  :Integer;
     FCodFormasPgto   :Integer;
     FCodTransportadora: Integer;
+    FCodRepresentante: Integer;
+    FBloqueado: String;
+    FMotivoBloqueio: String;
 
     FTabelaPreco     :TTabelaPreco;
+    FRepresentante   :TRepresentante;
     FFuncionario: Boolean;
 
   private
-    procedure SetCodigo         (const value :Integer);
-    procedure SetCodCli         (const value :Integer);
+    procedure SetCodigoCliente  (const value :Integer);
     procedure SetCodTabelaPreco (const value :Integer);
     procedure SetCodFormasPgto  (const value :Integer);
     procedure SetCodTransportadora(const Value: Integer);
+    procedure SetCodRepresentante(const Value: Integer);
 
   private
     function GetTabelaPreco: TTabelaPreco;
+    function GetRepresentante: TRepresentante;
 
   public
     constructor Create;
 
   public
-    property Codigo            :Integer   read FCodigo            write SetCodigo;
-    property CodCli            :Integer   read FCodCli            write SetCodCli;
+    property CodigoCliente     :Integer   read FCodigoCliente     write SetCodigoCliente;
     property CodTabelaPreco    :Integer   read FCodTabelaPreco    write SetCodTabelaPreco;
     property CodFormasPgto     :Integer   read FCodFormasPgto     write SetCodFormasPgto;
     property CodTransportadora :Integer   read FCodTransportadora write SetCodTransportadora;
+    property CodRepresentante  :Integer   read FCodRepresentante  write SetCodRepresentante;
     property Funcionario       :Boolean   read FFuncionario       write FFuncionario;
+    property bloqueado         :String    read FBloqueado         write FBloqueado;
+    property motivoBloqueio    :String    read FMotivoBloqueio    write FMotivoBloqueio;
 
   public
-    property TabelaPreco       :TTabelaPreco read GetTabelaPreco;
+    property TabelaPreco       :TTabelaPreco   read GetTabelaPreco;
+    property Representante     :TRepresentante read GetRepresentante;
 end;
 
 implementation
@@ -58,6 +65,25 @@ begin
    inherited Create;
    
    FTabelaPreco := nil;
+end;
+
+function TCliente.GetRepresentante: TRepresentante;
+var
+  Repositorio         :TRepositorio;
+begin
+   if not Assigned(self.FRepresentante) then begin
+     Repositorio := nil;
+
+     try
+       Repositorio    := TFabricaRepositorio.GetRepositorio(TRepresentante.ClassName);
+       FRepresentante := TRepresentante(Repositorio.Get(self.FCodRepresentante));
+
+     finally
+       FreeAndNil(Repositorio);
+     end;
+   end;
+
+   result := self.FRepresentante;
 end;
 
 function TCliente.GetTabelaPreco: TTabelaPreco;
@@ -79,19 +105,19 @@ begin
    result := self.FTabelaPreco;
 end;
 
-procedure TCliente.SetCodCli(const value: Integer);
-begin
-  FCodCli := value;
-end;
-
 procedure TCliente.SetCodFormasPgto(const value: Integer);
 begin
   FCodFormasPgto := value;
 end;
 
-procedure TCliente.SetCodigo(const value: Integer);
+procedure TCliente.SetCodigoCliente(const value: Integer);
 begin
-  FCodigo := value; //
+  FCodigoCliente := value; //
+end;
+
+procedure TCliente.SetCodRepresentante(const Value: Integer);
+begin
+  FCodRepresentante := Value;
 end;
 
 procedure TCliente.SetCodTabelaPreco(const value: Integer);

@@ -6,10 +6,10 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, Buttons, frameBuscaPedido, ExtCtrls,
   frameBuscaReferencia, Grids, DBGrids, DBGridCBN, Provider, DB, DBClient, RLReport,
-  RLXLSFilter, RLFilters, RLPDFFilter, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  RLXLSFilter, RLFilters, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, ComObj;
 
 type
   TfrmRelatorioReferencias = class(TfrmPadrao)
@@ -64,7 +64,6 @@ type
     btnSalvaPDF: TBitBtn;
     cdsRelCODIGO: TStringField;
     Label1: TLabel;
-    RLPDFFilter1: TRLPDFFilter;
     btnAdicionar: TBitBtn;
     rgTipoInsercao: TRadioGroup;
     qry: TFDQuery;
@@ -88,6 +87,10 @@ type
     cdsQTD_6: TIntegerField;
     cdsQTD_8: TIntegerField;
     cdsQTD_UNICA: TBCDField;
+    cdsRelREFERENCIACOR: TStringField;
+    cdsREFCOR: TStringField;
+    btnExportar: TBitBtn;
+    btnLimpar: TBitBtn;
     procedure rgTipoInsercaoClick(Sender: TObject);
     procedure btnAdicionarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -98,12 +101,15 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridUsuariosKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure btnExportarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
   private
     procedure adicionar_do_pedido;
     procedure adicionar_individualmente;
     procedure adiciona(tamanho:String);
 
     function seleciona_cod_barras (tamanho :String):String;
+    procedure gerarPlanilha(caminho :String);
   public
     { Public declarations }
   end;
@@ -214,6 +220,24 @@ begin
   end;
 end;
 
+procedure TfrmRelatorioReferencias.btnExportarClick(Sender: TObject);
+var
+  Dialog :TSaveDialog;
+begin
+  if cdsrel.IsEmpty then
+    exit;
+  try
+    Dialog            := TSaveDialog.Create(nil);
+    Dialog.Title      := 'Selecione o caminho para salvar o arquivo';
+
+    if Dialog.Execute then
+      gerarPlanilha(Dialog.FileName);
+
+  finally
+    FreeAndNil(Dialog);
+  end;
+end;
+
 procedure TfrmRelatorioReferencias.adiciona(tamanho: String);
 var codigo_de_barras :String;
 begin
@@ -223,6 +247,7 @@ begin
 
   cdsRel.Append;
   cdsRelREFERENCIA.AsString := cdsREFERENCIA.AsString;
+  cdsRelREFERENCIACOR.AsString := cdsREFCOR.AsString;
   cdsRelPRODUTO.AsString    := cdsPRODUTO.AsString;
   cdsRelCOR.AsString        := cdsCOR.AsString;
   cdsRelGRADE.AsString      := cdsGRADE.AsString;
@@ -254,6 +279,11 @@ begin
 
 end;
 
+procedure TfrmRelatorioReferencias.btnLimparClick(Sender: TObject);
+begin
+  cdsRel.EmptyDataSet;
+end;
+
 procedure TfrmRelatorioReferencias.FormKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
@@ -273,6 +303,91 @@ begin
     RLReport1.Prepare;
 
   end;
+end;
+
+procedure TfrmRelatorioReferencias.gerarPlanilha(caminho :String);
+var objExcel,Sheet,Chart,s : Variant;
+    cTitulo, grupo : string;
+    i, linha : integer;
+begin
+ try
+   cTitulo := 'Referências';
+   objExcel := CreateOleObject('Excel.Application');
+   objExcel.Visible := False;
+   objExcel.Caption := cTitulo;
+   objExcel.DisplayAlerts := False;
+
+
+   objExcel.Workbooks.Add;
+   objExcel.Workbooks[1].Sheets.Add;
+   objExcel.Workbooks[1].WorkSheets[1].Name := cTitulo;
+
+   Sheet := objExcel.Workbooks[1].WorkSheets[cTitulo];
+
+   Sheet.cells.font.size := 10;
+   inc(linha);
+   Sheet.Range['A'+intToStr(linha)] := 'Referência';
+   Sheet.Range['A'+intToStr(linha)].ColumnWidth := 16;
+   Sheet.Range['B'+intToStr(linha)] := 'Produto';
+   Sheet.Range['B'+intToStr(linha)].ColumnWidth := 40;
+   Sheet.Range['C'+intToStr(linha)] := 'Referência';
+   Sheet.Range['C'+intToStr(linha)].ColumnWidth := 16;
+   Sheet.Range['D'+intToStr(linha)] := 'Cor';
+   Sheet.Range['D'+intToStr(linha)].ColumnWidth := 30;
+   Sheet.Range['E'+intToStr(linha)] := 'Grade';
+   Sheet.Range['E'+intToStr(linha)].ColumnWidth := 10;
+   Sheet.Range['F'+intToStr(linha)] := 'TAM';
+   Sheet.Range['F'+intToStr(linha)].ColumnWidth := 5;
+   Sheet.Range['G'+intToStr(linha)] := 'Cód.Barras';
+   Sheet.Range['G'+intToStr(linha)].ColumnWidth := 16;
+   Sheet.Range['A'+intToStr(linha)+':G'+intToStr(linha)].font.bold  := true;
+   Sheet.Range['A'+intToStr(linha)+':G'+intToStr(linha)].font.color := $00BD895E;
+   inc(linha);
+
+   cdsRel.First;
+   while not cdsRel.Eof do begin
+      Sheet.Cells[linha,1].NumberFormat := '@';
+      Sheet.Cells[linha,1] := cdsRelREFERENCIA.AsString;
+      Sheet.Cells[linha,2] := copy(cdsRelPRODUTO.AsString,1,50);
+      Sheet.Cells[linha,3].NumberFormat := '@';
+      Sheet.Cells[linha,3] := ' '+cdsRelREFERENCIACOR.AsString ;
+      Sheet.Cells[linha,4] := cdsRelCOR.AsString;
+      Sheet.Cells[linha,5].NumberFormat := '@';
+      Sheet.Cells[linha,5] := cdsRelGRADE.AsString;
+      Sheet.Cells[linha,6].NumberFormat := '@';
+      Sheet.Cells[linha,6] := cdsRelTAMANHO.AsString;
+      Sheet.Cells[linha,7].NumberFormat := '@';
+      Sheet.Cells[linha,7] := cdsRelCOD_BARRA.AsString;
+
+      cdsRel.Next;
+
+     inc(linha);
+   end;
+
+   // Formatando o Cabeçalho
+   Sheet.Range['A1','G1'].font.name      := 'Verdana'; // Fonte
+   Sheet.Range['A1','G1'].font.size      := 11; // Tamanho da Fonte
+   Sheet.Range['A1','G1'].font.bold      := true; // Negrito
+  // Sheet.Range['A1''E1'].font.italic    := true; // Italico
+   Sheet.Range['A1','G1'].font.color     := $00F0E4DB; // Cor da Fonte
+   Sheet.Range['A1','G1'].Interior.Color := $00BD895E; // Cor da Célula
+
+   // Define o tamanho das Colunas (basta fazer em uma delas e as demais serão alteradas)
+  { Sheet.Range['B1','G1' ].ColumnWidth := 27;
+   Sheet.Range['B1','G1' ].RowHeight := 25;
+   Sheet.Range['D1'] .ColumnWidth := 16; }
+
+  // Sheet.PrintPreview;
+   Sheet.SaveAs(caminho);
+   Sheet.Range['B5','B5'].columns.AutoFit;
+
+   avisar('Planílha gerada com sucesso!');
+
+ finally
+   PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
+   Sheet := Unassigned;
+   objExcel.Quit;
+ end;
 end;
 
 procedure TfrmRelatorioReferencias.FormShow(Sender: TObject);

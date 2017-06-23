@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, uPadrao,
   frameBuscaCidade, Provider, DB, DBClient, Grids, DBGrids, DBGridCBN, StdCtrls, Buttons, ComCtrls,
-  ExtCtrls, Mask, Pessoa, Repositorio, StrUtils, ZAbstractRODataset, ZAbstractDataset, ZDataset, Endereco,
-  DBCtrls, RxToolEdit, RxCurrEdit;
+  ExtCtrls, Mask, Repositorio, StrUtils, ZAbstractRODataset, ZAbstractDataset, ZDataset, Endereco,
+  DBCtrls, RxToolEdit, RxCurrEdit, Representante;
 
 type
   TfrmCadastroRepresentante = class(TfrmPadrao)
@@ -25,8 +25,6 @@ type
     cdsFONE2: TStringField;
     cdsFAX: TStringField;
     cdsOBSERVACAO: TStringField;
-    cdsBLOQUEADO: TStringField;
-    cdsMOTIVO_BLOQ: TStringField;
     cdsTIPO: TStringField;
     cdsCODIGO_1: TIntegerField;
     cdsCODPESSOA: TIntegerField;
@@ -105,6 +103,7 @@ type
     Label26: TLabel;
     cmbEcommerce: TComboBox;
     cdsREP_ECOMMERCE: TStringField;
+    cdsMOTIVO_BLOQ: TStringField;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -123,11 +122,11 @@ type
     procedure edtEmailEnter(Sender: TObject);
     procedure edtEmailExit(Sender: TObject);
     procedure TabSheet2Exit(Sender: TObject);
+    procedure gridRepresentantesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 
   private
-    Representante :TPessoa;
-    Endereco :TEndereco;
-    rep, repEnd :TRepositorio;
+    FModoBusca :Boolean;
+    registroFocado :integer;
 
     procedure salvar;
     procedure mostraDados;
@@ -139,7 +138,8 @@ type
     function concatenaEmails :String;
     
   public
-    { Public declarations }
+    constructor Create(AOwner :TComponent);       override;
+    constructor CreateBusca(AOwner :TComponent);  overload;
   end;
 
 var
@@ -184,11 +184,13 @@ begin
   if not (cds.Active) or (cds.IsEmpty) then
     exit;
 
+  cds.AfterScroll := nil;
   self.Tag := 2;
   pagRepresentantes.ActivePageIndex := 0;
   gridRepresentantes.SetFocus;
   pagRepresentantes.ActivePageIndex := 1;
   TabSheet2Enter(nil);
+  cds.AfterScroll := cdsAfterScroll;
 end;
 
 procedure TfrmCadastroRepresentante.mostraDados;
@@ -214,6 +216,7 @@ begin
   memObs.text 	        := cdsObservacao.AsString;
   edtComissao.Value     := cdsPERCENTAGEM_COMISSAO.AsFloat;
   cmbEcommerce.ItemIndex:= IfThen(cdsREP_ECOMMERCE.AsString = 'S',0,1);
+  registroFocado        := cds.RecNo;
 end;
 
 procedure TfrmCadastroRepresentante.TabSheet2Enter(Sender: TObject);
@@ -231,16 +234,6 @@ begin
   else begin
     habilita(true);
     edtRazao.SetFocus;
-  end;
-
-  if Rep = nil then begin
-    Rep     := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Representante := TPessoa.Create;
-  end;
-
-  if repEnd = nil then begin
-    RepEnd   := TFabricaRepositorio.GetRepositorio(TEndereco.ClassName);
-    Endereco := TEndereco.Create;
   end;
 end;
 
@@ -277,12 +270,8 @@ begin
   pagRepresentantes.ActivePageIndex := 0;
   self.Tag := 0;
   habilita(false);
-
+  cds.RecNo := registroFocado;
   gridRepresentantes.SetFocus;
-  FreeAndNil(Representante);
-  FreeAndNil(Rep);
-  FreeAndNil(Endereco);
-  FreeAndNil(RepEnd);
 end;
 
 procedure TfrmCadastroRepresentante.btnSalvarClick(Sender: TObject);
@@ -337,45 +326,50 @@ end;
 
 procedure TfrmCadastroRepresentante.salvar;
 var repositorio :TRepositorio;
+    representante :TRepresentante;
 begin
  try
-   if self.Tag = 2 then
-      Representante.Codigo := cdsCODIGO.asInteger;
+   repositorio   := nil;
+   representante := nil;
 
-   Representante.Razao                := edtRazao.text;
-   Representante.Pessoa               := copy(comPessoa.text,1,1);
-   Representante.CPF_CNPJ             := edtCpf.text;
-   Representante.RG_IE                := edtRg.text;
-   Representante.DtCadastro           := strToDate(edtDtCad.text);
-   Representante.Fone1                := edtFone1.text;
-   Representante.Fone2                := edtFone2.text;
-   Representante.Fax                  := edtFax.text;
-   Representante.Email                := concatenaEmails;
-   Representante.Observacao           := memObs.text;
-   Representante.Tipo                 := 'R';
+   repositorio   := TFabricaRepositorio.GetRepositorio(TRepresentante.ClassName);
+   representante := TRepresentante(repositorio.Get(StrToIntDef(edtCodigo.Text,0)));
 
-   repositorio := TFabricaRepositorio.GetRepositorio(TDadosRepresentante.ClassName);
+   if assigned(representante) then
+     representante.Codigo := StrToIntDef(edtCodigo.Text,0)
+   else
+     representante := TRepresentante.Create;
+
+   representante.Razao                := edtRazao.text;
+   representante.Pessoa               := copy(comPessoa.text,1,1);
+   representante.CPF_CNPJ             := edtCpf.text;
+   representante.RG_IE                := edtRg.text;
+   representante.DtCadastro           := strToDate(edtDtCad.text);
+   representante.Fone1                := edtFone1.text;
+   representante.Fone2                := edtFone2.text;
+   representante.Fax                  := edtFax.text;
+   representante.Email                := concatenaEmails;
+   representante.Observacao           := memObs.text;
+   representante.Tipo                 := 'R';
+
    if not assigned(Representante.DadosRepresentante) then
-     Representante.DadosRepresentante := TDadosRepresentante.Create;
+     representante.DadosRepresentante := TDadosRepresentante.Create;
 
-   Representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
-   Representante.DadosRepresentante.rep_ecommerce        := copy(cmbEcommerce.Items[cmbEcommerce.ItemIndex],1,1);
+   representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
+   representante.DadosRepresentante.rep_ecommerce        := copy(cmbEcommerce.Items[cmbEcommerce.ItemIndex],1,1);
 
-   Rep.Salvar(Representante);
+   if not assigned(representante.Endereco) then
+      representante.Endereco := TEndereco.Create;
 
-   if self.Tag = 2 then
-      Endereco.Codigo := cdsCODIGO_1.asInteger;
+   representante.Endereco.Logradouro  := edtLogradouro.text;
+   representante.Endereco.Numero      := edtNumero.text;
+   representante.Endereco.Bairro      := edtBairro.text;
+   representante.Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
+   representante.Endereco.CEP         := edtCep.text;
+   representante.Endereco.Pais        := edtPais.text;
+   representante.Endereco.Complemento := edtComplemento.text;
 
-   Endereco.CodPessoa   := Representante.Codigo;
-   Endereco.Logradouro  := edtLogradouro.text;
-   Endereco.Numero      := edtNumero.text;
-   Endereco.Bairro      := edtBairro.text;
-   Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
-   Endereco.CEP         := edtCep.text;
-   Endereco.Pais        := edtPais.text;
-   Endereco.Complemento := edtComplemento.text;
-
-   RepEnd.Salvar(Endereco);
+   repositorio.Salvar(representante);
 
    btnCancelar.Click;
 
@@ -418,6 +412,17 @@ begin
 
 end;
 
+procedure TfrmCadastroRepresentante.gridRepresentantesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (key = vk_return) and FModoBusca then
+  begin
+    Key := 0;
+    self.ModalResult := mrOk;
+  end
+  else
+    inherited;
+end;
+
 procedure TfrmCadastroRepresentante.gridRepresentantesTitleClick(Column: TColumn);
 begin
   inherited;
@@ -432,6 +437,9 @@ end;
 
 procedure TfrmCadastroRepresentante.habilita(SN: Boolean);
 begin
+  if FModoBusca then
+    exit;
+
   if SN then begin
     btnIncluir.Enabled  := false;
     btnAlterar.Enabled  := false;
@@ -491,6 +499,21 @@ begin
 
     cdsemails.Next;
   end;
+end;
+
+constructor TfrmCadastroRepresentante.Create(AOwner: TComponent);
+begin
+  inherited;
+end;
+
+constructor TfrmCadastroRepresentante.CreateBusca(AOwner: TComponent);
+begin
+  self.Create(AOwner);
+  btnIncluir.Enabled     := false;
+  btnAlterar.Enabled     := false;
+  FModoBusca             := true;
+  panBotoes.Visible      := false;
+  self.Caption           := 'Selecione o representante desejado e tecle <ENTER>';
 end;
 
 procedure TfrmCadastroRepresentante.DBGrid1DblClick(Sender: TObject);

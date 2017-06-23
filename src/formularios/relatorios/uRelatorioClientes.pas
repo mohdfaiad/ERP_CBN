@@ -6,10 +6,10 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, Buttons, ExtCtrls, frameBuscaPessoa, frameBuscaCidade,
   StdCtrls, RLReport, DB, TipoPessoa,
-  RLFilters, RLPDFFilter, frameBuscaEstado, RLXLSFilter, ComObj, FileCtrl,
+  RLFilters, frameBuscaEstado, RLXLSFilter, ComObj, FileCtrl,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, RLPreviewForm;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, RLPreviewForm, Vcl.Mask, Vcl.ComCtrls, framePeriodo;
 
 type
   TfrmRelatorioClientes = class(TfrmPadrao)
@@ -57,7 +57,6 @@ type
     btnSair: TSpeedButton;
     RLDBText4: TRLDBText;
     rgFiltroClientes: TRadioGroup;
-    RLPDFFilter1: TRLPDFFilter;
     gpbEstado: TGroupBox;
     BuscaEstado1: TBuscaEstado;
     rgpFiltro: TRadioGroup;
@@ -86,6 +85,15 @@ type
     qryClientesBAIRRO: TStringField;
     qryClientesREPRESENTANTE: TStringField;
     qryClientesCIDADE: TStringField;
+    Periodo: TPeriodo;
+    RLLabel2: TRLLabel;
+    RLDBText10: TRLDBText;
+    RLDBText11: TRLDBText;
+    qryClientesQTD_COMPRAS: TIntegerField;
+    qryClientesVLR_COMPRAS: TBCDField;
+    rgpFiltroCompras: TRadioGroup;
+    RLLabel18: TRLLabel;
+    rlbPeriodo: TRLLabel;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnImprimirClick(Sender: TObject);
@@ -95,6 +103,9 @@ type
     procedure rgpFiltroClick(Sender: TObject);
     procedure chkGeraPlanilhaClick(Sender: TObject);
     procedure btnCaminhoClick(Sender: TObject);
+    procedure RLDBText10BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+    procedure RLDBText11BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+    procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
 
     procedure imprimir;
@@ -121,6 +132,8 @@ begin
   if ( (ssCtrl in Shift) AND (Key = ord('P')) ) then  btnImprimir.Click;
   if key = VK_ESCAPE then
     btnSair.Click;
+
+  inherited;
 end;
 
 procedure TfrmRelatorioClientes.btnImprimirClick(Sender: TObject);
@@ -157,6 +170,12 @@ begin
   if rgFiltroClientes.ItemIndex = 1 then
     qryClientes.ParamByName('bloq').AsString  := 'S';
 
+  if (trim(Periodo.medInicial.Text) <> '/  /') then
+    qryClientes.ParamByName('dti').AsDate := strToDate(Periodo.medInicial.Text);
+
+  if (trim(Periodo.medFinal.Text) <> '/  /') then
+    qryClientes.ParamByName('dtf').AsDate := strToDate(Periodo.medFinal.Text);
+
   qryClientes.Open;
 
   if qryClientes.IsEmpty then
@@ -169,7 +188,7 @@ begin
 end;
 
 function TfrmRelatorioClientes.monta_sql: String;
-var condicao_representante, condicao_cidade_estado, condicao_clientes_bloqueados, where :String;
+var condicao_representante, condicao_cidade_estado, condicao_clientes_bloqueados, where, joinCompras, condicaoCompra :String;
 begin
   if BuscaPessoa1.edtRazao.Text <> '' then
     condicao_representante := ' cr.cod_representante = :cod_rep ';
@@ -181,23 +200,28 @@ begin
 
   if rgFiltroClientes.ItemIndex = 1 then
     condicao_clientes_bloqueados := IfThen((condicao_representante = '')and(condicao_cidade_estado = ''),
-                                           ' iif(cli.bloqueado is null, ''N'', cli.bloqueado) <> :bloq ',
-                                           ' and iif(cli.bloqueado is null, ''N'', cli.bloqueado) <> :bloq ');
+                                           ' iif(cl.bloqueado is null, ''N'', cl.bloqueado) <> :bloq ',
+                                           ' and iif(cl.bloqueado is null, ''N'', cl.bloqueado) <> :bloq ');
 
-
+  if rgpFiltroCompras.ItemIndex = 0 then
+    condicaoCompra := ' and (CCP.vlr_compras > 0)'
+  else if rgpFiltroCompras.ItemIndex = 1 then
+    condicaoCompra := ' and (CCP.vlr_compras is null)';
 
   if (BuscaPessoa1.edtRazao.Text <> '') or (BuscaCidade1.edtCidade.Text <> '') or (rgFiltroClientes.ItemIndex = 1) then
     where := ' where ';
 
-  Result := ' select cli.codigo, cli.razao, cli.cpf_cnpj, cli.fone1, cli.email, cr.cod_representante,  '+
+  Result := ' select cli.codigo, cli.razao, cli.cpf_cnpj, cli.fone1, cli.email, cr.cod_representante, ccp.qtd_compras, ccp.vlr_compras,  '+
             '        en.codcidade, est.sigla uf, en.logradouro, en.numero, en.bairro, rep.razao representante, cid.nome || '' - '' || est.sigla cidade '+
             ' from pessoas cli                                                                         '+
             ' left join cliente_representante cr  on cr.cod_cliente = cli.codigo                       '+
             ' inner join pessoas               rep on rep.codigo = cr.cod_representante                '+
+            ' left join clientes              cl on cl.codcli = cli.codigo                             '+
             ' inner join enderecos             en  on en.codpessoa = cli.codigo                        '+
             ' left join cidades               cid on cid.codibge = en.codcidade                        '+
             ' left join estados               est on est.codigo = cid.codest                           '+
-             where + condicao_representante + condicao_cidade_estado + condicao_clientes_bloqueados +
+            ' left join COMPRAS_CLIENTE_PERIODO(cli.codigo, :dti, :dtf) CCP on (1=1)                   '+
+             where + condicao_representante + condicao_cidade_estado + condicao_clientes_bloqueados + condicaoCompra +
             ' order by cr.cod_representante, en.codcidade';
 end;
 
@@ -205,6 +229,18 @@ procedure TfrmRelatorioClientes.FormShow(Sender: TObject);
 begin
   BuscaPessoa1.TipoPessoa := tpRepresentante;
 
+end;
+
+procedure TfrmRelatorioClientes.RLDBText10BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+begin
+  if qryClientesVLR_COMPRAS.AsFloat = 0 then
+    Text := '0';
+end;
+
+procedure TfrmRelatorioClientes.RLDBText11BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+begin
+  if qryClientesVLR_COMPRAS.AsFloat = 0 then
+    Text := '0,00';
 end;
 
 procedure TfrmRelatorioClientes.RLGroup2BeforePrint(Sender: TObject;
@@ -224,6 +260,15 @@ begin
   else
     RLDraw3.Brush.Color := clWhite;}
 
+end;
+
+procedure TfrmRelatorioClientes.RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
+begin
+  try
+    rlbPeriodo.Caption := DateToStr(strToDate(Periodo.medInicial.Text))+' a '+DateToStr(strToDate(Periodo.medFinal.Text));
+  Except
+    rlbPeriodo.Caption := '< Geral >';
+  end;
 end;
 
 procedure TfrmRelatorioClientes.btnSairClick(Sender: TObject);

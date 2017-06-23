@@ -2297,8 +2297,8 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     OnClick = rgAgrupamentoClick
   end
   object RLReport1: TRLReport
-    Left = -13
-    Top = 116
+    Left = -83
+    Top = 516
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -3202,14 +3202,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     DataSet = cdsItens2
     Left = 984
     Top = 304
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 627
-    Top = 120
   end
   object dspItens2: TDataSetProvider
     DataSet = qryItens2

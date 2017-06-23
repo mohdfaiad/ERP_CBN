@@ -1008,15 +1008,13 @@ inherited frmRelatorioContasPagar: TfrmRelatorioContasPagar
       ExplicitTop = 29
       ExplicitWidth = 426
       inherited StaticText1: TStaticText
-        Width = 37
         Font.Style = []
-        ExplicitWidth = 37
       end
       inherited StaticText2: TStaticText
-        Width = 67
+        Width = 68
         Caption = 'Raz'#227'o Social'
         Font.Style = []
-        ExplicitWidth = 67
+        ExplicitWidth = 68
       end
       inherited edtRazao: TEdit
         Width = 325
@@ -1267,13 +1265,5 @@ inherited frmRelatorioContasPagar: TfrmRelatorioContasPagar
       Precision = 18
       Size = 2
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 224
-    Top = 240
   end
 end

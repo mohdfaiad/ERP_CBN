@@ -50,7 +50,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Transparent = True
   end
   object Label5: TLabel
-    Left = 54
+    Left = 22
     Top = 349
     Width = 107
     Height = 17
@@ -155,6 +155,20 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     ParentShowHint = False
     ShowHint = True
     OnClick = btnNovoLoteClick
+  end
+  object Label7: TLabel
+    Left = 545
+    Top = 349
+    Width = 31
+    Height = 17
+    Caption = 'Setor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
   end
   object edtCodigoBarras: TEdit
     Left = 424
@@ -576,7 +590,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
   end
   object dtpDataProducao: TDateTimePicker
-    Left = 54
+    Left = 22
     Top = 368
     Width = 121
     Height = 21
@@ -586,13 +600,13 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Visible = False
   end
   inline ListaIntervalos: TListaCampo
-    Left = 230
+    Left = 166
     Top = 349
     Width = 353
     Height = 48
     TabOrder = 7
     Visible = False
-    ExplicitLeft = 230
+    ExplicitLeft = 166
     ExplicitTop = 349
     ExplicitWidth = 353
     ExplicitHeight = 48
@@ -733,5 +747,19 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
         ExplicitHeight = 23
       end
     end
+  end
+  object cbxSetor: TComboBox
+    Left = 544
+    Top = 368
+    Width = 118
+    Height = 21
+    Style = csDropDownList
+    ItemIndex = 0
+    TabOrder = 9
+    Text = 'F'#225'brica'
+    OnChange = cbxSetorChange
+    Items.Strings = (
+      'F'#225'brica'
+      'E-Commerce')
   end
 end

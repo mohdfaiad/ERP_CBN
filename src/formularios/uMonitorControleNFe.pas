@@ -152,7 +152,7 @@ type
     procedure SelecionarTodas;
     procedure GerarXML;
     procedure Atualiza_estoque(NF :TNotaFiscal; adiciona_subtrai :integer);
-    procedure Salva_estoque(cod_produto, cod_cor, cod_tamanho :integer; quantidade :Real);
+    procedure Salva_estoque(cod_produto, cod_cor, cod_tamanho, setor :integer; quantidade :Real);
     procedure Busca_tamanhos(var cds :TClientDataSet);
     procedure CancelaPedidos(PedidosFaturados :TObjectList);
 
@@ -185,7 +185,7 @@ uses
   Item, ItemAvulso, QuantidadeItemAvulso,
   Tamanho,
   Estoque,
-  ClipBrd,
+  ClipBrd, math,
   ShellApi, uProtocoloEntrega,
   EspecificacaoEstoquePorProdutoCorTamanho,
   uCCe, PermissoesAcesso, Pessoa;
@@ -1304,7 +1304,7 @@ begin
 end;
 
 procedure TfrmMonitorControleNFe.Atualiza_estoque(NF: TNotaFiscal; adiciona_subtrai :integer);
-var i, j, k :integer;
+var i, j, k, setor :integer;
     Pedido  :TPedido;
     cdsTamanhos :TClientDataSet;
 begin
@@ -1317,64 +1317,66 @@ begin
 
       for j := 0 to Pedido.Itens.Count - 1 do begin
 
+         setor := IfThen((Pedido.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                         ((Pedido.Itens.Items[j] as TItem).Produto.Tipo = 'E'), 2, 1);
+
          if ( (Pedido.Itens.Items[j] as TItem).qtd_RN > 0) then begin
            cdsTamanhos.Locate('TAMANHO','RN',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_RN * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_RN * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_P > 0) then begin
            cdsTamanhos.Locate('TAMANHO','P',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_P * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_P * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_M > 0) then begin
            cdsTamanhos.Locate('TAMANHO','M',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_M * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_M * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_G > 0) then begin
            cdsTamanhos.Locate('TAMANHO','G',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_G * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_G * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_1 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','1',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_1 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_1 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_2 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','2',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_2 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_2 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_3 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','3',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_3 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_3 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_4 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','4',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_4 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_4 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_6 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','6',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_6 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_6 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_8 > 0) then begin
            cdsTamanhos.Locate('TAMANHO','8',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_8 * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_8 * adiciona_subtrai);
          end;
          if ( (Pedido.Itens.Items[j] as TItem).qtd_UNICA > 0) then begin
            cdsTamanhos.Locate('TAMANHO','UNICA',[]);
            Salva_estoque((Pedido.Itens.Items[j] as TItem).cod_produto, (Pedido.Itens.Items[j] as TItem).cod_cor,
-                          cdsTamanhos.FieldByName('CODIGO').AsInteger, (Pedido.Itens.Items[j] as TItem).qtd_UNICA * adiciona_subtrai);
+                          cdsTamanhos.FieldByName('CODIGO').AsInteger, setor, (Pedido.Itens.Items[j] as TItem).qtd_UNICA * adiciona_subtrai);
          end;
 
       end; //fim for j
-
     end;//fim for i
 
   end
@@ -1386,6 +1388,7 @@ begin
          Salva_estoque( (NF.ItensAvulsos[i] as TItemAvulso).Produto.Codigo,
                         (NF.ItensAvulsos[i] as TItemAvulso).Cor.Codigo,
                         ((NF.ItensAvulsos[i] as TItemAvulso).Quantidades[j] as TQuantidadeItemAvulso).Tamanho.Codigo,
+                         1,
                         ((NF.ItensAvulsos[i] as TItemAvulso).Quantidades[j] as TQuantidadeItemAvulso).Quantidade * adiciona_subtrai );
       end;
     end;
@@ -1402,7 +1405,7 @@ begin
 end;
 
 procedure TfrmMonitorControleNFe.Salva_estoque(cod_produto, cod_cor,
-  cod_tamanho: integer; quantidade: Real);
+  cod_tamanho, setor: integer; quantidade: Real);
 var
     Estoque :TEstoque;
     repositorio :TRepositorio;
@@ -1413,7 +1416,8 @@ begin
 
   try
     repositorio    := TFabricaRepositorio.GetRepositorio(TEstoque.ClassName);
-    Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(cod_produto,
+    Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(setor,
+                                                                       cod_produto,
                                                                        cod_cor,
                                                                        cod_tamanho);
 

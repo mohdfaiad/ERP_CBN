@@ -16,6 +16,8 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   DesignSize = (
     1130
     673)
@@ -2637,13 +2639,12 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       ExplicitWidth = 401
       ExplicitHeight = 42
       inherited StaticText1: TStaticText
-        Width = 48
-        Height = 20
+        Width = 47
+        Height = 21
         Font.Height = -13
         Font.Style = []
-        Transparent = True
-        ExplicitWidth = 48
-        ExplicitHeight = 20
+        ExplicitWidth = 47
+        ExplicitHeight = 21
       end
       inherited edtCodigo: TCurrencyEdit
         Top = 18
@@ -2657,14 +2658,13 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       end
       inherited StaticText2: TStaticText
         Left = 86
-        Width = 45
-        Height = 20
+        Width = 43
+        Height = 21
         Font.Height = -13
         Font.Style = []
-        Transparent = True
         ExplicitLeft = 86
-        ExplicitWidth = 45
-        ExplicitHeight = 20
+        ExplicitWidth = 43
+        ExplicitHeight = 21
       end
       inherited btnBuscar: TBitBtn
         Left = 58

@@ -5,7 +5,7 @@ interface
 uses
   Produto,
   ItemVenda, Dialogs,
-  FormaPagamento, Funcoes, Pessoa;
+  FormaPagamento, Funcoes, Cliente;
 
 type
   TVenda = class
@@ -23,7 +23,7 @@ type
     FTotal_em_servicos :Real;
     FCpf_cliente :String;
     Fnome_cliente :String;
-    FCliente :TPessoa;
+    FCliente :TCliente;
     FCodigo_endereco :Integer;
     FTaxa_entrega :Real;
 
@@ -51,7 +51,7 @@ type
     function GetBaseISSQN: Real;
     function GetISSQN: Real;
     function GetTotalBrutoISSQN: Real;
-    function GetCliente: TPessoa;
+    function GetCliente: TCliente;
 
   public
     procedure AdicionarItem(CodigoProduto :Integer;
@@ -93,7 +93,7 @@ type
 
     property Cpf_cliente :String read FCpf_cliente write FCpf_cliente;
     property nome_cliente :String read Fnome_cliente write Fnome_cliente;
-    property Cliente :TPessoa read GetCliente;
+    property Cliente :TCliente read GetCliente;
     property Codigo_endereco :integer read FCodigo_endereco write FCodigo_endereco;
 
   public
@@ -204,14 +204,14 @@ begin
    result := 0;
 end;
 
-function TVenda.GetCliente: TPessoa;
-var Especificacao :TEspecificacaoPessoaPorCpfCnpj;
+function TVenda.GetCliente: TCliente;
+var codigoPessoa :integer;
     repositorio :TRepositorio;
 begin
   if not assigned(FCliente) then begin
-    repositorio := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Especificacao := TEspecificacaoPessoaPorCpfCnpj.Create(self.Cpf_cliente);
-    FCliente      := TPessoa(repositorio.GetPorEspecificacao(Especificacao));
+    repositorio := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+    codigoPessoa := strToIntDef(Campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',self.Cpf_cliente) ,0);
+    FCliente      := TCliente(repositorio.Get(codigoPessoa));
   end;
 
   result := FCliente;

@@ -108,7 +108,8 @@ uses
   RepositorioDevolucao,
   RepositorioMapa,
   RepositorioPedidoMapa,
-  RepositorioDirecionamentoEntrada;
+  RepositorioDirecionamentoEntrada,
+  RepositorioRepresentante;
 
 
 { TFabricaRepositorio }
@@ -209,6 +210,7 @@ begin
    else if (NomeDaEntidade  = 'TMapa')                      then result := TRepositorioMapa.Create
    else if (NomeDaEntidade  = 'TPedidoMapa')                then result := TRepositorioPedidoMapa.Create
    else if (NomeDaEntidade  = 'TDirecionamentoEntrada')     then result := TRepositorioDirecionamentoEntrada.Create
+   else if (NomeDaEntidade  = 'TRepresentante')             then result := TRepositorioRepresentante.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');
@@ -217,5 +219,7 @@ begin
 end;
 
 end.
+
+
 
 

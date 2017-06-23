@@ -9,6 +9,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
   OldCreateOrder = True
   WindowState = wsMaximized
   OnShow = FormShow
+  ExplicitLeft = -30
   ExplicitWidth = 1286
   ExplicitHeight = 686
   PixelsPerInch = 96
@@ -234,7 +235,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       1280
       61)
     object Label6: TLabel
-      Left = 29
+      Left = 13
       Top = 5
       Width = 57
       Height = 13
@@ -247,7 +248,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       ParentFont = False
     end
     object Label7: TLabel
-      Left = 150
+      Left = 134
       Top = 5
       Width = 52
       Height = 13
@@ -260,75 +261,112 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       ParentFont = False
     end
     object Shape1: TShape
-      Left = 286
+      Left = 262
       Top = 6
       Width = 1
       Height = 37
       Pen.Color = 11842740
     end
-    object SpeedButton1: TSpeedButton
-      Left = 1208
-      Top = 9
-      Width = 59
-      Height = 41
+    object btnConfigEmail: TSpeedButton
+      Left = 1239
+      Top = 17
+      Width = 30
+      Height = 28
       Anchors = [akTop, akRight]
-      Caption = '< Esc >'
+      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11
       Font.Name = 'Segoe UI'
       Font.Style = []
       Glyph.Data = {
-        36030000424D3603000000000000360000002800000010000000100000000100
-        1800000000000003000000000000000000000000000000000000FFFFFFF8CD64
-        F8CD64F6CA5DF2C057F1BC4FF5BF58F6BA50F2AE3BEBA52FDE900DD88500D57E
-        00D77E00DB8915FFFFFFFFFFFFE89F26F9F6E2F8F2E0F9F3DEFFFCE0B5AD9F95
-        897B938878B5AE9DFFF4D0FDEBC6FDECC5FDEBBDAE5213FFFFFFFFFFFFE89F26
-        F0F4FFF0F5FFF0F5FEFEFFFF92939967666E6B687198989FFFFFFFFCFFFFFDFF
-        FFFFFFFFAD4E14FFFFFFFFFFFFE99E23E9EAEBEAEBEBEAEAE9F9F8F88F8A896B
-        6663605C5A898785FFFFFFF3F2F2F5F7F6FEFFFFAD4E14FFFFFFFFFFFFE99E23
-        E2E4E6E4E3E5E4E5E3F3F3F282807F605E5C504F4E7D7978FDFCFBEDEDECF1F1
-        F1F2F5F4AE5114FFFFFFFFFFFFEAA024DDDDE0DFDDDFE1DEDDEFEFED78757453
-        51515655547C7A78F4F4F3E7E6E5EAEAEBEBEDEEAF5014FFFFFFFFFFFFEA9F24
-        D8D8DBD8D7D9DAD7D7E9E7E6545051242324272425585152F0EFEFE1E0E0E5E5
-        E5E6E7EAAD4F12FFFFFFFFFFFFECA52ACDCFD6D2D3D7D6D4D0DAD9D7AFACACA9
-        A7A6AAA9A8AFADACE0DFDEDCDAD8DFE1E6DCE3EDAF4F0AFFFFFFF0C46EEEAF34
-        CF9E4FB0B4BECFCFD3D2CECDD4D1D0D3D0CFD4D2CFDEDDDBD7D4D3D6D7DDD6DE
-        E9DDAF4CDA8200D0831BF7DBA7F3D088F6BC4CCFA24FA9ABB8D0CFD1A9A3A184
-        7E7E807B7ABEB9B6D4D6D9CBD3E2D9A745E68A00CC7A0DD6A77AFFFFFFFDF5E7
-        F2D397FECC62D1A75BA7A9B3A9A7A8908C8B8D8987BCBCC0C1C5CFD09939E681
-        00D18116F5EBE4FFFFFFFFFFFFFFFFFFFCF3E5F2D397FFD979D3AC628D8C96A7
-        A3A6A6A4A49FA2B1D5A147E89500C99A5CF1DFD3FFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFBF1E3F1D49EFFE78BD4B16C9798A0979AA4CDA65FF9B42FE7E5D7BAA2
-        8DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBF1E3F0D39BFFEF9DD0
-        B377CEB37FFFD052F1C678F1FFFFBAA28DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFAEFE1F1D29CFFF3A9FFEC8BE5AD52D29C6FE4FFFFBAA2
-        8DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBF3EAEF
-        CD91EAC077FFFFFFF4E5D7E2C3A4E4C9AEFFFFFFFFFFFFFFFFFF}
-      Layout = blGlyphTop
+        36080000424D3608000000000000360000002800000020000000100000000100
+        2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00EBDCC700A8773B00905B1D00EBE0CF00EBE0CF00915C
+        1E00955D1D00E4D2B700FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B0087786300441300002C000000877C6B00877C6B002D00
+        000031000000806E53009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00A7794400DF9E5100DE9C4B00774B160075491600DE9B
+        4B00DF9E5100A4774000FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B00431500007B3A00007A38000013000000110000007A37
+        00007B3A0000401300009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00E9DF
+        CE0092734A00917A5A005D391100E0A25500E0A25500DC994900DB974600E1A3
+        5700E0A0520058360F009780610094754D00E9DECD00FFFFFF009B9B9B00857B
+        6A002E0F00002D160000000000007C3E00007C3E000078350000773300007D3F
+        00007C3C000000000000331C000030110000857A69009B9B9B00FDFCFA008E65
+        3300E9AF6800DE9C4B00DA954300F3C38200FFDEAA00FFEFC000FFEFC200FFE0
+        AD00F5C58600DA954400DE9B4B00E9AF68008E653300FDFCFA00999896002A01
+        0000854B04007A380000763100008F5F1E009B7A46009B8B5C009B8B5E009B7C
+        490091612200763100007A370000854B04002A01000099989600EFE9E0008A57
+        1B00FAD19700FAD19700FED79D00FFE6B400F6C68800E4A85F00E4A85F00F7CA
+        8D00FFE9BA00FFD8A200FCD29800FAD197008A571B00EFE9E0008B857C002600
+        0000966D3300966D33009A7339009B8250009262240080440000804400009366
+        29009B8556009B743E00986E3400966D3300260000008B857C00FFFFFF00D8CD
+        BE00CB812A00FED79E00FFD8A200DF9E5000643D11009B611E009B611E006841
+        1200E0A25500FFDEAA00FFD8A200CB812A00D8CDBE00FFFFFF009B9B9B007469
+        5A00671D00009A733A009B743E007B3A00000000000037000000370000000400
+        00007C3E00009B7A46009B743E00671D000074695A009B9B9B00C7AE89008366
+        4000E2A65A00FCD29800E7AD6400673F1200A4672000FFFFFF00FFFFFF00A467
+        200075491600E8AE6700FCD39900E2A65A0083664000C7AE8900634A25001F02
+        00007E420000986E34008349000003000000400300009B9B9B009B9B9B004003
+        000011000000844A0300986F35007E4200001F020000634A2500D1842C00FFDE
+        AB00FFDAA400F1BE7B00D2873000905B1D00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00A4672000D1852D00EEB97500FFD9A300FFDEAB00D1842C006D2000009B7A
+        47009B7640008D5A17006E2300002C0000009B9B9B009B9B9B009B9B9B009B9B
+        9B00400300006D2100008A5511009B753F009B7A47006D200000D58D3900FFE4
+        B100FFE2AE00E8AE6700D0842B00AB6C2300FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00AD6E2300C07A2700E6AB6100FFE0AD00FFE4B100D58D3900712900009B80
+        4D009B7E4A00844A03006C200000470800009B9B9B009B9B9B009B9B9B009B9B
+        9B00490A00005C160000824700009B7C49009B804D0071290000D4B78D00AB7F
+        4A00F3C38400EDB67100D58D3700A56820009B611E00FFFFFF00FFFFFF009B61
+        1E009B611E00CB812A00E9B26A00F5C58600AB7F4A00D4B78D0070532900471B
+        00008F5F200089520D007129000041040000370000009B9B9B009B9B9B003700
+        000037000000671D0000854E060091612200471B000070532900FFFFFF00EBDB
+        C400E6AB6100FFDEA700D0842B00C47D2800C47D28009B611E009B611E00B775
+        2500B4722500C07A2700FFDEA700E6AB6100EBDBC400FFFFFF009B9B9B008777
+        6000824700009B7A43006C200000601900006019000037000000370000005311
+        0000500E00005C1600009B7A430082470000877760009B9B9B00FBF1E300DC99
+        4900FFEFC200FFF9D000F7CA8D00B2702400A6692100A2661F009E631F009D63
+        1F00A76A2100F6C98A00FFF9D000FFEFC200DC994900FBF1E300978D7F007835
+        00009B8B5E009B956C00936629004E0C0000420500003E0200003A0000003900
+        000043060000926526009B956C009B8B5E0078350000978D7F00FFFDFB00E0A4
+        5900FFE4B400FDD49C00FFE0AC00FFE2AF00D58D3700C67E2A00C47D2800D48C
+        3500FFE2AE00FFE0AC00FDD49C00FFE4B400E0A45900FFFDFB009B9997007C40
+        00009B805000997038009B7C48009B7E4B0071290000621A0000601900007028
+        00009B7E4A009B7C4800997038009B8050007C4000009B999700FFFFFF00FAEB
+        D600E2A96300EACB9F00E1A75F00FFF9D000FFF9D000FFF3C600FFF3C600FFF9
+        D000FFF9D000E1A75F00EACB9F00E2A96300FAEBD600FFFFFF009B9B9B009687
+        72007E45000086673B007D4300009B956C009B956C009B8F62009B8F62009B95
+        6C009B956C007D43000086673B007E450000968772009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00EEC18600FFF9D000FFF9CF00E5AC6600E5AC6600FFF9
+        CF00FFF9D000EEC18700FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B008A5D22009B956C009B956B0081480200814802009B95
+        6B009B956C008A5D23009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FAE7CB00EBB87500E9AF6800FEF8EF00FEF8EF00E9AF
+        6800EDBB7B00FAE8CD00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009683670087541100854B04009A948B009A948B00854B
+        040089571700968469009B9B9B009B9B9B009B9B9B009B9B9B00}
+      NumGlyphs = 2
       ParentFont = False
-      OnClick = SpeedButton1Click
+      OnClick = btnConfigEmailClick
     end
-    inline BuscaPessoa1: TBuscaPessoa
-      Left = 322
-      Top = 5
-      Width = 527
-      Height = 38
-      AutoSize = True
-      TabOrder = 2
-      ExplicitLeft = 322
-      ExplicitTop = 5
-      inherited StaticText1: TStaticText
-        Width = 87
-        Caption = 'Representante'
-        ExplicitWidth = 87
-      end
-      inherited StaticText2: TStaticText
-        Visible = False
-      end
+    object Label9: TLabel
+      Left = 698
+      Top = 6
+      Width = 32
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'E-mail'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = -1
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
     end
     object dtpInicio: TDateTimePicker
-      Left = 29
+      Left = 13
       Top = 20
       Width = 105
       Height = 21
@@ -344,7 +382,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       OnChange = dtpInicioChange
     end
     object dtpFim: TDateTimePicker
-      Left = 150
+      Left = 134
       Top = 20
       Width = 105
       Height = 21
@@ -360,10 +398,10 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       OnChange = dtpFimChange
     end
     object btnBuscar: TBitBtn
-      Left = 938
+      Left = 980
       Top = 16
-      Width = 121
-      Height = 25
+      Width = 80
+      Height = 28
       Caption = ' Buscar'
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
@@ -437,15 +475,209 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       OnClick = btnBuscarClick
     end
     object chkPeriodoRep: TCheckBox
-      Left = 29
+      Left = 13
       Top = 42
       Width = 97
       Height = 16
       Caption = 'Per'#237'odo Geral'
       Color = clBtnFace
       ParentColor = False
-      TabOrder = 4
+      TabOrder = 6
       OnClick = chkPeriodoRepClick
+    end
+    object btnImprimir: TBitBtn
+      Left = 1065
+      Top = 16
+      Width = 80
+      Height = 28
+      Caption = ' Imprimir'
+      Enabled = False
+      Glyph.Data = {
+        36080000424D3608000000000000360000002800000020000000100000000100
+        2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00D7C39B00ECE3D600ECE3D600ECE3D600ECE3D600ECE3
+        D600ECE3D600D7C39B00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B00735F3700887F7200887F7200887F7200887F7200887F
+        7200887F7200735F37009B9B9B009B9B9B009B9B9B009B9B9B00B0ACAC00B1AC
+        AC00A7A2A200726C7300C4AB7F00EDE1D500EDE1D500EDE1D500EDE1D500EDE1
+        D500EDE1D500C4AB7F0076717700A49E9E00A9A4A400ABA5A5004C4848004D48
+        4800433E3E000E080F0060471B00897D7100897D7100897D7100897D7100897D
+        7100897D710060471B00120D1300403A3A004540400047414100958F8F00C3C0
+        BF00C3C0BF00837D8400C6A87400E0CBAE00E0CBAE00E0CBAE00E0CBAE00E0CB
+        AE00E0CBAE00C6A87400837D8400C3C0BF00C3C0BF0099929200312B2B005F5C
+        5B005F5C5B001F192000624410007C674A007C674A007C674A007C674A007C67
+        4A007C674A00624410001F1920005F5C5B005F5C5B00352E2E00A49FA100D1CF
+        CE00D1CFCE00D3D2D100D2D2D300D0D0D200D0D0D200D0D0D200D0D0D200D0D0
+        D200D0D0D200D2D2D300D3D2D100BACAD7006E9BE300A49FA100403B3D006D6B
+        6A006D6B6A006F6E6D006E6E6F006C6C6E006C6C6E006C6C6E006C6C6E006C6C
+        6E006C6C6E006E6E6F006F6E6D00566673000A377F00403B3D00AAA7A700D9D7
+        D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7D700D9D7
+        D700D9D7D700D9D7D700D9D7D7008AC3E900004BFB00ABA8A800464343007573
+        7300757373007573730075737300757373007573730075737300757373007573
+        7300757373007573730075737300265F85000000970047444400B7B3B300E6E8
+        E900D6C5AF00BC6B1000BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A0F00BB6A
+        0F00BB6A0F00BB6A0F00BC6B1000D6C5AF00E6E8E900B8B5B500534F4F008284
+        850072614B005807000057060000570600005706000057060000570600005706
+        000057060000570600005807000072614B008284850054515100BCB9BA00EEF2
+        F500BA7B3E00E1A94200E1A84200E1A84200E1A84200E1A84200E1A84200E1A8
+        4200E1A84200E1A84200E1A94200BA7B3E00EEF2F500BFBBBC00585556008A8E
+        9100561700007D4500007D4400007D4400007D4400007D4400007D4400007D44
+        00007D4400007D4400007D450000561700008A8E91005B575800CDC8C900F8FC
+        FF00CD975300EEC67000EEC77100EEC77100EEC77100EEC77100EEC77100EEC7
+        7100EEC77100EEC77100EEC67000CD975300F8FCFF00CECBCC00696465009498
+        9B00693300008A620C008A630D008A630D008A630D008A630D008A630D008A63
+        0D008A630D008A630D008A620C006933000094989B006A676800D2D0D000FCFF
+        FF00D7A55C00EDC97700E9BF6800E9BF6800E9BF6800E9BF6800E9BF6800E9BF
+        6800E9BF6800E9BF6800EDC97700D7A55C00FCFFFF00D4D1D0006E6C6C00989B
+        9B007341000089651300855B0400855B0400855B0400855B0400855B0400855B
+        0400855B0400855B04008965130073410000989B9B00706D6C00DEDCDB00FFFF
+        FF00E8C07000E0AC5400B99D6B00D7BD9100D7BD9100D7BD9100D7BD9100D7BD
+        9100D7BD9100B99D6B00E0AC5400E8C07000FFFFFF00E3DFDF007A7877009B9B
+        9B00845C0C007C4800005539070073592D0073592D0073592D0073592D007359
+        2D0073592D00553907007C480000845C0C009B9B9B007F7B7B00D1CBCD00BCBB
+        C000DEB67300CF9E5F00C4AB7F00DFCAAD00DFCAAD00DFCAAD00DFCAAD00DFCA
+        AD00DFCAAD00C4AB7F00CD995600DDB36E00BEBDC100D1CACC006D6769005857
+        5C007A520F006B3A000060471B007B6649007B6649007B6649007B6649007B66
+        49007B66490060471B0069350000794F0A005A595D006D666800FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00D0BD9800ECDFD100ECDFD100ECDFD100ECDFD100ECDF
+        D100ECDFD100D0BD9800FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B006C593400887B6D00887B6D00887B6D00887B6D00887B
+        6D00887B6D006C5934009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00D5C4A400EFE4D800EFE4D800EFE4D800EFE4D800EFE4
+        D800EFE4D800D5C4A400FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B00716040008B8074008B8074008B8074008B8074008B80
+        74008B807400716040009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00DED0B800F5EDE400F5EDE400F5EDE400F5EDE400F5ED
+        E400F5EDE400DED0B800FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B007A6C5400918980009189800091898000918980009189
+        8000918980007A6C54009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00E2D6C100F8F3EA00F8F3EA00F8F3EA00F8F3EA00F8F3
+        EA00F8F3EA00E2D6C100FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B007E725D00948F8600948F8600948F8600948F8600948F
+        8600948F86007E725D009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00E7DDCD00EFE8DB00EFE8DB00EFE8DB00EFE8DB00EFE8
+        DB00EFE8DB00E8DFD000FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B00837969008B8477008B8477008B8477008B8477008B84
+        77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
+      NumGlyphs = 2
+      TabOrder = 4
+      OnClick = btnImprimirClick
+    end
+    object btnEnviarEmail: TBitBtn
+      Left = 1153
+      Top = 16
+      Width = 80
+      Height = 28
+      Caption = ' Enviar'
+      Enabled = False
+      Glyph.Data = {
+        36080000424D3608000000000000360000002800000020000000100000000100
+        2000000000000008000000000000000000000000000000000000D4A77E00C093
+        6D00BF926C00BF926C00BF926C00BF926C00BF926C00BF926C00BF926C00BF92
+        6C00BF926C00BF926C00BF926C00BF926C00FFFFFF00FFFFFF0070431A005C2F
+        09005B2E08005B2E08005B2E08005B2E08005B2E08005B2E08005B2E08005B2E
+        08005B2E08005B2E08005B2E08005B2E08009B9B9B009B9B9B00EBBE9200F0DB
+        CD00F9DDC100F0DCCE00F9DDC100F0DCCE00F9DDC100F0DCCE00F9DDC100F0DC
+        CE00F9DDC100F0DCCE00F9DDC000BF926C00FFFFFF00FFFFFF00875A2E008C77
+        690095795D008C786A0095795D008C786A0095795D008C786A0095795D008C78
+        6A0095795D008C786A0095795C005B2E08009B9B9B009B9B9B00EBBE9200FBEE
+        E100FDEEDF00FEF3E800FEF4E900FEF4E900F6E4D200F6E4D200FEF4E900FEF4
+        E900FEF3E800FDEEDF00FBEEE100BF926C00FFFFFF00FFFFFF00875A2E00978A
+        7D00998A7B009A8F84009A9085009A90850092806E0092806E009A9085009A90
+        85009A8F8400998A7B00978A7D005B2E08009B9B9B009B9B9B00EBBE9200E9CE
+        B200F0DDC800FEF6EE00FFF6EC00EED7BF00E1C19F00E1C19F00EED7BF00FFF6
+        EC00FEF6EE00F0DDC800E9CEB200BF926C00FFFFFF00FFFFFF00875A2E00856A
+        4E008C7964009A928A009B9288008A735B007D5D3B007D5D3B008A735B009B92
+        88009A928A008C796400856A4E005B2E08009B9B9B009B9B9B00EBBE9200FFF2
+        E300EDD0B200E6C9AC00E8CDB200EAD2B900FDF5EE00FDF6EE00EAD2B900E8CD
+        B200E6C9AC00ECCFB000FEF0E100BF926C00FFFFFF00FFFFFF00875A2E009B8E
+        7F00896C4E008265480084694E00866E550099918A0099928A00866E55008469
+        4E0082654800886B4C009A8C7D005B2E08009B9B9B009B9B9B00EBBE9200FFF2
+        E300F6DFC600E2C09B00F0DDC900FFF4E900FFF3E600FFF4EA00FFF7EF00F0DD
+        C900E2BF9A00F5DDC200FEF0E100BF926C00FFFFFF00FFFFFF00875A2E009B8E
+        7F00927B62007E5C37008C7965009B9085009B8F82009B9086009B938B008C79
+        65007E5B360091795E009A8C7D005B2E08009B9B9B009B9B9B00EBBE9200F5E2
+        CD00E1BF9B00F7E7D600FFF0E100FFF1E400FFF4E900FFF5EB00FFF6EC00FFF5
+        EC00F7E7D800DFBC9600F3DEC800BF926C00FFFFFF00FFFFFF00875A2E00917E
+        69007D5B3700938372009B8C7D009B8D80009B9085009B9187009B9288009B91
+        8800938374007B5832008F7A64005B2E08009B9B9B009B9B9B00EBBE9200E8CE
+        B300FBECDC00FFECD900FFF0E100FFF3E700FFF5EA00FFF5EC00FFF6ED000D85
+        0D000D850D000D850D000D850D000D850D00FFFFFF00FFFFFF00875A2E00846A
+        4F00978878009B8875009B8C7D009B8F83009B9186009B9188009B9289000021
+        0000002100000021000000210000002100009B9B9B009B9B9B00EBBE9200F6ED
+        EA00FFE8D100F6EBE500FFEEDD00F6EFEE00FFF1E200F6F0F000FFF1E3000099
+        0000B8FFB8003EB6400038B23A000D850D00FFFFFF00FFFFFF00875A2E009289
+        86009B846D00928781009B8A7900928B8A009B8D7E00928C8C009B8D7F000035
+        0000549B540000520000004E0000002100009B9B9B009B9B9B00EBBE9200EBBE
+        9200EBBE9200EBBE9200EBBE9200EBBE9200EBBE9200EBBE9200EBBE92000099
+        00009FF1A0002CAF300037B23A000D850D00FFFFFF00FFFFFF00875A2E00875A
+        2E00875A2E00875A2E00875A2E00875A2E00875A2E00875A2E00875A2E000035
+        00003B8D3C00004B0000004E0000002100009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000099
+        00008BE58D0037B53D0041B745000D850D00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B000035
+        0000278129000051000000530000002100009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0000990000009900000099
+        00008BE58D0043BB49004CBC50000D850D000D850D000D850D009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0000350000003500000035
+        0000278129000057000000580000002100000021000000210000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00B0E0B00000990000A4E7
+        A90074CF7B0059C4610057C25C0064C668000D850D00ACDEAC009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B004C7C4C00003500004083
+        4500106B170000600000005E00000062040000210000487A4800FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00ACDEAC000099
+        0000A1E7A60073CF7A007CD182000D850D009DD89D00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00487A48000035
+        00003D8342000F6B1600186D1E0000210000397439009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00C3E7
+        C30000990000A9E9AC000D850D00B9E3B900FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B005F83
+        5F00003500004585480000210000557F55009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00B9E3B90000990000B9E3B900FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+        9B00557F550000350000557F55009B9B9B009B9B9B009B9B9B00}
+      NumGlyphs = 2
+      TabOrder = 5
+      OnClick = btnEnviarEmailClick
+    end
+    object edtEmail: TEdit
+      Left = 697
+      Top = 20
+      Width = 255
+      Height = 21
+      TabStop = False
+      TabOrder = 7
+    end
+    inline buscaRepresentante1: TbuscaRepresentante
+      Left = 280
+      Top = 5
+      Width = 412
+      Height = 48
+      TabOrder = 2
+      OnExit = buscaRepresentante1Exit
+      ExplicitLeft = 280
+      ExplicitTop = 5
+      ExplicitWidth = 412
+      ExplicitHeight = 48
+      inherited edtCodigo: TCurrencyEdit
+        Width = 48
+        ExplicitWidth = 48
+      end
+      inherited StaticText2: TStaticText
+        Left = 80
+        ExplicitLeft = 80
+      end
+      inherited btnBuscar: TBitBtn
+        Left = 51
+        ExplicitLeft = 51
+      end
+      inherited edtRazao: TEdit
+        Left = 79
+        Width = 322
+        ExplicitLeft = 79
+        ExplicitWidth = 322
+      end
     end
   end
   object Panel2: TPanel
@@ -673,7 +905,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
         Transparent = True
       end
       object DBEdit14: TDBEdit
-        Left = 193
+        Left = 194
         Top = 127
         Width = 127
         Height = 23
@@ -690,7 +922,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
         TabOrder = 0
       end
       object DBEdit13: TDBEdit
-        Left = 193
+        Left = 194
         Top = 100
         Width = 127
         Height = 23
@@ -707,7 +939,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
         TabOrder = 1
       end
       object DBEdit12: TDBEdit
-        Left = 193
+        Left = 195
         Top = 73
         Width = 127
         Height = 23
@@ -1187,92 +1419,1280 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       end
     end
   end
+  object RLReport1: TRLReport
+    Left = 85
+    Top = 165
+    Width = 1123
+    Height = 794
+    Margins.LeftMargin = 5.000000000000000000
+    Margins.RightMargin = 5.000000000000000000
+    Borders.Sides = sdCustom
+    Borders.DrawLeft = True
+    Borders.DrawTop = True
+    Borders.DrawRight = True
+    Borders.DrawBottom = True
+    DataSource = DataSource1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    PageSetup.Orientation = poLandscape
+    Visible = False
+    BeforePrint = RLReport1BeforePrint
+    object RLBand1: TRLBand
+      Left = 20
+      Top = 39
+      Width = 1083
+      Height = 72
+      BandType = btTitle
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      object RLLabel4: TRLLabel
+        Left = 1
+        Top = 40
+        Width = 1084
+        Height = 16
+        Caption = 
+          '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ' +
+          '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ' +
+          '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ' +
+          '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ' +
+          '- - - - - - - '
+      end
+      object RLLabel1: TRLLabel
+        Left = 372
+        Top = 16
+        Width = 293
+        Height = 22
+        Caption = 'Relat'#243'rio Raio-X Representante'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -19
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLSystemInfo1: TRLSystemInfo
+        Left = 909
+        Top = 53
+        Width = 36
+        Height = 15
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel2: TRLLabel
+        Left = 871
+        Top = 53
+        Width = 32
+        Height = 15
+        Caption = 'Data:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel3: TRLLabel
+        Left = 4
+        Top = 53
+        Width = 100
+        Height = 16
+        Caption = 'Representante:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbRepresentante: TRLLabel
+        Left = 107
+        Top = 53
+        Width = 23
+        Height = 15
+        Caption = 'Rep'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel5: TRLLabel
+        Left = 979
+        Top = 53
+        Width = 33
+        Height = 15
+        Caption = 'Hora:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLSystemInfo2: TRLSystemInfo
+        Left = 1018
+        Top = 53
+        Width = 38
+        Height = 15
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        Info = itHour
+        ParentFont = False
+        Text = ''
+      end
+      object rlbPeriodo: TRLLabel
+        Left = 550
+        Top = 53
+        Width = 23
+        Height = 15
+        Caption = 'Rep'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel30: TRLLabel
+        Left = 487
+        Top = 52
+        Width = 58
+        Height = 16
+        Caption = 'Per'#237'odo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object RLBand2: TRLBand
+      Left = 20
+      Top = 111
+      Width = 1083
+      Height = 21
+      BandType = btColumnHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Color = 15790320
+      ParentColor = False
+      Transparent = False
+      object RLLabel6: TRLLabel
+        Left = 3
+        Top = 3
+        Width = 36
+        Height = 14
+        Caption = 'Pedido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel7: TRLLabel
+        Left = 80
+        Top = 3
+        Width = 43
+        Height = 14
+        Caption = 'Dt. Rep.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel10: TRLLabel
+        Left = 151
+        Top = 3
+        Width = 40
+        Height = 14
+        Caption = 'Dt. Fat.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel11: TRLLabel
+        Left = 204
+        Top = 3
+        Width = 46
+        Height = 14
+        Caption = 'Compras'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel12: TRLLabel
+        Left = 253
+        Top = 3
+        Width = 37
+        Height = 14
+        Caption = 'Cliente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel13: TRLLabel
+        Left = 556
+        Top = 3
+        Width = 30
+        Height = 14
+        Caption = 'Prazo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel14: TRLLabel
+        Left = 591
+        Top = 3
+        Width = 109
+        Height = 14
+        Caption = 'Forma de Pagamento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel15: TRLLabel
+        Left = 752
+        Top = 3
+        Width = 39
+        Height = 14
+        Caption = '% Desc'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel16: TRLLabel
+        Left = 794
+        Top = 3
+        Width = 49
+        Height = 14
+        Caption = 'Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel17: TRLLabel
+        Left = 851
+        Top = 3
+        Width = 72
+        Height = 14
+        Caption = 'Tot L'#237'q Pedido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel18: TRLLabel
+        Left = 931
+        Top = 3
+        Width = 31
+        Height = 14
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel8: TRLLabel
+        Left = 971
+        Top = 3
+        Width = 45
+        Height = 14
+        Caption = '% Comis'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+      object RLLabel9: TRLLabel
+        Left = 1027
+        Top = 3
+        Width = 50
+        Height = 14
+        Caption = 'Comiss'#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+      end
+    end
+    object RLBand3: TRLBand
+      Left = 20
+      Top = 132
+      Width = 1083
+      Height = 20
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Borders.Color = 5197647
+      object RLDBText1: TRLDBText
+        Left = 3
+        Top = 2
+        Width = 69
+        Height = 14
+        DataField = 'NUMPEDIDO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText2: TRLDBText
+        Left = 55
+        Top = 2
+        Width = 92
+        Height = 13
+        Alignment = taCenter
+        DataField = 'DT_REPRESENTANTE'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText5: TRLDBText
+        Left = 127
+        Top = 2
+        Width = 88
+        Height = 13
+        Alignment = taCenter
+        DataField = 'DT_FATURAMENTO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText6: TRLDBText
+        Left = 154
+        Top = 2
+        Width = 81
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'QTD_COMPRAS'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText7: TRLDBText
+        Left = 253
+        Top = 2
+        Width = 299
+        Height = 14
+        AutoSize = False
+        DataField = 'CLIENTE'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText8: TRLDBText
+        Left = 549
+        Top = 2
+        Width = 37
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'PRAZO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText9: TRLDBText
+        Left = 592
+        Top = 2
+        Width = 156
+        Height = 14
+        AutoSize = False
+        DataField = 'FPGTO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText10: TRLDBText
+        Left = 650
+        Top = 2
+        Width = 136
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'PERC_DESCONTO_PEDIDO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText11: TRLDBText
+        Left = 746
+        Top = 2
+        Width = 97
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'TOTAL_DESCONTO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText12: TRLDBText
+        Left = 846
+        Top = 2
+        Width = 78
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'TOTAL_LIQUIDO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText13: TRLDBText
+        Left = 928
+        Top = 2
+        Width = 34
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'PECAS'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText3: TRLDBText
+        Left = 952
+        Top = 2
+        Width = 58
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'COMISSAO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText4: TRLDBText
+        Left = 1000
+        Top = 2
+        Width = 77
+        Height = 14
+        Alignment = taRightJustify
+        DataField = 'VLRCOMISSAO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+    end
+    object RLBand4: TRLBand
+      Left = 20
+      Top = 152
+      Width = 1083
+      Height = 59
+      AlignToBottom = True
+      BandType = btSummary
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = True
+      Borders.DrawRight = False
+      Borders.DrawBottom = False
+      object RLLabel34: TRLLabel
+        Left = 682
+        Top = 32
+        Width = 403
+        Height = 15
+        Caption = 
+          '----------------------------------------------------------------' +
+          '------------------------------------'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLDraw4: TRLDraw
+        Left = 760
+        Top = 2
+        Width = 324
+        Height = 21
+        Brush.Color = 15855079
+        Pen.Style = psClear
+      end
+      object RLDraw2: TRLDraw
+        Left = 66
+        Top = 2
+        Width = 615
+        Height = 21
+        Brush.Color = 15919067
+        Pen.Style = psClear
+      end
+      object RLDraw1: TRLDraw
+        Left = 0
+        Top = 2
+        Width = 106
+        Height = 21
+        Brush.Color = 14994603
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = []
+        Pen.Style = psClear
+      end
+      object RLDBResult1: TRLDBResult
+        Left = 735
+        Top = 23
+        Width = 139
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'TOTAL_DESCONTO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBResult2: TRLDBResult
+        Left = 829
+        Top = 23
+        Width = 125
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'TOTAL_LIQUIDO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBResult3: TRLDBResult
+        Left = 929
+        Top = 23
+        Width = 72
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'PECAS'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel19: TRLLabel
+        Left = 136
+        Top = 3
+        Width = 75
+        Height = 18
+        Caption = '% Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel20: TRLLabel
+        Left = 228
+        Top = 3
+        Width = 86
+        Height = 18
+        Caption = 'Vlr. Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel21: TRLLabel
+        Left = 355
+        Top = 3
+        Width = 36
+        Height = 18
+        Caption = 'Valor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel22: TRLLabel
+        Left = 441
+        Top = 3
+        Width = 38
+        Height = 18
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel23: TRLLabel
+        Left = 521
+        Top = 3
+        Width = 37
+        Height = 18
+        Caption = 'Prazo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel24: TRLLabel
+        Left = 3
+        Top = 3
+        Width = 62
+        Height = 18
+        Caption = 'M'#201'DIAS >'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLDraw3: TRLDraw
+        Left = 680
+        Top = 0
+        Width = 2
+        Height = 58
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = True
+        Borders.DrawBottom = False
+        Borders.Color = 3223857
+        Brush.Style = bsClear
+        Pen.Style = psClear
+      end
+      object rlbPercDescRep: TRLLabel
+        Left = 137
+        Top = 41
+        Width = 66
+        Height = 15
+        Alignment = taCenter
+        Caption = '% Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbVlrDescRep: TRLLabel
+        Left = 228
+        Top = 41
+        Width = 76
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Vlr. Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbValorRep: TRLLabel
+        Left = 357
+        Top = 41
+        Width = 32
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Valor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPecasRep: TRLLabel
+        Left = 443
+        Top = 41
+        Width = 34
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPrazoRep: TRLLabel
+        Left = 522
+        Top = 41
+        Width = 34
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Prazo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel26: TRLLabel
+        Left = 814
+        Top = 3
+        Width = 61
+        Height = 18
+        Caption = 'Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel27: TRLLabel
+        Left = 883
+        Top = 3
+        Width = 72
+        Height = 18
+        Caption = 'L'#237'q. Pedido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel28: TRLLabel
+        Left = 963
+        Top = 3
+        Width = 38
+        Height = 18
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLDraw5: TRLDraw
+        Left = 683
+        Top = 2
+        Width = 80
+        Height = 21
+        Brush.Color = 14605011
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = []
+        Pen.Style = psClear
+      end
+      object RLLabel25: TRLLabel
+        Left = 687
+        Top = 3
+        Width = 57
+        Height = 18
+        Caption = 'TOTAIS >'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPercDescEmp: TRLLabel
+        Left = 137
+        Top = 23
+        Width = 66
+        Height = 15
+        Alignment = taCenter
+        Caption = '% Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbDescEmp: TRLLabel
+        Left = 228
+        Top = 23
+        Width = 76
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Vlr. Desconto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbValorEmp: TRLLabel
+        Left = 357
+        Top = 23
+        Width = 32
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Valor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPecasEmp: TRLLabel
+        Left = 443
+        Top = 23
+        Width = 34
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlbPrazoEmp: TRLLabel
+        Left = 522
+        Top = 23
+        Width = 34
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Prazo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel29: TRLLabel
+        Left = 3
+        Top = 20
+        Width = 56
+        Height = 18
+        Caption = 'Empresa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel31: TRLLabel
+        Left = 3
+        Top = 38
+        Width = 95
+        Height = 18
+        Caption = 'Representante'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel32: TRLLabel
+        Left = 1015
+        Top = 3
+        Width = 62
+        Height = 18
+        Caption = 'Comiss'#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLDBResult4: TRLDBResult
+        Left = 959
+        Top = 23
+        Width = 118
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'VLRCOMISSAO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBResult5: TRLDBResult
+        Left = 800
+        Top = 42
+        Width = 44
+        Height = 15
+        Alignment = taRightJustify
+        DataField = 'NUMPEDIDO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        Info = riCount
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel33: TRLLabel
+        Left = 846
+        Top = 42
+        Width = 96
+        Height = 15
+        Caption = 'Pedidos Filtrados'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+  end
+  object pnlconfigEmail: TPanel
+    Left = 1282
+    Top = 60
+    Width = 1115
+    Height = 113
+    BevelInner = bvRaised
+    Caption = 'pnlconfigEmail'
+    TabOrder = 4
+    object Label28: TLabel
+      Left = 9
+      Top = 6
+      Width = 88
+      Height = 13
+      Caption = 'Nome remetente'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label29: TLabel
+      Left = 142
+      Top = 6
+      Width = 43
+      Height = 13
+      Caption = 'Assunto'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label30: TLabel
+      Left = 361
+      Top = 6
+      Width = 29
+      Height = 13
+      Caption = 'Texto'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label31: TLabel
+      Left = 9
+      Top = 54
+      Width = 109
+      Height = 13
+      Caption = 'E-mail ( envio c'#243'pia )'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object edtNome: TEdit
+      Left = 9
+      Top = 21
+      Width = 121
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 0
+      Text = 'Cristiano'
+    end
+    object edtAssunto: TEdit
+      Left = 142
+      Top = 21
+      Width = 203
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 1
+      Text = 'Relat'#243'rio Baby Duck  - Raio X Representante  '
+    end
+    object memoTexto: TMemo
+      Left = 361
+      Top = 21
+      Width = 736
+      Height = 84
+      Ctl3D = False
+      Lines.Strings = (
+        
+          'Ol'#225', segue relat'#243'rio completo para sua an'#225'lise. Neste relat'#243'rio ' +
+          'voc'#234' ter'#225' todas as informa'#231#245'es de sua regi'#227'o tais como; Clientes' +
+          ' atendidos, '
+        'n'#250'mero de pedidos , valor de comiss'#227'o, etc.'
+        ''
+        'Qualquer d'#250'vida, favor entrar em contato'
+        ''
+        'Um forte abra'#231'o'
+        ''
+        'Cristiano')
+      ParentCtl3D = False
+      TabOrder = 2
+    end
+    object edtEmailCopia: TEdit
+      Left = 9
+      Top = 69
+      Width = 336
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 3
+      Text = 'cristiano@babyduck.com.br'
+    end
+  end
   object DataSetProvider1: TDataSetProvider
     DataSet = qry
     Left = 320
     Top = 168
   end
-  object ClientDataSet1: TClientDataSet
+  object cdsPedidos: TClientDataSet
     Aggregates = <>
     AggregatesActive = True
     Params = <>
     ProviderName = 'DataSetProvider1'
-    OnCalcFields = ClientDataSet1CalcFields
+    OnCalcFields = cdsPedidosCalcFields
     Left = 352
     Top = 168
-    object ClientDataSet1QTD_COMPRAS: TIntegerField
+    object cdsPedidosQTD_COMPRAS: TIntegerField
       FieldKind = fkInternalCalc
       FieldName = 'QTD_COMPRAS'
     end
-    object ClientDataSet1PREV_PGTO: TStringField
+    object cdsPedidosPREV_PGTO: TStringField
       FieldKind = fkInternalCalc
       FieldName = 'PREV_PGTO'
     end
-    object ClientDataSet1DT_REPRESENTANTE: TDateField
+    object cdsPedidosDT_REPRESENTANTE: TDateField
       FieldName = 'DT_REPRESENTANTE'
     end
-    object ClientDataSet1DT_RECEBIMENTO: TDateField
+    object cdsPedidosDT_RECEBIMENTO: TDateField
       FieldName = 'DT_RECEBIMENTO'
     end
-    object ClientDataSet1DT_CADASTRO: TDateField
+    object cdsPedidosDT_CADASTRO: TDateField
       FieldName = 'DT_CADASTRO'
     end
-    object ClientDataSet1DT_FATURAMENTO: TDateField
+    object cdsPedidosDT_FATURAMENTO: TDateField
       FieldName = 'DT_FATURAMENTO'
       ReadOnly = True
     end
-    object ClientDataSet1CLIENTE: TStringField
+    object cdsPedidosCLIENTE: TStringField
       FieldName = 'CLIENTE'
       ReadOnly = True
       Size = 60
     end
-    object ClientDataSet1FPGTO: TStringField
+    object cdsPedidosFPGTO: TStringField
       FieldName = 'FPGTO'
       ReadOnly = True
       Size = 100
     end
-    object ClientDataSet1PRAZO: TFloatField
+    object cdsPedidosPRAZO: TFloatField
       FieldName = 'PRAZO'
       ReadOnly = True
     end
-    object ClientDataSet1PECAS: TSingleField
-      FieldName = 'PECAS'
-      ReadOnly = True
-    end
-    object ClientDataSet1COMISSAO: TBCDField
+    object cdsPedidosCOMISSAO: TBCDField
       FieldName = 'COMISSAO'
+      DisplayFormat = ',0.00;-,0.00'
       Precision = 18
       Size = 2
     end
-    object ClientDataSet1VLRCOMISSAO: TBCDField
+    object cdsPedidosVLRCOMISSAO: TBCDField
       FieldName = 'VLRCOMISSAO'
       ReadOnly = True
+      DisplayFormat = ',0.00;-,0.00'
       Precision = 18
       Size = 2
     end
-    object ClientDataSet1PERC_DESCONTO_PEDIDO: TBCDField
+    object cdsPedidosPERC_DESCONTO_PEDIDO: TBCDField
       FieldName = 'PERC_DESCONTO_PEDIDO'
       ReadOnly = True
+      DisplayFormat = ',0.00;-,0.00'
       Precision = 18
       Size = 2
     end
-    object ClientDataSet1TOTAL_LIQUIDO: TBCDField
+    object cdsPedidosTOTAL_LIQUIDO: TBCDField
       FieldName = 'TOTAL_LIQUIDO'
       ReadOnly = True
+      DisplayFormat = ',0.00;-,0.00'
       Precision = 18
       Size = 2
     end
-    object ClientDataSet1NUMPEDIDO: TStringField
+    object cdsPedidosNUMPEDIDO: TStringField
       FieldName = 'NUMPEDIDO'
       Size = 22
     end
-    object ClientDataSet1TOTAL_DESCONTO: TBCDField
+    object cdsPedidosTOTAL_DESCONTO: TBCDField
       FieldName = 'TOTAL_DESCONTO'
       ReadOnly = True
+      DisplayFormat = ',0.00;-,0.00'
       Precision = 18
       Size = 2
     end
-    object ClientDataSet1TOT_VALOR: TAggregateField
+    object cdsPedidosPECAS: TIntegerField
+      FieldName = 'PECAS'
+      DisplayFormat = '0'
+    end
+    object cdsPedidosTOT_VALOR: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_VALOR'
       Active = True
@@ -1280,7 +2700,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(TOTAL_LIQUIDO)'
     end
-    object ClientDataSet1TOT_DESCONTO: TAggregateField
+    object cdsPedidosTOT_DESCONTO: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_DESCONTO'
       Active = True
@@ -1288,15 +2708,15 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(TOTAL_DESCONTO)'
     end
-    object ClientDataSet1TOT_PECAS: TAggregateField
+    object cdsPedidosTOT_PECAS: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_PECAS'
       Active = True
       DisplayName = ''
-      DisplayFormat = '0'
+      DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(PECAS)'
     end
-    object ClientDataSet1TOT_COMISSAO: TAggregateField
+    object cdsPedidosTOT_COMISSAO: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_COMISSAO'
       Active = True
@@ -1304,7 +2724,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(VLRCOMISSAO)'
     end
-    object ClientDataSet1MEDIA_VALOR: TAggregateField
+    object cdsPedidosMEDIA_VALOR: TAggregateField
       Alignment = taRightJustify
       FieldName = 'MEDIA_VALOR'
       Active = True
@@ -1312,7 +2732,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'AVG(TOTAL_LIQUIDO)'
     end
-    object ClientDataSet1MEDIA_PERC_DESC: TAggregateField
+    object cdsPedidosMEDIA_PERC_DESC: TAggregateField
       Alignment = taRightJustify
       FieldName = 'MEDIA_PERC_DESC'
       Active = True
@@ -1320,7 +2740,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'AVG(PERC_DESCONTO_PEDIDO)'
     end
-    object ClientDataSet1MEDIA_VLR_DESC: TAggregateField
+    object cdsPedidosMEDIA_VLR_DESC: TAggregateField
       Alignment = taRightJustify
       FieldName = 'MEDIA_VLR_DESC'
       Active = True
@@ -1328,7 +2748,7 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'AVG(TOTAL_DESCONTO)'
     end
-    object ClientDataSet1MEDIA_PRAZO: TAggregateField
+    object cdsPedidosMEDIA_PRAZO: TAggregateField
       Alignment = taRightJustify
       FieldName = 'MEDIA_PRAZO'
       Active = True
@@ -1336,17 +2756,18 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'AVG(PRAZO)'
     end
-    object ClientDataSet1MEDIA_PECAS: TAggregateField
+    object cdsPedidosMEDIA_PECAS: TAggregateField
       Alignment = taRightJustify
       FieldName = 'MEDIA_PECAS'
       Active = True
+      currency = True
       DisplayName = ''
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'AVG(PECAS)'
     end
   end
   object DataSource1: TDataSource
-    DataSet = ClientDataSet1
+    DataSet = cdsPedidos
     Left = 384
     Top = 168
   end
@@ -1384,13 +2805,13 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
       FieldName = 'PRAZO'
       ReadOnly = True
     end
-    object cdsMediasEmpresaPECAS: TSingleField
-      FieldName = 'PECAS'
-      ReadOnly = True
-    end
     object cdsMediasEmpresaTD: TIntegerField
       FieldName = 'TD'
       ReadOnly = True
+    end
+    object cdsMediasEmpresaPECAS: TIntegerField
+      FieldName = 'PECAS'
+      DisplayFormat = '0'
     end
     object cdsMediasEmpresaMEDIA_VALOR: TAggregateField
       Alignment = taRightJustify
@@ -1620,12 +3041,11 @@ inherited frmRelatorioRaioXRepresentante: TfrmRelatorioRaioXRepresentante
     Left = 8
     Top = 256
   end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 632
-    Top = 328
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 200
+    OnTimer = Timer1Timer
+    Left = 416
+    Top = 312
   end
 end

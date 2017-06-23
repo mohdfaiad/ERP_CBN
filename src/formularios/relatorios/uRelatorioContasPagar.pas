@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  RLFilters, RLPDFFilter;
+  RLFilters;
 
 type
   TfrmRelatorioContasPagar = class(TfrmPadrao)
@@ -111,7 +111,6 @@ type
     qryItensDESC_STATUS: TStringField;
     qryItensVALOR: TBCDField;
     qryItensVALOR_PAGO: TBCDField;
-    RLPDFFilter1: TRLPDFFilter;
     procedure btnImprimirClick(Sender: TObject);
     procedure chkPeriodoGeralClick(Sender: TObject);
     procedure FormShow(Sender: TObject);

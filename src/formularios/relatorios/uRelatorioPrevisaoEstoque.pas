@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uPadrao, RLFilters, RLPDFFilter, DB, RLReport, Buttons, ExtCtrls,
+  Dialogs, uPadrao, RLFilters, DB, RLReport, Buttons, ExtCtrls,
   frameBuscaProduto, StdCtrls, ComCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
@@ -31,7 +31,6 @@ type
     RLBand4: TRLBand;
     RLDBText5: TRLDBText;
     dsPrevisao: TDataSource;
-    RLPDFFilter1: TRLPDFFilter;
     RLDBText7: TRLDBText;
     RLDraw3: TRLDraw;
     RLBand5: TRLBand;

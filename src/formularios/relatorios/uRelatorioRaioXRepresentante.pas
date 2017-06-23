@@ -8,17 +8,16 @@ uses
   TipoPessoa, ExtCtrls, Buttons, ComCtrls, StdCtrls, frameBuscaPessoa, Mask,
   DBCtrls, RxToolEdit, RxCurrEdit, DateUtils, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, RLFilters, RLPDFFilter;
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, System.StrUtils,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, RLFilters, RLPreviewForm, RLReport, frameBuscaRepresentante;
 
 type
   TfrmRelatorioRaioXRepresentante = class(TfrmPadrao)
     DataSetProvider1: TDataSetProvider;
-    ClientDataSet1: TClientDataSet;
+    cdsPedidos: TClientDataSet;
     DataSource1: TDataSource;
     gridPedidos: TDBGridCBN;
     Panel1: TPanel;
-    BuscaPessoa1: TBuscaPessoa;
     Label6: TLabel;
     dtpInicio: TDateTimePicker;
     dtpFim: TDateTimePicker;
@@ -29,15 +28,15 @@ type
     Splitter3: TSplitter;
     Splitter4: TSplitter;
     btnBuscar: TBitBtn;
-    ClientDataSet1TOT_VALOR: TAggregateField;
-    ClientDataSet1TOT_DESCONTO: TAggregateField;
-    ClientDataSet1TOT_PECAS: TAggregateField;
-    ClientDataSet1TOT_COMISSAO: TAggregateField;
-    ClientDataSet1MEDIA_VALOR: TAggregateField;
-    ClientDataSet1MEDIA_PERC_DESC: TAggregateField;
-    ClientDataSet1MEDIA_VLR_DESC: TAggregateField;
-    ClientDataSet1MEDIA_PRAZO: TAggregateField;
-    ClientDataSet1MEDIA_PECAS: TAggregateField;
+    cdsPedidosTOT_VALOR: TAggregateField;
+    cdsPedidosTOT_DESCONTO: TAggregateField;
+    cdsPedidosTOT_PECAS: TAggregateField;
+    cdsPedidosTOT_COMISSAO: TAggregateField;
+    cdsPedidosMEDIA_VALOR: TAggregateField;
+    cdsPedidosMEDIA_PERC_DESC: TAggregateField;
+    cdsPedidosMEDIA_VLR_DESC: TAggregateField;
+    cdsPedidosMEDIA_PRAZO: TAggregateField;
+    cdsPedidosMEDIA_PECAS: TAggregateField;
     dspMediasEmpresa: TDataSetProvider;
     cdsMediasEmpresa: TClientDataSet;
     dsMediasEmpresa: TDataSource;
@@ -99,32 +98,122 @@ type
     DBEdit11: TDBEdit;
     cdsMediasEmpresaMEDIA_PERC_DESC: TAggregateField;
     cdsMediasEmpresaMEDIA_VLR_DESC: TAggregateField;
-    SpeedButton1: TSpeedButton;
-    ClientDataSet1PREV_PGTO: TStringField;
-    ClientDataSet1QTD_COMPRAS: TIntegerField;
+    btnConfigEmail: TSpeedButton;
+    cdsPedidosPREV_PGTO: TStringField;
+    cdsPedidosQTD_COMPRAS: TIntegerField;
     qry: TFDQuery;
     qryMediasEmpresa: TFDQuery;
     cdsMediasEmpresaTOTAL_DESCONTO: TBCDField;
     cdsMediasEmpresaTOTAL_LIQUIDO: TBCDField;
     cdsMediasEmpresaPRAZO: TFloatField;
-    cdsMediasEmpresaPECAS: TSingleField;
     cdsMediasEmpresaTD: TIntegerField;
-    ClientDataSet1DT_REPRESENTANTE: TDateField;
-    ClientDataSet1DT_RECEBIMENTO: TDateField;
-    ClientDataSet1DT_CADASTRO: TDateField;
-    ClientDataSet1DT_FATURAMENTO: TDateField;
-    ClientDataSet1CLIENTE: TStringField;
-    ClientDataSet1FPGTO: TStringField;
-    ClientDataSet1PRAZO: TFloatField;
-    ClientDataSet1PECAS: TSingleField;
-    ClientDataSet1COMISSAO: TBCDField;
-    ClientDataSet1TOTAL_LIQUIDO: TBCDField;
-    ClientDataSet1NUMPEDIDO: TStringField;
-    ClientDataSet1TOTAL_DESCONTO: TBCDField;
+    cdsPedidosDT_REPRESENTANTE: TDateField;
+    cdsPedidosDT_RECEBIMENTO: TDateField;
+    cdsPedidosDT_CADASTRO: TDateField;
+    cdsPedidosDT_FATURAMENTO: TDateField;
+    cdsPedidosCLIENTE: TStringField;
+    cdsPedidosFPGTO: TStringField;
+    cdsPedidosPRAZO: TFloatField;
+    cdsPedidosCOMISSAO: TBCDField;
+    cdsPedidosTOTAL_LIQUIDO: TBCDField;
+    cdsPedidosNUMPEDIDO: TStringField;
+    cdsPedidosTOTAL_DESCONTO: TBCDField;
     cdsMediasEmpresaPERC_DESCONTO_PEDIDO: TBCDField;
-    ClientDataSet1PERC_DESCONTO_PEDIDO: TBCDField;
-    ClientDataSet1VLRCOMISSAO: TBCDField;
-    RLPDFFilter1: TRLPDFFilter;
+    cdsPedidosPERC_DESCONTO_PEDIDO: TBCDField;
+    cdsPedidosVLRCOMISSAO: TBCDField;
+    RLReport1: TRLReport;
+    RLBand1: TRLBand;
+    RLBand2: TRLBand;
+    RLBand3: TRLBand;
+    RLBand4: TRLBand;
+    RLLabel1: TRLLabel;
+    RLDBText1: TRLDBText;
+    RLSystemInfo1: TRLSystemInfo;
+    RLLabel2: TRLLabel;
+    RLLabel3: TRLLabel;
+    rlbRepresentante: TRLLabel;
+    RLLabel4: TRLLabel;
+    RLLabel5: TRLLabel;
+    RLSystemInfo2: TRLSystemInfo;
+    RLLabel6: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLLabel10: TRLLabel;
+    RLLabel11: TRLLabel;
+    RLLabel12: TRLLabel;
+    RLLabel13: TRLLabel;
+    RLLabel14: TRLLabel;
+    RLLabel15: TRLLabel;
+    RLLabel16: TRLLabel;
+    RLLabel17: TRLLabel;
+    RLLabel18: TRLLabel;
+    RLDBText2: TRLDBText;
+    RLDBText5: TRLDBText;
+    RLDBText6: TRLDBText;
+    RLDBText7: TRLDBText;
+    RLDBText8: TRLDBText;
+    RLDBText9: TRLDBText;
+    RLDBText10: TRLDBText;
+    RLDBText11: TRLDBText;
+    RLDBText12: TRLDBText;
+    RLDBText13: TRLDBText;
+    btnImprimir: TBitBtn;
+    RLDBResult1: TRLDBResult;
+    RLDBResult2: TRLDBResult;
+    RLDBResult3: TRLDBResult;
+    RLLabel19: TRLLabel;
+    RLLabel20: TRLLabel;
+    RLLabel21: TRLLabel;
+    RLLabel22: TRLLabel;
+    RLLabel23: TRLLabel;
+    RLLabel24: TRLLabel;
+    RLDraw1: TRLDraw;
+    RLDraw2: TRLDraw;
+    RLDraw3: TRLDraw;
+    rlbPercDescRep: TRLLabel;
+    rlbVlrDescRep: TRLLabel;
+    rlbValorRep: TRLLabel;
+    rlbPecasRep: TRLLabel;
+    rlbPrazoRep: TRLLabel;
+    pnlconfigEmail: TPanel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    edtNome: TEdit;
+    edtAssunto: TEdit;
+    memoTexto: TMemo;
+    edtEmailCopia: TEdit;
+    btnEnviarEmail: TBitBtn;
+    edtEmail: TEdit;
+    Label9: TLabel;
+    buscaRepresentante1: TbuscaRepresentante;
+    cdsPedidosPECAS: TIntegerField;
+    cdsMediasEmpresaPECAS: TIntegerField;
+    RLDraw4: TRLDraw;
+    RLLabel25: TRLLabel;
+    RLLabel26: TRLLabel;
+    RLLabel27: TRLLabel;
+    RLLabel28: TRLLabel;
+    RLDraw5: TRLDraw;
+    rlbPeriodo: TRLLabel;
+    RLLabel30: TRLLabel;
+    rlbPercDescEmp: TRLLabel;
+    rlbDescEmp: TRLLabel;
+    rlbValorEmp: TRLLabel;
+    rlbPecasEmp: TRLLabel;
+    rlbPrazoEmp: TRLLabel;
+    RLLabel29: TRLLabel;
+    RLLabel31: TRLLabel;
+    Timer1: TTimer;
+    RLLabel8: TRLLabel;
+    RLLabel9: TRLLabel;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    RLLabel32: TRLLabel;
+    RLDBResult4: TRLDBResult;
+    RLDBResult5: TRLDBResult;
+    RLLabel33: TRLLabel;
+    RLLabel34: TRLLabel;
     procedure FormShow(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
     procedure dtpInicioChange(Sender: TObject);
@@ -132,9 +221,14 @@ type
     procedure gridPedidosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure chkPeriodoRepClick(Sender: TObject);
-    procedure ClientDataSet1CalcFields(DataSet: TDataSet);
+    procedure cdsPedidosCalcFields(DataSet: TDataSet);
     procedure chkPeriodoEmpClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure buscaRepresentante1Exit(Sender: TObject);
+    procedure btnEnviarEmailClick(Sender: TObject);
+    procedure btnConfigEmailClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
 
     function monta_sql_representante :String;
@@ -144,6 +238,7 @@ type
     procedure comissoes_por_quinzena(Data: TDateTime; Valor_comissao :Real);
     procedure compra_por_cliente;
     procedure vezes_compradas;
+    procedure enviarEmail;
   public
     { Public declarations }
   end;
@@ -153,18 +248,16 @@ var
 
 implementation
 
-uses DateTimeUtilitario, Math;
+uses DateTimeUtilitario, Math, EnviaEmail, StringUtilitario;
 
 {$R *.dfm}
 
 procedure TfrmRelatorioRaioXRepresentante.FormShow(Sender: TObject);
 begin
   inherited;
-  BuscaPessoa1.TipoPessoa := tpRepresentante;
   dtpInicio.DateTime      := strToDateTime( DateToStr(Date)+' '+'00:00:00');
   dtpFim.DateTime         := strToDateTime( DateToStr(Date)+' '+'23:59:59');
-  carrega_medias_empresa;
-
+  timer1.Enabled := true;
 end;
 
 function TfrmRelatorioRaioXRepresentante.monta_sql_representante: String;
@@ -184,14 +277,14 @@ begin
             '       lpad(EXTRACT(DAY FROM nf.data_saida), 2, ''0'') || ''.'' || lpad(EXTRACT(MONTH FROM nf.data_saida), 2, ''0'') || ''.'' || EXTRACT(YEAR FROM nf.data_saida),                            '+#13+
             '       lpad(EXTRACT(DAY FROM nf.data_saida), 2, ''0'') || ''.'' || lpad(EXTRACT(MONTH FROM nf.data_saida), 2, ''0'') || ''.'' || EXTRACT(YEAR FROM nf.data_saida) ) as Date ) dt_faturamento, '+#13+
             ' iif((cast(sum(fpp.dias_parcela) as float)/fp.numero_parcelas) is null, 0, (cast(sum(fpp.dias_parcela) as float)/fp.numero_parcelas)) PRAZO, (p.desconto_fpgto + p.desconto_itens + p.desconto) TOTAL_DESCONTO, '+#13+
-            '       cast(( select sum(pro.qtd_pecas) from itens it                                                                   '+#13+
+            '       cast(coalesce(( select sum(pro.qtd_pecas) from itens it                                                                   '+#13+
             '        LEFT JOIN produtos pro on it.cod_produto = pro.codigo                                                           '+#13+
-            '        where it.cod_pedido = p.codigo) as Float) pecas, p.comissao, cast((p.valor_total-((p.valor_total*p.desconto_comiss)/100)) * p.comissao / 100 as numeric(15,2)) vlrComissao     '+#13+
+            '        where it.cod_pedido = p.codigo),0) as integer) pecas, p.comissao, cast((p.valor_total-((p.valor_total*p.desconto_comiss)/100)) * p.comissao / 100 as numeric(15,2)) vlrComissao     '+#13+
             ' from pedidos P                                                                                                         '+#13+
             '       LEFT JOIN pedidos_faturados         PF  ON PF.CODIGO_PEDIDO = P.CODIGO                                           '+#13+
             '       LEFT JOIN NOTAS_FISCAIS             NF  ON NF.codigo = PF.codigo_nota_fiscal                                     '+#13+
             '       LEFT JOIN notas_fiscais_nfe_retorno nfr ON nfr.codigo_nota_fiscal = nf.codigo                                    '+#13+
-            '       LEFT JOIN pessoas                   c   on p.cod_cliente = c.codigo                                              '+#13+
+            '       INNER JOIN pessoas                   c   on p.cod_cliente = c.codigo                                             '+#13+
             '       LEFT JOIN formas_pgto               FP  on fp.codigo = p.cod_forma_pag                                           '+#13+
             '       LEFT JOIN formas_pgto_parcelas      FPP on fpp.codformas_pgto = fp.codigo                                        '+#13+
             ' where ((nfr.status = ''100'' '+ condicao_periodo +' and p.cod_repres = :codRep)                                        '+#13+
@@ -204,14 +297,37 @@ begin
 
 end;
 
+procedure TfrmRelatorioRaioXRepresentante.RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
+begin
+  rlbRepresentante.Caption := buscaRepresentante1.Representante.Razao;
+  rlbPeriodo.Caption       := IfThen(chkPeriodoRep.Checked, '< GERAL >', DateToStr(dtpInicio.Date) + ' a ' + DateToStr(dtpFim.Date));
+  rlbPercDescRep.Caption   := formatfloat('##,###,##0.00',cdsPedidosMEDIA_PERC_DESC.Value);
+  rlbVlrDescRep.Caption    := formatfloat('##,###,##0.00',cdsPedidosMEDIA_VLR_DESC.Value);
+  rlbValorRep.Caption      := formatfloat('##,###,##0.00',cdsPedidosMEDIA_VALOR.Value);
+  rlbPecasRep.Caption      := formatfloat('##,###,##0.00',cdsPedidosMEDIA_PECAS.Value);
+  rlbPrazoRep.Caption      := formatfloat('##,###,##0.00',cdsPedidosMEDIA_PRAZO.Value);
+
+  rlbPercDescEmp.Caption   := formatfloat('##,###,##0.00',cdsMediasEmpresaMEDIA_PERC_DESC.Value);
+  rlbDescEmp.Caption       := formatfloat('##,###,##0.00',cdsMediasEmpresaMEDIA_VLR_DESC.Value);
+  rlbValorEmp.Caption      := formatfloat('##,###,##0.00',cdsMediasEmpresaMEDIA_VALOR.Value);
+  rlbPecasEmp.Caption      := formatfloat('##,###,##0.00',cdsMediasEmpresaMEDIA_PECAS.Value);
+  rlbPrazoEmp.Caption      := formatfloat('##,###,##0.00',cdsMediasEmpresaMEDIA_PRAZO.Value);
+end;
+
+procedure TfrmRelatorioRaioXRepresentante.Timer1Timer(Sender: TObject);
+begin
+  timer1.Enabled := false;
+  carrega_medias_empresa;
+end;
+
 procedure TfrmRelatorioRaioXRepresentante.btnBuscarClick(Sender: TObject);
 begin
-  if (BuscaPessoa1.edtCodigo.AsInteger <= 0) then begin
+  if not assigned(buscaRepresentante1.Representante) then begin
     avisar('Representante não foi informado!');
     exit;
   end;
 
-  ClientDataSet1.Close;
+  cdsPedidos.Close;
   qry.SQL.Text := monta_sql_representante;
 
   if not chkPeriodoRep.Checked then begin
@@ -221,23 +337,32 @@ begin
 
   if cdsComissao.active then cdsComissao.EmptyDataSet;
 
-  qry.ParamByName('codRep').AsInteger := BuscaPessoa1.edtCodigo.AsInteger;
-  ClientDataSet1.Open;
+  qry.ParamByName('codRep').AsInteger := buscaRepresentante1.Representante.Codigo;
+  cdsPedidos.Open;
 
-  if ClientDataSet1.IsEmpty then begin
+  btnImprimir.Enabled    := not cdsPedidos.IsEmpty;
+  btnEnviarEmail.Enabled := not cdsPedidos.IsEmpty;
+  btnConfigEmail.Enabled := not cdsPedidos.IsEmpty;
+
+  if cdsPedidos.IsEmpty then begin
     avisar('Não foram encontrados registros com os filtros fornecidos');
     exit;
   end;
 
   compra_por_cliente;
-  
-  edtQtdPedidos.Text := IntToStr(ClientDataSet1.RecordCount);
+
+  edtQtdPedidos.Text := IntToStr(cdsPedidos.RecordCount);
 end;
 
 procedure TfrmRelatorioRaioXRepresentante.dtpInicioChange(Sender: TObject);
 begin
   if dtpInicio.Date > dtpFim.Date then
     dtpFim.Date := dtpInicio.Date +1;
+end;
+
+procedure TfrmRelatorioRaioXRepresentante.enviarEmail;
+begin
+
 end;
 
 procedure TfrmRelatorioRaioXRepresentante.dtpFimChange(Sender: TObject);
@@ -254,37 +379,37 @@ procedure TfrmRelatorioRaioXRepresentante.gridPedidosDrawColumnCell(
   State: TGridDrawState);
 begin
   inherited;
-  if Column.Field = ClientDataSet1TOTAL_DESCONTO then
+  if Column.Field = cdsPedidosTOTAL_DESCONTO then
     begin
       gridPedidos.Canvas.Brush.Color := $00EFD0CF;
       gridPedidos.Canvas.FillRect( rect );
       gridPedidos.DefaultDrawColumnCell( Rect, DataCol, Column, state);
     end
-  else if Column.Field = ClientDataSet1PERC_DESCONTO_PEDIDO then
+  else if Column.Field = cdsPedidosPERC_DESCONTO_PEDIDO then
     begin
       gridPedidos.Canvas.Brush.Color := $00EFD0CF;
       gridPedidos.Canvas.FillRect( rect );
       gridPedidos.DefaultDrawColumnCell( Rect, DataCol, Column, state);
     end
-  else if Column.Field = ClientDataSet1TOTAL_LIQUIDO then
+  else if Column.Field = cdsPedidosTOTAL_LIQUIDO then
     begin
       gridPedidos.Canvas.Brush.Color := $00C7EBD1;
       gridPedidos.Canvas.FillRect( rect );
       gridPedidos.DefaultDrawColumnCell( Rect, DataCol, Column, state);
     end
-  else if Column.Field = ClientDataSet1PECAS then
+  else if Column.Field = cdsPedidosPECAS then
     begin
       gridPedidos.Canvas.Brush.Color := $00A7CDCF;
       gridPedidos.Canvas.FillRect( rect );
       gridPedidos.DefaultDrawColumnCell( Rect, DataCol, Column, state);
     end
-  else if Column.Field = ClientDataSet1COMISSAO then
+  else if Column.Field = cdsPedidosCOMISSAO then
     begin
       gridPedidos.Canvas.Brush.Color := $00CDD7DA;
       gridPedidos.Canvas.FillRect( rect );
       gridPedidos.DefaultDrawColumnCell( Rect, DataCol, Column, state);
     end
-  else if Column.Field = ClientDataSet1PRAZO then
+  else if Column.Field = cdsPedidosPRAZO then
     begin
       gridPedidos.Canvas.Brush.Color := clWhite;
       gridPedidos.Canvas.FillRect( rect );
@@ -292,22 +417,68 @@ begin
     end;
 end;
 
+procedure TfrmRelatorioRaioXRepresentante.btnConfigEmailClick(Sender: TObject);
+begin
+  pnlconfigEmail.Left := IfThen(pnlconfigEmail.Left = 170, 1282, 170);
+end;
+
+procedure TfrmRelatorioRaioXRepresentante.btnEnviarEmailClick(Sender: TObject);
+var EnviaEmail :TEnviaEmail;
+    lista: TStringList;
+begin
+  try
+    Aguarda('Enviando e-mail');
+    lista      := TStringList.Create;
+    EnviaEmail := TEnviaEmail.Create;
+    RLReport1.SaveToFile( ExtractFilePath(Application.ExeName)+'RaioXRepresentante.pdf' );
+    RLReport1.Prepare;
+    lista.Add( ExtractFilePath(Application.ExeName)+'RaioXRepresentante.pdf' );
+    if EnviaEmail.EnviaEmail(edtNome.Text, edtEmail.Text, edtAssunto.Text, memoTexto.Text, edtEmailCopia.Text, lista) then
+      FimAguarda('Enviado com sucesso!');
+  Except
+    on e : Exception do
+      begin
+        FimAguarda('');
+        avisar( e.Message );
+      end;
+  end;
+end;
+
+procedure TfrmRelatorioRaioXRepresentante.btnImprimirClick(Sender: TObject);
+begin
+  inherited;
+  RLReport1.PreviewModal;
+end;
+
+procedure TfrmRelatorioRaioXRepresentante.buscaRepresentante1Exit(Sender: TObject);
+begin
+  if assigned(buscaRepresentante1.Representante) then
+    edtEmail.Text := TStringUtilitario.RemoveCaracter(buscaRepresentante1.Representante.Email,';')
+  else
+    edtEmail.Clear;
+end;
+
 procedure TfrmRelatorioRaioXRepresentante.carrega_medias_empresa;
 begin
-  cdsMediasEmpresa.Close;
-  qryMediasEmpresa.SQL.Text := monta_sql_medias_empresa;
+ try
+   Aguarda('Buscando médias da empresa...');
+   cdsMediasEmpresa.Close;
+   qryMediasEmpresa.SQL.Text := monta_sql_medias_empresa;
 
-  if not chkPeriodoEmp.Checked then begin
-    qryMediasEmpresa.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
-    qryMediasEmpresa.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
-  end;
+   if not chkPeriodoEmp.Checked then begin
+     qryMediasEmpresa.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
+     qryMediasEmpresa.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
+   end;
 
-  if not chkFiltroRepres.Checked then
-    qryMediasEmpresa.ParamByName('codRep').AsInteger := BuscaPessoa1.edtCodigo.AsInteger;
+   if not chkFiltroRepres.Checked then
+     qryMediasEmpresa.ParamByName('codRep').AsInteger := buscaRepresentante1.Representante.Codigo;
 
-  cdsMediasEmpresa.Open;
-  gpbMediasEmpresa.Caption := ' MÉDIAS DA EMPRESA   [ '+ intToStr(cdsMediasEmpresa.RecordCount) +' pedidos faturados] ';
-
+   Application.ProcessMessages;
+   cdsMediasEmpresa.Open;
+   gpbMediasEmpresa.Caption := ' MÉDIAS DA EMPRESA   [ '+ intToStr(cdsMediasEmpresa.RecordCount) +' pedidos faturados] ';
+ finally
+   FimAguarda('');
+ end;
 end;
 
 function TfrmRelatorioRaioXRepresentante.monta_sql_medias_empresa: String;
@@ -328,15 +499,15 @@ begin
   Result := ' select (p.desconto_fpgto + p.desconto_itens + p.desconto) TOTAL_DESCONTO, CAST(p.valor_total-((p.valor_total*p.desconto_comiss)/100) as Numeric(15,2)) as total_liquido,   '+
             ' CAST(((p.desconto + p.desconto_fpgto + p.desconto_itens) * 100) / ((p.valor_total-((p.valor_total*p.desconto_comiss)/100)) + p.desconto + p.desconto_fpgto + p.desconto_itens) as numeric(15,2)) PERC_DESCONTO_PEDIDO, '+
             ' iif((cast(sum(fpp.dias_parcela) as float)/fp.numero_parcelas) is null, 0, (cast(sum(fpp.dias_parcela) as float)/fp.numero_parcelas)) PRAZO,  '+
-            ' cast( ( select sum(pro.qtd_pecas) from itens it                                                    '+
+            ' cast( coalesce(( select sum(pro.qtd_pecas) from itens it                                                    '+
             ' LEFT JOIN produtos pro on it.cod_produto = pro.codigo                                              '+
-            ' where it.cod_pedido = p.codigo)  as float) PECAS,                                                  '+
+            ' where it.cod_pedido = p.codigo),0) as integer) PECAS,                                                  '+
             ' iif(p.desconto_fpgto > 0, 1, 0) TD                                                                 '+
             ' from pedidos P                                                                                     '+
             ' LEFT JOIN pedidos_faturados         PF  ON PF.CODIGO_PEDIDO = P.CODIGO                             '+
             ' LEFT JOIN NOTAS_FISCAIS             NF  ON NF.codigo = PF.codigo_nota_fiscal                       '+
             ' LEFT JOIN notas_fiscais_nfe_retorno nfr ON nfr.codigo_nota_fiscal = nf.codigo                      '+
-            ' LEFT JOIN pessoas                   c   on p.cod_cliente = c.codigo                                '+
+            ' INNER JOIN pessoas                   c   on p.cod_cliente = c.codigo                               '+
             ' LEFT JOIN formas_pgto               FP  on fp.codigo = p.cod_forma_pag                             '+
             ' LEFT JOIN formas_pgto_parcelas      FPP on fpp.codformas_pgto = fp.codigo                          '+
             ' where ((nfr.status = ''100'' '+ condicao_periodo + condicao_representante +')                      '+
@@ -344,7 +515,6 @@ begin
             '    and not (p.cancelado = ''S'')                                                                   '+
             ' group by p.valor_total, FP.desconto, p.desconto_fpgto, fp.numero_parcelas, p.codigo, p.desconto,   '+
             ' p.desconto_itens, p.desconto_comiss                                                                ';
-
 end;
 
 procedure TfrmRelatorioRaioXRepresentante.chkPeriodoRepClick(Sender: TObject);
@@ -352,7 +522,7 @@ begin
   if chkPeriodoRep.Checked then begin
     dtpInicio.Enabled := false;
     dtpFim.Enabled    := false;
-    BuscaPessoa1.edtCodigo.SetFocus;
+    buscaRepresentante1.edtCodigo.SetFocus;
   end
   else begin
     dtpInicio.Enabled := true;
@@ -362,28 +532,28 @@ begin
 
 end;
 
-procedure TfrmRelatorioRaioXRepresentante.ClientDataSet1CalcFields(
+procedure TfrmRelatorioRaioXRepresentante.cdsPedidosCalcFields(
   DataSet: TDataSet);
 var dia, ano :Integer;
     mes, ultimoDiaMes :String;
 begin
-  if ClientDataSet1.recno > 0 then  Exit;
+  if cdsPedidos.recno > 0 then  Exit;
 
-  dia := StrToInt( StringReplace(copy(ClientDataSet1DT_FATURAMENTO.AsString,1,2),'/','',[]) );
-  mes := FormatDateTime('mm',ClientDataSet1DT_FATURAMENTO.AsDateTime);
-  ano := IfThen( strToInt(mes) = 12, strToInt(FormatDateTime('yyyy', ClientDataSet1DT_FATURAMENTO.AsDateTime))+1,
-                                     strToInt(FormatDateTime('yyyy', ClientDataSet1DT_FATURAMENTO.AsDateTime))    );
-  mes := TDateTimeUtilitario.proximo_mes(ClientDataSet1DT_FATURAMENTO.AsDateTime);
+  dia := StrToInt( StringReplace(copy(cdsPedidosDT_FATURAMENTO.AsString,1,2),'/','',[]) );
+  mes := FormatDateTime('mm',cdsPedidosDT_FATURAMENTO.AsDateTime);
+  ano := IfThen( strToInt(mes) = 12, strToInt(FormatDateTime('yyyy', cdsPedidosDT_FATURAMENTO.AsDateTime))+1,
+                                     strToInt(FormatDateTime('yyyy', cdsPedidosDT_FATURAMENTO.AsDateTime))    );
+  mes := TDateTimeUtilitario.proximo_mes(cdsPedidosDT_FATURAMENTO.AsDateTime);
 
   if dia > 15 then begin
     ultimoDiaMes := IntToStr( DaysInMonth( strToDate('01/'+mes+'/'+intToStr(ano) ) ) );
 
-    ClientDataSet1PREV_PGTO.AsString := ultimoDiaMes +'/'+ mes +'/'+ intToStr(ano);
-    comissoes_por_quinzena( ClientDataSet1PREV_PGTO.AsDateTime, ClientDataSet1VLRCOMISSAO.AsFloat);
+    cdsPedidosPREV_PGTO.AsString := ultimoDiaMes +'/'+ mes +'/'+ intToStr(ano);
+    comissoes_por_quinzena( cdsPedidosPREV_PGTO.AsDateTime, cdsPedidosVLRCOMISSAO.AsFloat);
   end
   else begin
-    ClientDataSet1PREV_PGTO.AsString := '15/'+ mes+'/'+ intToStr(ano);
-    comissoes_por_quinzena( ClientDataSet1PREV_PGTO.AsDateTime, ClientDataSet1VLRCOMISSAO.AsFloat);
+    cdsPedidosPREV_PGTO.AsString := '15/'+ mes+'/'+ intToStr(ano);
+    comissoes_por_quinzena( cdsPedidosPREV_PGTO.AsDateTime, cdsPedidosVLRCOMISSAO.AsFloat);
   end;
 
 end;
@@ -417,48 +587,48 @@ var linha_atual, linha_encontrada :integer;
     compras_cliente :integer;
     nome_cliente :String;
 begin
-  ClientDataSet1.OnCalcFields := nil;
+  cdsPedidos.OnCalcFields := nil;
   linha_atual := 0;   {}  linha_encontrada := 0;  {} nome_cliente := '';
 
-  ClientDataSet1.IndexFieldNames := 'CLIENTE';
-  ClientDataSet1.First;
-  ClientDataSet1.DisableControls;
+  cdsPedidos.IndexFieldNames := 'CLIENTE';
+  cdsPedidos.First;
+  cdsPedidos.DisableControls;
   edtTotClientes.Value := 0;
 
-  while not ClientDataSet1.Eof do begin
+  while not cdsPedidos.Eof do begin
     compras_cliente := 0;
-    linha_atual     := ClientDataSet1.RecNo;
-    nome_cliente    := ClientDataSet1CLIENTE.AsString;
+    linha_atual     := cdsPedidos.RecNo;
+    nome_cliente    := cdsPedidosCLIENTE.AsString;
 
-    while nome_cliente = ClientDataSet1CLIENTE.AsString do begin
+    while nome_cliente = cdsPedidosCLIENTE.AsString do begin
       inc(compras_cliente);
 
-      ClientDataSet1.Next;
+      cdsPedidos.Next;
 
-      if ClientDataSet1.Eof then  break;
+      if cdsPedidos.Eof then  break;
     end;
 
-    if not ClientDataSet1.Eof then
-      ClientDataSet1.Prior;
+    if not cdsPedidos.Eof then
+      cdsPedidos.Prior;
 
-    ClientDataSet1.Edit;
-    ClientDataSet1QTD_COMPRAS.AsInteger := compras_cliente;
-    ClientDataSet1.Post;
+    cdsPedidos.Edit;
+    cdsPedidosQTD_COMPRAS.AsInteger := compras_cliente;
+    cdsPedidos.Post;
 
     edtTotClientes.Value := edtTotClientes.Value + 1;
     
-    ClientDataSet1.RecNo := linha_atual + compras_cliente -1;
+    cdsPedidos.RecNo := linha_atual + compras_cliente -1;
 
-    ClientDataSet1.Next;
+    cdsPedidos.Next;
   end;
 
   vezes_compradas;
 
-  ClientDataSet1.IndexFieldNames := 'CLIENTE';
-  ClientDataSet1.First;
+  cdsPedidos.IndexFieldNames := 'CLIENTE';
+  cdsPedidos.First;
 
-  ClientDataSet1.EnableControls;
-    ClientDataSet1.OnCalcFields := ClientDataSet1CalcFields;
+  cdsPedidos.EnableControls;
+    cdsPedidos.OnCalcFields := cdsPedidosCalcFields;
 end;
 
 procedure TfrmRelatorioRaioXRepresentante.vezes_compradas;
@@ -474,7 +644,7 @@ begin
 
   try
 
-    cds.CloneCursor(ClientDataSet1,false);
+    cds.CloneCursor(cdsPedidos,false);
 
     cds.IndexFieldNames := 'QTD_COMPRAS';
 
@@ -510,12 +680,6 @@ begin
   finally
     FreeAndNil(cds);
   end;
-end;
-
-procedure TfrmRelatorioRaioXRepresentante.SpeedButton1Click(
-  Sender: TObject);
-begin
-  Close;
 end;
 
 end.

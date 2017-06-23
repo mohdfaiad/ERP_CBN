@@ -3,18 +3,18 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   Top = 181
   Caption = 'Cadastro de Produtos'
   ClientHeight = 519
-  ClientWidth = 797
+  ClientWidth = 838
   OldCreateOrder = True
   OnClose = FormClose
   OnShow = FormShow
-  ExplicitWidth = 813
+  ExplicitWidth = 854
   ExplicitHeight = 557
   PixelsPerInch = 96
   TextHeight = 13
   object panBotoes: TPanel
     Left = 0
     Top = 477
-    Width = 797
+    Width = 838
     Height = 42
     Align = alBottom
     TabOrder = 0
@@ -485,9 +485,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   object pagProdutos: TPageControl
     Left = 0
     Top = 0
-    Width = 797
+    Width = 838
     Height = 477
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -495,7 +495,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'F1 - Produtos'
       OnExit = TabSheet1Exit
       DesignSize = (
-        789
+        830
         449)
       object Image3: TImage
         Left = 6
@@ -642,7 +642,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       object gridProdutos: TDBGridCBN
         Left = 5
         Top = 32
-        Width = 778
+        Width = 819
         Height = 416
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
@@ -793,7 +793,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       ImageIndex = 1
       OnEnter = TabSheet2Enter
       DesignSize = (
-        789
+        830
         449)
       object Label1: TLabel
         Left = 112
@@ -1386,7 +1386,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Cores do Produto'
       ImageIndex = 2
       DesignSize = (
-        789
+        830
         449)
       object Label11: TLabel
         Left = 348
@@ -1532,7 +1532,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       object gridCores: TDBGridCBN
         Left = 13
         Top = 83
-        Width = 760
+        Width = 801
         Height = 333
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
@@ -1736,7 +1736,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       ImageIndex = 3
       OnExit = TabSheet4Exit
       DesignSize = (
-        789
+        830
         449)
       object Label28: TLabel
         Left = 12
@@ -1851,7 +1851,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       object GridTabelaPreco: TDBGrid
         Left = 13
         Top = 83
-        Width = 760
+        Width = 801
         Height = 333
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = 14803425
@@ -1914,12 +1914,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       ImageIndex = 4
       OnEnter = TabSheet5Enter
       DesignSize = (
-        789
+        830
         449)
       object pagCodBar: TPageControl
         Left = 0
         Top = 9
-        Width = 789
+        Width = 830
         Height = 446
         ActivePage = TabSheet7
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -1927,7 +1927,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         object TabSheet7: TTabSheet
           Caption = 'C'#243'digos de Barra'
           DesignSize = (
-            781
+            822
             418)
           object labQtdRegistros: TLabel
             Left = 6
@@ -1968,7 +1968,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           object DBGridCBN1: TDBGridCBN
             Left = 6
             Top = 8
-            Width = 766
+            Width = 807
             Height = 376
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
@@ -2096,7 +2096,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
               end>
           end
           object BitBtn1: TBitBtn
-            Left = 597
+            Left = 638
             Top = 388
             Width = 175
             Height = 26
@@ -2177,7 +2177,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           Caption = 'Refer'#234'ncias do produto'
           ImageIndex = 1
           DesignSize = (
-            781
+            822
             418)
           object Shape2: TShape
             Left = 6
@@ -2233,7 +2233,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           object btnGeraCodBar: TSpeedButton
             Left = 570
             Top = 355
-            Width = 201
+            Width = 241
             Height = 59
             Caption = ' Gerar C'#243'digo de Barras'
             Glyph.Data = {
@@ -2269,7 +2269,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           object gridReferencias: TDBGridCBN
             Left = 6
             Top = 25
-            Width = 764
+            Width = 805
             Height = 319
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
@@ -2672,10 +2672,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Estoque'
       ImageIndex = 5
       OnEnter = TabSheet6Enter
-      ExplicitLeft = 8
-      ExplicitTop = 22
       DesignSize = (
-        789
+        830
         449)
       object Shape3: TShape
         Left = 3
@@ -2703,7 +2701,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       object DBGrid1: TDBGrid
         Left = 4
         Top = 23
-        Width = 782
+        Width = 823
         Height = 389
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = 14803425
@@ -2717,6 +2715,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TitleFont.Style = []
         OnKeyDown = GridTabelaPrecoKeyDown
         Columns = <
+          item
+            Expanded = False
+            FieldName = 'SETOR'
+            Width = 67
+            Visible = True
+          end
           item
             Expanded = False
             FieldName = 'REFERENCIA'
@@ -2832,7 +2836,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             Expanded = False
             FieldName = 'QTD_TOTAL'
             Title.Caption = 'TOTAL'
-            Width = 42
+            Width = 38
             Visible = True
           end>
       end
@@ -3395,8 +3399,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     end
     object tbsKits: TTabSheet
       Caption = 'Configura Kit'
+      Enabled = False
       ImageIndex = 6
-      TabVisible = False
       object Label30: TLabel
         Left = 6
         Top = 225
@@ -4562,7 +4566,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900AC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
@@ -4894,6 +4898,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     object cdsEstoquePRODUTO: TStringField
       FieldName = 'PRODUTO'
       Size = 200
+    end
+    object cdsEstoqueSETOR: TStringField
+      FieldName = 'SETOR'
+      Size = 15
     end
   end
   object dsEstoque: TDataSource

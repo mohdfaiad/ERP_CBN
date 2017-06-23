@@ -303,7 +303,7 @@ procedure TfrmPedidoConsumidorFinal.atualizaEstoque(pedido :TPedido);
 var Estoque     :TEstoque;
     repositorio :TRepositorio;
     Especificacao :TEspecificacaoEstoquePorProdutoCorTamanho;
-    codigo_tamanho, i :integer;
+    codigo_tamanho, i, setor :integer;
 begin
   Estoque     := nil;
   repositorio := nil;
@@ -316,9 +316,12 @@ begin
    for i := 0 to Pedido.Itens.Count - 1 do
    begin
      codigo_tamanho := 11;//strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO',  );
+     setor := IfThen(assigned(Pedido.Representante.DadosRepresentante) and
+                     (Pedido.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                     (TItem(Pedido.Itens[i]).Produto.Tipo = 'E'),2,1);
 
-
-     Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(TItem(Pedido.Itens[i]).cod_produto,
+     Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(setor,
+                                                                        TItem(Pedido.Itens[i]).cod_produto,
                                                                         TItem(Pedido.Itens[i]).cod_cor,
                                                                         codigo_tamanho);
 
@@ -500,6 +503,7 @@ begin
      pedido.desconto          := edtDesconto.Value;
      pedido.valor_total       := edtTotalPedido.Value;
      pedido.despachado        := 'S';
+     pedido.dt_despacho       := date;
      pedido.aprovacao         := 'A';
      pedido.aprovado_por      := 'PEDIDO CONSUMIDOR FINAL';
 

@@ -7,7 +7,7 @@ uses
   StdCtrls, frameBuscaPessoa, ComCtrls, Buttons, Grids, Math, DBGrids, DBGridCBN, DB, DBClient, Provider,
   contnrs, Mask, DBCtrls, RxToolEdit, RxCurrEdit, ExtCtrls,
   Repositorio, ComissaoRepresentante, Lancamento, RLReport, DateUtils, Mapi,
-  RLFilters, RLPDFFilter, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  RLFilters, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, ACBrBase, ACBrMail;
@@ -311,7 +311,6 @@ type
     RLBand30: TRLBand;
     RLLabel58: TRLLabel;
     rlObservacoes1: TRLMemo;
-    RLPDFFilter1: TRLPDFFilter;
     Label32: TLabel;
     dtpInicio: TDateTimePicker;
     dtpFim: TDateTimePicker;
@@ -1315,10 +1314,7 @@ end;
 function TfrmFechaComissaoRepresentante.EnviarEmail(Endereco: String; Assunto: String = ''; Texto: String = '';
   stlAnexo: TStringList = nil): Boolean;
 var
-  IdMessage :TIdMessage;
-  IdSMTP    :TIdSMTP;
   nX        :integer;
-  IdSSLIOHandlerSocketOpenSSL1 :TIdSSLIOHandlerSocketOpenSSL;
   configuracoes_email          :TConfiguracoesNFEmail;
 begin
  try
@@ -1360,15 +1356,11 @@ begin
     on e : Exception do
       begin
         raise Exception.Create(e.Message);
-        IdSMTP.Disconnect;
       end;
   end;
 
  Finally
    FreeAndNil(configuracoes_email );
-   FreeAndNil(IdMessage );
-   FreeAndNil(IdSSLIOHandlerSocketOpenSSL1);
-   IdSMTP := nil;
  end;
 end;
 

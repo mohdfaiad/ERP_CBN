@@ -65,6 +65,7 @@ begin
    Estoque.codigo_tamanho := self.FQuery.FieldByName('codigo_tamanho').AsInteger;
    Estoque.codigo_cor     := self.FQuery.FieldByName('codigo_cor'    ).AsInteger;
    Estoque.quantidade     := self.FQuery.FieldByName('quantidade'    ).AsFloat;
+   Estoque.setor          := self.FQuery.FieldByName('setor'         ).AsInteger;
  //  Estoque.qtd_reservada  := self.FQuery.FieldByName('qtd_reservada' ).AsFloat;   
    result := Estoque;
 end;
@@ -106,6 +107,8 @@ begin
     Auditoria.AdicionaCampoAlterado('codigo_cor', IntToStr(EstoqueAntigo.codigo_cor), IntToStr(EstoqueNovo.codigo_cor));
    if (EstoqueAntigo.quantidade <> EstoqueNovo.quantidade) then
     Auditoria.AdicionaCampoAlterado('quantidade', floatToStr(EstoqueAntigo.quantidade), floatToStr(EstoqueNovo.quantidade));
+   if (EstoqueAntigo.setor <> EstoqueNovo.setor) then
+    Auditoria.AdicionaCampoAlterado('setor', IntToStr(EstoqueAntigo.setor), IntToStr(EstoqueNovo.setor));
  //  if (EstoqueAntigo.qtd_reservada <> EstoqueNovo.qtd_reservada) then
 //    Auditoria.AdicionaCampoAlterado('qtd_reservada', floatToStr(EstoqueAntigo.qtd_reservada), floatToStr(EstoqueNovo.qtd_reservada));
 end;
@@ -122,6 +125,7 @@ begin
    Auditoria.AdicionaCampoExcluido('codigo_tamanho' , intToStr(Estoque.codigo_tamanho));
    Auditoria.AdicionaCampoExcluido('codigo_cor'     , intToStr(Estoque.codigo_cor));
    Auditoria.AdicionaCampoExcluido('quantidade'     , floatToStr(Estoque.quantidade));
+   Auditoria.AdicionaCampoExcluido('setor'          , intToStr(Estoque.setor));
  //  Auditoria.AdicionaCampoExcluido('qtd_reservada'  , floatToStr(Estoque.qtd_reservada));
 end;
 
@@ -137,6 +141,7 @@ begin
    Auditoria.AdicionaCampoIncluido('codigo_tamanho' , intToStr(Estoque.codigo_tamanho));
    Auditoria.AdicionaCampoIncluido('codigo_cor'     , intToStr(Estoque.codigo_cor));
    Auditoria.AdicionaCampoIncluido('quantidade'     , floatToStr(Estoque.quantidade));
+   Auditoria.AdicionaCampoIncluido('setor'          , intToStr(Estoque.setor));
  //  Auditoria.AdicionaCampoIncluido('qtd_reservada'  , floatToStr(Estoque.qtd_reservada));
 end;
 
@@ -159,6 +164,7 @@ begin
    self.FQuery.ParamByName('codigo_tamanho').AsInteger        := Estoque.codigo_tamanho;
    self.FQuery.ParamByName('codigo_cor'    ).AsInteger        := Estoque.codigo_cor;
    self.FQuery.ParamByName('quantidade'    ).AsFloat          := Estoque.quantidade;
+   self.FQuery.ParamByName('setor'         ).AsInteger        := Estoque.setor;
   // self.FQuery.ParamByName('qtd_reservada' ).AsFloat          := Estoque.qtd_reservada;
 end;
 
@@ -184,9 +190,9 @@ end;
 
 function TRepositorioEstoque.SQLSalvar: String;
 begin
-  result := 'update or insert into Estoque                                                                 '+
-            '        (codigo, codigo_produto, codigo_tamanho, codigo_cor, quantidade)       '+
-            ' Values (:codigo, :codigo_produto, :codigo_tamanho, :codigo_cor, :quantidade) ';
+  result := 'update or insert into Estoque                                                         '+
+            '        (codigo, codigo_produto, codigo_tamanho, codigo_cor, quantidade, setor)       '+
+            ' Values (:codigo, :codigo_produto, :codigo_tamanho, :codigo_cor, :quantidade, :setor) ';
 end;
 
 end.

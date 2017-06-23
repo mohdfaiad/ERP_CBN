@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, uPadrao,
   frameBuscaCidade, Provider, DB, DBClient, Grids, DBGrids, DBGridCBN, StdCtrls, Buttons, ComCtrls,
-  ExtCtrls, Mask, Pessoa, Repositorio, StrUtils, Endereco,
+  ExtCtrls, Mask, Repositorio, StrUtils, Endereco,
   frameListaCampo, Cliente, ImgList, Cliente_Representante,
   frameMaskCpfCnpj, DBCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
@@ -52,29 +52,6 @@ type
     GroupBox4: TGroupBox;
     ListaFormaPagamento: TListaCampo;
     btnSalvar: TBitBtn;
-    cdsCODIGO: TIntegerField;
-    cdsPESSOA: TStringField;
-    cdsTIPO: TStringField;
-    cdsCPF_CNPJ: TStringField;
-    cdsRG_IE: TStringField;
-    cdsDTCADASTRO: TDateField;
-    cdsFONE1: TStringField;
-    cdsFONE2: TStringField;
-    cdsFAX: TStringField;
-    cdsOBSERVACAO: TStringField;
-    cdsBLOQUEADO: TStringField;
-    cdsMOTIVO_BLOQ: TStringField;
-    cdsCODTABELAPRECO: TIntegerField;
-    cdsCODFORMASPGTO: TIntegerField;
-    cdsCODIGO2: TIntegerField;
-    cdsCODIGO_1: TIntegerField;
-    cdsCODPESSOA: TIntegerField;
-    cdsLOGRADOURO: TStringField;
-    cdsBAIRRO: TStringField;
-    cdsCODCIDADE: TIntegerField;
-    cdsCEP: TStringField;
-    cdsPAIS: TStringField;
-    cdsCOMPLEMENTO: TStringField;
     Image1: TImage;
     Image2: TImage;
     Label17: TLabel;
@@ -83,14 +60,9 @@ type
     btnBloquear: TSpeedButton;
     GroupBox5: TGroupBox;
     ListaRepresentante: TListaCampo;
-    cdsCODREP: TIntegerField;
-    cdsCODIGO3: TIntegerField;
     GroupBox6: TGroupBox;
     ListaTransportadora: TListaCampo;
-    cdsCODTRANSPORTADORA: TIntegerField;
     CpfCnpj: TMaskCpfCnpj;
-    cdsNUMERO: TStringField;
-    cdsRAZAO: TStringField;
     GroupBox7: TGroupBox;
     Label15: TLabel;
     DBGrid1: TDBGrid;
@@ -102,7 +74,6 @@ type
     edtEmail: TDBEdit;
     GroupBox8: TGroupBox;
     memObs: TMemo;
-    cdsEMAIL: TStringField;
     lblAsterisco: TLabel;
     lblCamposObrigatorios: TLabel;
     Label16: TLabel;
@@ -111,10 +82,8 @@ type
     Label21: TLabel;
     Label22: TLabel;
     Label23: TLabel;
-    cdsCODCLI: TIntegerField;
     cbxFuncionario: TComboBox;
     Label24: TLabel;
-    cdsFUNCIONARIO: TStringField;
     btnCancelar: TSpeedButton;
     Label25: TLabel;
     Image3: TImage;
@@ -124,6 +93,36 @@ type
     Fone1: TFone;
     Fone2: TFone;
     FoneFax: TFone;
+    cdsCODIGO: TIntegerField;
+    cdsRAZAO: TStringField;
+    cdsPESSOA: TStringField;
+    cdsTIPO: TStringField;
+    cdsCPF_CNPJ: TStringField;
+    cdsRG_IE: TStringField;
+    cdsDTCADASTRO: TDateField;
+    cdsFONE1: TStringField;
+    cdsFONE2: TStringField;
+    cdsFAX: TStringField;
+    cdsEMAIL: TStringField;
+    cdsOBSERVACAO: TStringField;
+    cdsBLOQUEADO: TStringField;
+    cdsNOME_FANTASIA: TStringField;
+    cdsCODIGO_1: TIntegerField;
+    cdsCODPESSOA: TIntegerField;
+    cdsLOGRADOURO: TStringField;
+    cdsNUMERO: TStringField;
+    cdsBAIRRO: TStringField;
+    cdsCODCIDADE: TIntegerField;
+    cdsCEP: TStringField;
+    cdsPAIS: TStringField;
+    cdsCOMPLEMENTO: TStringField;
+    cdsCODCLI: TIntegerField;
+    cdsCODTABELAPRECO: TIntegerField;
+    cdsCODFORMASPGTO: TIntegerField;
+    cdsCODTRANSPORTADORA: TIntegerField;
+    cdsFUNCIONARIO: TStringField;
+    cdsCODREPRESENTANTE: TIntegerField;
+    cdsMOTIVO_BLOQUEIO: TStringField;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -146,8 +145,13 @@ type
     procedure TabSheet2Exit(Sender: TObject);
     procedure edtEmailExit(Sender: TObject);
     procedure btnAddPendenciaClick(Sender: TObject);
+    procedure gridClientesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure gridClientesCellClick(Column: TColumn);
 
   private
+    FModoBusca :Boolean;
+    registroFocado :integer;
+
     procedure salvar;
     procedure mostraDados;
     procedure limpaCampos;
@@ -158,7 +162,8 @@ type
     function concatenaEmails :String;
 
   public
-    { Public declarations }
+    constructor Create(AOwner :TComponent);       override;
+    constructor CreateBusca(AOwner :TComponent);  overload;
   end;
 
 var
@@ -178,12 +183,12 @@ begin
   cdsEmails.CreateDataSet;
 
   cds.Close;
-  qry.SQL.Text := 'select p.*, e.*, p.codigo codcli, c.codtabelapreco, c.codformaspgto, c.codtransportadora,  '+
-                      'c.codigo as codigo2, cr.codigo as codigo3, c.funcionario,                                  '+
-                      '(select codigo codrep from pessoas where codigo = cr.cod_representante) from pessoas p     '+
-                      'inner join clientes c on c.codcli = p.codigo                                               '+
-                      'inner join enderecos e on e.codpessoa = p.codigo                                           '+
-                      'left join cliente_representante cr on cr.cod_cliente = p.codigo                            ';
+  qry.SQL.Text := 'select c.codigo codcli, c.codtabelapreco, c.codformaspgto, c.codtransportadora, '+
+                  ' c.funcionario, c.codrepresentante, c.bloqueado, c.motivo_bloqueio,   '+
+                  ' p.*, e.*                                                             '+
+                  ' from pessoas p                                                       '+
+                  ' inner join clientes c on c.codcli = p.codigo                         '+
+                  ' inner join enderecos e on e.codpessoa = p.codigo                     ';
 
   cds.Open;
 
@@ -215,10 +220,12 @@ begin
   if not (cds.Active) or (cds.IsEmpty) then
     exit;
 
+  cds.AfterScroll := nil;
   self.Tag := 2;
   pagClientes.ActivePageIndex := 0;
   gridClientes.SetFocus;
   pagClientes.ActivePageIndex := 1;
+  cds.AfterScroll := cdsAfterScroll;
 end;
 
 procedure TfrmCadastroCliente.mostraDados;
@@ -245,6 +252,7 @@ begin
   carregaEmails(cdsEmail.AsString);
 
   memObs.text 	        := cdsObservacao.AsString;
+  registroFocado        := cds.RecNo;
 
 end;
 
@@ -296,7 +304,7 @@ begin
   pagClientes.ActivePageIndex := 0;
   self.Tag := 0;
   habilita(false);
-
+  cds.RecNo := registroFocado;
   gridClientes.SetFocus;
 end;
 
@@ -352,24 +360,17 @@ end;
 
 procedure TfrmCadastroCliente.salvar;
 var
-  Cliente :TPessoa;
-  EspecificoCliente :TCliente;
-  Endereco :TEndereco;
-  Cliente_Representante :TCliente_Representante;
+  Cliente :TCliente;
   repositorio :TRepositorio;
 begin
   Cliente               := nil;
-  EspecificoCliente     := nil;
-  Endereco              := nil;
-  Cliente_Representante := nil;
   repositorio           := nil;
  try
-
-    repositorio  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Cliente      := TPessoa(repositorio.Get( StrToInt(edtCodigo.Text)) );
+    repositorio  := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+    Cliente      := TCliente(repositorio.Get( StrToInt(edtCodigo.Text)) );
 
     if not assigned(Cliente) then
-      Cliente := TPessoa.Create;
+      Cliente := TCliente.Create;
 
     Cliente.Razao                := edtRazao.text;
     Cliente.Pessoa               := copy(CpfCnpj.comPessoa.text,1,1);
@@ -382,78 +383,42 @@ begin
     Cliente.Email                := concatenaEmails;
     Cliente.Observacao           := memObs.text;
     Cliente.Tipo                 := 'C';
+    Cliente.Funcionario          := (cbxFuncionario.ItemIndex = 0);
+
+    if (ListaTabelaPreco.comListaCampo.Text <> '') then
+      Cliente.CodTabelaPreco    := ListaTabelaPreco.CodCampo;
+
+    if (ListaFormaPagamento.comListaCampo.Text <> '') then
+      Cliente.CodFormasPgto     := ListaFormaPagamento.CodCampo;
+
+    if (ListaTransportadora.comListaCampo.Text <> '') then
+      Cliente.CodTransportadora := ListaTransportadora.CodCampo;
+
+    if not assigned(Cliente.Endereco) then
+      Cliente.Endereco := TEndereco.Create;
+
+    if (ListaRepresentante.comListaCampo.Text <> '') then
+      Cliente.CodRepresentante := ListaRepresentante.CodCampo;
+
+    Cliente.Endereco.Logradouro  := TRIM(edtLogradouro.text);
+    Cliente.Endereco.Numero      := TRIM(edtNumero.text);
+    Cliente.Endereco.Bairro      := TRIM(edtBairro.text);
+    Cliente.Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
+    Cliente.Endereco.CEP         := edtCep.text;
+    Cliente.Endereco.Pais        := edtPais.text;
+    Cliente.Endereco.Complemento := TRIM(edtComplemento.text);
 
     repositorio.Salvar(Cliente);
 
-    repositorio   := TFabricaRepositorio.GetRepositorio(TEndereco.ClassName);
-    Endereco      := TEndereco(repositorio.Get( StrToInt(edtCodigoEndereco.Text) ));
-
-    if not assigned(Endereco) then
-      Endereco := TEndereco.Create;
-
-    Endereco.CodPessoa   := Cliente.Codigo;
-    Endereco.Logradouro  := TRIM(edtLogradouro.text);
-    Endereco.Numero      := TRIM(edtNumero.text);
-    Endereco.Bairro      := TRIM(edtBairro.text);
-    Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
-    Endereco.CEP         := edtCep.text;
-    Endereco.Pais        := edtPais.text;
-    Endereco.Complemento := TRIM(edtComplemento.text);
-
-    repositorio.Salvar(Endereco);
-
-    { Salva dados específicos dos clientes }
-
-    repositorio       := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
-    EspecificoCliente := TCliente.Create;
-
-    if (self.Tag = 2) and repositorio.GetExiste('codcli',Cliente.codigo) then
-      EspecificoCliente.Codigo := cdsCODIGO2.AsInteger;
-
-    EspecificoCliente.CodCli         := Cliente.codigo;
-    EspecificoCliente.Funcionario    := (cbxFuncionario.ItemIndex = 0);
-
-    if (ListaTabelaPreco.comListaCampo.Text <> '') then
-      EspecificoCliente.CodTabelaPreco := ListaTabelaPreco.CodCampo;
-
-    if (ListaFormaPagamento.comListaCampo.Text <> '') then
-      EspecificoCliente.CodFormasPgto  := ListaFormaPagamento.CodCampo;
-
-    if (ListaTransportadora.comListaCampo.Text <> '') then
-      EspecificoCliente.CodTransportadora := ListaTransportadora.CodCampo;
-
-    repositorio.Salvar(EspecificoCliente);
-
-    { Salva representante associado }
-
-    if (ListaRepresentante.comListaCampo.Text <> '') then begin
-      repositorio           := TFabricaRepositorio.GetRepositorio(TCliente_Representante.ClassName);
-      Cliente_Representante := TCliente_Representante.Create;
-
-      if (self.Tag = 2) and repositorio.GetExiste('cod_cliente',Cliente.codigo) then
-        Cliente_Representante.Codigo := cdsCODIGO3.AsInteger;
-
-      Cliente_Representante.cod_cliente := Cliente.codigo;
-
-      if (ListaRepresentante.comListaCampo.Text <> '') then
-        Cliente_Representante.cod_representante := ListaRepresentante.CodCampo;
-
-      repositorio.Salvar(Cliente_Representante);
-    end;
-
     btnCancelar.Click;
-
-    cds.Close;
-    cds.Open;
 
     avisar('Operação realizada com sucesso!');
 
+    cds.Close;
+    cds.Open;
  Finally
    FreeAndNil(Cliente);
    FreeAndNil(repositorio);
-   FreeAndNil(Endereco);
-   FreeAndNil(EspecificoCliente);
-   FreeAndNil(Cliente_Representante);
  end;
 end;
 
@@ -479,8 +444,8 @@ begin
   else
     ListaTransportadora.CodCampo := 0;
 
-  if (cdsCODREP.AsInteger > 0) and (self.Tag in [0,2]) then
-    ListaRepresentante.CodCampo := cdsCODREP.AsInteger
+  if (cdsCODREPRESENTANTE.AsInteger > 0) and (self.Tag in [0,2]) then
+    ListaRepresentante.CodCampo := cdsCODREPRESENTANTE.AsInteger
   else
     ListaRepresentante.CodCampo := 0;
 
@@ -497,7 +462,7 @@ begin
       pagClientes.ActivePageIndex := 1;
     end;
 
-  btnAddPendencia.Enabled := not (cdsBLOQUEADO.AsString = 'B');
+  btnAddPendencia.Enabled := not (cdsBLOQUEADO.AsString = 'B') and not FModoBusca;
 
   if cdsBLOQUEADO.AsString = 'B' then
   begin
@@ -546,6 +511,9 @@ end;
 
 procedure TfrmCadastroCliente.habilita(SN: boolean);
 begin
+  if FModoBusca then
+    exit;
+
   if SN then begin
     btnIncluir.Enabled  := false;
     btnAlterar.Enabled  := false;
@@ -562,6 +530,12 @@ begin
     pagClientes.Pages[1].Enabled := false;
     pagClientes.Pages[2].Enabled := false;
   end;
+end;
+
+procedure TfrmCadastroCliente.gridClientesCellClick(Column: TColumn);
+begin
+  if (Column.FieldName = 'BLOQUEADO') and (pos(cdsBLOQUEADO.Text,'P,B') > 0) then
+    avisar(IfThen(cdsBLOQUEADO.Text = 'B','Motivo Bloqueio: ', 'Pendência: ')+cdsMOTIVO_BLOQUEIO.AsString);
 end;
 
 procedure TfrmCadastroCliente.gridClientesDrawColumnCell(Sender: TObject;
@@ -581,31 +555,42 @@ begin
   end;
 end;
 
+procedure TfrmCadastroCliente.gridClientesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (key = vk_return) and FModoBusca then
+  begin
+    Key := 0;
+    self.ModalResult := mrOk;
+  end
+  else
+    inherited;
+end;
+
 procedure TfrmCadastroCliente.btnBloquearClick(Sender: TObject);
 var
-  Cliente :TPessoa;
+  Cliente :TCliente;
   repositorio :TRepositorio;
   motivo :String;
 begin
  try
-    repositorio  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Cliente      := TPessoa(repositorio.Get( cdsCODIGO.AsInteger) );
+    repositorio  := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+    Cliente      := TCliente(repositorio.Get( cdsCODIGO.AsInteger) );
 
-    Cliente.Bloqueado  := IfThen(Cliente.Bloqueado = 'B', 'N', 'B');
+    Cliente.bloqueado  := IfThen(Cliente.bloqueado = 'B', 'N', 'B');
 
     if Cliente.Bloqueado = 'N' then
-      Cliente.MotivoBloq := ''
+      Cliente.motivoBloqueio := ''
     else
     begin
-      if Cliente.MotivoBloq <> '' then
+      if Cliente.motivoBloqueio <> '' then
       begin
-        if not confirma('"'+Cliente.MotivoBloq+'"'+#13#10+'É o motivo de bloqueio do cliente?') then
-          Cliente.MotivoBloq := UPPERCASE(chamaInput('TEXT','Motivo do bloqueio'));
+        if not confirma('"'+Cliente.motivoBloqueio+'"'+#13#10+'É o motivo de bloqueio do cliente?') then
+          Cliente.motivoBloqueio := UPPERCASE(chamaInput('TEXT','Motivo do bloqueio'));
       end
       else
-        Cliente.MotivoBloq := UPPERCASE(chamaInput('TEXT','Motivo do bloqueio'));
+        Cliente.motivoBloqueio := UPPERCASE(chamaInput('TEXT','Motivo do bloqueio'));
         
-      if length(Cliente.MotivoBloq) < 6 then
+      if length(Cliente.motivoBloqueio) < 6 then
       begin
         avisar('Motivo de bloqueio inválido ou não informado. Operação abortada.');
         exit;
@@ -615,7 +600,7 @@ begin
     repositorio.Salvar(Cliente);
 
     cds.Edit;
-    cdsBLOQUEADO.AsString := Cliente.Bloqueado;
+    cdsBLOQUEADO.AsString := Cliente.bloqueado;
     cds.Post;
 
     if cdsBLOQUEADO.AsString = 'N' then
@@ -681,6 +666,23 @@ begin
 
 end;
 
+constructor TfrmCadastroCliente.Create(AOwner: TComponent);
+begin
+  inherited;
+end;
+
+constructor TfrmCadastroCliente.CreateBusca(AOwner: TComponent);
+begin
+  self.Create(AOwner);
+  btnIncluir.Enabled      := false;
+  btnAlterar.Enabled      := false;
+  btnBloquear.Enabled     := false;
+  btnAddPendencia.Enabled := false;
+  FModoBusca              := true;
+  panBotoes.Visible       := false;
+  self.Caption            := 'Selecione o cliente desejado e tecle <ENTER>';
+end;
+
 procedure TfrmCadastroCliente.edtEmailEnter(Sender: TObject);
 begin
   if not (cdsEmails.State in [dsEdit, dsInsert]) then
@@ -701,23 +703,23 @@ end;
 
 procedure TfrmCadastroCliente.btnAddPendenciaClick(Sender: TObject);
 var
-  Cliente :TPessoa;
+  Cliente :TCliente;
   repositorio :TRepositorio;
   motivo :String;
 begin
  try
-    repositorio  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Cliente      := TPessoa(repositorio.Get( cdsCODIGO.AsInteger) );
+    repositorio  := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+    Cliente      := TCliente(repositorio.Get( cdsCODIGO.AsInteger) );
 
     Cliente.Bloqueado  := IfThen(Cliente.Bloqueado = 'P', 'N', 'P');
 
     if Cliente.Bloqueado = 'N' then
-      Cliente.MotivoBloq := ''
+      Cliente.motivoBloqueio := ''
     else
     begin
-      Cliente.MotivoBloq := chamaInput('TEXT','Informe a pendência do cliente');
+      Cliente.motivoBloqueio := chamaInput('TEXT','Informe a pendência do cliente');
 
-      if length(Cliente.MotivoBloq) < 6 then
+      if length(Cliente.motivoBloqueio) < 6 then
       begin
         avisar('Pendência inválida ou não informada. Operação abortada.');
         exit;

@@ -352,7 +352,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         467)
       object gridRepresentantes: TDBGridCBN
         Left = 8
-        Top = 8
+        Top = 7
         Width = 839
         Height = 451
         Hint = 
@@ -378,6 +378,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         TitleFont.Height = -11
         TitleFont.Name = 'MS Sans Serif'
         TitleFont.Style = []
+        OnKeyDown = gridRepresentantesKeyDown
         OnTitleClick = gridRepresentantesTitleClick
         BuscaHabilitada = True
         ConfCores.Normal.CorFonte = clWindowText
@@ -1297,14 +1298,6 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       FieldName = 'OBSERVACAO'
       Size = 200
     end
-    object cdsBLOQUEADO: TStringField
-      FieldName = 'BLOQUEADO'
-      Size = 1
-    end
-    object cdsMOTIVO_BLOQ: TStringField
-      FieldName = 'MOTIVO_BLOQ'
-      Size = 500
-    end
     object cdsTIPO: TStringField
       FieldName = 'TIPO'
       Size = 1
@@ -1359,6 +1352,9 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
     object cdsREP_ECOMMERCE: TStringField
       FieldName = 'REP_ECOMMERCE'
       Size = 1
+    end
+    object cdsMOTIVO_BLOQ: TStringField
+      FieldName = 'MOTIVO_BLOQ'
     end
   end
   object dsp: TDataSetProvider

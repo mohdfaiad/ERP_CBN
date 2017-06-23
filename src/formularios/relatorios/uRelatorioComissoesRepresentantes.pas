@@ -9,7 +9,7 @@ uses
   DBClient, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  RLFilters, RLPDFFilter, Vcl.MPlayer, ShellAPI;
+  RLFilters, Vcl.MPlayer, ShellAPI;
 
 type
   TfrmRelatorioComissoesRepresentantes = class(TfrmPadrao)
@@ -104,7 +104,6 @@ type
     cdsComissMES: TSmallintField;
     cdsComissVLRCOMISSAO1Q: TBCDField;
     cdsComissVLRCOMISSAO2Q: TBCDField;
-    RLPDFFilter1: TRLPDFFilter;
     procedure SpeedButton1Click(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -145,10 +144,8 @@ end;
 procedure TfrmRelatorioComissoesRepresentantes.imprimir;
 begin
    RLReport1.Clear;
-
    cdsComiss.Close;
    qryComissao.SQL.Text := monta_sql;
-
    qryComissao.ParamByName('ano').AsInteger := StrToInt( cbAno.Items[ cbAno.ItemIndex ]);
 
    if BuscaPessoa1.edtRazao.Text <> '' then
@@ -162,7 +159,6 @@ begin
    end;
 
    nomea_meses;
-
    transfere_dados;
 
    if not self.qryDescAc.IsEmpty then

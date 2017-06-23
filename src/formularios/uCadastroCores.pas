@@ -111,6 +111,7 @@ type
     procedure deleta_selecionadas( repositorio :TRepositorio; lista :TStringList );
     function  verifica_vinculo(codigo_cor :integer) :Boolean;
     function qtdeCodBarrasDaCor :integer;
+    function existeReferencia(var cor:string) :Boolean;
 
     procedure habilitar(SN:Boolean);
     procedure mostra_dados;
@@ -163,6 +164,7 @@ end;
 procedure TfrmCadastroCores.btnIncluirClick(Sender: TObject);
 begin
   inherited;
+  edtReferencia.OnChange := nil;
   pgcCores.ActivePageIndex := 0;
   edtDescricao.Clear;
   edtReferencia.Clear;
@@ -176,6 +178,7 @@ begin
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
   edtReferencia.SetFocus;
+  edtReferencia.OnChange := edtReferenciaChange;
   cmbKit.ItemIndex := -1;
 end;
 
@@ -213,6 +216,7 @@ begin
 end;
 
 procedure TfrmCadastroCores.btnSalvarClick(Sender: TObject);
+var cor :string;
 begin
   if (trim(edtDescricao.Text) = '') then begin
     avisar('É necessário informar uma descrição para a cor');
@@ -229,6 +233,11 @@ begin
   else if (cmbKit.ItemIndex = 0)and(cdsCoresKIT.RecordCount < 2) then begin
     avisar('É necessário incluir ao menos duas cores no kit');
     pgcCores.ActivePage := tsCoresKit;
+  end
+  else if existeReferencia(cor) then
+  begin
+    avisar('A referência '+edtReferencia.Text+' já está cadastrada para a cor '+cor);
+    edtReferencia.SetFocus;
   end
   else
     salvar;
@@ -371,6 +380,12 @@ begin
 
   if self.Tag in [1,2] then
     habilitar(true);
+end;
+
+function TfrmCadastroCores.existeReferencia(var cor: string): Boolean;
+begin
+  cor := Campo_por_campo('CORES','DESCRICAO','REFERENCIA',edtReferencia.Text);
+  result := cor <> '';
 end;
 
 procedure TfrmCadastroCores.mostra_dados;

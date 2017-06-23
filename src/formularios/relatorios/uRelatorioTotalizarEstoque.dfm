@@ -4,20 +4,20 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Totalizar Estoque'
-  ClientHeight = 341
-  ClientWidth = 618
+  ClientHeight = 348
+  ClientWidth = 611
   OldCreateOrder = True
   PrintScale = poNone
   Scaled = False
   OnCreate = nil
   OnShow = FormShow
-  ExplicitWidth = 624
-  ExplicitHeight = 369
+  ExplicitWidth = 617
+  ExplicitHeight = 376
   PixelsPerInch = 96
   TextHeight = 13
   object RLTotalizarEstoque: TRLReport
-    Left = 81
-    Top = 188
+    Left = 10
+    Top = 316
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -1728,13 +1728,11 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
   end
   object Panel1: TPanel
     Left = 0
-    Top = 300
-    Width = 618
+    Top = 307
+    Width = 611
     Height = 41
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 311
-    ExplicitWidth = 613
     object btnImprimir: TBitBtn
       Left = 219
       Top = 6
@@ -1896,6 +1894,20 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
     Caption = 'Somente Loja'
     TabOrder = 5
     OnClick = chkSomenteLojaClick
+  end
+  object rgpSetor: TRadioGroup
+    Left = 312
+    Top = 252
+    Width = 284
+    Height = 41
+    Caption = ' Setor '
+    Columns = 3
+    ItemIndex = 2
+    Items.Strings = (
+      'F'#225'brica'
+      'E-commerce'
+      'Geral')
+    TabOrder = 6
   end
   object dsTotalizarEstoque: TDataSource
     DataSet = cdsEstoque
@@ -2231,13 +2243,5 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
       ProviderFlags = []
       ReadOnly = True
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 296
-    Top = 168
   end
 end

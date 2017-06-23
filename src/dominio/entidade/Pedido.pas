@@ -7,7 +7,7 @@ uses
   Contnrs,
   Repositorio,
   FormaPagamento,
-  Pessoa, Empresa,
+  Pessoa, Empresa, Representante, Cliente,
   MetodoDelegadoSomarCampoEspecificoReal,
   MetodoDelegadoSomarCampoEspecificoInteger,
   Item, ConferenciaPedido;
@@ -53,8 +53,8 @@ type
     Fdesconto_fpgto: Real;
     Fdespachado: String;
     Fdt_despacho: TDateTime;
-    FRepresentante :TPessoa;
-    FCliente :TPessoa;
+    FRepresentante :TRepresentante;
+    FCliente :TCliente;
     FConferencia :TConferenciaPedido;
     Fdesconto_itens: Real;
     Fcod_pedido_matriz: Integer;
@@ -99,8 +99,8 @@ type
     function GetItens             :TObjectList;
     function GetFormaPagamento    :TFormaPagamento;
     function GetTransportadora    :TPessoa;
-    function GetCliente: TPessoa;
-    function GetRepresentante: TPessoa;
+    function GetCliente: TCliente;
+    function GetRepresentante: TRepresentante;
     function GetConferencia: TConferenciaPedido;
     function GetEmpresa: TEmpresa;
 
@@ -165,8 +165,8 @@ type
   public
     property FormaPagamento   :TFormaPagamento    read GetFormaPagamento;
     property Transportadora   :TPessoa            read GetTransportadora;
-    property Cliente          :TPessoa            read GetCliente;
-    Property Representante    :TPessoa            read GetRepresentante;
+    property Cliente          :TCliente           read GetCliente;
+    Property Representante    :TRepresentante     read GetRepresentante;
     property Empresa          :TEmpresa           read GetEmpresa;
     property PesoBrutoTotal   :Real               read GetPesoBrutoTotal;
     property PesoLiquidoTotal :Real               read GetPesoLiquidoTotal;
@@ -593,7 +593,7 @@ begin
   Fdesconto_itens := Value;
 end;
 
-function TPedido.GetCliente: TPessoa;
+function TPedido.GetCliente: TCliente;
 var
   Repositorio :TRepositorio;
 begin
@@ -601,8 +601,8 @@ begin
 
    try
      if not Assigned(self.FCliente) then begin
-         Repositorio      := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-         self.FCliente    := (Repositorio.Get(self.Fcod_cliente) as TPessoa);
+         Repositorio      := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
+         self.FCliente    := TCliente(Repositorio.Get(self.Fcod_cliente));
      end;
 
      result := self.FCliente;
@@ -611,7 +611,7 @@ begin
    end;
 end;
 
-function TPedido.GetRepresentante: TPessoa;
+function TPedido.GetRepresentante: TRepresentante;
 var
   Repositorio :TRepositorio;
 begin
@@ -619,8 +619,8 @@ begin
 
    try
      if not Assigned(self.FRepresentante) then begin
-         Repositorio          := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-         self.FRepresentante  := (Repositorio.Get(self.Fcod_repres) as TPessoa);
+         Repositorio          := TFabricaRepositorio.GetRepositorio(TRepresentante.ClassName);
+         self.FRepresentante  := TRepresentante(Repositorio.Get(self.Fcod_repres));
      end;
 
      result := self.FRepresentante;

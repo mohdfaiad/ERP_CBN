@@ -36,7 +36,7 @@ object BuscaTabelaPreco: TBuscaTabelaPreco
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
-    TabOrder = 0
+    TabOrder = 3
     Transparent = False
   end
   object edtCodigo: TCurrencyEdit
@@ -46,7 +46,7 @@ object BuscaTabelaPreco: TBuscaTabelaPreco
     Height = 21
     AutoSize = False
     DisplayFormat = '0'
-    TabOrder = 1
+    TabOrder = 0
     OnExit = edtCodigoExit
     OnKeyPress = edtCodigoKeyPress
   end
@@ -123,7 +123,7 @@ object BuscaTabelaPreco: TBuscaTabelaPreco
       9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
     NumGlyphs = 2
-    TabOrder = 2
+    TabOrder = 1
     TabStop = False
     OnClick = btnBuscaClick
   end
@@ -133,7 +133,7 @@ object BuscaTabelaPreco: TBuscaTabelaPreco
     Width = 297
     Height = 21
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 2
     OnEnter = edtDescricaoEnter
   end
 end

@@ -60,10 +60,11 @@ function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; con
 begin
   dm.qryGenerica.Close;
   dm.qryGenerica.SQL.Text := 'select cb.numeracao from codigo_barras cb                                         '+
+                             ' inner join produtos p on p.codigo = cb.codproduto '+
                              'where cb.codproduto = :codpro '+
                              '  and cb.codcor = :codcor '+
                              '  and cb.codtamanho = :codtam '+
-                             IfThen(codigoGrade > 0, ' and c.codgrade = :codgrade ','');
+                             IfThen(codigoGrade > 0, ' and p.cod_grade = :codgrade ','');
 
   dm.qryGenerica.ParamByName('codpro').AsInteger := codigoProduto;
   dm.qryGenerica.ParamByName('codcor').AsInteger := codigoCor;

@@ -12,7 +12,7 @@ object BuscaCor: TBuscaCor
     Height = 21
     AutoSize = False
     DisplayFormat = '0'
-    TabOrder = 5
+    TabOrder = 0
     Visible = False
   end
   object StaticText2: TStaticText
@@ -29,7 +29,7 @@ object BuscaCor: TBuscaCor
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 5
     Transparent = False
   end
   object StaticText1: TStaticText
@@ -47,12 +47,12 @@ object BuscaCor: TBuscaCor
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 4
     Transparent = False
   end
   object btnBusca: TBitBtn
     Left = 94
-    Top = 22
+    Top = 23
     Width = 25
     Height = 25
     Glyph.Data = {
@@ -123,7 +123,7 @@ object BuscaCor: TBuscaCor
       9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
     NumGlyphs = 2
-    TabOrder = 1
+    TabOrder = 2
     TabStop = False
     OnClick = btnBuscaClick
   end
@@ -133,7 +133,7 @@ object BuscaCor: TBuscaCor
     Width = 297
     Height = 21
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 3
     OnEnter = edtDescricaoEnter
   end
   object edtReferencia: TEdit
@@ -141,7 +141,7 @@ object BuscaCor: TBuscaCor
     Top = 23
     Width = 80
     Height = 21
-    TabOrder = 0
+    TabOrder = 1
     OnKeyDown = edtReferenciaKeyDown
   end
 end

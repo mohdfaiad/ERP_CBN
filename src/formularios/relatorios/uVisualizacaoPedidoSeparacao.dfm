@@ -978,12 +978,4 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
     Left = 49
     Top = 130
   end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 672
-    Top = 34
-  end
 end

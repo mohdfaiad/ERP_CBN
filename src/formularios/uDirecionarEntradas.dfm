@@ -479,8 +479,6 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Height = 47
     Align = alBottom
     TabOrder = 1
-    ExplicitLeft = -8
-    ExplicitTop = 427
     object btnImprimir: TSpeedButton
       Left = 769
       Top = 9
@@ -613,7 +611,7 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     Left = 352
     Top = 288
     Bitmap = {
-      494C010102001C00440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102001C004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000004EB145006DC066000000000000000000000000000000
@@ -856,13 +854,5 @@ inherited frmDirecionarEntradas: TfrmDirecionarEntradas
     DataSet = qryDirecionadas
     Left = 136
     Top = 304
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 496
-    Top = 472
   end
 end

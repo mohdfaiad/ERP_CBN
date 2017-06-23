@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, ComCtrls, StdCtrls, Buttons, ExtCtrls, contNrs,
   frameBuscaEmpresa, DB, DBClient, Grids, DBGrids,
-  frameBuscaNaturezaOperacao, RLFilters, RLPDFFilter;
+  frameBuscaNaturezaOperacao, RLFilters;
 
 type
   TfrmRelatorioNotasFiscaisVenda = class(TfrmPadrao)
@@ -28,7 +28,6 @@ type
     cdsCfopsCFOP: TStringField;
     cdsCfopsDESCRICAO: TStringField;
     StaticText1: TStaticText;
-    RLPDFFilter1: TRLPDFFilter;
     procedure btnImprimirClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
