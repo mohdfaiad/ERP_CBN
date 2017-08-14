@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uModulo, stdCtrls, DBCtrls, Mask, RxCurrEdit, PermissoesAcesso;
+  Dialogs, uModulo, stdCtrls, DBCtrls, Mask, RxCurrEdit, PermissoesAcesso, Vcl.Buttons;
 
 type
   TfrmPadrao = class(TForm)
@@ -130,7 +130,8 @@ begin
     begin
        Shift := [];
        //Key   := 0;
-       keybd_event(VK_TAB, 0, 0, 0);
+       if not ((self.ActiveControl is TButton) or (self.ActiveControl is TBitBtn))then
+         keybd_event(VK_TAB, 0, 0, 0);
     end
    else if (Key = VK_ESCAPE) and self.FFecharComEsc then
     begin

@@ -13,7 +13,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
   ExplicitWidth = 1103
   ExplicitHeight = 687
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Shape4: TShape
     Left = 0
     Top = 1
@@ -3181,7 +3181,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 259
     Top = 48
     Width = 25
-    Height = 21
+    Height = 23
     TabOrder = 5
     Text = 'edtCaixa'
     Visible = False
@@ -3199,7 +3199,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       Caption = 'Itens '#224' conferir'
       DesignSize = (
         1076
-        394)
+        392)
       object gridItens: TDBGridCBN
         Left = 9
         Top = 3
@@ -3529,7 +3529,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       end
       object Panel2: TPanel
         Left = 0
-        Top = 333
+        Top = 331
         Width = 1076
         Height = 61
         Align = alBottom
@@ -5275,7 +5275,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       ExplicitHeight = 0
       DesignSize = (
         1076
-        394)
+        392)
       object gridItensConferidos: TDBGridCBN
         Left = 6
         Top = 5
@@ -5573,12 +5573,13 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       end
       object Panel3: TPanel
         Left = 0
-        Top = 340
+        Top = 338
         Width = 1076
         Height = 54
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitTop = 340
         DesignSize = (
           1076
           54)
@@ -7000,7 +7001,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900C80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

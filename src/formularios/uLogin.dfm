@@ -10,7 +10,7 @@ inherited frmLogin: TfrmLogin
   ExplicitWidth = 399
   ExplicitHeight = 271
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Panel2: TPanel
     Left = 0
     Top = 0

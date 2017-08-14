@@ -221,6 +221,7 @@ type
     versao210: TMemo;
     versao211: TMemo;
     versao212: TMemo;
+    versao213: TMemo;
 
   private
 

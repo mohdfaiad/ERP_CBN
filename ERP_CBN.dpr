@@ -456,7 +456,8 @@ uses
   Representante in 'src\dominio\entidade\Representante.pas',
   RepositorioRepresentante in 'src\infraestrutura\persistencia\RepositorioRepresentante.pas',
   frameBuscaRepresentante in 'src\formularios\frameBuscaRepresentante.pas' {buscaRepresentante: TFrame},
-  EnviaEmail in 'src\dominio\entidade\EnviaEmail.pas';
+  EnviaEmail in 'src\dominio\entidade\EnviaEmail.pas',
+  Documentos in 'src\dominio\utilitario\Documentos.pas';
 
 {$R *.res}
 {$R win7810.res}

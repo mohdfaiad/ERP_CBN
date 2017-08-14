@@ -1,13 +1,15 @@
 inherited frmEFDFiscal: TfrmEFDFiscal
   Left = 372
   Top = 89
-  Width = 513
-  Height = 494
   Caption = 'Gerador EFD Fiscal ( ICMS & IPI )'
+  ClientHeight = 456
+  ClientWidth = 497
   OldCreateOrder = True
   OnShow = FormShow
+  ExplicitWidth = 513
+  ExplicitHeight = 494
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object GroupBox1: TGroupBox
     Left = 202
     Top = 165
@@ -108,6 +110,10 @@ inherited frmEFDFiscal: TfrmEFDFiscal
     Width = 466
     Height = 74
     TabOrder = 0
+    ExplicitLeft = 16
+    ExplicitTop = 6
+    ExplicitWidth = 466
+    ExplicitHeight = 74
     inherited gpbEmpresa: TGroupBox
       Width = 466
       Height = 74
@@ -116,24 +122,42 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
+      ExplicitWidth = 466
+      ExplicitHeight = 74
     end
-    inherited lblCodigo: TStaticText
+    inherited lblRazao: TStaticText [1]
+      Top = 25
+      Width = 74
+      Height = 19
+      ExplicitTop = 25
+      ExplicitWidth = 74
+      ExplicitHeight = 19
+    end
+    inherited lblCodigo: TStaticText [2]
       Top = 25
       Width = 42
+      Height = 19
+      ExplicitTop = 25
+      ExplicitWidth = 42
+      ExplicitHeight = 19
     end
-    inherited edtCodigo: TEdit
+    inherited edtCodigo: TEdit [3]
       Top = 42
+      Height = 23
+      ExplicitTop = 42
+      ExplicitHeight = 23
     end
-    inherited btnBusca: TBitBtn
+    inherited btnBusca: TBitBtn [4]
       Top = 39
+      ExplicitTop = 39
     end
-    inherited edtRazao: TEdit
+    inherited edtRazao: TEdit [5]
       Top = 42
       Width = 335
-    end
-    inherited lblRazao: TStaticText
-      Top = 25
-      Width = 68
+      Height = 23
+      ExplicitTop = 42
+      ExplicitWidth = 335
+      ExplicitHeight = 23
     end
   end
   object gpbContador: TGroupBox
@@ -153,29 +177,42 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       Left = 9
       Top = 23
       Width = 434
-      Height = 41
+      Height = 39
       AutoSize = True
       TabOrder = 0
+      ExplicitLeft = 9
+      ExplicitTop = 23
       inherited StaticText2: TStaticText
-        Width = 47
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
         Font.Style = []
+        Transparent = True
+        ExplicitHeight = 19
       end
       inherited StaticText1: TStaticText
-        Width = 37
+        Width = 42
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
         Font.Style = []
+        Transparent = True
+        ExplicitWidth = 42
+        ExplicitHeight = 19
       end
       inherited edtCodigo: TCurrencyEdit
+        Height = 22
         Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
+        Font.Name = 'Calibri'
         ParentFont = False
+        ExplicitHeight = 22
       end
       inherited edtNome: TEdit
-        Height = 25
+        Height = 23
         Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
+        Font.Name = 'Calibri'
         ParentFont = False
+        ExplicitHeight = 23
       end
     end
   end
@@ -258,7 +295,6 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       Font.Height = -11
       Font.Name = 'Segoe UI'
       Font.Style = []
-      ItemHeight = 13
       ItemIndex = 0
       ParentFont = False
       TabOrder = 2
@@ -311,8 +347,6 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       Top = 25
       Width = 34
       Height = 25
-      TabOrder = 1
-      OnClick = btnSelecionaClick
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -381,6 +415,8 @@ inherited frmEFDFiscal: TfrmEFDFiscal
         9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
         9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
+      TabOrder = 1
+      OnClick = btnSelecionaClick
     end
   end
   object btnCancelar: TBitBtn
@@ -394,9 +430,6 @@ inherited frmEFDFiscal: TfrmEFDFiscal
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-    OnClick = btnCancelarClick
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00DFDF
@@ -465,6 +498,9 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       9200000093000300920091919B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
       9B009B9B9B009B9B9B00807F9A003A3795000102920009089300}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 4
+    OnClick = btnCancelarClick
   end
   object btnGerar: TBitBtn
     Left = 352
@@ -477,9 +513,6 @@ inherited frmEFDFiscal: TfrmEFDFiscal
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 5
-    OnClick = btnGerarClick
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -548,5 +581,8 @@ inherited frmEFDFiscal: TfrmEFDFiscal
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0042668C00196E
       910016638E0011648F0006457F002E5A86009B9B9B009B9B9B00}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 5
+    OnClick = btnGerarClick
   end
 end

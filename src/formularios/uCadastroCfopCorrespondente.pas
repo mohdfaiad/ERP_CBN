@@ -202,18 +202,8 @@ end;
 
 function TfrmCadastroCfopCorrespondente.VerificaDados: Boolean;
 begin
-  result := true;
-
-  if ListaCFOPSaida.comListaCampo.ItemIndex <= 0 then begin
-    avisar('Favor informar o CFOP de Saída');
-    ListaCFOPSaida.comListaCampo.SetFocus;
-    result := false;
-  end
-  else if ListaCFOPEntrada.comListaCampo.ItemIndex <= 0 then begin
-    avisar('Favor informar o CFOP de Entrada');
-    ListaCFOPEntrada.comListaCampo.SetFocus;
-    result := false;
-  end;
+  result := verificar(ListaCFOPSaida.comListaCampo.ItemIndex <= 0, 'Favor informar o CFOP de Saída', ListaCFOPSaida.comListaCampo) and
+            verificar(ListaCFOPEntrada.comListaCampo.ItemIndex <= 0, 'Favor informar o CFOP de Entrada', ListaCFOPEntrada.comListaCampo);
 end;
 
 end.

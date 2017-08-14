@@ -9,7 +9,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
   ExplicitWidth = 720
   ExplicitHeight = 486
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object pnlBotoes: TPanel
     Left = 0
     Top = 406
@@ -341,12 +341,12 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
       Caption = 'F1 - Consulta'
       DesignSize = (
         696
-        378)
+        376)
       object gridConsulta: TDBGridCBN
         Left = 8
         Top = 8
         Width = 678
-        Height = 352
+        Height = 348
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -363,7 +363,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -413,9 +413,9 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
       end
       object lblAjudaSelecionar: TStaticText
         Left = 0
-        Top = 361
+        Top = 357
         Width = 696
-        Height = 17
+        Height = 19
         Align = alBottom
         Alignment = taCenter
         Caption = 'Pressione ENTER para selecionar o registro'
@@ -429,7 +429,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Left = 0
         Top = 0
         Width = 696
-        Height = 378
+        Height = 376
         Align = alClient
         Enabled = False
         TabOrder = 0

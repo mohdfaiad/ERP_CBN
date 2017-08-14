@@ -3,17 +3,890 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   Top = 156
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio de Pedidos p/ Produ'#231#227'o'
-  ClientHeight = 592
-  ClientWidth = 996
+  ClientHeight = 565
+  ClientWidth = 997
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 1002
-  ExplicitHeight = 620
+  ExplicitWidth = 1003
+  ExplicitHeight = 593
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
+  object RLReport1: TRLReport
+    Left = 37
+    Top = 228
+    Width = 794
+    Height = 1123
+    Margins.LeftMargin = 5.000000000000000000
+    Margins.RightMargin = 5.000000000000000000
+    Margins.BottomMargin = 15.000000000000000000
+    Borders.Sides = sdCustom
+    Borders.DrawLeft = True
+    Borders.DrawTop = True
+    Borders.DrawRight = True
+    Borders.DrawBottom = True
+    Borders.FixedLeft = True
+    Borders.FixedTop = True
+    Borders.FixedRight = True
+    Borders.FixedBottom = True
+    DataSource = dsItens
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    Visible = False
+    BeforePrint = RLReport1BeforePrint
+    object RLBand1: TRLBand
+      Left = 20
+      Top = 39
+      Width = 754
+      Height = 90
+      BandType = btTitle
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Borders.FixedBottom = True
+      object RLLabel5: TRLLabel
+        Left = -9
+        Top = 51
+        Width = 801
+        Height = 15
+        Caption = 
+          '________________________________________________________________' +
+          '__________________________________________________'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel2: TRLLabel
+        Left = 72
+        Top = 18
+        Width = 119
+        Height = 22
+        Caption = 'BABY DUCK'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -19
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLImage1: TRLImage
+        Left = 1
+        Top = 3
+        Width = 67
+        Height = 59
+      end
+      object RLLabel1: TRLLabel
+        Left = 74
+        Top = 44
+        Width = 114
+        Height = 15
+        Caption = 'Ordem de Produ'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rlDtIni: TRLLabel
+        Left = 417
+        Top = 12
+        Width = 48
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'DtInicial'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RlDtFim: TRLLabel
+        Left = 481
+        Top = 12
+        Width = 41
+        Height = 15
+        Caption = 'DtFinal'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel7: TRLLabel
+        Left = 468
+        Top = 12
+        Width = 10
+        Height = 15
+        Caption = 'a'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel8: TRLLabel
+        Left = 332
+        Top = 12
+        Width = 49
+        Height = 15
+        Caption = 'Per'#237'odo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rlMemoPedidos: TRLMemo
+        Left = 131
+        Top = 70
+        Width = 607
+        Height = 16
+        Behavior = [beSiteExpander]
+      end
+      object RLLabel6: TRLLabel
+        Left = 6
+        Top = 70
+        Width = 122
+        Height = 15
+        Caption = 'Pedidos do Relat'#243'rio:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rlbGeral: TRLLabel
+        Left = 399
+        Top = 12
+        Width = 170
+        Height = 15
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Desde o in'#237'cio at'#233' hoje'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
+        Visible = False
+      end
+    end
+    object RLBand7: TRLBand
+      Left = 20
+      Top = 273
+      Width = 754
+      Height = 24
+      BandType = btSummary
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      object RLDBResult1: TRLDBResult
+        Left = 581
+        Top = 3
+        Width = 122
+        Height = 16
+        Alignment = taRightJustify
+        DataField = 'QTD_TOTAL'
+        DataSource = dsItens
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBResult2: TRLDBResult
+        Left = 661
+        Top = 4
+        Width = 90
+        Height = 16
+        Alignment = taRightJustify
+        DataField = 'PECAS'
+        DataSource = dsItens
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel4: TRLLabel
+        Left = 321
+        Top = 4
+        Width = 240
+        Height = 15
+        Caption = 'Quantidade total de refer'#234'ncias e pe'#231'as  >>'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+    end
+    object RLBand3: TRLBand
+      Left = 20
+      Top = 129
+      Width = 754
+      Height = 28
+      BandType = btTitle
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Visible = False
+      object rlMemoReferencias: TRLMemo
+        Left = 131
+        Top = 6
+        Width = 607
+        Height = 16
+        Behavior = [beSiteExpander]
+      end
+      object RLLabel13: TRLLabel
+        Left = 6
+        Top = 7
+        Width = 120
+        Height = 15
+        Caption = 'Refer'#234'ncias do Filtro:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+    end
+    object RLGroup4: TRLGroup
+      Left = 20
+      Top = 157
+      Width = 754
+      Height = 116
+      object RLGroup2: TRLGroup
+        Left = 0
+        Top = 43
+        Width = 754
+        Height = 80
+        DataFields = 'REF_PRODUTO'
+        object RLBand2: TRLBand
+          Left = 0
+          Top = 48
+          Width = 754
+          Height = 24
+          BandType = btColumnFooter
+          object RLDraw13: TRLDraw
+            Left = -3
+            Top = 0
+            Width = 760
+            Height = 24
+            Brush.Style = bsClear
+            Color = clWhite
+            ParentColor = False
+            Transparent = False
+          end
+          object RLDraw14: TRLDraw
+            Left = 570
+            Top = 1
+            Width = 188
+            Height = 22
+            Brush.Color = 15132390
+            Pen.Style = psClear
+          end
+          object RLDBResult3: TRLDBResult
+            Left = 662
+            Top = 3
+            Width = 89
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'PECAS'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
+          object RLDBResult4: TRLDBResult
+            Left = 582
+            Top = 3
+            Width = 122
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'QTD_TOTAL'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
+        end
+        object RLBand5: TRLBand
+          Left = 0
+          Top = 24
+          Width = 754
+          Height = 24
+          BeforePrint = RLBand5BeforePrint
+          object RLDraw6: TRLDraw
+            Left = 548
+            Top = -5
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDraw5: TRLDraw
+            Left = 494
+            Top = -5
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDraw4: TRLDraw
+            Left = 441
+            Top = -5
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDraw3: TRLDraw
+            Left = 384
+            Top = -6
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDraw1: TRLDraw
+            Left = 327
+            Top = -6
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDBText2: TRLDBText
+            Left = 1
+            Top = 3
+            Width = 68
+            Height = 15
+            DataField = 'REF_COR'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Calibri'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+          end
+          object RLDBText4: TRLDBText
+            Left = 288
+            Top = 3
+            Width = 46
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_P'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText5: TRLDBText
+            Left = 317
+            Top = 3
+            Width = 48
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_M'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText6: TRLDBText
+            Left = 348
+            Top = 3
+            Width = 48
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_G'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText7: TRLDBText
+            Left = 378
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_1'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText8: TRLDBText
+            Left = 404
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_2'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText9: TRLDBText
+            Left = 433
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_3'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText10: TRLDBText
+            Left = 460
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_4'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText11: TRLDBText
+            Left = 486
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_6'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText12: TRLDBText
+            Left = 513
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_8'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText14: TRLDBText
+            Left = 674
+            Top = 3
+            Width = 30
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'QTD_TOTAL'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText15: TRLDBText
+            Left = 702
+            Top = 3
+            Width = 49
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'PECAS'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText17: TRLDBText
+            Left = 70
+            Top = 3
+            Width = 192
+            Height = 15
+            AutoSize = False
+            DataField = 'COR'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Calibri'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+          end
+          object RLDraw2: TRLDraw
+            Left = 266
+            Top = -5
+            Width = 28
+            Height = 31
+            Brush.Style = bsClear
+            Color = 15395562
+            ParentColor = False
+            Pen.Color = 13882323
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDBText3: TRLDBText
+            Left = 252
+            Top = 3
+            Width = 56
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_RN'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDraw32: TRLDraw
+            Left = 608
+            Top = -6
+            Width = 28
+            Height = 30
+            Brush.Style = bsClear
+            Color = 15132390
+            ParentColor = False
+            Pen.Color = 12895428
+            Pen.Style = psClear
+            Transparent = False
+          end
+          object RLDBText36: TRLDBText
+            Left = 540
+            Top = 3
+            Width = 52
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_10'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText37: TRLDBText
+            Left = 567
+            Top = 3
+            Width = 52
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_12'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText38: TRLDBText
+            Left = 596
+            Top = 3
+            Width = 52
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_14'
+            DataSource = dsItens
+            Text = ''
+          end
+          object RLDBText13: TRLDBText
+            Left = 615
+            Top = 3
+            Width = 76
+            Height = 16
+            Alignment = taCenter
+            DataField = 'QTD_UNICA'
+            DataSource = dsItens
+            Text = ''
+          end
+        end
+        object RLBand6: TRLBand
+          Left = 0
+          Top = 0
+          Width = 754
+          Height = 24
+          BandType = btColumnHeader
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = False
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = True
+          Borders.FixedBottom = True
+          object RLDBText18: TRLDBText
+            Left = 3
+            Top = 6
+            Width = 82
+            Height = 15
+            DataField = 'REF_PRODUTO'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Calibri'
+            Font.Style = [fsBold]
+            ParentFont = False
+            Text = ''
+          end
+          object RLDBText19: TRLDBText
+            Left = 70
+            Top = 5
+            Width = 57
+            Height = 15
+            DataField = 'PRODUTO'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Calibri'
+            Font.Style = [fsBold]
+            ParentFont = False
+            Text = ''
+            Transparent = False
+          end
+        end
+      end
+      object RLBand4: TRLBand
+        Left = 0
+        Top = 0
+        Width = 754
+        Height = 43
+        BandType = btHeader
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = True
+        object RLDraw31: TRLDraw
+          Left = 608
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLLabel11: TRLLabel
+          Left = 679
+          Top = 25
+          Width = 24
+          Height = 14
+          Caption = 'Ref.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object RLLabel12: TRLLabel
+          Left = 714
+          Top = 25
+          Width = 36
+          Height = 14
+          Caption = 'Pe'#231'as'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object RLDraw7: TRLDraw
+          Left = 266
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw8: TRLDraw
+          Left = 327
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw9: TRLDraw
+          Left = 384
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw10: TRLDraw
+          Left = 441
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw11: TRLDraw
+          Left = 494
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLDraw12: TRLDraw
+          Left = 552
+          Top = 16
+          Width = 28
+          Height = 26
+          Brush.Style = bsClear
+          Color = 15132390
+          ParentColor = False
+          Pen.Color = 12895428
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLLabel10: TRLLabel
+          Left = 270
+          Top = 25
+          Width = 399
+          Height = 14
+          Caption = 
+            'RN       P       M       G       1       2       3       4      ' +
+            ' 6       8      10      12      14   UNICA'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object RLDraw33: TRLDraw
+          Left = 0
+          Top = -1
+          Width = 756
+          Height = 22
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = False
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = True
+          Pen.Style = psClear
+        end
+        object RLLabel19: TRLLabel
+          Left = 409
+          Top = 3
+          Width = 68
+          Height = 15
+          Caption = 'Data / Hora:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object RLSystemInfo5: TRLSystemInfo
+          Left = 480
+          Top = 2
+          Width = 37
+          Height = 16
+          Info = itNow
+          Text = ''
+        end
+        object RLSystemInfo6: TRLSystemInfo
+          Left = 714
+          Top = 2
+          Width = 112
+          Height = 16
+          Info = itLastPageNumber
+          Text = ''
+        end
+        object RLSystemInfo8: TRLSystemInfo
+          Left = 617
+          Top = 2
+          Width = 87
+          Height = 16
+          Alignment = taRightJustify
+          Info = itPageNumber
+          Text = ''
+        end
+        object RLLabel25: TRLLabel
+          Left = 705
+          Top = 2
+          Width = 8
+          Height = 16
+          Caption = '/'
+        end
+        object RLLabel29: TRLLabel
+          Left = 640
+          Top = 3
+          Width = 31
+          Height = 15
+          Caption = 'P'#225'g.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+      end
+    end
+  end
   object RLReport2: TRLReport
-    Left = 0
-    Top = 544
+    Left = -39
+    Top = 332
     Width = 1123
     Height = 794
     Margins.LeftMargin = 5.000000000000000000
@@ -97,30 +970,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Font.Style = []
         ParentFont = False
       end
-      object RLSystemInfo3: TRLSystemInfo
-        Left = 706
-        Top = 11
-        Width = 112
-        Height = 16
-        Info = itLastPageNumber
-        Text = ''
-      end
-      object RLSystemInfo4: TRLSystemInfo
-        Left = 609
-        Top = 11
-        Width = 87
-        Height = 16
-        Alignment = taRightJustify
-        Info = itPageNumber
-        Text = ''
-      end
-      object RLLabel17: TRLLabel
-        Left = 697
-        Top = 11
-        Width = 8
-        Height = 16
-        Caption = '/'
-      end
       object rlDtIni2: TRLLabel
         Left = 417
         Top = 12
@@ -194,19 +1043,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel23: TRLLabel
-        Left = 624
-        Top = 12
-        Width = 31
-        Height = 15
-        Caption = 'P'#225'g.:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
       object rlbGeral2: TRLLabel
         Left = 399
         Top = 12
@@ -223,27 +1059,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         ParentFont = False
         Transparent = False
         Visible = False
-      end
-      object RLSystemInfo7: TRLSystemInfo
-        Left = 939
-        Top = 11
-        Width = 37
-        Height = 16
-        Info = itNow
-        Text = ''
-      end
-      object RLLabel18: TRLLabel
-        Left = 868
-        Top = 12
-        Width = 68
-        Height = 15
-        Caption = 'Data / Hora:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
       end
     end
     object RLBand10: TRLBand
@@ -580,7 +1395,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Left = 0
         Top = 0
         Width = 1083
-        Height = 24
+        Height = 45
         BandType = btHeader
         Borders.Sides = sdCustom
         Borders.DrawLeft = False
@@ -589,9 +1404,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Borders.DrawBottom = True
         object RLDraw29: TRLDraw
           Left = 863
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -601,9 +1416,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw15: TRLDraw
           Left = 381
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -613,9 +1428,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw16: TRLDraw
           Left = 479
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -625,9 +1440,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw17: TRLDraw
           Left = 575
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -637,9 +1452,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw18: TRLDraw
           Left = 671
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -649,9 +1464,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw19: TRLDraw
           Left = 767
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -661,9 +1476,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLDraw20: TRLDraw
           Left = 958
-          Top = -8
+          Top = 21
           Width = 45
-          Height = 31
+          Height = 23
           Brush.Style = bsClear
           Color = 15395562
           ParentColor = False
@@ -673,7 +1488,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         end
         object RLLabel26: TRLLabel
           Left = 396
-          Top = 5
+          Top = 26
           Width = 666
           Height = 14
           Caption = 
@@ -688,10 +1503,85 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
           Font.Style = [fsBold]
           ParentFont = False
         end
+        object RLDraw34: TRLDraw
+          Left = 0
+          Top = -3
+          Width = 1083
+          Height = 25
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = False
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = True
+          Brush.Style = bsClear
+          Color = clWhite
+          ParentColor = False
+          Pen.Color = 13882323
+          Pen.Style = psClear
+          Transparent = False
+        end
+        object RLLabel30: TRLLabel
+          Left = 715
+          Top = 4
+          Width = 68
+          Height = 15
+          Caption = 'Data / Hora:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object RLSystemInfo9: TRLSystemInfo
+          Left = 787
+          Top = 3
+          Width = 37
+          Height = 16
+          Info = itNow
+          Text = ''
+        end
+        object RLSystemInfo10: TRLSystemInfo
+          Left = 1034
+          Top = 3
+          Width = 112
+          Height = 16
+          Info = itLastPageNumber
+          Text = ''
+        end
+        object RLSystemInfo11: TRLSystemInfo
+          Left = 937
+          Top = 3
+          Width = 87
+          Height = 16
+          Alignment = taRightJustify
+          Info = itPageNumber
+          Text = ''
+        end
+        object RLLabel31: TRLLabel
+          Left = 1025
+          Top = 3
+          Width = 8
+          Height = 16
+          Caption = '/'
+        end
+        object RLLabel32: TRLLabel
+          Left = 960
+          Top = 4
+          Width = 31
+          Height = 15
+          Caption = 'P'#225'g.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
       end
       object RLGroup1: TRLGroup
         Left = 0
-        Top = 24
+        Top = 45
         Width = 1083
         Height = 84
         DataFields = 'REFPRO'
@@ -1388,17 +2278,19 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   end
   object Panel1: TPanel
     Left = 0
-    Top = 551
-    Width = 996
+    Top = 524
+    Width = 997
     Height = 41
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 3
+    ExplicitTop = 551
+    ExplicitWidth = 996
     DesignSize = (
-      996
+      997
       41)
     object btnImprimir: TSpeedButton
-      Left = 811
+      Left = 812
       Top = 6
       Width = 169
       Height = 30
@@ -1473,10 +2365,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
-      ExplicitLeft = 812
     end
     object SpeedButton1: TSpeedButton
-      Left = 631
+      Left = 632
       Top = 6
       Width = 169
       Height = 30
@@ -1551,7 +2442,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         0000562600004F1E00006B3600007B48000085550000804F0000}
       NumGlyphs = 2
       OnClick = SpeedButton1Click
-      ExplicitLeft = 632
     end
   end
   object rgPedidos: TRadioGroup
@@ -2296,873 +3186,12 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     TabOrder = 12
     OnClick = rgAgrupamentoClick
   end
-  object RLReport1: TRLReport
-    Left = -83
-    Top = 516
-    Width = 794
-    Height = 1123
-    Margins.LeftMargin = 5.000000000000000000
-    Margins.RightMargin = 5.000000000000000000
-    Margins.BottomMargin = 15.000000000000000000
-    Borders.Sides = sdCustom
-    Borders.DrawLeft = True
-    Borders.DrawTop = True
-    Borders.DrawRight = True
-    Borders.DrawBottom = True
-    Borders.FixedLeft = True
-    Borders.FixedTop = True
-    Borders.FixedRight = True
-    Borders.FixedBottom = True
-    DataSource = dsItens
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Arial'
-    Font.Style = []
-    Visible = False
-    BeforePrint = RLReport1BeforePrint
-    object RLBand1: TRLBand
-      Left = 20
-      Top = 39
-      Width = 754
-      Height = 90
-      BandType = btTitle
-      Borders.Sides = sdCustom
-      Borders.DrawLeft = False
-      Borders.DrawTop = False
-      Borders.DrawRight = False
-      Borders.DrawBottom = True
-      Borders.FixedBottom = True
-      object RLLabel5: TRLLabel
-        Left = -9
-        Top = 51
-        Width = 801
-        Height = 15
-        Caption = 
-          '________________________________________________________________' +
-          '__________________________________________________'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RLLabel2: TRLLabel
-        Left = 72
-        Top = 18
-        Width = 119
-        Height = 22
-        Caption = 'BABY DUCK'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -19
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLImage1: TRLImage
-        Left = 1
-        Top = 3
-        Width = 67
-        Height = 59
-      end
-      object RLLabel1: TRLLabel
-        Left = 74
-        Top = 44
-        Width = 114
-        Height = 15
-        Caption = 'Ordem de Produ'#231#227'o'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RLSystemInfo1: TRLSystemInfo
-        Left = 706
-        Top = 11
-        Width = 112
-        Height = 16
-        Info = itLastPageNumber
-        Text = ''
-      end
-      object RLSystemInfo2: TRLSystemInfo
-        Left = 609
-        Top = 11
-        Width = 87
-        Height = 16
-        Alignment = taRightJustify
-        Info = itPageNumber
-        Text = ''
-      end
-      object RLLabel3: TRLLabel
-        Left = 697
-        Top = 11
-        Width = 8
-        Height = 16
-        Caption = '/'
-      end
-      object rlDtIni: TRLLabel
-        Left = 417
-        Top = 12
-        Width = 48
-        Height = 15
-        Alignment = taRightJustify
-        Caption = 'DtInicial'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RlDtFim: TRLLabel
-        Left = 481
-        Top = 12
-        Width = 41
-        Height = 15
-        Caption = 'DtFinal'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel7: TRLLabel
-        Left = 468
-        Top = 12
-        Width = 10
-        Height = 15
-        Caption = 'a'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RLLabel8: TRLLabel
-        Left = 332
-        Top = 12
-        Width = 49
-        Height = 15
-        Caption = 'Per'#237'odo:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rlMemoPedidos: TRLMemo
-        Left = 131
-        Top = 70
-        Width = 607
-        Height = 16
-        Behavior = [beSiteExpander]
-      end
-      object RLLabel6: TRLLabel
-        Left = 6
-        Top = 70
-        Width = 122
-        Height = 15
-        Caption = 'Pedidos do Relat'#243'rio:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RLLabel9: TRLLabel
-        Left = 624
-        Top = 12
-        Width = 31
-        Height = 15
-        Caption = 'P'#225'g.:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rlbGeral: TRLLabel
-        Left = 399
-        Top = 12
-        Width = 170
-        Height = 15
-        Alignment = taCenter
-        AutoSize = False
-        Caption = 'Desde o in'#237'cio at'#233' hoje'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        Transparent = False
-        Visible = False
-      end
-      object RLLabel19: TRLLabel
-        Left = 537
-        Top = 36
-        Width = 68
-        Height = 15
-        Caption = 'Data / Hora:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLSystemInfo5: TRLSystemInfo
-        Left = 608
-        Top = 35
-        Width = 37
-        Height = 16
-        Info = itNow
-        Text = ''
-      end
-    end
-    object RLBand7: TRLBand
-      Left = 20
-      Top = 273
-      Width = 754
-      Height = 24
-      BandType = btSummary
-      Borders.Sides = sdCustom
-      Borders.DrawLeft = False
-      Borders.DrawTop = False
-      Borders.DrawRight = False
-      Borders.DrawBottom = True
-      object RLDBResult1: TRLDBResult
-        Left = 581
-        Top = 3
-        Width = 122
-        Height = 16
-        Alignment = taRightJustify
-        DataField = 'QTD_TOTAL'
-        DataSource = dsItens
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        Info = riSum
-        ParentFont = False
-        Text = ''
-      end
-      object RLDBResult2: TRLDBResult
-        Left = 661
-        Top = 4
-        Width = 90
-        Height = 16
-        Alignment = taRightJustify
-        DataField = 'PECAS'
-        DataSource = dsItens
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        Info = riSum
-        ParentFont = False
-        Text = ''
-      end
-      object RLLabel4: TRLLabel
-        Left = 321
-        Top = 4
-        Width = 240
-        Height = 15
-        Caption = 'Quantidade total de refer'#234'ncias e pe'#231'as  >>'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Calibri'
-        Font.Style = []
-        ParentFont = False
-      end
-    end
-    object RLBand3: TRLBand
-      Left = 20
-      Top = 129
-      Width = 754
-      Height = 28
-      BandType = btTitle
-      Borders.Sides = sdCustom
-      Borders.DrawLeft = False
-      Borders.DrawTop = False
-      Borders.DrawRight = False
-      Borders.DrawBottom = True
-      Visible = False
-      object rlMemoReferencias: TRLMemo
-        Left = 131
-        Top = 6
-        Width = 607
-        Height = 16
-        Behavior = [beSiteExpander]
-      end
-      object RLLabel13: TRLLabel
-        Left = 6
-        Top = 7
-        Width = 120
-        Height = 15
-        Caption = 'Refer'#234'ncias do Filtro:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-    end
-    object RLGroup4: TRLGroup
-      Left = 20
-      Top = 157
-      Width = 754
-      Height = 116
-      object RLGroup2: TRLGroup
-        Left = 0
-        Top = 24
-        Width = 754
-        Height = 80
-        DataFields = 'REF_PRODUTO'
-        object RLBand2: TRLBand
-          Left = 0
-          Top = 48
-          Width = 754
-          Height = 24
-          BandType = btColumnFooter
-          object RLDraw13: TRLDraw
-            Left = -3
-            Top = 0
-            Width = 760
-            Height = 24
-            Brush.Style = bsClear
-            Color = clWhite
-            ParentColor = False
-            Transparent = False
-          end
-          object RLDraw14: TRLDraw
-            Left = 570
-            Top = 1
-            Width = 188
-            Height = 22
-            Brush.Color = 15132390
-            Pen.Style = psClear
-          end
-          object RLDBResult3: TRLDBResult
-            Left = 662
-            Top = 3
-            Width = 89
-            Height = 16
-            Alignment = taRightJustify
-            DataField = 'PECAS'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Arial'
-            Font.Style = [fsBold]
-            Info = riSum
-            ParentFont = False
-            Text = ''
-          end
-          object RLDBResult4: TRLDBResult
-            Left = 582
-            Top = 3
-            Width = 122
-            Height = 16
-            Alignment = taRightJustify
-            DataField = 'QTD_TOTAL'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Arial'
-            Font.Style = [fsBold]
-            Info = riSum
-            ParentFont = False
-            Text = ''
-          end
-        end
-        object RLBand5: TRLBand
-          Left = 0
-          Top = 24
-          Width = 754
-          Height = 24
-          BeforePrint = RLBand5BeforePrint
-          object RLDraw6: TRLDraw
-            Left = 548
-            Top = -5
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDraw5: TRLDraw
-            Left = 494
-            Top = -5
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDraw4: TRLDraw
-            Left = 441
-            Top = -5
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDraw3: TRLDraw
-            Left = 384
-            Top = -6
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDraw1: TRLDraw
-            Left = 327
-            Top = -6
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDBText2: TRLDBText
-            Left = 1
-            Top = 3
-            Width = 68
-            Height = 15
-            DataField = 'REF_COR'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Calibri'
-            Font.Style = []
-            ParentFont = False
-            Text = ''
-          end
-          object RLDBText4: TRLDBText
-            Left = 288
-            Top = 3
-            Width = 46
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_P'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText5: TRLDBText
-            Left = 317
-            Top = 3
-            Width = 48
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_M'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText6: TRLDBText
-            Left = 348
-            Top = 3
-            Width = 48
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_G'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText7: TRLDBText
-            Left = 378
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_1'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText8: TRLDBText
-            Left = 404
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_2'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText9: TRLDBText
-            Left = 433
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_3'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText10: TRLDBText
-            Left = 460
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_4'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText11: TRLDBText
-            Left = 486
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_6'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText12: TRLDBText
-            Left = 513
-            Top = 3
-            Width = 44
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_8'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText14: TRLDBText
-            Left = 674
-            Top = 3
-            Width = 30
-            Height = 16
-            Alignment = taRightJustify
-            DataField = 'QTD_TOTAL'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText15: TRLDBText
-            Left = 702
-            Top = 3
-            Width = 49
-            Height = 16
-            Alignment = taRightJustify
-            DataField = 'PECAS'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText17: TRLDBText
-            Left = 70
-            Top = 3
-            Width = 192
-            Height = 15
-            AutoSize = False
-            DataField = 'COR'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Calibri'
-            Font.Style = []
-            ParentFont = False
-            Text = ''
-          end
-          object RLDraw2: TRLDraw
-            Left = 266
-            Top = -5
-            Width = 28
-            Height = 31
-            Brush.Style = bsClear
-            Color = 15395562
-            ParentColor = False
-            Pen.Color = 13882323
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDBText3: TRLDBText
-            Left = 252
-            Top = 3
-            Width = 56
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_RN'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDraw32: TRLDraw
-            Left = 608
-            Top = -6
-            Width = 28
-            Height = 30
-            Brush.Style = bsClear
-            Color = 15132390
-            ParentColor = False
-            Pen.Color = 12895428
-            Pen.Style = psClear
-            Transparent = False
-          end
-          object RLDBText36: TRLDBText
-            Left = 540
-            Top = 3
-            Width = 52
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_10'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText37: TRLDBText
-            Left = 567
-            Top = 3
-            Width = 52
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_12'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText38: TRLDBText
-            Left = 596
-            Top = 3
-            Width = 52
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_14'
-            DataSource = dsItens
-            Text = ''
-          end
-          object RLDBText13: TRLDBText
-            Left = 615
-            Top = 3
-            Width = 76
-            Height = 16
-            Alignment = taCenter
-            DataField = 'QTD_UNICA'
-            DataSource = dsItens
-            Text = ''
-          end
-        end
-        object RLBand6: TRLBand
-          Left = 0
-          Top = 0
-          Width = 754
-          Height = 24
-          BandType = btColumnHeader
-          Borders.Sides = sdCustom
-          Borders.DrawLeft = False
-          Borders.DrawTop = False
-          Borders.DrawRight = False
-          Borders.DrawBottom = True
-          Borders.FixedBottom = True
-          object RLDBText18: TRLDBText
-            Left = 3
-            Top = 6
-            Width = 82
-            Height = 15
-            DataField = 'REF_PRODUTO'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-            Text = ''
-          end
-          object RLDBText19: TRLDBText
-            Left = 70
-            Top = 5
-            Width = 57
-            Height = 15
-            DataField = 'PRODUTO'
-            DataSource = dsItens
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-            Text = ''
-            Transparent = False
-          end
-        end
-      end
-      object RLBand4: TRLBand
-        Left = 0
-        Top = 0
-        Width = 754
-        Height = 24
-        BandType = btHeader
-        Borders.Sides = sdCustom
-        Borders.DrawLeft = False
-        Borders.DrawTop = False
-        Borders.DrawRight = False
-        Borders.DrawBottom = True
-        object RLDraw31: TRLDraw
-          Left = 608
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLLabel11: TRLLabel
-          Left = 679
-          Top = 5
-          Width = 24
-          Height = 14
-          Caption = 'Ref.'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object RLLabel12: TRLLabel
-          Left = 714
-          Top = 5
-          Width = 36
-          Height = 14
-          Caption = 'Pe'#231'as'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object RLDraw7: TRLDraw
-          Left = 266
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLDraw8: TRLDraw
-          Left = 327
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLDraw9: TRLDraw
-          Left = 384
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLDraw10: TRLDraw
-          Left = 441
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLDraw11: TRLDraw
-          Left = 494
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLDraw12: TRLDraw
-          Left = 552
-          Top = -7
-          Width = 28
-          Height = 30
-          Brush.Style = bsClear
-          Color = 15132390
-          ParentColor = False
-          Pen.Color = 12895428
-          Pen.Style = psClear
-          Transparent = False
-        end
-        object RLLabel10: TRLLabel
-          Left = 270
-          Top = 5
-          Width = 399
-          Height = 14
-          Caption = 
-            'RN       P       M       G       1       2       3       4      ' +
-            ' 6       8      10      12      14   UNICA'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-      end
-    end
-  end
   object cdsPedidos: TClientDataSet
     Aggregates = <>
     Params = <>
     AfterPost = cdsPedidosAfterPost
     Left = 695
-    Top = 252
+    Top = 236
     object cdsPedidosCODIGO: TIntegerField
       FieldName = 'CODIGO'
     end
@@ -3173,7 +3202,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   object dsPedidos: TDataSource
     DataSet = cdsPedidos
     Left = 735
-    Top = 252
+    Top = 236
   end
   object cdsReferencias: TClientDataSet
     Aggregates = <>

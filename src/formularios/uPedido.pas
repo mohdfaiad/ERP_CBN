@@ -213,7 +213,6 @@ type
     procedure BuscaProduto1btnBuscaClick(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure BuscaProduto1Exit(Sender: TObject);
-    procedure edtValorItensKeyPress(Sender: TObject; var Key: Char);
     procedure btnImprimirPedidoClick(Sender: TObject);
     procedure btnInfCliClick(Sender: TObject);
     procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
@@ -254,6 +253,7 @@ type
     Item   :TItem;
     repPedido, repItem :TRepositorio;
     FPedidoTricae :Boolean;
+    FSalvando :Boolean;
 
     procedure habilitaTamanhos;
     procedure BloqueiaLiberaCampos;
@@ -517,9 +517,6 @@ begin
       pagPedido.ActivePageIndex := 2;
       gridItens.SetFocus;
     end;
-
-   // BuscaProduto1Exit(nil);
-
   end;
 end;
 
@@ -622,19 +619,22 @@ procedure TfrmPedido.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftSt
 var tecla :Word;
 begin
   tecla := Key;
-  if (ActiveControl = edtDescComiss) and ((key = VK_Return) or (key = VK_TAB)) then
+  if (ActiveControl = edtDescComiss) and ((tecla = VK_Return) or (tecla = VK_TAB)) then
     if pnlNAlteravelCabecalho.Enabled then
       memObs.SetFocus;
 
-  if (ActiveControl = memObs) and (Key = VK_Return) then  Key := 0;
+  if (ActiveControl = memObs) and (tecla = VK_Return) then  tecla := 0;
 
-  if (key = VK_Escape) and not (confirma('Deseja realmente sair da tela de pedidos?')) then  Key := 0;
+  if (ActiveControl = edtValorItens) and (tecla = VK_Return) then
+    btnConfirma.Click;
+
+  if (tecla = VK_Escape) and not (confirma('Deseja realmente sair da tela de pedidos?')) then  tecla := 0;
 
   inherited;
-  if      key = vk_F1 then   pagPedido.ActivePageIndex := 0
-  else if key = vk_F2 then   pagPedido.ActivePageIndex := 1
-  else if key = vk_F3 then   pagPedido.ActivePageIndex := 2
-  else if ( btnImprimir.Enabled ) and ( (ssCtrl in Shift) AND (Key = ord('P')) ) then   btnImprimir.Click;
+  if      tecla = vk_F1 then   pagPedido.ActivePageIndex := 0
+  else if tecla = vk_F2 then   pagPedido.ActivePageIndex := 1
+  else if tecla = vk_F3 then   pagPedido.ActivePageIndex := 2
+  else if ( btnImprimir.Enabled ) and ( (ssCtrl in Shift) AND (tecla = ord('P')) ) then   btnImprimir.Click;
 
   key := tecla;  
 end;
@@ -757,7 +757,8 @@ procedure TfrmPedido.edtPrecoExit(Sender: TObject);
 begin
   inherited;
   somaQtdCores;
-  BuscaCor1.edtReferencia.SetFocus;
+  if not FSalvando then
+    BuscaCor1.edtReferencia.SetFocus;
 end;
 
 procedure TfrmPedido.edtPrecoKeyPress(Sender: TObject; var Key: Char);
@@ -790,6 +791,7 @@ end;
 procedure TfrmPedido.btnSalvarClick(Sender: TObject);
 begin
  try
+   FSalvando := true;
  try
    if verificaObrigatoriosPedido then
    begin
@@ -812,6 +814,7 @@ begin
  end;
 
  Finally
+   FSalvando := false;
    self.Fdm.conexao.TxOptions.AutoCommit      := true;
    self.Fdm.FDConnection.TxOptions.AutoCommit := true;
  end;
@@ -834,6 +837,7 @@ begin
     btnSalvar.Enabled := false;
     pagPedido.ActivePageIndex := 0;
     aproveitandoPedido := false;
+    sleep(100);
     BuscaPedido1.edtNumPedido.SetFocus;
     bloqueia_alteracao(true);
     
@@ -1203,7 +1207,7 @@ procedure TfrmPedido.BuscaPedido1btnBuscarEnter(Sender: TObject);
 begin
   inherited;
 
-  keybd_event(VK_TAB, 0, 0, 0)
+  keybd_event(VK_TAB, 0, 0, 0);
 
 end;
 
@@ -1462,13 +1466,6 @@ begin
   end;
 
     cdsItens.EnableControls;
-end;
-
-procedure TfrmPedido.edtValorItensKeyPress(Sender: TObject; var Key: Char);
-begin
-  inherited;
-  if key = #13 then
-    btnConfirma.Click;
 end;
 
 procedure TfrmPedido.btnImprimirPedidoClick(Sender: TObject);

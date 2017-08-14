@@ -11,7 +11,7 @@ inherited frmCadastroCores: TfrmCadastroCores
   ExplicitWidth = 497
   ExplicitHeight = 590
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 519
@@ -340,7 +340,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       Caption = 'Cores'
       DesignSize = (
         483
-        491)
+        489)
       object Label1: TLabel
         Left = 136
         Top = 3
@@ -385,7 +385,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Left = 136
         Top = 19
         Width = 340
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         ReadOnly = True
         TabOrder = 1
@@ -411,7 +411,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -476,7 +476,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Left = 192
         Top = 0
         Width = 57
-        Height = 21
+        Height = 23
         ReadOnly = True
         TabOrder = 4
         Visible = False
@@ -485,7 +485,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Left = 11
         Top = 16
         Width = 119
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         Enabled = False
         TabOrder = 0
@@ -530,7 +530,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 7
           Top = 31
           Width = 250
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           ReadOnly = True
           TabOrder = 0
@@ -539,7 +539,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 273
           Top = 31
           Width = 188
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           ReadOnly = True
           TabOrder = 1
@@ -568,7 +568,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 10
           Top = 21
           Width = 70
-          Height = 21
+          Height = 23
           Style = csDropDownList
           Enabled = False
           TabOrder = 0
@@ -602,11 +602,13 @@ inherited frmCadastroCores: TfrmCadastroCores
           end
           inherited comListaCampo: TComboBox
             Left = 4
-            Top = 5
+            Top = 3
             Width = 145
+            Height = 23
             ExplicitLeft = 4
-            ExplicitTop = 5
+            ExplicitTop = 3
             ExplicitWidth = 145
+            ExplicitHeight = 23
           end
         end
       end
@@ -621,7 +623,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 14
           Top = 21
           Width = 70
-          Height = 21
+          Height = 23
           Style = csDropDownList
           Enabled = False
           TabOrder = 0
@@ -638,7 +640,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       ImageIndex = 1
       DesignSize = (
         483
-        491)
+        489)
       object Label5: TLabel
         Left = 14
         Top = 32
@@ -815,15 +817,19 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 132
           Top = 18
           Width = 293
+          Height = 23
           ExplicitLeft = 132
           ExplicitTop = 18
           ExplicitWidth = 293
+          ExplicitHeight = 23
         end
         inherited edtReferencia: TEdit
           Top = 17
           Width = 93
+          Height = 23
           ExplicitTop = 17
           ExplicitWidth = 93
+          ExplicitHeight = 23
         end
       end
       object BitBtn1: TBitBtn
@@ -911,7 +917,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       ImageIndex = 2
       DesignSize = (
         483
-        491)
+        489)
       object Label9: TLabel
         Left = 14
         Top = 32
@@ -1083,15 +1089,19 @@ inherited frmCadastroCores: TfrmCadastroCores
           Left = 132
           Top = 18
           Width = 293
+          Height = 23
           ExplicitLeft = 132
           ExplicitTop = 18
           ExplicitWidth = 293
+          ExplicitHeight = 23
         end
         inherited edtReferencia: TEdit
           Top = 17
           Width = 93
+          Height = 23
           ExplicitTop = 17
           ExplicitWidth = 93
+          ExplicitHeight = 23
         end
       end
       object btnAddCorKit: TBitBtn

@@ -217,6 +217,7 @@ type
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
     procedure Mapas1Click(Sender: TObject);
     procedure RLPreviewSetup1Send(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -310,6 +311,7 @@ procedure TfrmInicial.FormShow(Sender: TObject);
 var ServicoDeAtualizacaoBD :TServicoAtualizadorBD;
 begin
   inherited;
+  Screen.Cursors[crSQLWait]:= Screen.Cursors[crDefault];
   labVersaoSistema.Caption  := intToStr(ServicoDeAtualizacaoBD.versaoSistema);
   labVersaoBD.Caption       := intToStr(dm.Parametros.VersaoBancoDeDados);
   labTerminal.Caption       := FDM.NomeDoTerminal;
@@ -856,6 +858,12 @@ begin
 
 end;
 
+procedure TfrmInicial.FormCreate(Sender: TObject);
+begin
+  inherited;
+  self.DoubleBuffered := true;
+end;
+
 procedure TfrmInicial.Matrias1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmCadastroMateria, paCadastroMateria);
@@ -1074,7 +1082,7 @@ procedure TfrmInicial.Button1Click(Sender: TObject);
 var result :Real;
 begin
   inherited;
-  self.AbreForm(TfrmDevolucao, paCadastroColecao);
+  TotalizaEstoque1Click(nil);
 end;
       {
 Initialization

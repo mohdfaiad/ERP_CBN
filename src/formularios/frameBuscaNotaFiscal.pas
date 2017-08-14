@@ -85,7 +85,7 @@ begin
 
   NF.SQL := 'Select first 1 nf.codigo, nf.numero_nota_fiscal, p.razao destinatario, nfe.chave_acesso '+
             'from notas_fiscais nf                                                                   '+
-            ' left join pessoas           p    on p.codigo = nf.codigo_emitente                      '+
+            ' left join pessoas           p    on p.codigo = nf.codigo_destinatario                  '+
             ' left join notas_fiscais_nfe nfe  on nfe.codigo_nota_fiscal = nf.codigo                 '+
             ' left join contas_pagar cp on cp.codigo_nf = nf.codigo                                  '+
             'where nf.'+campoRetorno+'='+ numero + condicao_empresa + condicao_contas + condicao_entradaSaida;

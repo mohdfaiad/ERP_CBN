@@ -9,7 +9,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
   ExplicitWidth = 879
   ExplicitHeight = 621
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 540
@@ -339,7 +339,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
       OnExit = TabSheet1Exit
       DesignSize = (
         855
-        512)
+        510)
       object gridFornecedores: TDBGridCBN
         Left = 8
         Top = 8
@@ -361,7 +361,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -580,7 +580,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         Left = 24
         Top = 34
         Width = 431
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 0
       end
@@ -588,7 +588,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         Left = 617
         Top = 33
         Width = 100
-        Height = 21
+        Height = 23
         MaxLength = 12
         TabOrder = 2
         Text = ''
@@ -597,7 +597,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         Left = 744
         Top = 33
         Width = 88
-        Height = 21
+        Height = 23
         Enabled = False
         EditMask = '!99/99/9999;1; '
         MaxLength = 10
@@ -999,15 +999,19 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         ExplicitWidth = 129
         ExplicitHeight = 57
         inherited comPessoa: TComboBox [1]
+          Height = 23
           Visible = False
+          ExplicitHeight = 23
         end
         inherited edtCpf: TMaskEdit [2]
           Left = 0
           Width = 106
+          Height = 23
           EditMask = '99\.999\.999/9999\-99;0; '
           MaxLength = 18
           ExplicitLeft = 0
           ExplicitWidth = 106
+          ExplicitHeight = 23
         end
         inherited StaticText1: TStaticText
           Left = 0
@@ -1152,7 +1156,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
         Left = 24
         Top = 74
         Width = 431
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 9
       end

@@ -21,7 +21,6 @@ inherited frmCadastroContador: TfrmCadastroContador
       end
       inherited lblAjudaSelecionar: TStaticText
         Width = 515
-        ExplicitWidth = 515
       end
     end
     inherited tsDados: TTabSheet

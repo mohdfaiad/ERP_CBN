@@ -10,7 +10,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
   ExplicitWidth = 896
   ExplicitHeight = 577
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 497
@@ -450,7 +450,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
       OnExit = TabSheet1Exit
       DesignSize = (
         872
-        469)
+        467)
       object Image1: TImage
         Left = 136
         Top = 448
@@ -733,7 +733,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -951,7 +951,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Left = 24
         Top = 33
         Width = 316
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 0
       end
@@ -959,7 +959,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Left = 567
         Top = 33
         Width = 97
-        Height = 21
+        Height = 23
         MaxLength = 15
         TabOrder = 2
         Text = ''
@@ -968,7 +968,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Left = 679
         Top = 33
         Width = 84
-        Height = 21
+        Height = 23
         Enabled = False
         EditMask = '!99/99/9999;1; '
         MaxLength = 10
@@ -1405,13 +1405,17 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         inherited edtCpf: TMaskEdit
           Left = 106
           Width = 103
+          Height = 23
           ExplicitLeft = 106
           ExplicitWidth = 103
+          ExplicitHeight = 23
         end
         inherited comPessoa: TComboBox
           Width = 79
+          Height = 23
           OnChange = nil
           ExplicitWidth = 79
+          ExplicitHeight = 23
         end
         inherited StaticText1: TStaticText
           Width = 40
@@ -1554,7 +1558,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
         Left = 780
         Top = 33
         Width = 74
-        Height = 21
+        Height = 23
         TabOrder = 9
         Items.Strings = (
           'Sim'
@@ -1585,7 +1589,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           end
           inherited comListaCampo: TComboBox
             Width = 363
+            Height = 23
             ExplicitWidth = 363
+            ExplicitHeight = 23
           end
         end
       end
@@ -1610,7 +1616,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           end
           inherited comListaCampo: TComboBox
             Width = 363
+            Height = 23
             ExplicitWidth = 363
+            ExplicitHeight = 23
           end
         end
       end
@@ -1635,7 +1643,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           end
           inherited comListaCampo: TComboBox
             Width = 363
+            Height = 23
             ExplicitWidth = 363
+            ExplicitHeight = 23
           end
         end
       end
@@ -1656,7 +1666,9 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           ExplicitWidth = 393
           inherited comListaCampo: TComboBox
             Width = 363
+            Height = 23
             ExplicitWidth = 363
+            ExplicitHeight = 23
           end
         end
       end
@@ -1811,7 +1823,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

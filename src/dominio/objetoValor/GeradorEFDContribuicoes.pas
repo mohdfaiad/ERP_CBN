@@ -112,7 +112,7 @@ implementation
 
 uses ACBrEPCBlocos, forms, SysUtils, Variants, Math, StrUtils, Repositorio, FabricaRepositorio,
      Especificacao, EspecificacaoNotaFiscalPorPeriodoEStatus, TipoStatusNotaFiscal, TipoFrete, StringUtilitario,
-  TotaisNotaFiscal, Produto, Pessoa, NaturezaOperacao,
+  TotaisNotaFiscal, Produto, Pessoa, NaturezaOperacao, Documentos,
   ACBrEPCBloco_D_Class, ACBrEPCBloco_F_Class, ACBrEPCBloco_M_Class, TipoRegimeTributario;
 
 const Buffer = 1000;
@@ -268,11 +268,11 @@ begin
            with registro0140.Registro0150.New(registro0140) do
             begin
                COD_PART := IntToStr( participante.Codigo );
-               NOME     := Trim( participante.Razao );
+               NOME     := participante.Razao.Trim;
                COD_PAIS := '1058';
-               CNPJ     := trim( IfThen( length(participante.CPF_CNPJ) > 11, participante.CPF_CNPJ, '') );
-               CPF      := trim( IfThen( length(participante.CPF_CNPJ) > 11, '', participante.CPF_CNPJ) );
-               IE       := trim( participante.RG_IE );
+               CNPJ     := IfThen( length(participante.CPF_CNPJ) > 11, getCPF_CNPJ(participante.CPF_CNPJ), '');
+               CPF      := IfThen( length(participante.CPF_CNPJ) > 11, '', getCPF_CNPJ(participante.CPF_CNPJ));
+               IE       := TStringUtilitario.apenasNumeros( participante.RG_IE );
                COD_MUN  := participante.Endereco.Cidade.codibge;
                SUFRAMA  := ''; //no momento nenhum cliente ou fornecedor referente a zona franca de manaus
                ENDERECO := participante.Endereco.Logradouro;
@@ -398,6 +398,9 @@ begin
                                                                         self.FEmpresa.CPF_CNPJ,
                                                                         IfThen(self.FEmpresa.RegimeTributario= trtLucroPresumido, 'S', 'A'));
       ListaNotas    := repositorio.GetListaPorEspecificacao( especificacao );
+
+      if not assigned(ListaNotas) then
+        exit;
 
       with registroC001.RegistroC010.New do
        begin

@@ -15,7 +15,6 @@ type
     class function StringVazia                                                 :String;
     class function RemoveCaracter   (const Texto :String; const Caracter :String) :String;
     class function CaracterAEsquerda(Caracter :Char; Texto :String; tamanho_maximo :Integer) :String;
-    class function MascaraCpfCnpj   (const CpfCnpj :String)                       :String;
     class function remove_quebras   (texto :String) :String;
 end;
 
@@ -91,16 +90,6 @@ const
   ALFABETO = 'ABCDEFGHIJLMNOPQRSTUVXZ';
 begin
    result := ALFABETO[NumeroSequencia];
-end;
-
-class function TStringUtilitario.MascaraCpfCnpj(const CpfCnpj :String): String;
-begin
-  result := '';
-
-  result := IfThen(length(CpfCnpj) > 11,
-                                        copy(CpfCnpj,1,2) +'.'+ copy(CpfCnpj,3,3) +'.'+ copy(CpfCnpj,6,3) +'/'+ copy(CpfCnpj,9,4) +'-'+ copy(CpfCnpj,13,2),
-                                        copy(CpfCnpj,1,3) +'.'+ copy(CpfCnpj,4,3) +'.'+ copy(CpfCnpj,7,3) +'-'+ copy(CpfCnpj,10,2)
-                                       );
 end;
 
 class function TStringUtilitario.RemoveCaracter(const Texto,

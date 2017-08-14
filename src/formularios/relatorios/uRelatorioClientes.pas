@@ -294,6 +294,7 @@ var objExcel,Sheet,Chart,s : Variant;
     i : integer;
 begin
  try
+   self.Aguarda('Aguarde, gerando planílha excel...');
    cTitulo := 'Relatório de Clientes';
    objExcel := CreateOleObject('Excel.Application');
    objExcel.Visible := False;
@@ -366,7 +367,6 @@ procedure TfrmRelatorioClientes.btnCaminhoClick(Sender: TObject);
 var
   Dir: string;
 begin
-
   if selectdirectory('Select a directory', '', Dir) then
     edtCaminhoPlanilha.Text := Dir;
 end;

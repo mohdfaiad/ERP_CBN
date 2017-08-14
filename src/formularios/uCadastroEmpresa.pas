@@ -276,7 +276,7 @@ begin
      Endereco.Logradouro  := self.edtLogradouro.Text;
      Endereco.Numero      := self.edtNumero.Text;
      Endereco.Bairro      := self.edtBairro.Text;
-     Endereco.CodCidade   := StrToInt(Cidade.edtCodCid.text);
+     Endereco.CodCidade   := Cidade.edtCodCid.AsInteger;
      Endereco.CEP         := self.edtCep.Text;
      Endereco.Pais        := self.edtPais.Text;
      Endereco.Complemento := self.edtComplemento.Text;
@@ -444,9 +444,19 @@ end;
 
 function TfrmCadastroEmpresa.VerificaDados: Boolean;
 begin
-  result := false;
+  result := verificar(trim(edtRazao.Text) = '', 'Favor informar o Nome / Razão social do cliente', edtRazao) and
+            verificar(trim(edtCpf.Text) = '', 'Favor informar o CPF / CNPJ do cliente', edtCpf) and
+            verificar(trim(edtRG.Text) = '', 'Favor informar o RG / IE do cliente', edtRG) and
+            verificar(trim(edtLogradouro.Text) = '', 'Endereço obrigatório! Favor informe o Logradouro', edtLogradouro) and
+            verificar(trim(edtNumero.Text) = '', 'Endereço obrigatório! Favor informe o número', edtNumero) and
+            verificar(trim(edtBairro.Text) = '', 'Endereço obrigatório! Favor informe o bairro', edtBairro) and
+            verificar(Cidade.edtCodCid.AsInteger = 0, 'Endereço obrigatório! Favor informe a cidade', cidade.edtCodCid) and
+            verificar((StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+                      (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
+                      (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-'), 'Favor informar ao menos um telefone para contato', Fone1.edtFone) and
+            verificar((self.rgrpRegimeTributario.ItemIndex < 0) or (self.rgrpRegimeTributario.ItemIndex > 2), 'Favor informar o regime tributário da empresa', rgrpRegimeTributario);
 
-  if trim(edtRazao.Text) = '' then begin
+ { if trim(edtRazao.Text) = '' then begin
     avisar('Favor informar o Nome / Razão social do cliente');
     edtRazao.SetFocus;
   end
@@ -485,7 +495,7 @@ begin
     self.rgrpRegimeTributario.SetFocus;
   end
   else
-    result := true;
+    result := true;}
 end;
 
 procedure TfrmCadastroEmpresa.BitBtn1Click(Sender: TObject);

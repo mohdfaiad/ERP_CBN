@@ -8,7 +8,7 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
   OldCreateOrder = True
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Label2: TLabel
     Left = 1
     Top = 447
@@ -255,7 +255,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Font.Height = -11
       Font.Name = 'Segoe UI'
       Font.Style = []
-      ItemHeight = 13
       ItemIndex = 0
       ParentFont = False
       TabOrder = 2
@@ -287,9 +286,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    OnClick = btnCancelarClick
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00DFDF
@@ -358,6 +354,9 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       9200000093000300920091919B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
       9B009B9B9B009B9B9B00807F9A003A3795000102920009089300}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 6
+    OnClick = btnCancelarClick
   end
   object btnGerar: TBitBtn
     Left = 375
@@ -370,9 +369,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 5
-    OnClick = btnGerarClick
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -441,6 +437,9 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0042668C00196E
       910016638E0011648F0006457F002E5A86009B9B9B009B9B9B00}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 5
+    OnClick = btnGerarClick
   end
   object gpbCaminho: TGroupBox
     Left = 16
@@ -474,8 +473,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Top = 25
       Width = 36
       Height = 25
-      TabOrder = 1
-      OnClick = btnSelecionaClick
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
         2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -544,6 +541,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
         9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
         9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
+      TabOrder = 1
+      OnClick = btnSelecionaClick
     end
   end
   inline BuscaEmpresa1: TBuscaEmpresa
@@ -552,6 +551,10 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Width = 543
     Height = 74
     TabOrder = 0
+    ExplicitLeft = 16
+    ExplicitTop = 6
+    ExplicitWidth = 543
+    ExplicitHeight = 74
     inherited gpbEmpresa: TGroupBox
       Width = 543
       Height = 74
@@ -560,24 +563,38 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
+      ExplicitWidth = 543
+      ExplicitHeight = 74
     end
-    inherited lblCodigo: TStaticText
+    inherited lblRazao: TStaticText [1]
+      Top = 25
+      Width = 74
+      Height = 19
+      ExplicitTop = 25
+      ExplicitWidth = 74
+      ExplicitHeight = 19
+    end
+    inherited lblCodigo: TStaticText [2]
       Top = 25
       Width = 42
+      Height = 19
+      ExplicitTop = 25
+      ExplicitWidth = 42
+      ExplicitHeight = 19
     end
-    inherited edtCodigo: TEdit
+    inherited edtCodigo: TEdit [3]
       Top = 42
+      ExplicitTop = 42
     end
-    inherited btnBusca: TBitBtn
+    inherited btnBusca: TBitBtn [4]
       Top = 39
+      ExplicitTop = 39
     end
-    inherited edtRazao: TEdit
+    inherited edtRazao: TEdit [5]
       Top = 42
       Width = 363
-    end
-    inherited lblRazao: TStaticText
-      Top = 25
-      Width = 68
+      ExplicitTop = 42
+      ExplicitWidth = 363
     end
   end
   object StaticText1: TStaticText
@@ -611,7 +628,7 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Left = 9
       Top = 23
       Width = 464
-      Height = 41
+      Height = 39
       AutoSize = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -620,25 +637,41 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitLeft = 9
+      ExplicitTop = 23
+      ExplicitWidth = 464
       inherited StaticText2: TStaticText
-        Width = 47
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
         Font.Style = []
+        Transparent = True
+        ExplicitHeight = 19
       end
       inherited StaticText1: TStaticText
-        Width = 37
+        Width = 42
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
         Font.Style = []
+        Transparent = True
+        ExplicitWidth = 42
+        ExplicitHeight = 19
       end
       inherited edtCodigo: TCurrencyEdit
+        Height = 22
         Font.Height = -13
-        Font.Name = 'Segoe UI'
+        Font.Name = 'Calibri'
         ParentFont = False
       end
       inherited edtNome: TEdit
         Width = 365
-        Height = 25
+        Height = 23
         Font.Height = -13
-        Font.Name = 'Segoe UI'
+        Font.Name = 'Calibri'
         ParentFont = False
+        ExplicitWidth = 365
+        ExplicitHeight = 23
       end
     end
   end
@@ -656,8 +689,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     TabOrder = 9
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Segoe UI'
+    TitleFont.Height = -13
+    TitleFont.Name = 'Calibri'
     TitleFont.Style = []
     OnKeyDown = DBGrid1KeyDown
     Columns = <
@@ -674,25 +707,44 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Width = 161
     Height = 48
     TabOrder = 10
+    ExplicitLeft = 398
+    ExplicitTop = 165
+    ExplicitWidth = 161
+    ExplicitHeight = 48
     inherited gbNaturezaOperacao: TGroupBox
       Width = 161
       Height = 48
+      ExplicitWidth = 161
+      ExplicitHeight = 48
     end
     inherited lblCFOP: TStaticText
       Left = 5
       Top = 23
+      Width = 33
+      Height = 19
+      ExplicitLeft = 5
+      ExplicitTop = 23
+      ExplicitWidth = 33
+      ExplicitHeight = 19
     end
     inherited lblRazao: TStaticText
-      Width = 53
+      Width = 59
+      Height = 19
       Visible = False
+      ExplicitWidth = 59
+      ExplicitHeight = 19
     end
     inherited edtCFOP: TEdit
       Left = 42
       Top = 20
+      ExplicitLeft = 42
+      ExplicitTop = 20
     end
     inherited btnBusca: TBitBtn
       Left = 104
       Top = 17
+      ExplicitLeft = 104
+      ExplicitTop = 17
     end
     inherited edtDescricao: TEdit
       Visible = False
@@ -729,8 +781,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Top = 182
     Width = 26
     Height = 25
-    TabOrder = 11
-    OnClick = btnAddNatOpClick
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -758,12 +808,14 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       F9FCF945864538A75E7FE1B8A9FFECB9FFFBB9FFFBA9FFEC7FE1B838A75E4586
       45F9FCF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7CEB767A567247D3328
       8738288738247D3367A567B7CEB7FFFFFFFFFFFFFFFFFFFFFFFF}
+    TabOrder = 11
+    OnClick = btnAddNatOpClick
   end
   object Edit1: TEdit
     Left = 416
     Top = 264
     Width = 17
-    Height = 21
+    Height = 23
     TabOrder = 14
     Text = 'Edit1'
     Visible = False
@@ -773,8 +825,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Top = 293
     Width = 22
     Height = 23
-    TabOrder = 15
-    OnClick = BitBtn2Click
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -843,6 +893,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       9B009B9B9B009B9B9B009B9B9B009B9B9B009472410095670B0095670B009567
       0B0095670B00907344009B9B9B009B9B9B009B9B9B009B9B9B00}
     NumGlyphs = 2
+    TabOrder = 15
+    OnClick = BitBtn2Click
   end
   object cds: TClientDataSet
     Aggregates = <>

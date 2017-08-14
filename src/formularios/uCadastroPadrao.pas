@@ -95,6 +95,8 @@ type
 
     procedure habilitaDesabilitaSheetsSecundarios(pag: TPageControl; HD, VI :Boolean);
 
+  //public
+    function verificar(condicao: Boolean; msg: String; const componente: TWinControl) :Boolean;
   public
     constructor Create         (AOwner :TComponent); override;
     constructor CreateModoBusca(AOwner :TComponent); overload;
@@ -362,6 +364,18 @@ end;
 function TfrmCadastroPadrao.VerificaDados: Boolean;
 begin
 
+end;
+
+function TfrmCadastroPadrao.verificar(condicao: Boolean; msg: String; const componente: TWinControl): Boolean;
+begin
+  if condicao then
+  begin
+    avisar(msg);
+    if assigned(componente) then
+      componente.SetFocus;
+  end;
+
+  result := not condicao;
 end;
 
 function TfrmCadastroPadrao.GravarDados :TObject;

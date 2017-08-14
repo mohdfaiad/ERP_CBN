@@ -11,12 +11,12 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   ExplicitWidth = 502
   ExplicitHeight = 498
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Label1: TLabel
     Left = 11
     Top = 376
-    Width = 244
-    Height = 13
+    Width = 263
+    Height = 15
     Caption = 'Informe o diret'#243'rio em que o arquivo ser'#225' salvo'
   end
   object RLReport1: TRLReport
@@ -668,17 +668,20 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
       end
       inherited StaticText2: TStaticText
         Left = 106
-        Width = 36
-        Caption = 'Nome'
+        Width = 37
         Font.Color = 4079166
+        Font.Style = []
+        Transparent = True
         ExplicitLeft = 106
-        ExplicitWidth = 36
+        ExplicitWidth = 37
       end
       inherited StaticText1: TStaticText
-        Width = 76
+        Width = 65
         Caption = 'C'#243'digo IBGE'
         Font.Color = 4079166
-        ExplicitWidth = 76
+        Font.Style = []
+        Transparent = True
+        ExplicitWidth = 65
       end
       inherited edtCidade: TEdit
         Left = 107
@@ -743,8 +746,6 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Height = 39
     Align = alBottom
     TabOrder = 3
-    ExplicitTop = 640
-    ExplicitWidth = 1194
     DesignSize = (
       496
       39)
@@ -920,7 +921,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
   end
   object gpbEstado: TGroupBox
     Left = 10
-    Top = 216
+    Top = 256
     Width = 474
     Height = 85
     Caption = ' Estado '
@@ -943,11 +944,19 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
       ExplicitWidth = 452
       inherited StaticText2: TStaticText
         Left = 105
+        Width = 37
         Font.Color = 4079166
+        Font.Style = []
+        Transparent = True
         ExplicitLeft = 105
+        ExplicitWidth = 37
       end
       inherited StaticText1: TStaticText
+        Width = 18
         Font.Color = 4079166
+        Font.Style = []
+        Transparent = True
+        ExplicitWidth = 18
       end
       inherited btnBusca: TBitBtn
         Left = 75
@@ -983,7 +992,7 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     Left = 11
     Top = 392
     Width = 430
-    Height = 21
+    Height = 23
     Color = clWhite
     ReadOnly = True
     TabOrder = 7
@@ -1066,9 +1075,9 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     OnClick = btnCaminhoClick
   end
   object chkGeraPlanilha: TCheckBox
-    Left = 198
+    Left = 178
     Top = 353
-    Width = 291
+    Width = 306
     Height = 17
     Caption = 'Gerar planilha do excel com o resultado do relat'#243'rio'
     TabOrder = 9

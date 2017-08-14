@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, Buttons, ExtCtrls, frameBuscaProduto2,
-  RLReport, DB, DBClient,
+  RLReport, DB, DBClient, ComObj, FileCtrl,
   frameBuscaTabelaPreco, RLParser, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
@@ -72,8 +72,6 @@ type
     RLDBText13: TRLDBText;
     RLDBText6: TRLDBText;
     RLBand4: TRLBand;
-    RLDBResult1: TRLDBResult;
-    RLLabel17: TRLLabel;
     RLDraw2: TRLDraw;
     RLBand5: TRLBand;
     RLDraw3: TRLDraw;
@@ -189,6 +187,81 @@ type
     RLLabel42: TRLLabel;
     RLDraw6: TRLDraw;
     rgpSetor: TRadioGroup;
+    btnSalvarExcel: TBitBtn;
+    RLReport1: TRLReport;
+    RLBand7: TRLBand;
+    RLSystemInfo4: TRLSystemInfo;
+    RLSystemInfo5: TRLSystemInfo;
+    RLLabel17: TRLLabel;
+    RLBand8: TRLBand;
+    RLLabel43: TRLLabel;
+    RLLabel44: TRLLabel;
+    RLSystemInfo6: TRLSystemInfo;
+    RLGroup2: TRLGroup;
+    RLBand9: TRLBand;
+    RLDBText21: TRLDBText;
+    RLLabel45: TRLLabel;
+    RLLabel46: TRLLabel;
+    RLLabel47: TRLLabel;
+    RLLabel48: TRLLabel;
+    RLLabel49: TRLLabel;
+    RLLabel50: TRLLabel;
+    RLLabel51: TRLLabel;
+    RLLabel52: TRLLabel;
+    RLLabel53: TRLLabel;
+    RLLabel54: TRLLabel;
+    RLLabel55: TRLLabel;
+    RLLabel56: TRLLabel;
+    RLLabel57: TRLLabel;
+    RLLabel58: TRLLabel;
+    RLDraw7: TRLDraw;
+    RLLabel59: TRLLabel;
+    RLLabel60: TRLLabel;
+    RLLabel61: TRLLabel;
+    RLLabel62: TRLLabel;
+    RLBand10: TRLBand;
+    RLDBResult1: TRLDBResult;
+    RLDraw8: TRLDraw;
+    RLDraw9: TRLDraw;
+    RLDBResult36: TRLDBResult;
+    RLLabel63: TRLLabel;
+    RLLabel64: TRLLabel;
+    RLDraw10: TRLDraw;
+    RLDBResult37: TRLDBResult;
+    RLDBResult38: TRLDBResult;
+    RLDBResult39: TRLDBResult;
+    RLDBResult40: TRLDBResult;
+    RLDBResult41: TRLDBResult;
+    RLDBResult42: TRLDBResult;
+    RLDBResult43: TRLDBResult;
+    RLDBResult44: TRLDBResult;
+    RLDBResult45: TRLDBResult;
+    RLDBResult46: TRLDBResult;
+    RLDBResult47: TRLDBResult;
+    RLDBResult48: TRLDBResult;
+    RLDBResult49: TRLDBResult;
+    RLDBResult50: TRLDBResult;
+    RLDBResult51: TRLDBResult;
+    RLDBResult52: TRLDBResult;
+    RLBand11: TRLBand;
+    RLDBText22: TRLDBText;
+    RLDBText23: TRLDBText;
+    RLDBText24: TRLDBText;
+    RLDBText25: TRLDBText;
+    RLDBText26: TRLDBText;
+    RLDBText27: TRLDBText;
+    RLDBText28: TRLDBText;
+    RLDBText29: TRLDBText;
+    RLDBText30: TRLDBText;
+    RLDBText31: TRLDBText;
+    RLDBText32: TRLDBText;
+    RLDBText33: TRLDBText;
+    RLDBText34: TRLDBText;
+    RLDBText35: TRLDBText;
+    RLDBText36: TRLDBText;
+    RLDBText37: TRLDBText;
+    RLDBText38: TRLDBText;
+    RLDBText39: TRLDBText;
     procedure FormShow(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure RLDBResult4BeforePrint(Sender: TObject; var Text: String;
@@ -197,10 +270,16 @@ type
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure chkSomenteLojaClick(Sender: TObject);
     procedure RLDBResult31BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+    procedure btnSalvarExcelClick(Sender: TObject);
 
   private
     Valor: Currency;
     procedure subtrai_estoque_reservado;
+    procedure gerarPlanilhaExcel(caminho :String);
+    procedure insereCabecalhoColunas(pSheet :Variant; var pLinha :integer);
+    procedure totalizaProduto(pSheet :Variant; var linha :integer; pPM, pRN, pP, pM, pG, p1, p2, p3, p4, p6, p8, p10, p12, p14, pUnica, pTotal :integer);
+    procedure mostraTotalTabela(pSheet :Variant; var pLinha, pTotal :integer);
+    procedure mostraValorTotalEstoque(pSheet :Variant; var pLinha, pTotal :integer);
     procedure TotalizarEstoque;
 
   public
@@ -212,9 +291,243 @@ var
 
 implementation
 
-uses PermissoesAcesso, RxCurrEdit, StrUtils;
+uses PermissoesAcesso, RxCurrEdit, StrUtils, Math;
+
+function getValorString(texto :String) :String;
+  begin
+    result := IfThen( trim(texto) = '0', '', texto);
+  end;
 
 {$R *.dfm}
+
+procedure TfrmRelatorioTotalizarEstoque.gerarPlanilhaExcel(caminho :String);
+var objExcel,Sheet,Chart,s : Variant;
+    cTitulo, vProduto: string;
+    i, linha, qtdProdutos : integer;
+    valorTotal :Real;
+    vPM, vRN, vP, vM, vG, v1, v2, v3, v4, v6, v8, v10, v12, v14, vUnica, vTotal :Integer;
+    vtPM, vtRN, vtP, vtM, vtG, vt1, vt2, vt3, vt4, vt6, vt8, vt10, vt12, vt14, vtUnica, vtTotal :Integer;
+begin
+ try
+ try
+   vPM := 0; vRN := 0; vP := 0; vM := 0; vG := 0; v1 := 0; v2 := 0; v3 := 0; v4 := 0;
+   v6 := 0; v8 := 0; v10 := 0; v12 := 0; v14 := 0; vUnica := 0; vTotal := 0;
+   qtdProdutos := 0;
+   vProduto := '';
+   cTitulo := 'Relatório de Clientes';
+   objExcel := CreateOleObject('Excel.Application');
+   objExcel.Visible := False;
+   objExcel.Caption := cTitulo;
+
+   objExcel.Workbooks.Add;
+   objExcel.Workbooks[1].Sheets.Add;
+   objExcel.Workbooks[1].WorkSheets[1].Name := cTitulo;
+
+   Sheet := objExcel.Workbooks[1].WorkSheets[cTitulo];
+
+   Sheet.Range['A1'].ColumnWidth := 20;
+   Sheet.Range['B1'].ColumnWidth := 50;
+   Sheet.Range['C1'].ColumnWidth := 8;
+   Sheet.Range['D1'].ColumnWidth := 8;
+   Sheet.Range['E1'].ColumnWidth := 8;
+   Sheet.Range['F1'].ColumnWidth := 8;
+   Sheet.Range['G1'].ColumnWidth := 8;
+   Sheet.Range['H1'].ColumnWidth := 8;
+   Sheet.Range['I1'].ColumnWidth := 8;
+   Sheet.Range['J1'].ColumnWidth := 8;
+   Sheet.Range['K1'].ColumnWidth := 8;
+   Sheet.Range['L1'].ColumnWidth := 8;
+   Sheet.Range['M1'].ColumnWidth := 8;
+   Sheet.Range['N1'].ColumnWidth := 8;
+   Sheet.Range['O1'].ColumnWidth := 8;
+   Sheet.Range['P1'].ColumnWidth := 8;
+   Sheet.Range['Q1'].ColumnWidth := 8;
+   Sheet.Range['R1'].ColumnWidth := 15;
+
+   linha := 1;
+
+   valorTotal := 0;
+   cdsEstoque.First;
+   while not cdsEstoque.Eof do begin
+
+     if vProduto <> cdsEstoquePRODUTO.AsString then
+     begin
+       inc(qtdProdutos);
+       //imprime total apenas se existir mais de um produto e se esse produto tiver mais de uma cor
+       if (vProduto <> '') then
+       begin
+         totalizaProduto(Sheet, linha, vtPM, vtRN, vtP, vtM, vtG, vt1, vt2, vt3, vt4, vt6, vt8, vt10, vt12, vt14, vtUnica, vtTotal);
+         mostraTotalTabela(Sheet, linha, vtTotal);
+         mostraValorTotalEstoque(Sheet, linha, vtTotal);
+       end;
+
+       vtPM := 0; vtRN := 0; vtP := 0; vtM := 0; vtG := 0; vt1 := 0; vt2 := 0; vt3 := 0; vt4 := 0;
+       vt6 := 0; vt8 := 0; vt10 := 0; vt12 := 0; vt14 := 0; vtUnica := 0; vtTotal := 0;
+       vProduto := cdsEstoquePRODUTO.AsString;
+       inc(linha);
+       Sheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].Mergecells := True; inc(linha);
+       Sheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].Mergecells := True;
+       Sheet.Cells[linha,1] := cdsEstoquePRODUTO.AsString;
+       Sheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].Interior.Color := $00EEE6CC;
+       inc(linha);
+       insereCabecalhoColunas(Sheet, linha);
+     end;
+     inc(linha);
+
+     Sheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].Interior.Color := IfThen((linha mod 2) = 0 ,$00F5F5F5, clWhite);
+     Sheet.Cells[linha,1]  := getValorString(cdsEstoqueREFERENCIA.AsString);
+     Sheet.Cells[linha,2]  := getValorString(cdsEstoqueCOR.AsString);
+     Sheet.Cells[linha,3]  := getValorString(cdsEstoqueQTD_PM.AsString);
+     Sheet.Cells[linha,4]  := getValorString(cdsEstoqueQTD_RN.AsString);
+     Sheet.Cells[linha,5]  := getValorString(cdsEstoqueQTD_P.AsString);
+     Sheet.Cells[linha,6]  := getValorString(cdsEstoqueQTD_M.AsString);
+     Sheet.Cells[linha,7]  := getValorString(cdsEstoqueQTD_G.AsString);
+     Sheet.Cells[linha,8]  := getValorString(cdsEstoqueQTD_1.AsString);
+     Sheet.Cells[linha,9]  := getValorString(cdsEstoqueQTD_2.AsString);
+     Sheet.Cells[linha,10] := getValorString(cdsEstoqueQTD_3.AsString);
+     Sheet.Cells[linha,11] := getValorString(cdsEstoqueQTD_4.AsString);
+     Sheet.Cells[linha,12] := getValorString(cdsEstoqueQTD_6.AsString);
+     Sheet.Cells[linha,13] := getValorString(cdsEstoqueQTD_8.AsString);
+     Sheet.Cells[linha,14] := getValorString(cdsEstoqueQTD_10.AsString);
+     Sheet.Cells[linha,15] := getValorString(cdsEstoqueQTD_12.AsString);
+     Sheet.Cells[linha,16] := getValorString(cdsEstoqueQTD_14.AsString);
+     Sheet.Cells[linha,17] := getValorString(cdsEstoqueQTD_UNICA.AsString);
+     Sheet.Cells[linha,18] := cdsEstoqueQTD_TOTAL.AsString;
+     vPM    := vPM    + cdsEstoqueQTD_PM.AsInteger;
+     vRN    := vRN    + cdsEstoqueQTD_RN.AsInteger;
+     vP     := vP     + cdsEstoqueQTD_P.AsInteger;
+     vM     := vM     + cdsEstoqueQTD_M.AsInteger;
+     vG     := vG     + cdsEstoqueQTD_G.AsInteger;
+     v1     := v1     + cdsEstoqueQTD_1.AsInteger;
+     v2     := v2     + cdsEstoqueQTD_2.AsInteger;
+     v3     := v3     + cdsEstoqueQTD_3.AsInteger;
+     v4     := v4     + cdsEstoqueQTD_4.AsInteger;
+     v6     := v6     + cdsEstoqueQTD_6.AsInteger;
+     v8     := v8     + cdsEstoqueQTD_8.AsInteger;
+     v10    := v10    + cdsEstoqueQTD_10.AsInteger;
+     v12    := v12    + cdsEstoqueQTD_12.AsInteger;
+     v14    := v14    + cdsEstoqueQTD_14.AsInteger;
+     vUnica := vUnica + cdsEstoqueQTD_UNICA.AsInteger;
+     vTotal := vTotal + cdsEstoqueQTD_TOTAL.AsInteger;
+
+     vtPM    := vtPM    + cdsEstoqueQTD_PM.AsInteger;
+     vtRN    := vtRN    + cdsEstoqueQTD_RN.AsInteger;
+     vtP     := vtP     + cdsEstoqueQTD_P.AsInteger;
+     vtM     := vtM     + cdsEstoqueQTD_M.AsInteger;
+     vtG     := vtG     + cdsEstoqueQTD_G.AsInteger;
+     vt1     := vt1     + cdsEstoqueQTD_1.AsInteger;
+     vt2     := vt2     + cdsEstoqueQTD_2.AsInteger;
+     vt3     := vt3     + cdsEstoqueQTD_3.AsInteger;
+     vt4     := vt4     + cdsEstoqueQTD_4.AsInteger;
+     vt6     := vt6     + cdsEstoqueQTD_6.AsInteger;
+     vt8     := vt8     + cdsEstoqueQTD_8.AsInteger;
+     vt10    := vt10    + cdsEstoqueQTD_10.AsInteger;
+     vt12    := vt12    + cdsEstoqueQTD_12.AsInteger;
+     vt14    := vt14    + cdsEstoqueQTD_14.AsInteger;
+     vtUnica := vtUnica + cdsEstoqueQTD_UNICA.AsInteger;
+     vtTotal := vtTotal + cdsEstoqueQTD_TOTAL.AsInteger;
+     cdsEstoque.Next;
+
+     if cdsEstoque.Eof then
+     begin
+       totalizaProduto(Sheet, linha, vtPM, vtRN, vtP, vtM, vtG, vt1, vt2, vt3, vt4, vt6, vt8, vt10, vt12, vt14, vtUnica, vtTotal);
+       mostraTotalTabela(Sheet, linha, vtTotal);
+       mostraValorTotalEstoque(Sheet, linha, vtTotal);
+     end;
+   end;
+   inc(linha); inc(linha); inc(linha);
+   insereCabecalhoColunas(Sheet, linha);
+   Sheet.Range['C'+intToStr(linha)+':R'+intToStr(linha)].Interior.Color := $00D0E2C2;
+   Sheet.Range['A'+intToStr(linha)+':B'+intToStr(linha)].Interior.Color := $00AECD98;
+   Sheet.Cells[linha,1] := '';
+   Sheet.Cells[linha,2] := '';
+   Sheet.Range['A'+intToStr(linha)+':B'+intToStr(linha)].Mergecells     := True;
+   Sheet.Cells[linha,1]  := '';
+   totalizaProduto(Sheet, linha, vPM, vRN, vP, vM, vG, v1, v2, v3, v4, v6, v8, v10, v12, v14, vUnica, vTotal);
+   mostraValorTotalEstoque(Sheet, linha, vTotal);
+
+   Sheet.SaveAs(caminho);
+   avisar('Planílha gerada com sucesso!');
+ Except
+  on e :Exception do
+    avisar('Erro ao gerar planílha'+#13#10+e.Message);
+ end;
+ finally
+   PostMessage(FindWindow('XLMAIN', nil), WM_CLOSE,0,0);
+   Sheet := Unassigned;
+   objExcel.Quit;
+ end;
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.insereCabecalhoColunas(pSheet: Variant; var pLinha :integer);
+begin
+  pSheet.Cells[pLinha,1]  := 'Ref.';
+  pSheet.Cells[pLinha,2]  := 'Cor';
+  pSheet.Cells[pLinha,3]  := 'PM';
+  pSheet.Cells[pLinha,4]  := 'RN';
+  pSheet.Cells[pLinha,5]  := 'P';
+  pSheet.Cells[pLinha,6]  := 'M';
+  pSheet.Cells[pLinha,7]  := 'G';
+  pSheet.Cells[pLinha,8]  := '1';
+  pSheet.Cells[pLinha,9]  := '2';
+  pSheet.Cells[pLinha,10] := '3';
+  pSheet.Cells[pLinha,11] := '4';
+  pSheet.Cells[pLinha,12] := '6';
+  pSheet.Cells[pLinha,13] := '8';
+  pSheet.Cells[pLinha,14] := '10';
+  pSheet.Cells[pLinha,15] := '12';
+  pSheet.Cells[pLinha,16] := '14';
+  pSheet.Cells[pLinha,17] := 'UNICA';
+  pSheet.Range['Q'+intToStr(pLinha)].HorizontalAlignment := 4;
+  pSheet.Cells[pLinha,18] := 'TOTAL';
+  pSheet.Range['R'+intToStr(pLinha)].HorizontalAlignment := 4;
+  pSheet.Range['A'+intToStr(pLinha)+':R'+intToStr(pLinha)].font.bold  := true;
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.mostraTotalTabela(pSheet: Variant; var pLinha, pTotal: integer);
+begin
+  if BuscaTabelaPreco1.edtCodigo.AsInteger > 0 then
+  begin
+    inc(pLinha);
+    pSheet.Range['A'+intToStr(pLinha)+':Q'+intToStr(pLinha)].Mergecells     := True;
+    pSheet.Range['A'+intToStr(pLinha)].HorizontalAlignment := 4;
+    pSheet.Cells[pLinha,1] := 'PREÇO TABELA';
+    pSheet.Cells[pLinha,18].NumberFormat := 'R$ #.##0,00_);(R$ #.##0,00)';
+    pSheet.Cells[pLinha,18] := cdsEstoquePRECOTABELA.AsFloat;
+  end;
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.mostraValorTotalEstoque(pSheet: Variant; var pLinha, pTotal: integer);
+begin
+  if BuscaTabelaPreco1.edtCodigo.AsInteger > 0 then
+  begin
+    inc(pLinha);
+    pSheet.Range['A'+intToStr(pLinha)+':Q'+intToStr(pLinha)].Mergecells     := True;
+    pSheet.Range['A'+intToStr(pLinha)].HorizontalAlignment := 4;
+    pSheet.Cells[pLinha,1] := 'VALOR ESTOQUE';
+    pSheet.Cells[pLinha,18].NumberFormat := 'R$ #.##0,00_);(R$ #.##0,00)';
+    pSheet.Cells[pLinha,18] := cdsEstoquePRECOTABELA.AsFloat * pTotal;
+  end;
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.btnSalvarExcelClick(Sender: TObject);
+var Dir :String;
+    data :String;
+begin
+  data := StringReplace(DateToStr(Date),'/','_',[rfReplaceAll, rfIgnoreCase]);
+
+  if cdsEstoque.IsEmpty then
+    avisar('Primeiramente efetue a busca acima')
+  else if selectdirectory('Select a directory', '', Dir) then
+  begin
+    try
+      Aguarda('Gerando planilha...');
+      gerarPlanilhaExcel(dir+'\RelatorioEstoque_'+data+'.xlsx');
+    finally
+      FimAguarda();
+    end;
+  end;
+end;
 
 procedure TfrmRelatorioTotalizarEstoque.chkSomenteLojaClick(Sender: TObject);
 begin
@@ -340,19 +653,6 @@ begin
                                                                               Qry.FieldByName('QUANTIDADE').AsFloat;
     cdsEstoqueQTD_TOTAL.AsFloat                                            := cdsEstoqueQTD_TOTAL.AsFloat + Qry.FieldByName('QUANTIDADE').AsFloat;
 
-   { for i:= 1 to cdsEstoque.Fields.Count - 1 do
-    begin
-
-      if cdsEstoque.Fields[i].FieldName = 'QTD_'+Qry.FieldByName('TAM').AsString then
-      begin
-        Application.ProcessMessages;
-        cdsEstoque.Fields[i].AsFloat:= cdsEstoque.Fields[i].AsFloat + Qry.FieldByName('QUANTIDADE').AsFloat;
-        cdsEstoqueQTD_TOTAL.AsFloat:= cdsEstoqueQTD_TOTAL.AsFloat + Qry.FieldByName('QUANTIDADE').AsFloat;
-
-        Break;
-      end;
-    end;  }
-
     cdsEstoque.Post;
 
     Cor     := Qry.FieldByName('COR').AsString;
@@ -400,6 +700,7 @@ procedure TfrmRelatorioTotalizarEstoque.btnImprimirClick(Sender: TObject);
 begin
   inherited;
   TotalizarEstoque;
+  btnSalvarExcel.Enabled := true;
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.RLDBResult31BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
@@ -545,6 +846,30 @@ begin
     qryEstoqueReservado.Next;
   end;
 
+end;
+
+procedure TfrmRelatorioTotalizarEstoque.totalizaProduto(pSheet :Variant; var linha :integer; pPM, pRN, pP, pM, pG, p1, p2, p3, p4, p6, p8, p10, p12, p14, pUnica, pTotal :integer);
+begin
+  inc(linha);
+  pSheet.Range['A'+intToStr(linha)+':B'+intToStr(linha)].Mergecells     := True;
+  pSheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].Interior.Color := $00D7CFCC;
+  pSheet.Cells[linha,3]  := getValorString( intToStr( pPM    ));
+  pSheet.Cells[linha,4]  := getValorString( intToStr( pRN    ));
+  pSheet.Cells[linha,5]  := getValorString( intToStr( pP     ));
+  pSheet.Cells[linha,6]  := getValorString( intToStr( pM     ));
+  pSheet.Cells[linha,7]  := getValorString( intToStr( pG     ));
+  pSheet.Cells[linha,8]  := getValorString( intToStr( p1     ));
+  pSheet.Cells[linha,9]  := getValorString( intToStr( p2     ));
+  pSheet.Cells[linha,10] := getValorString( intToStr( p3     ));
+  pSheet.Cells[linha,11] := getValorString( intToStr( p4     ));
+  pSheet.Cells[linha,12] := getValorString( intToStr( p6     ));
+  pSheet.Cells[linha,13] := getValorString( intToStr( p8     ));
+  pSheet.Cells[linha,14] := getValorString( intToStr( p10    ));
+  pSheet.Cells[linha,15] := getValorString( intToStr( p12    ));
+  pSheet.Cells[linha,16] := getValorString( intToStr( p14    ));
+  pSheet.Cells[linha,17] := getValorString( intToStr( pUnica ));
+  pSheet.Cells[linha,18] := intToStr( pTotal );
+  pSheet.Range['A'+intToStr(linha)+':R'+intToStr(linha)].font.bold  := true;
 end;
 
 procedure TfrmRelatorioTotalizarEstoque.RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);

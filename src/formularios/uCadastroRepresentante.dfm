@@ -9,7 +9,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
   ExplicitWidth = 881
   ExplicitHeight = 577
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 495
@@ -349,7 +349,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       OnExit = TabSheet1Exit
       DesignSize = (
         857
-        467)
+        465)
       object gridRepresentantes: TDBGridCBN
         Left = 8
         Top = 7
@@ -371,7 +371,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -631,7 +631,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 24
         Top = 33
         Width = 321
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 0
       end
@@ -639,7 +639,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 360
         Top = 33
         Width = 71
-        Height = 21
+        Height = 23
         Style = csDropDownList
         ItemIndex = 1
         TabOrder = 1
@@ -653,7 +653,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 447
         Top = 33
         Width = 106
-        Height = 21
+        Height = 23
         EditMask = '999\.999\.999\-99;0; '
         MaxLength = 14
         TabOrder = 2
@@ -663,7 +663,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 570
         Top = 33
         Width = 89
-        Height = 21
+        Height = 23
         MaxLength = 12
         TabOrder = 3
         Text = ''
@@ -672,7 +672,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 610
         Top = 9
         Width = 76
-        Height = 21
+        Height = 23
         Enabled = False
         EditMask = '!99/99/9999;1; '
         MaxLength = 10
@@ -1244,7 +1244,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
         Left = 675
         Top = 33
         Width = 75
-        Height = 21
+        Height = 23
         Style = csDropDownList
         TabOrder = 11
         Items.Strings = (

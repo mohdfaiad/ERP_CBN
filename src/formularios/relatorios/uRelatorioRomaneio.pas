@@ -165,7 +165,7 @@ var
 
 implementation
 
-uses StrUtils, uModulo;
+uses StrUtils, uModulo, Documentos;
 
 {$R *.dfm}
 
@@ -213,7 +213,7 @@ procedure TfrmRelatorioRomaneio.RLReport1BeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   lblCliente.Caption       := qryPedidoCOD_CLIENTE.AsString +' - '+ qryPedidoCLIENTE.AsString+ '     >> '+trim(qryPedidoCIDADE.AsString)+' - '+qryPedidoUF.AsString+' <<';
-  lblCnpj.Caption          := TStringUtilitario.MascaraCpfCnpj( qryPedidoCPF_CNPJ.AsString );
+  lblCnpj.Caption          := MascaraCpfCnpj( qryPedidoCPF_CNPJ.AsString );
   lblDtRepres.Caption      := qryPedidoDT_REPRESENTANTE.AsString;
   lblDtCad.Caption         := qryPedidoDT_CADASTRO.AsString;
   lblRepresentante.Caption := qryPedidoREPRESENTANTE.AsString;

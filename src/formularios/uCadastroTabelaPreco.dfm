@@ -11,7 +11,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
   ExplicitWidth = 434
   ExplicitHeight = 378
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 308
@@ -340,7 +340,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
       Caption = 'Tabelas de Pre'#231'o'
       DesignSize = (
         420
-        280)
+        278)
       object Label1: TLabel
         Left = 8
         Top = 8
@@ -358,7 +358,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         Left = 8
         Top = 24
         Width = 329
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         Enabled = False
         TabOrder = 0
@@ -385,7 +385,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 1
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -450,7 +450,7 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         Left = 128
         Top = 0
         Width = 57
-        Height = 21
+        Height = 23
         ReadOnly = True
         TabOrder = 2
         Visible = False

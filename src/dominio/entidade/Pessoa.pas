@@ -39,6 +39,8 @@ type
     procedure SetFax        (const value :String);
     procedure SetEmail      (const value :String);
     procedure SetObservacao (const value :String);
+    function GetCpfCnpj: String;
+    function GetRgIe: String;
 
   public
     function GetIsPessoaJuridica  :Boolean;
@@ -55,8 +57,8 @@ type
     property NomeFantasia :String    read FNomeFantasia write FNomeFantasia;
     property Pessoa       :String    read FPessoa       write SetPessoa;
     property Tipo         :String    read FTipo         write SetTipo;
-    property CPF_CNPJ     :String    read FCPF_CNPJ     write SetCPF_CNPJ;
-    property RG_IE        :String    read FRG_IE        write SetRG_IE;
+    property CPF_CNPJ     :String    read GetCpfCnpj    write SetCPF_CNPJ;
+    property RG_IE        :String    read GetRgIe       write SetRG_IE;
     property DtCadastro   :TDateTime read FDtCadastro   write SetDtCadastro;
     property Fone1        :String    read FFone1        write SetFone1;
     property Fone2        :String    read FFone2        write SetFone2;
@@ -91,6 +93,11 @@ begin
   inherited;
 end;
 
+function TPessoa.GetCpfCnpj: String;
+begin
+  result := FCPF_CNPJ.Trim;
+end;
+
 function TPessoa.GetEndereco: TEndereco;
 var
   Repositorio   :TRepositorio;
@@ -121,6 +128,11 @@ end;
 function TPessoa.GetIsPessoaJuridica: Boolean;
 begin
    result := (Trim(self.FPessoa) = 'J');
+end;
+
+function TPessoa.GetRgIe: String;
+begin
+  result := FRG_IE.Trim;
 end;
 
 procedure TPessoa.SetCodigo(const value: Integer);

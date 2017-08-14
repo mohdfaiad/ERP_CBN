@@ -1188,6 +1188,9 @@ begin
    repositorio   := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
    especificacao := TEspecificacaoNotaFiscalPorPeriodoEStatus.Create(self.FDataInicial, self.FDataFinal, false, true, false, false, self.FEmpresa.CPF_CNPJ);
    ListaNotas    := repositorio.GetListaPorEspecificacao( especificacao );
+
+   if not assigned(ListaNotas) then
+     ListaNotas := TObjectList.Create;
 end;
 
 end.

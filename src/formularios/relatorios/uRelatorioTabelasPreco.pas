@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, ComObj,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Vcl.Buttons, Vcl.ExtCtrls, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, frameBuscaTabelaPreco, RLReport, RLFilters, RLXLSFilter, uPadrao, RLXLSXFilter, RLPreviewForm, RLRichFilter;
+  FireDAC.Comp.Client, frameBuscaTabelaPreco, RLReport, RLFilters, RLXLSFilter, uPadrao, RLXLSXFilter, RLPreviewForm, RLRichFilter, Vcl.Grids,
+  Vcl.DBGrids, DBGridCBN;
 
 type
   TfrmRelatorioTabelasPreco = class(TfrmPadrao)

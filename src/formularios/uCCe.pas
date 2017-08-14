@@ -610,8 +610,10 @@ begin
   Aguarda('Enviando Lote...');
 
   AcbrNfe.Configuracoes.Certificados.NumeroSerie := BuscaEmpresa1.Empresa.ConfiguracoesNF.num_certificado;
-  AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
+  if not TStringUtilitario.EstaVazia(BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado) then
+    AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
 
+                                                                                      erro
   if not (ACBrNFe.WebServices.StatusServico.Executar) then
     raise exception.Create(ACBrNFe.WebServices.StatusServico.Msg);
 
@@ -875,18 +877,17 @@ begin
   btnXML.Enabled      := (cdsLotesSTATUS.asString = '128');
   btnImprimir.Enabled := (cdsLotesSTATUS.asString = '128');
 
-  if (cdsLotesSTATUS.asString = '128') then begin
-
-     btnEnv.Enabled := false;
-     cdsCorrecoes.First;
-     while not cdsCorrecoes.Eof do begin
-       if cdsCorrecoesSTATUS.AsInteger <> 135 then
-         btnEnv.Enabled := true;
-         
-       cdsCorrecoes.Next;
-     end;
-     cdsCorrecoes.First;
+  btnEnv.Enabled := false;
+  cdsCorrecoes.First;
+  while not cdsCorrecoes.Eof do begin
+    if cdsCorrecoesSTATUS.AsString <> '135' then
+    begin
+      btnEnv.Enabled := true;
+      break;
+    end;
+    cdsCorrecoes.Next;
   end;
+  cdsCorrecoes.First;
 end;
 
 procedure TfrmCCe.SpeedButton2Click(Sender: TObject);
@@ -959,7 +960,7 @@ begin
 
     if cdsLotesSTATUS.asString = '128' then
       ImageList1.Draw(TDBGrid(Sender).Canvas, Rect.Left +12, Rect.Top , 1, true)
-    else if cdsLotesSTATUS.asString = '' then
+    else if cdsLotesSTATUS.asString = '000' then
       ImageList1.Draw(TDBGrid(Sender).Canvas, Rect.Left +12, Rect.Top , 2, true)
     else
       ImageList1.Draw(TDBGrid(Sender).Canvas, Rect.Left +12, Rect.Top , 0, true);
@@ -999,8 +1000,9 @@ begin
   else
     condicao_empresa := '';
 
-  result := ' select lc.codigo, lc.data, rlc.status, rlc.motivo from lotes_cce lc '+
-            ' left join return_cce_lote  rlc on rlc.cod_lote = lc.codigo          '+
+  result := ' select lc.codigo, lc.data, iif(rlc.codigo is null, ''000'', rlc.status) STATUS,                    '+
+            '        iif(rlc.codigo is null, ''Envio do lore pendente...'', rlc.motivo) MOTIVO from lotes_cce lc '+
+            ' left join return_cce_lote  rlc on rlc.cod_lote = lc.codigo                                         '+
             condicao_empresa;
 
 end;

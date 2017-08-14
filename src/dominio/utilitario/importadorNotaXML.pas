@@ -397,7 +397,7 @@ begin
 
         Item.codigo_nota_fiscal   := FNotaFiscal.CodigoNotaFiscal;
         Item.codigo_materia       := MateriaCadastrada( nfe.NFe.Det.Items[nX].Prod );
-        Item.quantidade           := Nfe.NFe.Det.Items[nX].Prod.qCom;
+        Item.quantidade           := RoundTo(Nfe.NFe.Det.Items[nX].Prod.qCom,-2);
         Item.unidade              := copy(Nfe.NFe.Det.Items[nX].Prod.uCom,1,3);
         Item.classificacao_fiscal := Nfe.NFe.Det.Items[nX].Prod.NCM;
 
@@ -407,7 +407,7 @@ begin
           oeEstrangeiraAdquiridaBrasil:  Item.origem := TTipoOrigemMercadoriaUtilitario.DeEnumeradoParaInteger( tomEstrangeiraAdquiridaMercadoInterno );
         end;
 
-        Item.valor_unitario             := Nfe.NFe.Det.Items[nX].Prod.vUnCom;
+        Item.valor_unitario             := RoundTo(Nfe.NFe.Det.Items[nX].Prod.vUnCom,-2);
         Item.valor_bruto                := Nfe.NFe.Det.Items[nX].Prod.vProd;
         Item.valor_frete                := Nfe.NFe.Det.Items[nX].Prod.vFrete;
         Item.valor_seguro               := Nfe.NFe.Det.Items[nX].Prod.vSeg;

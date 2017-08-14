@@ -2,8 +2,8 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
   Left = 0
   Top = 0
   Caption = 'Relatorio de Tabela de Precos'
-  ClientHeight = 155
-  ClientWidth = 490
+  ClientHeight = 144
+  ClientWidth = 492
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -294,18 +294,18 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
   end
   object Panel1: TPanel
     Left = 0
-    Top = 116
-    Width = 490
+    Top = 105
+    Width = 492
     Height = 39
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 554
-    ExplicitWidth = 829
+    ExplicitTop = 116
+    ExplicitWidth = 490
     DesignSize = (
-      490
+      492
       39)
     object btnImprimir: TSpeedButton
-      Left = 310
+      Left = 312
       Top = 5
       Width = 169
       Height = 30
@@ -383,7 +383,7 @@ object frmRelatorioTabelasPreco: TfrmRelatorioTabelasPreco
       ExplicitLeft = 314
     end
     object btnSair: TSpeedButton
-      Left = 129
+      Left = 131
       Top = 5
       Width = 169
       Height = 30

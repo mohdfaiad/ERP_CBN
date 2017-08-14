@@ -11,7 +11,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
   ExplicitWidth = 603
   ExplicitHeight = 400
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 331
@@ -340,7 +340,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       OnExit = TabSheet1Exit
       DesignSize = (
         589
-        303)
+        301)
       object gridFormasPAg: TDBGridCBN
         Left = 8
         Top = 8
@@ -362,7 +362,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -581,7 +581,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         Left = 48
         Top = 64
         Width = 489
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         Ctl3D = True
         ParentCtl3D = False
@@ -633,8 +633,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         TabOrder = 7
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnExit = dbgridParcelasExit
         Columns = <

@@ -8,7 +8,7 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
   ExplicitWidth = 1168
   ExplicitHeight = 609
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object gbAcoes: TGroupBox
     Left = 0
     Top = 430
@@ -50,8 +50,8 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     object lblAjudaEspacoSelecionar: TLabel
       Left = 24
       Top = 11
-      Width = 540
-      Height = 13
+      Width = 577
+      Height = 15
       Caption = 
         'Pressione ESPA'#199'O para selecionar uma nota fiscal por vez, ou cli' +
         'que                           para selecionar todas'
@@ -59,8 +59,8 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     object Label2: TLabel
       Left = 716
       Top = 37
-      Width = 176
-      Height = 13
+      Width = 184
+      Height = 15
       Caption = 'Quantidade Notas Selecionadas >'
     end
     object lbQtdSelecionada: TLabel
@@ -80,8 +80,8 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     object Label3: TLabel
       Left = 716
       Top = 11
-      Width = 174
-      Height = 13
+      Width = 182
+      Height = 15
       Caption = 'Quantidade Notas Filtradas        >'
     end
     object lblQtdNotas: TLabel
@@ -742,7 +742,7 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
       OnClick = btnImprimirEtiquetaCaixasClick
     end
     object chkMarcarOuDesmarcarTodas: TCheckBox
-      Left = 382
+      Left = 406
       Top = 10
       Width = 67
       Height = 17
@@ -1466,7 +1466,7 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     Left = 279
     Top = 257
     Bitmap = {
-      494C0101040009004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900600010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

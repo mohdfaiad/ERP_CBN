@@ -185,8 +185,8 @@ end;
 procedure TfrmCadastroCores.btnAlterarClick(Sender: TObject);
 begin
   inherited;
-  pgcCores.ActivePageIndex := 0;
   self.Tag := 2;
+  pgcCores.ActivePageIndex := 0;
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
   edtReferencia.SetFocus;
@@ -234,7 +234,7 @@ begin
     avisar('É necessário incluir ao menos duas cores no kit');
     pgcCores.ActivePage := tsCoresKit;
   end
-  else if existeReferencia(cor) then
+  else if existeReferencia(cor) and (self.tag <> 2) then
   begin
     avisar('A referência '+edtReferencia.Text+' já está cadastrada para a cor '+cor);
     edtReferencia.SetFocus;

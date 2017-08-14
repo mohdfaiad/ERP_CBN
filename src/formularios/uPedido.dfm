@@ -17,7 +17,7 @@ inherited frmPedido: TfrmPedido
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
@@ -4422,7 +4422,6 @@ inherited frmPedido: TfrmPedido
           DisplayFormat = ',0.00;-,0.00'
           ReadOnly = True
           TabOrder = 2
-          OnKeyPress = edtValorItensKeyPress
         end
         object edtPercDesconto: TCurrencyEdit
           Left = 316

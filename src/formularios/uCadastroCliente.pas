@@ -328,10 +328,6 @@ begin
     avisar('Favor informar o CPF / CNPJ do cliente');
     CpfCnpj.edtCpf.SetFocus;
   end
-{  else if trim(edtRg.Text) = '' then begin
-    avisar('Favor informar o RG / IE do cliente');
-    edtRG.SetFocus;
-  end}
   else if trim(edtLogradouro.Text) = '' then begin
     avisar('Endereço obrigatório! Favor informe o Logradouro');
     edtLogradouro.SetFocus;

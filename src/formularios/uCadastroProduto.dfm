@@ -2,18 +2,18 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   Left = 244
   Top = 181
   Caption = 'Cadastro de Produtos'
-  ClientHeight = 519
+  ClientHeight = 518
   ClientWidth = 838
   OldCreateOrder = True
   OnClose = FormClose
   OnShow = FormShow
   ExplicitWidth = 854
-  ExplicitHeight = 557
+  ExplicitHeight = 556
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
-    Top = 477
+    Top = 476
     Width = 838
     Height = 42
     Align = alBottom
@@ -486,8 +486,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 0
     Top = 0
     Width = 838
-    Height = 477
-    ActivePage = TabSheet2
+    Height = 476
+    ActivePage = TabSheet5
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -496,10 +496,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       OnExit = TabSheet1Exit
       DesignSize = (
         830
-        449)
+        446)
       object Image3: TImage
         Left = 6
-        Top = 427
+        Top = 426
         Width = 16
         Height = 20
         Anchors = [akLeft, akBottom]
@@ -575,7 +575,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label18: TLabel
         Left = 30
-        Top = 430
+        Top = 429
         Width = 72
         Height = 13
         Anchors = [akLeft, akBottom]
@@ -590,7 +590,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label13: TLabel
         Left = 158
-        Top = 430
+        Top = 429
         Width = 82
         Height = 13
         Anchors = [akLeft, akBottom]
@@ -605,7 +605,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Image4: TImage
         Left = 134
-        Top = 427
+        Top = 426
         Width = 16
         Height = 20
         Anchors = [akLeft, akBottom]
@@ -643,7 +643,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 5
         Top = 32
         Width = 819
-        Height = 416
+        Height = 415
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -660,7 +660,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         ParentFont = False
         ParentShowHint = False
-        ShowHint = True
+        ShowHint = False
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -794,7 +794,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       OnEnter = TabSheet2Enter
       DesignSize = (
         830
-        449)
+        446)
       object Label1: TLabel
         Left = 112
         Top = 361
@@ -959,7 +959,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object lblAsterisco: TLabel
         Left = 7
-        Top = 428
+        Top = 427
         Width = 11
         Height = 32
         Anchors = [akLeft, akBottom]
@@ -970,10 +970,11 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+        ExplicitTop = 428
       end
       object lblCamposObrigatorios: TLabel
         Left = 24
-        Top = 432
+        Top = 431
         Width = 127
         Height = 17
         Anchors = [akLeft, akBottom]
@@ -984,6 +985,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
+        ExplicitTop = 432
       end
       object Label19: TLabel
         Left = 51
@@ -1147,7 +1149,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 237
         Top = 32
         Width = 449
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 2
       end
@@ -1155,7 +1157,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 169
         Top = 187
         Width = 88
-        Height = 21
+        Height = 23
         TabOrder = 13
         OnEnter = edtLinhaEnter
       end
@@ -1163,7 +1165,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 692
         Top = 32
         Width = 85
-        Height = 21
+        Height = 23
         Style = csDropDownList
         ItemIndex = 0
         TabOrder = 3
@@ -1228,7 +1230,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         end
         inherited comListaCampo: TComboBox
           Left = 0
+          Height = 23
           ExplicitLeft = 0
+          ExplicitHeight = 23
         end
       end
       inline ListaGrupo: TListaCampo
@@ -1246,7 +1250,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         end
         inherited comListaCampo: TComboBox
           Left = 1
+          Height = 23
           ExplicitLeft = 1
+          ExplicitHeight = 23
         end
       end
       inline ListaColecao: TListaCampo
@@ -1258,6 +1264,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         ExplicitLeft = 488
         ExplicitTop = 64
         ExplicitHeight = 43
+        inherited comListaCampo: TComboBox
+          Height = 23
+          ExplicitHeight = 23
+        end
       end
       inline ListaTipo: TListaCampo
         Left = 58
@@ -1269,6 +1279,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         ExplicitTop = 64
         ExplicitWidth = 207
         ExplicitHeight = 46
+        inherited comListaCampo: TComboBox
+          Height = 23
+          ExplicitHeight = 23
+        end
       end
       inline BuscaNcm1: TBuscaNcm
         Left = 278
@@ -1302,8 +1316,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         inherited edtDescricao: TEdit
           Left = 115
           Width = 294
+          Height = 23
           ExplicitLeft = 115
           ExplicitWidth = 294
+          ExplicitHeight = 23
         end
       end
       object edtPecas: TCurrencyEdit
@@ -1321,7 +1337,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 64
         Top = 32
         Width = 156
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         TabOrder = 0
       end
@@ -1352,7 +1368,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 278
         Top = 187
         Width = 108
-        Height = 21
+        Height = 23
         TabOrder = 14
         Items.Strings = (
           'UN'
@@ -1362,7 +1378,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 169
         Top = 243
         Width = 89
-        Height = 21
+        Height = 23
         Style = csDropDownList
         ItemIndex = 1
         TabOrder = 19
@@ -1376,7 +1392,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 400
         Top = 238
         Width = 287
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         MaxLength = 30
         TabOrder = 22
@@ -1387,10 +1403,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       ImageIndex = 2
       DesignSize = (
         830
-        449)
+        446)
       object Label11: TLabel
         Left = 348
-        Top = 427
+        Top = 426
         Width = 381
         Height = 15
         Anchors = [akLeft, akBottom]
@@ -1438,6 +1454,14 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           ExplicitWidth = 425
           inherited btnBusca: TBitBtn
             OnClick = BuscaCor1btnBuscaClick
+          end
+          inherited edtDescricao: TEdit
+            Height = 23
+            ExplicitHeight = 23
+          end
+          inherited edtReferencia: TEdit
+            Height = 23
+            ExplicitHeight = 23
           end
         end
         object btnIncCor: TBitBtn
@@ -1521,7 +1545,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           Left = 441
           Top = 31
           Width = 131
-          Height = 21
+          Height = 23
           Style = csDropDownList
           TabOrder = 1
           Items.Strings = (
@@ -1533,7 +1557,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 13
         Top = 83
         Width = 801
-        Height = 333
+        Height = 332
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -1630,7 +1654,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object GroupBox4: TGroupBox
         Left = 14
-        Top = 419
+        Top = 418
         Width = 282
         Height = 29
         Anchors = [akLeft, akBottom]
@@ -1737,10 +1761,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       OnExit = TabSheet4Exit
       DesignSize = (
         830
-        449)
+        446)
       object Label28: TLabel
         Left = 12
-        Top = 419
+        Top = 418
         Width = 217
         Height = 15
         Anchors = [akLeft, akBottom]
@@ -1846,21 +1870,25 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           ExplicitTop = 7
           ExplicitWidth = 428
           ExplicitHeight = 52
+          inherited edtDescricao: TEdit
+            Height = 23
+            ExplicitHeight = 23
+          end
         end
       end
       object GridTabelaPreco: TDBGrid
         Left = 13
         Top = 83
         Width = 801
-        Height = 333
+        Height = 332
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = 14803425
         DataSource = dsTabela
         TabOrder = 1
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnKeyDown = GridTabelaPrecoKeyDown
         Columns = <
@@ -1915,20 +1943,20 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       OnEnter = TabSheet5Enter
       DesignSize = (
         830
-        449)
+        446)
       object pagCodBar: TPageControl
         Left = 0
         Top = 9
         Width = 830
-        Height = 446
-        ActivePage = TabSheet7
+        Height = 445
+        ActivePage = TabSheet8
         Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 0
         object TabSheet7: TTabSheet
           Caption = 'C'#243'digos de Barra'
           DesignSize = (
             822
-            418)
+            415)
           object labQtdRegistros: TLabel
             Left = 6
             Top = 324
@@ -1943,19 +1971,21 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             ParentFont = False
           end
           object Shape1: TShape
-            Left = 4
-            Top = 348
+            Left = 6
+            Top = 382
             Width = 538
-            Height = 29
+            Height = 27
+            Anchors = [akLeft, akBottom]
             Brush.Color = 13750737
             Pen.Color = 11842740
             Shape = stRoundRect
           end
           object lbRegistros: TLabel
             Left = 14
-            Top = 357
+            Top = 391
             Width = 57
             Height = 13
+            Anchors = [akLeft, akBottom]
             Caption = '0 Registros'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -1964,12 +1994,13 @@ inherited frmCadastroProduto: TfrmCadastroProduto
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = True
+            ExplicitTop = 357
           end
           object DBGridCBN1: TDBGridCBN
             Left = 6
             Top = 8
             Width = 807
-            Height = 376
+            Height = 372
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
               'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -2097,9 +2128,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           end
           object BitBtn1: TBitBtn
             Left = 638
-            Top = 388
+            Top = 383
             Width = 175
             Height = 26
+            Anchors = [akLeft, akBottom]
             Caption = ' Apagar C'#243'digo de Barras'
             Glyph.Data = {
               36080000424D3608000000000000360000002800000020000000100000000100
@@ -2178,7 +2210,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           ImageIndex = 1
           DesignSize = (
             822
-            418)
+            415)
           object Shape2: TShape
             Left = 6
             Top = 1
@@ -2232,9 +2264,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           end
           object btnGeraCodBar: TSpeedButton
             Left = 570
-            Top = 355
+            Top = 347
             Width = 241
             Height = 59
+            Anchors = [akLeft, akBottom]
             Caption = ' Gerar C'#243'digo de Barras'
             Glyph.Data = {
               36030000424D3603000000000000360000002800000010000000100000000100
@@ -2265,12 +2298,13 @@ inherited frmCadastroProduto: TfrmCadastroProduto
               F6F6FFFFFFFDFDFDFFFFFFF2F2F2FCFCFCF5F5F5E1E1E1FFFFFF}
             Layout = blGlyphTop
             OnClick = btnGeraCodBarClick
+            ExplicitTop = 355
           end
           object gridReferencias: TDBGridCBN
             Left = 6
             Top = 25
             Width = 805
-            Height = 319
+            Height = 318
             Hint = 
               'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
               'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -2466,7 +2500,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           end
           object radFiltro: TRadioGroup
             Left = 6
-            Top = 350
+            Top = 343
             Width = 329
             Height = 65
             Anchors = [akLeft, akBottom]
@@ -2482,7 +2516,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           end
           object GroupBox3: TGroupBox
             Left = 343
-            Top = 350
+            Top = 343
             Width = 219
             Height = 65
             Anchors = [akLeft, akBottom]
@@ -2674,7 +2708,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       OnEnter = TabSheet6Enter
       DesignSize = (
         830
-        449)
+        446)
       object Shape3: TShape
         Left = 3
         Top = 379
@@ -2702,7 +2736,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Left = 4
         Top = 23
         Width = 823
-        Height = 389
+        Height = 388
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = 14803425
         DataSource = dsEstoque
@@ -2710,8 +2744,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnKeyDown = GridTabelaPrecoKeyDown
         Columns = <
@@ -3584,9 +3618,11 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           Left = 0
           Top = 16
           Width = 66
+          Height = 23
           ExplicitLeft = 0
           ExplicitTop = 16
           ExplicitWidth = 66
+          ExplicitHeight = 23
         end
         inherited btnBusca: TBitBtn
           Left = 68
@@ -3598,15 +3634,19 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           Left = 96
           Top = 16
           Width = 260
+          Height = 23
           ExplicitLeft = 96
           ExplicitTop = 16
           ExplicitWidth = 260
+          ExplicitHeight = 23
         end
         inherited edtGrade: TEdit
           Left = 424
           Top = 16
+          Height = 23
           ExplicitLeft = 424
           ExplicitTop = 16
+          ExplicitHeight = 23
         end
       end
       inline BuscaCor2: TBuscaCor
@@ -3640,13 +3680,17 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         inherited edtDescricao: TEdit
           Left = 103
           Width = 291
+          Height = 23
           ExplicitLeft = 103
           ExplicitWidth = 291
+          ExplicitHeight = 23
         end
         inherited edtReferencia: TEdit
           Width = 66
+          Height = 23
           Color = clWhite
           ExplicitWidth = 66
+          ExplicitHeight = 23
         end
       end
       object btnAddKit: TBitBtn
@@ -3742,8 +3786,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 7
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnKeyDown = gridKitsKeyDown
         Columns = <
@@ -3798,8 +3842,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 4
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnCellClick = DBGrid2CellClick
         OnDrawColumnCell = DBGrid2DrawColumnCell
@@ -3834,8 +3878,8 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 5
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnDrawColumnCell = DBGrid3DrawColumnCell
         OnKeyDown = gridKitsKeyDown
@@ -4355,7 +4399,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Params = <>
     ProviderName = 'dspCor'
     Left = 257
-    Top = 406
+    Top = 358
     object cdsCorSTATUS: TStringField
       FieldKind = fkInternalCalc
       FieldName = 'STATUS'
@@ -4384,23 +4428,23 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   object dsCor: TDataSource
     DataSet = cdsCor
     Left = 286
-    Top = 406
+    Top = 358
   end
   object dspCor: TDataSetProvider
     DataSet = FDQuery1
     Left = 228
-    Top = 406
+    Top = 358
   end
   object dspTabela: TDataSetProvider
     Left = 332
-    Top = 407
+    Top = 359
   end
   object cdsTabela: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspTabela'
     Left = 361
-    Top = 407
+    Top = 359
     object cdsTabelaSTATUS: TStringField
       FieldKind = fkInternalCalc
       FieldName = 'STATUS'
@@ -4439,19 +4483,19 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   object dsTabela: TDataSource
     DataSet = cdsTabela
     Left = 390
-    Top = 407
+    Top = 359
   end
   object dsCodBar: TDataSource
     DataSet = cdsCodBar
     Left = 436
-    Top = 407
+    Top = 359
   end
   object cdsCodBar: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspCodBar'
     Left = 465
-    Top = 407
+    Top = 359
     object cdsCodBarCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -4497,7 +4541,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   end
   object dspCodBar: TDataSetProvider
     Left = 494
-    Top = 407
+    Top = 359
   end
   object cdsCodPossiveis: TClientDataSet
     Aggregates = <>
@@ -4566,7 +4610,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900AC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
@@ -4841,7 +4885,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Aggregates = <>
     Params = <>
     Left = 561
-    Top = 407
+    Top = 359
     object cdsEstoqueCOR: TStringField
       FieldName = 'COR'
       Size = 40
@@ -4907,14 +4951,14 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   object dsEstoque: TDataSource
     DataSet = cdsEstoque
     Left = 532
-    Top = 407
+    Top = 359
   end
   object CDSKits: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'DSPKits'
     Left = 105
-    Top = 408
+    Top = 360
     object CDSKitsREFPRO: TStringField
       FieldName = 'REFPRO'
       Size = 18
@@ -4964,11 +5008,11 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   object dsKits: TDataSource
     DataSet = CDSKits
     Left = 76
-    Top = 408
+    Top = 360
   end
   object DSPKits: TDataSetProvider
     Left = 134
-    Top = 408
+    Top = 360
   end
   object qry: TFDQuery
     Connection = dm.FDConnection
@@ -5022,7 +5066,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         ' where pc.codproduto = :codpro                                  ' +
         '        ')
     Left = 192
-    Top = 406
+    Top = 358
     ParamData = <
       item
         Name = 'CODPRO'

@@ -44,7 +44,7 @@ uses
   ExcecaoParametroInvalido;
 
 const
-  INTERVALO_DE_VERIFICACAO = 10000;
+  INTERVALO_DE_VERIFICACAO = 1000;
 
 { TServicoVerificadorSistemaEmManutencao }
 

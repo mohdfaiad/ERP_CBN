@@ -5,13 +5,13 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   BorderStyle = bsSingle
   Caption = 'Entrada/Sa'#237'da Manual de Estoque'
   ClientHeight = 568
-  ClientWidth = 691
+  ClientWidth = 734
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 697
+  ExplicitWidth = 740
   ExplicitHeight = 596
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Label1: TLabel
     Left = 8
     Top = 6
@@ -28,7 +28,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object Shape1: TShape
     Left = -8
     Top = 26
-    Width = 703
+    Width = 746
     Height = 52
     Anchors = [akLeft, akTop, akRight]
     Brush.Color = 15395562
@@ -50,7 +50,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Transparent = True
   end
   object Label5: TLabel
-    Left = 22
+    Left = 46
     Top = 349
     Width = 107
     Height = 17
@@ -157,7 +157,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     OnClick = btnNovoLoteClick
   end
   object Label7: TLabel
-    Left = 545
+    Left = 569
     Top = 349
     Width = 31
     Height = 17
@@ -187,17 +187,18 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object rgTamanhos: TRadioGroup
     Left = -1
     Top = 280
-    Width = 695
+    Width = 738
     Height = 57
     Anchors = [akLeft, akTop, akRight]
     Caption = ' Tamanhos '
-    Columns = 14
+    Columns = 15
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'Calibri'
     Font.Style = [fsBold]
     Items.Strings = (
+      'PM'
       'RN'
       'P'
       'M'
@@ -217,19 +218,21 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     TabStop = True
     OnClick = rgTamanhosClick
     OnEnter = rgTamanhosEnter
+    ExplicitWidth = 695
   end
   object pnlRodape: TPanel
     Left = 0
     Top = 517
-    Width = 691
+    Width = 734
     Height = 51
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
+    ExplicitWidth = 691
     object btnSalvar: TBitBtn
-      Left = 531
+      Left = 555
       Top = 8
-      Width = 140
+      Width = 150
       Height = 33
       Caption = ' Salvar'
       Glyph.Data = {
@@ -304,9 +307,9 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       OnClick = btnSalvarClick
     end
     object btnLimpar: TBitBtn
-      Left = 368
+      Left = 392
       Top = 8
-      Width = 140
+      Width = 150
       Height = 33
       Caption = ' Limpar'
       Glyph.Data = {
@@ -381,9 +384,9 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       OnClick = btnLimparClick
     end
     object btnDirecionaEntradas: TBitBtn
-      Left = 206
+      Left = 230
       Top = 8
-      Width = 140
+      Width = 150
       Height = 33
       Caption = ' Direcionar entradas'
       Glyph.Data = {
@@ -461,17 +464,18 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   object pnlQuantidades: TPanel
     Left = 0
     Top = 412
-    Width = 691
+    Width = 734
     Height = 105
     Align = alBottom
     TabOrder = 4
+    ExplicitWidth = 691
     DesignSize = (
-      691
+      734
       105)
     object Shape2: TShape
       Left = -3
       Top = 20
-      Width = 697
+      Width = 740
       Height = 52
       Anchors = [akLeft, akTop, akRight]
       Brush.Color = 15395562
@@ -508,7 +512,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       Transparent = True
     end
     object lbEntSai: TLabel
-      Left = 301
+      Left = 352
       Top = 35
       Width = 193
       Height = 20
@@ -541,7 +545,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
       TabOrder = 0
     end
     object edtQtdEntrada: TCurrencyEdit
-      Left = 508
+      Left = 559
       Top = 35
       Width = 109
       Height = 26
@@ -590,7 +594,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
   end
   object dtpDataProducao: TDateTimePicker
-    Left = 22
+    Left = 46
     Top = 368
     Width = 121
     Height = 21
@@ -600,13 +604,13 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Visible = False
   end
   inline ListaIntervalos: TListaCampo
-    Left = 166
+    Left = 190
     Top = 349
     Width = 353
     Height = 48
     TabOrder = 7
     Visible = False
-    ExplicitLeft = 166
+    ExplicitLeft = 190
     ExplicitTop = 349
     ExplicitWidth = 353
     ExplicitHeight = 48
@@ -622,7 +626,9 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
     inherited comListaCampo: TComboBox
       Width = 339
+      Height = 23
       ExplicitWidth = 339
+      ExplicitHeight = 23
     end
   end
   object edtLote: TCurrencyEdit
@@ -645,7 +651,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     OnChange = edtQtdEntradaChange
   end
   object GroupBox1: TGroupBox
-    Left = 8
+    Left = 40
     Top = 92
     Width = 649
     Height = 78
@@ -701,7 +707,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
   end
   object GroupBox2: TGroupBox
-    Left = 8
+    Left = 40
     Top = 176
     Width = 649
     Height = 82
@@ -749,10 +755,10 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     end
   end
   object cbxSetor: TComboBox
-    Left = 544
+    Left = 568
     Top = 368
     Width = 118
-    Height = 21
+    Height = 23
     Style = csDropDownList
     ItemIndex = 0
     TabOrder = 9

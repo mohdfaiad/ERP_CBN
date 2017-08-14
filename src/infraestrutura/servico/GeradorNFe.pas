@@ -54,6 +54,7 @@ type
     procedure GerarTransportador  (NF :TNotaFiscal; NFe :ACBrNFeNotasFiscais.NotaFiscal);
     procedure GerarValoresTotais  (NF :TNotaFiscal; NFe :ACBrNFeNotasFiscais.NotaFiscal);
     procedure GerarVolumes        (NF :TNotaFiscal; NFe :ACBrNFeNotasFiscais.NotaFiscal);
+    procedure GerarPagamento      (NF :TNotaFiscal; NFe :ACBrNFeNotasFiscais.NotaFiscal);
 
     procedure InicializaComponentes(const CaminhoLogo :String);
     
@@ -495,7 +496,12 @@ begin
           if NF.Destinatario.Pessoa = 'F' then
             ItemNFe.Imposto.ICMS.CSOSN        := csosn102
           else
-            ItemNFe.Imposto.ICMS.CSOSN        := csosn101;
+          begin
+            if (UpperCase(TRIM(NF.Destinatario.RG_IE)) = 'ISENTO') and (pos(NF.Destinatario.Endereco.Cidade.Estado.sigla, 'SP MG PE') > 0) then
+              ItemNFe.Imposto.ICMS.CSOSN        := csosn103
+            else
+              ItemNFe.Imposto.ICMS.CSOSN        := csosn101;
+          end;
 
           ItemNFe.Imposto.ICMS.pCredSN      := Item.IcmsSn101.AliquotaCreditoSN;
           ItemNFe.Imposto.ICMS.vCredICMSSN  := Item.IcmsSn101.ValorCreditoSN;
@@ -586,7 +592,15 @@ begin
        if (length(NF.Destinatario.CPF_CNPJ) < 14) then
          nfe.NFe.Dest.indIEDest   := inNaoContribuinte
        else
-         nfe.NFe.Dest.indIEDest   := inIsento;
+       begin
+         if pos(NF.Destinatario.Endereco.Cidade.Estado.sigla, 'SP MG PE') = 0 then
+           nfe.NFe.Dest.indIEDest   := inIsento
+         else
+         begin
+           nfe.NFe.Dest.indIEDest   := inNaoContribuinte;
+           nfe.NFe.Ide.indFinal     := cfConsumidorFinal;
+         end;
+       end;
      end
      else if UpperCase(TRIM(NF.Destinatario.RG_IE)) = '' then
         nfe.NFe.Dest.indIEDest   := inNaoContribuinte
@@ -757,6 +771,7 @@ begin
    self.GerarVolumes        (NF, result);
    self.GerarObservacao     (NF, result);
    self.GerarDadosDaCobranca(result);
+   self.GerarPagamento      (NF, result);
 end;
 
 procedure TGeradorNFe.GerarObservacao(NF :TNotaFiscal; NFe :ACBrNFeNotasFiscais.NotaFiscal);
@@ -773,6 +788,15 @@ begin
   {   nfe.NFe.InfAdic.infCpl := nfe.NFe.InfAdic.infCpl + #13#10+'PARTILHA ICMS OPERAÇÃO INTERESTADUAL CONSUMIDOR FINAL, DISPOSTO NA EMENDA CONSTITUCIONAL 87/2015. '+
                                'VALOR ICMS UF DESTINO: '+ TStringUtilitario.FormataDinheiro(nfe.NFe.Total.ICMSTot.vICMSUFDest) +
                                ' - VALOR ICMS UF REMETENTE: '+ TStringUtilitario.FormataDinheiro(nfe.NFe.Total.ICMSTot.vICMSUFRemet); }
+end;
+
+procedure TGeradorNFe.GerarPagamento(NF: TNotaFiscal; NFe: ACBrNFeNotasFiscais.NotaFiscal);
+begin
+{   with Nfe.NFe.pag.Add do //PAGAMENTOS apenas para NFC-e
+      begin
+        tPag := fpOutro;
+        vPag := NF.Totais.TotalNF;
+      end;         }
 end;
 
 procedure TGeradorNFe.GerarTransportador(NF: TNotaFiscal; NFe: ACBrNFeNotasFiscais.NotaFiscal);
@@ -946,6 +970,7 @@ begin
    self.FACBrNFe.Configuracoes.Geral.FormaEmissao              := teNormal;
    self.FACBrNFe.Configuracoes.Geral.ModeloDF                  := moNFe;
    self.FACBrNFe.Configuracoes.Geral.VersaoDF                  := ve310;
+   self.FACBrNFe.Configuracoes.Geral.SSLLib                    := libCapicom;
 
    { DANFE (Configurações da Impressão do DANFE)}
    self.FACBrNFeDANFe                   := TACBrNFeDANFeRL.Create(nil);

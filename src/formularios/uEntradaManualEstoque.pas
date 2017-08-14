@@ -91,7 +91,7 @@ begin
   fdm.qryGenerica.Close;
   fdm.qryGenerica.SQL.Text := 'select gt.codtamanho, t.descricao from grade_tamanhos gt '+
                               'left join tamanhos t on t.codigo = gt.codtamanho         '+
-                              'where gt.codgrade = :codgrade';
+                              'where gt.codgrade = :codgrade                            ';
   fdm.qryGenerica.ParamByName('codgrade').AsInteger := BuscaProduto1.codGrade;
   fdm.qryGenerica.Open;
 

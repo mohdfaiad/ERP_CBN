@@ -6,8 +6,8 @@ object frmPadrao: TfrmPadrao
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Segoe UI'
+  Font.Height = -13
+  Font.Name = 'Calibri'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
@@ -15,5 +15,5 @@ object frmPadrao: TfrmPadrao
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
 end

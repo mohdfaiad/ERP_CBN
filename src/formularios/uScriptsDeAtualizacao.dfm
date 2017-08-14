@@ -2,7 +2,7 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
   Left = 351
   Top = 216
   Caption = 'frmScriptsDeAtualizacao'
-  ClientHeight = 295
+  ClientHeight = 351
   ClientWidth = 605
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -9471,6 +9471,84 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
       'end'
       '^')
     TabOrder = 212
+    WordWrap = False
+  end
+  object versao213: TMemo
+    Left = 9
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER PROCEDURE GET_TOTAIS_PEDIDO ('
+      '    cod_rep integer,'
+      '    cod_pedido integer)'
+      'returns ('
+      '    total_liquido numeric(15,2),'
+      '    total_bruto numeric(15,2))'
+      'as'
+      'declare variable desconto_comissao numeric(15,2);'
+      'declare variable total numeric(15,2);'
+      'declare variable outras_despesas numeric(15,2);'
+      'declare variable desconto numeric(15,2);'
+      'declare variable seguro numeric(15,2);'
+      'declare variable frete numeric(15,2);'
+      'declare variable rep_ecommerce char(1);'
+      'begin'
+      
+        'total =0; frete =0; desconto =0; seguro =0; outras_despesas =0; ' +
+        'desconto_comissao =0;'
+      'SELECT FIRST 1 DR.rep_ecommerce FROM dados_representante DR'
+      'WHERE DR.codigo_representante = :cod_rep'
+      'INTO'
+      ':rep_ecommerce;'
+      ''
+      'if (:rep_ecommerce = '#39'S'#39') then begin'
+      
+        'SELECT PED.valor_total, coalesce(tnf.frete,0), coalesce(tnf.desc' +
+        'onto,0), coalesce(tnf.seguro,0), coalesce(tnf.outras_despesas,0)' +
+        ', coalesce(ped.desconto_comiss,0)'
+      'FROM pedidos PED'
+      
+        'LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED.cod' +
+        'igo'
+      
+        'LEFT join notas_fiscais         nf ON NF.codigo = PF.codigo_nota' +
+        '_fiscal'
+      
+        'LEFT JOIN totais_notas_fiscais  TNF ON TNF.codigo_nota_fiscal = ' +
+        'NF.codigo'
+      'WHERE PED.codigo = :cod_pedido'
+      
+        'INTO       :total, :frete, :desconto, :seguro, :outras_despesas,' +
+        ' :desconto_comissao;'
+      ''
+      
+        'total_liquido = (:total+:frete+:seguro+:outras_despesas) - (((:t' +
+        'otal+:frete+:seguro+:outras_despesas)*:desconto_comissao)/100);'
+      
+        'total_bruto = (:total+:frete+:seguro+:outras_despesas+:desconto)' +
+        ' - ((:total * :desconto_comissao)/100);'
+      'end'
+      'else begin'
+      
+        'SELECT (PED.valor_total-((PED.valor_total* PED.desconto_comiss)/' +
+        '100)),'
+      
+        '((PED.valor_total-((PED.valor_total* PED.desconto_comiss)/100)) ' +
+        '+ PED.valor_frete + PED.desconto + PED.desconto_fpgto + PED.desc' +
+        'onto_itens - PED.acrescimo)'
+      'FROM pedidos PED'
+      
+        'LEFT JOIN pedidos_faturados     PF ON PF.codigo_pedido = PED.cod' +
+        'igo'
+      'WHERE PED.codigo = :cod_pedido'
+      'INTO'
+      ':total_liquido, :total_bruto;'
+      'end'
+      'suspend;'
+      'end'
+      '^')
+    TabOrder = 213
     WordWrap = False
   end
 end
