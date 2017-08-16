@@ -473,8 +473,6 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-  Application.CreateForm(TfrmDirecionarEntradas, frmDirecionarEntradas);
-  Application.CreateForm(TfrmBuscaPedidos, frmBuscaPedidos);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

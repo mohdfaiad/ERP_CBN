@@ -8,10 +8,11 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
   Position = poScreenCenter
   OnClose = FormClose
   OnShow = FormShow
+  ExplicitTop = -51
   ExplicitWidth = 1051
   ExplicitHeight = 738
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object pnlGeral: TPanel
     Left = 0
     Top = 0
@@ -53,6 +54,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
       inherited gbNaturezaOperacao: TGroupBox
         Width = 485
         Height = 69
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
@@ -60,12 +62,24 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         ExplicitHeight = 69
       end
       inherited lblCFOP: TStaticText
-        Width = 32
-        ExplicitWidth = 32
+        Width = 33
+        Height = 19
+        ExplicitWidth = 33
+        ExplicitHeight = 19
       end
       inherited lblRazao: TStaticText
-        Width = 53
-        ExplicitWidth = 53
+        Width = 59
+        Height = 19
+        ExplicitWidth = 59
+        ExplicitHeight = 19
+      end
+      inherited edtCFOP: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtDescricao: TEdit
+        Height = 23
+        ExplicitHeight = 23
       end
     end
     inline BuscaEmitente: TBuscaEmpresa
@@ -83,6 +97,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Width = 506
         Height = 69
         Caption = 'Emitente'
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
@@ -91,19 +106,27 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
       end
       inherited lblCodigo: TStaticText
         Width = 42
+        Height = 19
         ExplicitWidth = 42
+        ExplicitHeight = 19
       end
       inherited edtCodigo: TEdit
         Top = 37
+        Height = 23
         ExplicitTop = 37
+        ExplicitHeight = 23
       end
       inherited edtRazao: TEdit
         Width = 374
+        Height = 23
         ExplicitWidth = 374
+        ExplicitHeight = 23
       end
       inherited lblRazao: TStaticText
-        Width = 68
-        ExplicitWidth = 68
+        Width = 74
+        Height = 19
+        ExplicitWidth = 74
+        ExplicitHeight = 19
       end
     end
     inline BuscaDestinatario: TBuscaDestinatario
@@ -120,18 +143,20 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Width = 485
         Height = 69
         Font.Name = 'Segoe UI'
-        ExplicitLeft = 5
-        ExplicitTop = 5
         ExplicitWidth = 485
         ExplicitHeight = 69
       end
       inherited lblCodigo: TStaticText
         Width = 42
+        Height = 19
         ExplicitWidth = 42
+        ExplicitHeight = 19
       end
       inherited lblNomeRazaoSocial: TStaticText
-        Width = 108
-        ExplicitWidth = 108
+        Width = 116
+        Height = 19
+        ExplicitWidth = 116
+        ExplicitHeight = 19
       end
       inherited edtNomeRazaoSocial: TEdit
         Top = 34
@@ -162,7 +187,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Left = 30
         Top = 38
         Width = 121
-        Height = 21
+        Height = 23
         TabStop = False
         ReadOnly = True
         TabOrder = 1
@@ -246,8 +271,8 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object lblCancelarDigitacaoAtual: TLabel
       Left = 15
       Top = 32
-      Width = 466
-      Height = 13
+      Width = 507
+      Height = 15
       Caption = 
         'Pressione [F1] ou clique AQUI para cancelar a digita'#231#227'o atual e ' +
         'digitar uma nova nota fiscal'
@@ -646,6 +671,86 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
       TabStop = False
       OnClick = btnImprimirEtiquetasClick
     end
+    object btnMonitor: TBitBtn
+      Left = 469
+      Top = 70
+      Width = 140
+      Height = 30
+      Anchors = [akRight, akBottom]
+      Caption = ' Monitor NF-e'
+      Glyph.Data = {
+        36080000424D3608000000000000360000002800000020000000100000000100
+        2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00E5650800E46A0C00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0081010000800600009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00E6670A00E5801A00E5781600FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B0082030000811C0000811400009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00E7690700ED9A2E00F0B03E00E26E1000FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B0083050000893600008C4C00007E0A00009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00E96F0800EEA13900F8CB5D00E99B3600DC700E00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B00850B00008A3D00009467000085370000780C00009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00ED770900EFAE4A00F9D06F00F7C05400DF973700D7782100E082
+        2500DC781F00DC781900DB721300DA6B0F00DA680A00D35008009B9B9B009B9B
+        9B009B9B9B00891300008B4A0000956C0B00935C00007B330000731400007C1E
+        00007814000078140000770E000076070000760400006F000000FFFFFF00FFFF
+        FF00EE7F0A00F4BB5F00FAD88500F7C76500F6C05900EDAF4A00EAAA4100E7A5
+        3500E89E2B00E7932100E4891900E2821100E37D0A00CB4B00009B9B9B009B9B
+        9B008A1B0000905700009674210093630100925C0000894B0000864600008341
+        0000843A0000832F0000802500007E1E00007F19000067000000FFFFFF00F188
+        0C00F6C67100FCE19F00F9CE7A00F7CA6D00F6C36100F6C05500F6BA4A00F4B3
+        3E00F3AA3300F1A32900F09A1F00EF921700EE8B0F00CE4E02009B9B9B008D24
+        000092620D00987D3B00956A160093660900925F0000925C000092560000904F
+        00008F4600008D3F00008C3600008B2E00008A2700006A000000F3971400F9DC
+        9B00FEEFD000FAD78800F9D38300F8CF7700F7C86900F5C15B00F4BB5100F2B6
+        4500F1AC3900F0A53000EE9D2600ED941C00EF911500D05406008F3300009578
+        37009A8B6C0096732400956F1F00946B130093640500915D0000905700008E52
+        00008D4800008C4100008A390000893000008B2D00006C000000F2950E00F8CF
+        8700FFF9EC00FCE1AC00F9D58300F8D27F00F7CB7200F6C56300F4BD5400F3B5
+        4400F2AF3B00F0A63200EF9F2600ED951D00F0971800D65908008E310000946B
+        23009B958800987D480095711F00946E1B0093670E0092610000905900008F51
+        00008E4B00008C4200008B3B0000893100008C33000072000000FFFFFF00F386
+        0100F5C17000FFFAEC00FCE2AD00F9D17D00F8CF7A00F7C86800F6C56A00F4C2
+        6100F3BB5300F2B44700F0AE3D00EFA53200F09F2000DA6009009B9B9B008F22
+        0000915D0C009B968800987E4900956D1900946B16009364040092610600905E
+        00008F5700008E5000008C4A00008B4100008C3B000076000000FFFFFF00FFFF
+        FF00F17D0000F5BB6800FFFAEB00FBE1AD00F9CE7000F8CC7000FBE7B600FAEA
+        BE00F9E2AB00F8DE9C00F6D88A00F6D47F00F6C34E00D96209009B9B9B009B9B
+        9B008D190000915704009B968700977D4900956A0C0094680C00978352009686
+        5A00957E4700947A38009274260092701B00925F000075000000FFFFFF00FFFF
+        FF00FFFFFF00EF780000F2B35C00FEF8E400FCE7BF00F8D17C00F3A94300F1A1
+        3700F0A03100EF9A2B00ED912500EC882100EC8A2100DF640F009B9B9B009B9B
+        9B009B9B9B008B1400008E4F00009A94800098835B00946D18008F4500008D3D
+        00008C3C00008B360000892D000088240000882600007B000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00EE700000F1AC5000FEFDF100F9D59300EA780300FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B008A0C00008D4800009A998D0095712F00861400009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00ED6F0000F1AA5500FAE39F00ED8F1B00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B00890B00008D460000967F3B00892B00009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00ED710400EEA03100ED952500FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B00890D00008A3C0000893100009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00EF830700ED820B00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B008B1F0000891E00009B9B
+        9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+      NumGlyphs = 2
+      TabOrder = 5
+      TabStop = False
+      Visible = False
+      OnClick = btnMonitorClick
+    end
   end
   object pgcNotaFiscal: TPageControl
     Left = 0
@@ -663,7 +768,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Left = 0
         Top = 0
         Width = 1027
-        Height = 362
+        Height = 360
         ActivePage = tbsCabecalho1
         Align = alClient
         Style = tsFlatButtons
@@ -898,7 +1003,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
             Left = 734
             Top = 0
             Width = 285
-            Height = 331
+            Height = 327
             Align = alRight
             Caption = 'Totais'
             Font.Charset = DEFAULT_CHARSET
@@ -1548,7 +1653,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
               Left = 417
               Top = 128
               Width = 116
-              Height = 21
+              Height = 23
               EditMask = '99\.999\.999\/9999\-99;0; '
               MaxLength = 18
               TabOrder = 6
@@ -1576,7 +1681,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Left = 0
         Top = 0
         Width = 1027
-        Height = 362
+        Height = 360
         Align = alClient
         Color = 14803425
         DataSource = dsItensFisicos
@@ -1672,7 +1777,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         Left = 0
         Top = 0
         Width = 1027
-        Height = 362
+        Height = 360
         Align = alClient
         Color = 14803425
         DataSource = dsItensFiscais
@@ -1791,12 +1896,12 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
       ImageIndex = 3
       DesignSize = (
         1027
-        362)
+        360)
       object lblCliqueCheckBox: TLabel
         Left = 3
         Top = 133
-        Width = 341
-        Height = 13
+        Width = 368
+        Height = 15
         Anchors = [akLeft, akBottom]
         Caption = 'D'#234' um duplo clique no "Check Box" para marcar/desmarcar pedido'
       end
@@ -1880,7 +1985,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
       end
       object gpbItensDoPedidoSelecionado: TGroupBox
         Left = 0
-        Top = 178
+        Top = 176
         Width = 1027
         Height = 184
         Align = alBottom
@@ -1888,9 +1993,9 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         TabOrder = 1
         object gridItensDoPedidoSelecionado: TDBGridCBN
           Left = 2
-          Top = 15
+          Top = 17
           Width = 1023
-          Height = 167
+          Height = 165
           Align = alClient
           Color = 14803425
           DataSource = dsItensDoPedidoSelecionado
@@ -1993,9 +2098,9 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         TabOrder = 0
         object memoObservacoes: TMemo
           Left = 2
-          Top = 15
+          Top = 17
           Width = 1023
-          Height = 142
+          Height = 140
           Align = alClient
           TabOrder = 0
           OnChange = memoObservacoesChange
@@ -2012,9 +2117,9 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         TabOrder = 1
         object memoObservacoesGeradasPeloSistema: TMemo
           Left = 2
-          Top = 15
+          Top = 17
           Width = 1023
-          Height = 136
+          Height = 134
           Align = alClient
           TabOrder = 0
         end

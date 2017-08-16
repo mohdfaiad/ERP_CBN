@@ -824,7 +824,7 @@ begin
           begin
             try
               self.AtualizarEstadoDaOperacao('Enviando e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
-             // GeradorNFe.EnviarEmail(NotaFiscal);
+              GeradorNFe.EnviarEmail(NotaFiscal);
             except
               on E: Exception do
                 raise Exception.Create('Erro ao enviar e-mail da nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+

@@ -1,4 +1,4 @@
-unit uFaturamentoPedidos;
+Ôªøunit uFaturamentoPedidos;
 
 interface
 
@@ -155,6 +155,7 @@ type
     cmbFinalidade: TComboBox;
     grpNfeReferenciada: TGroupBox;
     edtNfeReferenciada: TEdit;
+    btnMonitor: TBitBtn;
 
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -204,12 +205,14 @@ type
     procedure btnImprimirDanfeClick(Sender: TObject);
     procedure cmbFinalidadeClick(Sender: TObject);
     procedure edtNfeReferenciadaExit(Sender: TObject);
+    procedure btnMonitorClick(Sender: TObject);
 
   private
     FEstadoTela      :TEstadoTela;
     FNotaFiscal      :TNotaFiscal;
+    FAbreMonitor     :Boolean;
 
- { MÈtodos delegados }
+ { M√©todos delegados }
   private
     procedure AtalhosEmCriacao                    (Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure AtalhosEmDigitacao                  (Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -226,7 +229,7 @@ type
     function GetAliquotaPIS           :Real;
     function GetAliquotaCOFINS        :Real;
     function TemLocalEntrega          :Boolean;
-  { Fim de mÈtodos delegados }
+  { Fim de m√©todos delegados }
 
   private
     function ValidarNotaFiscal        :Boolean;
@@ -295,7 +298,7 @@ uses
    TipoNaturezaOperacao,
    Empresa, IcmsEstado,
    EspecificacaoEmpresaPorCodigoPessoa,
-   StringUtilitario,
+   StringUtilitario, uMonitorControleNFe, permissoesAcesso,
    LocalEntregaNotaFiscal,
    FormaPagamento, uPesquisaSimples,
    //uImpressaoEtiquetaCaixa,
@@ -303,9 +306,9 @@ uses
   TipoRegimeTributario, StrUtils, Funcoes, Math;
 
 const
-  MENSAGEM_DELETAR_PEDIDO = 'Ao deletar um pedido, os valores poder„o ser alterados. Tais como: FRETE, DESCONTO e etc. Deseja realmente continuar?';
-  NENHUMA_CONFIGURACAO_CADASTRADA = 'Nenhuma configuraÁ„o de nota fiscal cadastrada!';
-  PERCENTAGEM_REDUCAO_BC_NAO_CADASTRADA = 'Percentagem de reduÁ„o de base de c·lculo n„o cadastrada para estado do ';
+  MENSAGEM_DELETAR_PEDIDO = 'Ao deletar um pedido, os valores poder√£o ser alterados. Tais como: FRETE, DESCONTO e etc. Deseja realmente continuar?';
+  NENHUMA_CONFIGURACAO_CADASTRADA = 'Nenhuma configura√ß√£o de nota fiscal cadastrada!';
+  PERCENTAGEM_REDUCAO_BC_NAO_CADASTRADA = 'Percentagem de redu√ß√£o de base de c√°lculo n√£o cadastrada para estado do ';
 
 {$R *.dfm}
 
@@ -314,8 +317,10 @@ procedure TfrmFaturamentoPedidos.FormClose(Sender: TObject;
 begin
   inherited;
 
-   if not (inherited Confirma('Se vocÍ sair, a digitaÁ„o atual ir· ser cancelada. Deseja CANCELAR a digitaÁ„o atual?')) then
-    Action := caNone;
+   if not (inherited Confirma('Se voc√™ sair, a digita√ß√£o atual ir√° ser cancelada. Deseja CANCELAR a digita√ß√£o atual?')) then
+     Action := caNone
+   else if FAbreMonitor then
+     self.AbreForm(TfrmMonitorControleNFe, paTelaMonitorControleNFe);
 end;
 
 procedure TfrmFaturamentoPedidos.btnCancelarClick(Sender: TObject);
@@ -366,17 +371,17 @@ begin
    except
       on E: TExcecaoParametroInvalido do begin
           if (pos('Natureza', E.Message) <> 0) then begin
-            inherited Avisar('Informe a Natureza de OperaÁ„o!');
+            inherited Avisar('Informe a Natureza de Opera√ß√£o!');
             self.BuscaNaturezaOperacao.edtCFOP.SetFocus;
           end;
 
           if (pos('Serie', E.Message) <> 0) {or (pos(E.Message, 'TipoSerie') <> 0))} then begin
-            inherited Avisar('Informe a sÈrie!');
+            inherited Avisar('Informe a s√©rie!');
             self.BuscaNaturezaOperacao.edtCFOP.SetFocus;
           end;
 
           if (pos('Destinatario', E.Message) <> 0) then begin
-            inherited Avisar('Informe o destinat·rio!');
+            inherited Avisar('Informe o destinat√°rio!');
             self.BuscaDestinatario.edtCodigo.SetFocus;
           end;
 
@@ -387,7 +392,7 @@ begin
        end;
 
       on E: TExcecaoNotaFiscalInvalida do begin
-//        inherited Avisar(E.Message); O AVISAR VAI FICAR DESABILITADO AQUI AT… SER IMPLEMENTADO UM AVISAR QUE PERMITA UTILIZAR A QUEBRA DE LINHA MANUALMENTE.
+//        inherited Avisar(E.Message); O AVISAR VAI FICAR DESABILITADO AQUI AT√â SER IMPLEMENTADO UM AVISAR QUE PERMITA UTILIZAR A QUEBRA DE LINHA MANUALMENTE.
         MessageDlg(E.Message, mtError, [mbOK], 0);
         self.BuscaDestinatario.edtCodigo.SetFocus;
       end;
@@ -471,10 +476,10 @@ var
   Pedidos                                   :TObjectList;
   nX                                        :Integer;
 begin
-   { Seto nil o evento BeforeScroll do cdsPedidos para n„o ir listar os itens no CDSItensDoPedido a cada inserÁ„o de pedido }
+   { Seto nil o evento BeforeScroll do cdsPedidos para n√£o ir listar os itens no CDSItensDoPedido a cada inser√ß√£o de pedido }
    self.cdsPedidos.BeforeScroll                   := nil;
    
-   { FaÁo o mesmo nesse caso. Para n„o ser deletado nenhum pedido apos setar '' na propriedade MARCADO_PARA_FATURA }
+   { Fa√ßo o mesmo nesse caso. Para n√£o ser deletado nenhum pedido apos setar '' na propriedade MARCADO_PARA_FATURA }
    self.cdsPedidosMARCADO_PARA_FATURAR.OnChange   := nil;
 
    EspecificacaoPedidosAprovadosNaoFaturados := TEspecificacaoPedidosAprovadosNaoFaturados.Create(
@@ -492,7 +497,7 @@ begin
         raise EAccessViolation.Create('');
      except
        on E: EAccessViolation do
-        raise EAccessViolation.Create('N„o h· pedidos para faturar deste destinatario. Para faturar um pedido para esse destinat·rio, crie um pedido '+
+        raise EAccessViolation.Create('N√£o h√° pedidos para faturar deste destinatario. Para faturar um pedido para esse destinat√°rio, crie um pedido '+
                                       'ou adicione itens avulsos!');
      end;
 
@@ -534,12 +539,12 @@ begin
       begin
         if not assigned(TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Pedido.Conferencia) then
         begin
-          motivo := chamaInput('TEXT', 'Pedido N∫ '+TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Pedido.numpedido+' n„o conferido. Informe o motivo:');
+          motivo := chamaInput('TEXT', 'Pedido N¬∫ '+TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Pedido.numpedido+' n√£o conferido. Informe o motivo:');
 
         if length(motivo) > 5 then
             TPedidoFaturado(self.FNotaFiscal.PedidosFaturados.Items[i]).Motivo := motivo
           else
-            raise Exception.Create('Motivo n„o informado. Faturamento cancelado.');
+            raise Exception.Create('Motivo n√£o informado. Faturamento cancelado.');
         end;
       end;
     finally
@@ -664,9 +669,10 @@ begin
                        self.pgcCabecalho.ActivePageIndex          := 0;
                        self.OnClose                               := self.FormClose;
                        self.btnLimparLocalEntrega.Visible         := false;
-                    end;                                       
-                                                               
-     etEmDigitacao: begin                                      
+                       self.btnMonitor.Visible                    := true;
+                    end;
+
+     etEmDigitacao: begin
                        self.lblCancelarDigitacaoAtual.Visible     := true;
                        self.btnFaturar.Enabled                    := true;
                        self.btnFaturar.OnClick                    := self.FaturarNotaFiscal;
@@ -678,10 +684,11 @@ begin
                        self.OnKeyDown                             := self.AtalhosEmDigitacao;
                        self.OnClose                               := self.FormClose;
                        self.btnLimparLocalEntrega.Visible         := false;
-                     end;                                      
-                                                               
+                       self.btnMonitor.Visible                    := true;
+                     end;
+
      etEmAlteracao: begin
-                       self.Caption                               := 'AlteraÁ„o de Nota Fiscal';
+                       self.Caption                               := 'Altera√ß√£o de Nota Fiscal';
                        self.lblCancelarDigitacaoAtual.Visible     := false;
                        self.btnFaturar.Enabled                    := true;
                        self.btnFaturar.OnClick                    := self.AlterarNotaFiscal;
@@ -695,7 +702,8 @@ begin
                        self.pgcNotaFiscal.ActivePageIndex         := 0;
                        self.pgcCabecalho.ActivePageIndex          := 0;
                        self.btnLimparLocalEntrega.Visible         := true;
-                    end;                                        
+                       self.btnMonitor.Visible                    := false;
+                    end;
    else
      raise TExcecaoParametroInvalido.Create('TfrmFaturamentoPedidos', 'AlterarEstadoTela(NovoEstado: TEstadoTela)', 'NovoEstado');
    end;
@@ -731,6 +739,7 @@ begin
   self.AlterarEstadoTela(etEmCriacao);
   self.pgcNotaFiscal.ActivePageIndex := 0;
   self.pgcCabecalho.ActivePageIndex  := 0;
+  FAbreMonitor := false;
 end;
 
 procedure TfrmFaturamentoPedidos.lblCancelarDigitacaoAtualClick(
@@ -855,7 +864,7 @@ begin
        for nX := 0 to (Pedido.Itens.Count-1) do
          if TItem(Pedido.Itens.Items[nX]).codigoProdutoKit > 0 then
          begin
-           avisar('Pedido possui kits desmembrados, portanto sÛ poder· ser faturado apÛs a conferÍncia ser completada.');
+           avisar('Pedido possui kits desmembrados, portanto s√≥ poder√° ser faturado ap√≥s a confer√™ncia ser completada.');
            cdsPedidos.Cancel;
            exit;
          end;
@@ -865,7 +874,7 @@ begin
      except
        on E: EAccessViolation do
         inherited Avisar('Erro em TfrmFaturamentoPedidos.AdicionarPedidoNaNotaFiscal(const CodigoPedido: Integer)'+#13+
-                        'N„o foi possÌvel adicionar o pedido!');
+                        'N√£o foi poss√≠vel adicionar o pedido!');
      end;
    finally
      FreeAndNil(Repositorio);
@@ -890,7 +899,7 @@ begin
 
      except
        on E: EAccessViolation do
-        inherited Avisar('N„o foi encontrado o pedido '+IntToStr(CodigoPedido)+' no banco de dados. N„o foi possÌvel remove-lo da nota fiscal. Verifique!');
+        inherited Avisar('N√£o foi encontrado o pedido '+IntToStr(CodigoPedido)+' no banco de dados. N√£o foi poss√≠vel remove-lo da nota fiscal. Verifique!');
      end;
    finally
      FreeAndNil(Repositorio);
@@ -953,7 +962,7 @@ begin
        self.BuscaTransportadora.Transportadora         :=  NF.Transportadora;
      except                                               
        on E: EAccessViolation do
-        // Caso n„o tenha transportador e forma de pagamento sÛ capturo o erro.
+        // Caso n√£o tenha transportador e forma de pagamento s√≥ capturo o erro.
      end;
 
      if not (Self.FEstadoTela = TEstadoTela(1)) then begin
@@ -1006,7 +1015,7 @@ begin
 
      self.cdsItensFisicos.EnableControls;     
 
-     { Itens FÌsicos }
+     { Itens F√≠sicos }
      self.cdsItensFisicos.EmptyDataSet;
      self.cdsItensFisicos.DisableControls;
 
@@ -1014,7 +1023,7 @@ begin
 
      try
        try
-         { Verificar se Pedidos est„o assinados }
+         { Verificar se Pedidos est√£o assinados }
 
          if Assigned(NF.PedidosFaturados) and (NF.PedidosFaturados.Count > 0) then begin
              for nX := 0 to (NF.PedidosFaturados.Count-1) do begin
@@ -1108,14 +1117,14 @@ begin
           self.edtCNPJ.Text           := NF.LocalEntrega.CnpjCpf;
        except
          on E: EAccessViolation do
-          // Caso n„o tenha endereÁo entrega.
+          // Caso n√£o tenha endere√ßo entrega.
        end;
      finally
        self.HabilitaEventosLocalEntrega;
      end;
    except
      on e: EAccessViolation DO
-      // CASO N√O TENHA NENHUM PEDIDO ADICIONADO NA NOTA FISCAL.
+      // CASO N√ÉO TENHA NENHUM PEDIDO ADICIONADO NA NOTA FISCAL.
    end;
 
    self.HabilitaOnChangeComponentes;
@@ -1404,10 +1413,10 @@ begin
 
    try
      if (not Assigned(self.FNotaFiscal.Itens) or (self.FNotaFiscal.Itens.Count <= 0)) then
-       raise TExcecaoNotaFiscalInvalida.Create('N„o È possÌvel gravar essa nota fiscal! Nenhum item foi adicionado!');
+       raise TExcecaoNotaFiscalInvalida.Create('N√£o √© poss√≠vel gravar essa nota fiscal! Nenhum item foi adicionado!');
 
-     { Verifico se o usu·rio inseriu dados no local de entrega.
-       Caso ele tenha inserido, ent„o È feito a validaÁ„o do local de entrega }
+     { Verifico se o usu√°rio inseriu dados no local de entrega.
+       Caso ele tenha inserido, ent√£o √© feito a valida√ß√£o do local de entrega }
      if self.TemLocalEntrega then
       self.FNotaFiscal.LocalEntrega.ValidarCamposObrigatorios();
 
@@ -1432,7 +1441,7 @@ begin
 
        if      (E.Message = 'LOGRADOURO') then
         self.edtLogradouro.SetFocus
-       else if (E.Message = 'N⁄MERO') then
+       else if (E.Message = 'N√öMERO') then
         self.edtNumero.SetFocus
        else if (E.Message = 'BAIRRO') then
         self.edtBairro.SetFocus
@@ -1468,7 +1477,7 @@ begin
     exit;
 
    dtpEmissaoChange(dtpEmissao);
-   Aguarda('Faturando Pedido'+#13#10+#13#10+'( Esta operaÁ„o pode levar alguns instantes )');
+   Aguarda('Faturando Pedido'+#13#10+#13#10+'( Esta opera√ß√£o pode levar alguns instantes )');
    self.lblCancelarDigitacaoAtual.Visible   := false;
    self.btnFaturar.Enabled                  := false;
 
@@ -1485,7 +1494,7 @@ begin
      RepEmpresa.Salvar(self.FNotaFiscal.Empresa);
      RepNotaFiscal.Salvar(self.FNotaFiscal);
 
-     inherited Avisar('Nota fiscal salva com sucesso! Anote o n˙mero da nota fiscal: '+IntToStr(self.FNotaFiscal.NumeroNotaFiscal));
+     inherited Avisar('Nota fiscal salva com sucesso! Anote o n√∫mero da nota fiscal: '+IntToStr(self.FNotaFiscal.NumeroNotaFiscal));
 
      self.AlterarEstadoTela(etEmCriacao);
    finally
@@ -1662,6 +1671,12 @@ begin
    self.edtCNPJ.Clear;
 end;
 
+procedure TfrmFaturamentoPedidos.btnMonitorClick(Sender: TObject);
+begin
+   FAbreMonitor := true;
+   self.Close;
+end;
+
 procedure TfrmFaturamentoPedidos.DestacarAoPassarOMouse(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -1726,7 +1741,7 @@ begin
      self.FNotaFiscal.Volumes.Especie := TEdit(Sender).Text;
    except
      on E: TExcecaoParametroInvalido do
-      inherited Avisar('EspÈcie È um campo obrigatÛrio!');
+      inherited Avisar('Esp√©cie √© um campo obrigat√≥rio!');
    end;
 end;
 
@@ -1751,7 +1766,7 @@ end;
 procedure TfrmFaturamentoPedidos.btnItensAvulsosClick(Sender: TObject);
 begin
    if not cdsItensDoPedidoSelecionado.IsEmpty then begin
-     avisar('Esta operaÁ„o n„o È possÌvel, pois um pedido ja foi selecionado');
+     avisar('Esta opera√ß√£o n√£o √© poss√≠vel, pois um pedido ja foi selecionado');
      Exit;
    end;
 
@@ -1775,17 +1790,17 @@ begin
    except
       on E: TExcecaoParametroInvalido do begin
           if (pos('Natureza', E.Message) <> 0) then begin
-            inherited Avisar('Informe a Natureza de OperaÁ„o!');
+            inherited Avisar('Informe a Natureza de Opera√ß√£o!');
             self.BuscaNaturezaOperacao.edtCFOP.SetFocus;
           end;
 
           if (pos('Serie', E.Message) <> 0) {or (pos(E.Message, 'TipoSerie') <> 0))} then begin
-            inherited Avisar('Informe a sÈrie!');
+            inherited Avisar('Informe a s√©rie!');
             self.BuscaNaturezaOperacao.edtCFOP.SetFocus;
           end;
 
           if (pos('Destinatario', E.Message) <> 0) then begin
-            inherited Avisar('Informe o destinat·rio!');
+            inherited Avisar('Informe o destinat√°rio!');
             self.BuscaDestinatario.edtCodigo.SetFocus;
           end;
 
@@ -1811,7 +1826,7 @@ begin
    self.BuscaNaturezaOperacao.AbreTelaPesquisa := false;
 
    try
-     { Para empresa VLJ que È lucro presumido. O final È 2 e n„o 1 }
+     { Para empresa VLJ que √© lucro presumido. O final √© 2 e n√£o 1 }
 
      if (Emp.RegimeTributario = trtLucroPresumido) then begin
        if      (self.BuscaNaturezaOperacao.edtCFOP.Text = '5101') then

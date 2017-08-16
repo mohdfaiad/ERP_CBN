@@ -12,7 +12,7 @@ uses
   frameBuscaEmpresa, System.ImageList, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, ACBrDFeSSL;
 
 type
   TfrmCCe = class(TfrmPadrao)
@@ -613,7 +613,7 @@ begin
   if not TStringUtilitario.EstaVazia(BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado) then
     AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
 
-                                                                                      erro
+
   if not (ACBrNFe.WebServices.StatusServico.Executar) then
     raise exception.Create(ACBrNFe.WebServices.StatusServico.Msg);
 
@@ -710,7 +710,7 @@ begin
    //  dt := self.ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento;
      memo.Text := self.ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.XML;
 
-     memo.Lines.SaveToFile('C:\Users\User\Desktop\teste.xml');
+     //memo.Lines.SaveToFile('C:\Users\User\Desktop\teste.xml');
 
      { Salvando os dados de retorno dos eventos }
      dm.qryGenerica2.sql.text := 'update or insert into return_cce_corr (codigo, cod_correcao, status, motivo) '+
@@ -774,6 +774,7 @@ begin
       self.AcbrNfe.Configuracoes.WebServices.UF           := 'PR';
       self.AcbrNfe.Configuracoes.WebServices.Visualizar   := false;              // Visualizar mensagens
       self.AcbrNfe.Configuracoes.Geral.FormaEmissao       := teNormal;
+      self.AcbrNfe.Configuracoes.Geral.SSLLib             := libCapicom;
 
       if BuscaEmpresa1.Empresa.ConfiguracoesNF.ambiente_nfe = 'P' then
         self.AcbrNfe.Configuracoes.WebServices.Ambiente   := taProducao
@@ -1001,7 +1002,7 @@ begin
     condicao_empresa := '';
 
   result := ' select lc.codigo, lc.data, iif(rlc.codigo is null, ''000'', rlc.status) STATUS,                    '+
-            '        iif(rlc.codigo is null, ''Envio do lore pendente...'', rlc.motivo) MOTIVO from lotes_cce lc '+
+            '        iif(rlc.codigo is null, ''Envio do lote pendente...'', rlc.motivo) MOTIVO from lotes_cce lc '+
             ' left join return_cce_lote  rlc on rlc.cod_lote = lc.codigo                                         '+
             condicao_empresa;
 
