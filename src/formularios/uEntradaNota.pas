@@ -568,6 +568,7 @@ begin
   TDbGrid(Sender).DefaultDrawDataCell(Rect, TDbGrid(Sender).columns[datacol].field, State);
 
   if Column.Field = cdsMateriasVALIDADO then begin
+    TDBGridCBN(Sender).Canvas.Brush.Color := clWhite;
     TDBGridCBN(Sender).Canvas.FillRect(Rect);
 
     if cdsMateriasVALIDADO.asString = 'S' then

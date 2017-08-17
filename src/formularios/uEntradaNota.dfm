@@ -10,7 +10,7 @@ inherited frmEntradaNota: TfrmEntradaNota
   ExplicitWidth = 697
   ExplicitHeight = 565
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 496
@@ -685,8 +685,8 @@ inherited frmEntradaNota: TfrmEntradaNota
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Segoe UI'
+    TitleFont.Height = -13
+    TitleFont.Name = 'Calibri'
     TitleFont.Style = []
     OnCellClick = GridMateriasCellClick
     OnDrawColumnCell = GridMateriasDrawColumnCell
@@ -761,9 +761,13 @@ inherited frmEntradaNota: TfrmEntradaNota
   end
   object ACBrNFe: TACBrNFe
     Configuracoes.Geral.SSLLib = libCapicomDelphiSoap
+    Configuracoes.Geral.SSLCryptLib = cryCapicom
+    Configuracoes.Geral.SSLHttpLib = httpIndy
+    Configuracoes.Geral.SSLXmlSignLib = xsMsXmlCapicom
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Geral.ValidarDigest = False
     Configuracoes.Geral.IncluirQRCodeXMLNFCe = False
+    Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
@@ -774,7 +778,7 @@ inherited frmEntradaNota: TfrmEntradaNota
     Left = 488
     Top = 8
     Bitmap = {
-      494C010104000900100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
