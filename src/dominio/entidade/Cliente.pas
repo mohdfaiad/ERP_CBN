@@ -18,6 +18,7 @@ type
     FCodRepresentante: Integer;
     FBloqueado: String;
     FMotivoBloqueio: String;
+    FECommerce: Boolean;
 
     FTabelaPreco     :TTabelaPreco;
     FRepresentante   :TRepresentante;
@@ -46,6 +47,7 @@ type
     property Funcionario       :Boolean   read FFuncionario       write FFuncionario;
     property bloqueado         :String    read FBloqueado         write FBloqueado;
     property motivoBloqueio    :String    read FMotivoBloqueio    write FMotivoBloqueio;
+    property ECommerce         :Boolean   read FECommerce         write FECommerce;
 
   public
     property TabelaPreco       :TTabelaPreco   read GetTabelaPreco;

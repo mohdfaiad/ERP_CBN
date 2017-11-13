@@ -9,7 +9,7 @@ inherited frmContasPagar: TfrmContasPagar
   ExplicitWidth = 1004
   ExplicitHeight = 632
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited pnlBotoes: TPanel
     Top = 562
     Width = 998
@@ -96,15 +96,15 @@ inherited frmContasPagar: TfrmContasPagar
   inherited pgGeral: TPageControl
     Width = 998
     Height = 562
-    ActivePage = TabSheet1
+    ActivePage = tsDados
     ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 990
-      ExplicitHeight = 534
+      ExplicitHeight = 532
       DesignSize = (
         990
-        534)
+        532)
       object Label16: TLabel [0]
         Left = 282
         Top = 480
@@ -206,9 +206,9 @@ inherited frmContasPagar: TfrmContasPagar
           end>
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 517
+        Top = 513
         Width = 990
-        ExplicitTop = 517
+        ExplicitTop = 513
         ExplicitWidth = 990
       end
       object gpbPeriodo: TGroupBox
@@ -311,7 +311,7 @@ inherited frmContasPagar: TfrmContasPagar
           Left = 24
           Top = 24
           Width = 150
-          Height = 21
+          Height = 23
           Style = csDropDownList
           ItemIndex = 0
           TabOrder = 0
@@ -484,31 +484,27 @@ inherited frmContasPagar: TfrmContasPagar
           NumGlyphs = 2
           OnClick = SpeedButton1Click
         end
-        inline BuscaFornecedor2: TBuscaPessoa
-          Left = 16
-          Top = 15
+        inline BuscaFornecedor: TBuscaPessoa
+          Left = 24
+          Top = 14
           Width = 602
           Height = 38
           AutoSize = True
           TabOrder = 0
-          ExplicitLeft = 16
-          ExplicitTop = 15
+          ExplicitLeft = 24
+          ExplicitTop = 14
           ExplicitWidth = 602
           inherited StaticText1: TStaticText
-            Width = 37
             Font.Style = []
-            ExplicitWidth = 37
           end
           inherited StaticText2: TStaticText
-            Width = 36
             Font.Style = []
-            ExplicitWidth = 36
           end
           inherited edtRazao: TEdit
-            Left = 102
-            Width = 500
-            ExplicitLeft = 102
-            ExplicitWidth = 500
+            Width = 501
+            Height = 23
+            ExplicitWidth = 501
+            ExplicitHeight = 23
           end
         end
       end
@@ -616,14 +612,14 @@ inherited frmContasPagar: TfrmContasPagar
     inherited tsDados: TTabSheet
       Enabled = False
       ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitTop = 26
       ExplicitWidth = 990
-      ExplicitHeight = 534
+      ExplicitHeight = 532
       inherited pnlDados: TPanel
         Width = 990
-        Height = 534
+        Height = 532
         ExplicitWidth = 990
-        ExplicitHeight = 534
+        ExplicitHeight = 532
         inherited lblCamposObrigatorios: TLabel
           Visible = False
         end
@@ -641,44 +637,44 @@ inherited frmContasPagar: TfrmContasPagar
           object Label2: TLabel
             Left = 302
             Top = 24
-            Width = 87
-            Height = 13
+            Width = 91
+            Height = 15
             Caption = 'Data Documento'
           end
           object Label3: TLabel
             Left = 72
             Top = 119
-            Width = 65
-            Height = 13
+            Width = 71
+            Height = 15
             Caption = 'Observa'#231#245'es'
           end
           object Label4: TLabel
             Left = 511
             Top = 24
-            Width = 32
-            Height = 13
+            Width = 34
+            Height = 15
             Caption = 'Status'
           end
           object Label5: TLabel
             Left = 616
             Top = 24
-            Width = 35
-            Height = 13
+            Width = 34
+            Height = 15
             Caption = 'VALOR'
             Visible = False
           end
           object Label1: TLabel
             Left = 198
             Top = 24
-            Width = 76
-            Height = 13
+            Width = 78
+            Height = 15
             Caption = 'N'#186' Documento'
           end
           object Label8: TLabel
             Left = 406
             Top = 24
-            Width = 89
-            Height = 13
+            Width = 95
+            Height = 15
             Caption = 'Data Lan'#231'amento'
           end
           object edtCodigo: TEdit
@@ -696,41 +692,6 @@ inherited frmContasPagar: TfrmContasPagar
             Text = '0'
             Visible = False
           end
-          inline BuscaNotaFiscal1: TBuscaNotaFiscal
-            Left = 64
-            Top = 16
-            Width = 119
-            Height = 48
-            TabOrder = 1
-            OnExit = BuscaNotaFiscal1Exit
-            ExplicitLeft = 64
-            ExplicitTop = 16
-            ExplicitWidth = 119
-            ExplicitHeight = 48
-            inherited StaticText1: TStaticText
-              Width = 72
-              Font.Color = clBlack
-              Font.Style = []
-              ExplicitWidth = 72
-            end
-            inherited edtNrNota: TCurrencyEdit
-              Width = 75
-              TabStop = False
-              ExplicitWidth = 75
-            end
-            inherited btnBusca: TBitBtn
-              Left = 90
-              Visible = False
-              ExplicitLeft = 90
-            end
-            inherited rgStatus: TRadioGroup
-              Enabled = False
-              ItemIndex = 1
-            end
-            inherited rgTipo: TRadioGroup
-              Enabled = False
-            end
-          end
           object edtNumDocumento: TCurrencyEdit
             Left = 198
             Top = 40
@@ -744,7 +705,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 2
+            TabOrder = 1
           end
           object dtpDataDocumento: TDateTimePicker
             Left = 302
@@ -753,35 +714,7 @@ inherited frmContasPagar: TfrmContasPagar
             Height = 21
             Date = 42419.601737152780000000
             Time = 42419.601737152780000000
-            TabOrder = 3
-          end
-          inline BuscaFornecedor: TBuscaPessoa
-            Left = 72
-            Top = 74
-            Width = 633
-            Height = 38
-            AutoSize = True
-            TabOrder = 6
-            ExplicitLeft = 72
-            ExplicitTop = 74
-            ExplicitWidth = 633
-            inherited StaticText1: TStaticText
-              Width = 37
-              Font.Color = clBlack
-              Font.Style = []
-              ExplicitWidth = 37
-            end
-            inherited StaticText2: TStaticText
-              Width = 58
-              Caption = 'Fornecedor'
-              Font.Color = clBlack
-              Font.Style = []
-              ExplicitWidth = 58
-            end
-            inherited edtRazao: TEdit
-              Width = 532
-              ExplicitWidth = 532
-            end
+            TabOrder = 2
           end
           object edtValor: TCurrencyEdit
             Left = 616
@@ -797,7 +730,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Style = []
             ParentFont = False
             ReadOnly = True
-            TabOrder = 5
+            TabOrder = 6
             Visible = False
             OnChange = edtValorChange
           end
@@ -805,16 +738,16 @@ inherited frmContasPagar: TfrmContasPagar
             Left = 71
             Top = 135
             Width = 634
-            Height = 21
-            TabOrder = 7
+            Height = 23
+            TabOrder = 5
           end
           object cbxStatus: TComboBox
             Left = 509
             Top = 40
             Width = 95
-            Height = 21
+            Height = 23
             Enabled = False
-            TabOrder = 4
+            TabOrder = 3
             Text = 'ABERTA'
             Items.Strings = (
               'ABERTA'
@@ -826,14 +759,185 @@ inherited frmContasPagar: TfrmContasPagar
             Left = 405
             Top = 40
             Width = 92
-            Height = 21
+            Height = 23
             Enabled = False
+            TabOrder = 7
+          end
+          inline BuscaNotaFiscal1: TBuscaNotaFiscal
+            Left = 62
+            Top = 16
+            Width = 126
+            Height = 51
             TabOrder = 8
+            OnExit = BuscaNotaFiscal1Exit
+            ExplicitLeft = 62
+            ExplicitTop = 16
+            ExplicitWidth = 126
+            ExplicitHeight = 51
+            inherited StaticText1: TStaticText
+              Left = 8
+              Top = 8
+              Width = 86
+              Height = 17
+              Caption = 'N'#186' Nota Fiscal'
+              Color = clWhite
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Pitch = fpVariable
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              TabOrder = 0
+              Transparent = False
+            end
+            inherited edtNrNota: TCurrencyEdit
+              Left = 8
+              Top = 24
+              Width = 88
+              Height = 21
+              AutoSize = False
+              DisplayFormat = '0'
+              TabOrder = 1
+              ExplicitWidth = 88
+            end
+            inherited btnBusca: TBitBtn
+              Left = 98
+              Top = 22
+              Width = 26
+              Height = 25
+              Glyph.Data = {
+                36080000424D3608000000000000360000002800000020000000100000000100
+                2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF004D74AB0023417900C5ABA7009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B00001047000000150061474300FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF004173AF00008EEC00009AF4001F4B80009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+                9B009B9B9B009B9B9B00000F4B00002A88000036900000001C00FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+                FF00FEFFFF002F6EB2002BA7F50016C0FF0000A0F300568BC3009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+                9B009A9B9B00000A4E0000439100005C9B00003C8F0000275F00FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FEFF
+                FF002974BB0068C4F8006BD4FF00279CE6006696C800FFFFFF009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009A9B
+                9B00001057000460940007709B0000388200023264009B9B9B00FFFFFF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF003D8F
+                D500A4E3FE00B5EEFF004CAAE700669DD200FFFFFF00FFFFFF009B9B9B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00002B
+                7100407F9A00518A9B000046830002396E009B9B9B009B9B9B00FFFFFF00FFFF
+                FF00FEFEFE00A18889008A6A6A0093736E0086656700B0959500BAA8B100359E
+                E800BDF5FF0077C4EF0063A1DA00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+                9B009A9A9A003D242500260606002F0F0A00220103004C31310056444D00003A
+                840059919B0013608B00003D76009B9B9B009B9B9B009B9B9B00FFFFFF00D7CD
+                CD007E585700DFD3CB00FFFFF700FFFFE700FFFEDB00D6BB9E0090584D00817B
+                8E001794E4006BB5E900FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B007369
+                69001A0000007B6F67009B9B93009B9B83009B9A770072573A002C0000001D17
+                2A0000308000075185009B9B9B009B9B9B009B9B9B009B9B9B00EDE9E9008865
+                6500FFFFFF00FFFFFF00FDF8E800FAF2DC00F8EDCF00FFF1CF00F6DEBA009F59
+                4500C0C7D500FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00898585002401
+                01009B9B9B009B9B9B0099948400968E780094896B009B8D6B00927A56003B00
+                00005C6371009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00A3888900F6EF
+                EA00FFFFFF00FEFBF500FBF7E800F9F4DA00F5EBCC00E6CEAC00F3DAB800E2BD
+                9900AB8B8E00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF003F242500928B
+                86009B9B9B009A979100979384009590760091876800826A48008F7654007E59
+                350047272A009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0093767400FFFF
+                FF00FDFBF100FCF8EE00FAF3E100FCF5E300F7F0D700F0DFC100E7C9A900F0D1
+                AB00A87E7500F8F6F600FFFFFF00FFFFFF00FFFFFF00FFFFFF002F1210009B9B
+                9B0099978D0098948A00968F7D0098917F00938C73008C7B5D00836545008C6D
+                4700441A1100949292009B9B9B009B9B9B009B9B9B009B9B9B00997D7A00FFFF
+                FC00F9F2E100FAF3DE00FAF7E500FAF1DC00F1DFC000EDD9BA00ECD8B900EDCA
+                A500AF867900EDE8E900FFFFFF00FFFFFF00FFFFFF00FFFFFF00351916009B9B
+                9800958E7D00968F7A0096938100968D78008D7B5C0089755600887455008966
+                41004B221500898485009B9B9B009B9B9B009B9B9B009B9B9B009C807B00FFFF
+                EB00F9EED500FAF1D700F9F2DA00F2E3C600FEFBF900FFFFF000EFDFC000E9C6
+                9E00B0857B00F5F2F300FFFFFF00FFFFFF00FFFFFF00FFFFFF00381C17009B9B
+                8700958A7100968D7300958E76008E7F62009A9795009B9B8C008B7B5C008562
+                3A004C211700918E8F009B9B9B009B9B9B009B9B9B009B9B9B00AF959600F7EA
+                C800F9EBCC00EFDCBE00F4E4C700F0E1C500FDFCEC00FAF5DD00EFDCBC00DFB0
+                8700B59A9A00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF004B3132009386
+                6400958768008B785A00908063008C7D610099988800969179008B7858007B4C
+                2300513636009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00DED4D700BA99
+                8C00FDECC400EDD4B000E5CAA800EFDBBF00F2E3C400F2DEBC00EABF9300BB8E
+                7D00E7DFE200FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF007A7073005635
+                28009988600089704C00816644008B775B008E7F60008E7A5800865B2F00572A
+                1900837B7E009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00CEBF
+                C500BE9A8D00E6C7A500EFCBA300ECC8A200E8BE9400DCAA8600BE958500DFD6
+                D700FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B006A5B
+                61005A362900826341008B673F0088643E00845A3000784622005A3121007B72
+                73009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+                FF00E9E4E600C9B3B400B99C9300C3A09700BF9F9600CCB9B700F1EEEF00FFFF
+                FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+                9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
+                9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+              NumGlyphs = 2
+              TabOrder = 2
+              TabStop = False
+              ExplicitLeft = 98
+            end
+            inherited rgStatus: TRadioGroup
+              Left = 3
+              Top = 51
+              Width = 196
+              Height = 39
+              Caption = ' Status '
+              Columns = 2
+              ItemIndex = 1
+              Items.Strings = (
+                'Enviadas'
+                'Todas')
+              TabOrder = 3
+              Visible = False
+              ExplicitLeft = 3
+              ExplicitTop = 51
+            end
+            inherited rgTipo: TRadioGroup
+              Left = 8
+              Top = 89
+              Width = 196
+              Height = 39
+              Caption = ' Tipo '
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                'Entrada'
+                'Sa'#237'da'
+                'Todas')
+              TabOrder = 4
+              Visible = False
+            end
+          end
+          inline BuscaFornecedor2: TBuscaPessoa
+            Left = 70
+            Top = 73
+            Width = 635
+            Height = 38
+            AutoSize = True
+            TabOrder = 4
+            ExplicitLeft = 70
+            ExplicitTop = 73
+            ExplicitWidth = 635
+            inherited StaticText1: TStaticText
+              Font.Style = []
+            end
+            inherited StaticText2: TStaticText
+              Font.Style = []
+            end
+            inherited edtRazao: TEdit
+              Width = 534
+              Height = 23
+              ExplicitWidth = 534
+              ExplicitHeight = 23
+            end
           end
         end
         object GroupBox2: TGroupBox
           Left = 1
-          Top = 249
+          Top = 247
           Width = 988
           Height = 284
           Align = alBottom
@@ -842,15 +946,15 @@ inherited frmContasPagar: TfrmContasPagar
           object Label6: TLabel
             Left = 515
             Top = 19
-            Width = 77
-            Height = 13
+            Width = 81
+            Height = 15
             Caption = 'Pre'#231'o de Custo'
           end
           object Label7: TLabel
             Left = 619
             Top = 19
-            Width = 62
-            Height = 13
+            Width = 64
+            Height = 15
             Caption = 'Quantidade'
           end
           object Label13: TLabel
@@ -973,7 +1077,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 8
+            TabOrder = 6
             Text = '0'
             Visible = False
           end
@@ -991,7 +1095,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 4
+            TabOrder = 3
           end
           object edtPrecoCusto: TCurrencyEdit
             Left = 515
@@ -1008,7 +1112,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 3
+            TabOrder = 2
           end
           object btnNovo: TBitBtn
             Left = 392
@@ -1053,7 +1157,7 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
             ParentFont = False
-            TabOrder = 6
+            TabOrder = 5
             OnClick = btnCancelaClick
           end
           object btnSalva: TBitBtn
@@ -1069,17 +1173,17 @@ inherited frmContasPagar: TfrmContasPagar
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
             ParentFont = False
-            TabOrder = 5
+            TabOrder = 4
             OnClick = btnSalvaClick
           end
           inline BuscaMateria1: TBuscaMateria
-            Left = 64
+            Left = 80
             Top = 19
             Width = 412
             Height = 39
             AutoSize = True
-            TabOrder = 2
-            ExplicitLeft = 64
+            TabOrder = 8
+            ExplicitLeft = 80
             ExplicitTop = 19
           end
         end
@@ -1108,60 +1212,54 @@ inherited frmContasPagar: TfrmContasPagar
             OnClick = chkDebitoAutClick
           end
           inline BuscaContaBanco1: TBuscaContaBanco
-            Left = 185
-            Top = 13
-            Width = 592
-            Height = 53
+            Left = 192
+            Top = 16
+            Width = 657
+            Height = 42
             TabOrder = 1
-            ExplicitLeft = 185
-            ExplicitTop = 13
-            ExplicitWidth = 592
-            ExplicitHeight = 53
+            ExplicitLeft = 192
+            ExplicitTop = 16
+            ExplicitWidth = 657
+            ExplicitHeight = 42
             inherited StaticText3: TStaticText [0]
-              Left = 370
+              Left = 408
               Top = 0
-              ExplicitLeft = 370
+              ExplicitLeft = 408
               ExplicitTop = 0
             end
             inherited StaticText4: TStaticText [1]
-              Left = 453
-              Top = 0
-              ExplicitLeft = 453
-              ExplicitTop = 0
+              Left = 502
+              Top = 1
+              ExplicitLeft = 502
+              ExplicitTop = 1
             end
             inherited StaticText2: TStaticText [2]
-              Left = 77
-              ExplicitLeft = 77
             end
             inherited StaticText1: TStaticText [3]
             end
             inherited edtCodigo: TCurrencyEdit [4]
-              Width = 45
-              ExplicitWidth = 45
             end
             inherited btnBusca: TBitBtn [5]
-              Left = 49
-              Top = 13
-              ExplicitLeft = 49
-              ExplicitTop = 13
             end
             inherited edtBanco: TEdit [6]
-              Left = 76
-              Width = 282
-              ExplicitLeft = 76
-              ExplicitWidth = 282
+              Height = 23
+              ExplicitHeight = 23
             end
             inherited edtNumAgencia: TEdit [7]
-              Left = 370
+              Left = 408
               Top = 16
-              ExplicitLeft = 370
+              Height = 23
+              ExplicitLeft = 408
               ExplicitTop = 16
+              ExplicitHeight = 23
             end
             inherited edtNumConta: TEdit [8]
-              Left = 456
+              Left = 502
               Top = 16
-              ExplicitLeft = 456
+              Height = 23
+              ExplicitLeft = 502
               ExplicitTop = 16
+              ExplicitHeight = 23
             end
           end
         end
@@ -1174,7 +1272,7 @@ inherited frmContasPagar: TfrmContasPagar
         Left = 0
         Top = 0
         Width = 990
-        Height = 534
+        Height = 532
         Align = alClient
         TabOrder = 0
         object lbParcelas: TLabel

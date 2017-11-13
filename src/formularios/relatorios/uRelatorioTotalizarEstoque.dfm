@@ -2804,8 +2804,6 @@ inherited frmRelatorioTotalizarEstoque: TfrmRelatorioTotalizarEstoque
     Height = 41
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 619
-    ExplicitWidth = 901
     object btnImprimir: TBitBtn
       Left = 435
       Top = 6

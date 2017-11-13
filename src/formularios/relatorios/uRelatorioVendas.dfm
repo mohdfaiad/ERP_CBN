@@ -11,7 +11,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
   ExplicitWidth = 1203
   ExplicitHeight = 644
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Splitter3: TSplitter
     Left = 0
     Top = 95
@@ -624,11 +624,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Pen.Style = psClear
       end
       object Label13: TLabel
-        Left = 151
+        Left = 127
         Top = 9
         Width = 69
         Height = 17
-        Anchors = [akTop, akRight]
+        Anchors = [akTop]
         Caption = 'Qtd. Pe'#231'as:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
@@ -639,11 +639,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Transparent = True
       end
       object Label19: TLabel
-        Left = 302
+        Left = 268
         Top = 10
         Width = 65
         Height = 17
-        Anchors = [akTop, akRight]
+        Anchors = [akTop]
         Caption = 'Qtd. Itens:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
@@ -674,7 +674,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 9
         Width = 84
         Height = 17
-        Anchors = [akTop, akRight]
         Caption = 'Qtd. Pedidos:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 11447982
@@ -689,13 +688,42 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Top = 9
         Width = 7
         Height = 17
-        Anchors = [akTop, akRight]
         Caption = '0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14737632
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = True
+      end
+      object Label10: TLabel
+        Left = 439
+        Top = 3
+        Width = 153
+        Height = 17
+        Anchors = [akTop]
+        Caption = 'Total dos Descontos:  R$'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 11447982
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = True
+      end
+      object Label4: TLabel
+        Left = 446
+        Top = 21
+        Width = 189
+        Height = 13
+        Anchors = [akTop]
+        Caption = '( Dos Itens + da forma pag. + outro )'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 11447982
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
         ParentFont = False
         Transparent = True
       end
@@ -716,81 +744,65 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Visible = False
       end
       object Panel3: TPanel
-        Left = 440
+        Left = 576
         Top = 0
-        Width = 745
+        Width = 609
         Height = 38
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          745
+          609
           38)
-        object Label10: TLabel
-          Left = 31
-          Top = 3
-          Width = 153
-          Height = 17
-          Anchors = [akTop, akRight]
-          Caption = 'Total dos Descontos:  R$'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 11447982
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          Transparent = True
-        end
         object Label11: TLabel
-          Left = 520
+          Left = 414
           Top = 5
-          Width = 143
-          Height = 23
+          Width = 123
+          Height = 20
           Anchors = [akTop, akRight]
           Caption = 'Total L'#237'quido:  R$'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 11447982
-          Font.Height = -17
+          Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
-          ExplicitLeft = 618
-        end
-        object Label4: TLabel
-          Left = 38
-          Top = 21
-          Width = 189
-          Height = 13
-          Anchors = [akTop, akRight]
-          Caption = '( Dos Itens + da forma pag. + outro )'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 11447982
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          Transparent = True
         end
         object Label20: TLabel
-          Left = 291
+          Left = 196
           Top = 5
-          Width = 127
-          Height = 23
+          Width = 111
+          Height = 20
           Anchors = [akTop, akRight]
           Caption = 'Total Bruto:  R$'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 11447982
-          Font.Height = -17
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object Label21: TLabel
+          Left = 12
+          Top = 6
+          Width = 111
+          Height = 20
+          Anchors = [akTop, akRight]
+          Caption = 'Total Custo:  R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 11447982
+          Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
         end
         object DBEdit3: TDBEdit
-          Left = 640
-          Top = 4
-          Width = 95
+          Left = 512
+          Top = 5
+          Width = 91
           Height = 21
           Anchors = [akTop, akRight]
           BorderStyle = bsNone
@@ -799,34 +811,16 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 6930274
-          Font.Height = -17
+          Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 0
         end
-        object DBEdit4: TDBEdit
-          Left = 189
-          Top = 2
-          Width = 98
-          Height = 21
-          Anchors = [akTop, akRight]
-          BorderStyle = bsNone
-          Color = 5460819
-          DataField = 'TOT_DESCONTO'
-          DataSource = DataSource1
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 14737632
-          Font.Height = -15
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          TabOrder = 1
-        end
         object DBEdit5: TDBEdit
-          Left = 395
-          Top = 4
-          Width = 95
+          Left = 283
+          Top = 5
+          Width = 91
           Height = 21
           Anchors = [akTop, akRight]
           BorderStyle = bsNone
@@ -835,19 +829,38 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 6930274
-          Font.Height = -17
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 1
+        end
+        object DBEdit6: TDBEdit
+          Left = 99
+          Top = 6
+          Width = 74
+          Height = 21
+          Anchors = [akTop, akRight]
+          BorderStyle = bsNone
+          Color = 5460819
+          DataField = 'PRECO_CUSTO'
+          DataSource = DataSource1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 6930274
+          Font.Height = -15
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 2
+          ExplicitLeft = 233
         end
       end
       object DBEdit1: TDBEdit
-        Left = 227
+        Left = 199
         Top = 8
         Width = 68
         Height = 21
-        Anchors = [akTop, akRight]
+        Anchors = [akTop]
         BorderStyle = bsNone
         Color = 5460819
         DataField = 'TOTAL_PECAS'
@@ -861,11 +874,11 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         TabOrder = 2
       end
       object DBEdit2: TDBEdit
-        Left = 373
+        Left = 336
         Top = 8
         Width = 71
         Height = 21
-        Anchors = [akTop, akRight]
+        Anchors = [akTop]
         BorderStyle = bsNone
         Color = 5460819
         DataField = 'TOTAL_ITENS'
@@ -895,6 +908,24 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         ParentFont = False
         TabOrder = 4
         OnClick = chkSelecionarClick
+      end
+      object DBEdit4: TDBEdit
+        Left = 597
+        Top = 2
+        Width = 98
+        Height = 21
+        Anchors = [akTop]
+        BorderStyle = bsNone
+        Color = 5460819
+        DataField = 'TOT_DESCONTO'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 14737632
+        Font.Height = -15
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 5
       end
     end
     object GroupBox1: TGroupBox
@@ -1313,7 +1344,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Left = 9
         Top = 21
         Width = 121
-        Height = 19
+        Height = 21
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 0
@@ -1323,7 +1354,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Left = 142
         Top = 21
         Width = 203
-        Height = 19
+        Height = 21
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 1
@@ -1342,7 +1373,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         Left = 9
         Top = 69
         Width = 336
-        Height = 19
+        Height = 21
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 3
@@ -3203,7 +3234,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3585,6 +3616,10 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     object cdsCODIGO_NOTA_FISCAL: TIntegerField
       FieldName = 'CODIGO_NOTA_FISCAL'
     end
+    object cdsPRECO_CUSTO: TBCDField
+      FieldName = 'PRECO_CUSTO'
+      Size = 2
+    end
     object cdsTOT_DESCONTO: TAggregateField
       FieldName = 'TOT_DESCONTO'
       Active = True
@@ -3749,6 +3784,10 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       ReadOnly = True
       DisplayFormat = ' ,0.00; -,0.00'
       Precision = 18
+      Size = 2
+    end
+    object ClientDataSet1PRECO_CUSTO: TBCDField
+      FieldName = 'PRECO_CUSTO'
       Size = 2
     end
     object ClientDataSet1TOTAL_ITENS: TAggregateField

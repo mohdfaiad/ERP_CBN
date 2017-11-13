@@ -730,9 +730,9 @@ begin
                         'left join  dados_representante dr on dr.codigo_representante = rep.codigo';
 
     if rgpSetor.ItemIndex = 1 then
-      condicaoEcommerce := ' and dr.rep_ecommerce = ''S'' and pro.tipo = ''E'' '
+      condicaoEcommerce := ' and (dr.rep_ecommerce = ''S'' and pro.tipo = ''E'') '
     else
-      condicaoEcommerce := ' and (dr.codigo is null) or (dr.rep_ecommerce <> ''S'') or ((dr.rep_ecommerce = ''S'') and (pro.tipo = ''L'')) '
+      condicaoEcommerce := ' and ((dr.codigo is null) or (dr.rep_ecommerce <> ''S'') or ((dr.rep_ecommerce = ''S'') and (pro.tipo = ''L''))) '
   end;
 
   if BuscaProduto2.edtReferencia.Text <> '' then

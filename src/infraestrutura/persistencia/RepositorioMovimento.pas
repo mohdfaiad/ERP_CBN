@@ -19,7 +19,7 @@ type
     function SQLGetAll                   :String;            override;
     function CondicaoSQLGetAll           :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -150,9 +150,10 @@ begin
   result := 'select * from MOVIMENTOS ' + IfThen(FIdentificador = '','', CondicaoSQLGetAll);
 end;
 
-function TRepositorioMovimento.SQLGetExiste(campo: String): String;
+function TRepositorioMovimento.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from MOVIMENTOS where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioMovimento.SQLRemover: String;

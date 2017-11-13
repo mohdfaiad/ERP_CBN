@@ -25,6 +25,7 @@ type
     procedure btn3opcaoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure memMsgChange(Sender: TObject);
   private
     procedure ajustaTamanho;
   public
@@ -79,6 +80,14 @@ begin
     frmConfirmacaoUsuario.btnConfirma.Left    := 199;
     frmConfirmacaoUsuario.btn3opcao.Visible   := true;
   end;
+end;
+
+procedure TfrmConfirmacaoUsuario.memMsgChange(Sender: TObject);
+begin
+  if self.memMsg.Lines.Count > 1 then
+    self.memMsg.Alignment := taLeftJustify
+  else
+    self.memMsg.Alignment := taCenter;
 end;
 
 procedure TfrmConfirmacaoUsuario.ajustaTamanho;

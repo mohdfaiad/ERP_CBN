@@ -168,7 +168,7 @@ begin
      RepositorioNotaFiscal  := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
      NotaFiscal             := TNotaFiscal(RepositorioNotaFiscal.Get(qryNotasCODIGO.AsInteger));
 
-     GeradorNFe := TGeradorNFe.Create(FDM.Logo);
+     GeradorNFe := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
      GeradorNFe.ImprimirComVisualizacao(NotaFiscal);
   finally
      FreeAndNil(RepositorioNotaFiscal);

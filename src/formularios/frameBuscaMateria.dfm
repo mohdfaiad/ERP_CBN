@@ -8,46 +8,50 @@ object BuscaMateria: TBuscaMateria
   object StaticText2: TStaticText
     Left = 114
     Top = 0
-    Width = 61
+    Width = 53
     Height = 17
     Caption = 'Descri'#231#227'o'
     Color = clWhite
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     ParentColor = False
     ParentFont = False
     TabOrder = 4
-    Transparent = False
   end
   object StaticText1: TStaticText
     Left = 0
     Top = 0
-    Width = 43
+    Width = 42
     Height = 17
     Caption = 'C'#243'digo'
     Color = clWhite
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Name = 'Segoe UI'
     Font.Pitch = fpVariable
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    Transparent = False
   end
   object edtCodigo: TCurrencyEdit
-    Left = 0
-    Top = 16
+    Left = 2
+    Top = 15
     Width = 78
-    Height = 21
-    AutoSize = False
+    Height = 23
     DisplayFormat = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 1
+    OnChange = edtCodigoChange
     OnKeyDown = edtCodigoKeyDown
   end
   object btnBusca: TBitBtn
@@ -131,7 +135,13 @@ object BuscaMateria: TBuscaMateria
     Left = 115
     Top = 16
     Width = 297
-    Height = 21
+    Height = 23
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     ReadOnly = True
     TabOrder = 3
     OnEnter = edtDescricaoEnter

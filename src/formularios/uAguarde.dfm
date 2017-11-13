@@ -50,7 +50,7 @@ object frmAguarde: TfrmAguarde
     BorderStyle = bsNone
     Color = 13035741
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = 3245674
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]

@@ -22,7 +22,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -257,9 +257,10 @@ begin
    result := ' select p.*, e.codigo CODIGO_EMPRESA, e.regime_tributario from empresas e inner join pessoas p on (e.codigo_pessoa = p.codigo) order by CODIGO_EMPRESA';
 end;
 
-function TRepositorioEmpresa.SQLGetExiste(campo: String): String;
+function TRepositorioEmpresa.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from '+ self.GetNomeDaTabela +' where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioEmpresa.SQLRemover: String;

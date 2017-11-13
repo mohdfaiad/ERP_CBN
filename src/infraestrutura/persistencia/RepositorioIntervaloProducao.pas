@@ -18,7 +18,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -131,9 +131,10 @@ begin
   result := 'select * from INTERVALOS_PRODUCAO';
 end;
 
-function TRepositorioIntervaloProducao.SQLGetExiste(campo: String): String;
+function TRepositorioIntervaloProducao.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from INTERVALOS_PRODUCAO where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioIntervaloProducao.SQLRemover: String;

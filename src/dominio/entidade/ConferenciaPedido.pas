@@ -17,6 +17,7 @@ type
     FFim            : TDateTime;
     Ftempo_decorrido: Real;
     FItens          : TObjectList;
+    FCaixas         : TObjectList;
 
     procedure Setcodigo(const Value: integer);
     procedure Setcodigo_pedido(const Value: integer);
@@ -27,6 +28,7 @@ type
     procedure SetItens(const Value: TObjectList);
     
     function GetItens: TObjectList;
+    function GetCaixas: TObjectList;
 
 
   public
@@ -37,6 +39,7 @@ type
     property inicio          :TDateTime read Finicio write Setinicio;
     property Fim             :TDateTime read FFim write SetFim;
     property Itens           :TObjectList read GetItens       write SetItens;
+    property Caixas          :TObjectList read GetCaixas;
 
   public
     procedure RemoverItensZerados;
@@ -48,7 +51,7 @@ end;
 implementation
 
 uses ConferenciaItem, Repositorio, FabricaRepositorio, EspecificacaoItensConferenciaPedido,
-     EspecificacaoConferenciaPorCodigoPedido, Classes;
+     EspecificacaoConferenciaPorCodigoPedido, Classes, EspecificacaoCaixasDaConferencia, CaixaPedido;
 
 { TConferenciaPedido }
 
@@ -85,6 +88,25 @@ end;
 procedure TConferenciaPedido.SetItens(const Value: TObjectList);
 begin
   FItens := Value;
+end;
+
+function TConferenciaPedido.GetCaixas: TObjectList;
+var especificacao :TEspecificacaoCaixasDaConferencia;
+    repositorio   :TRepositorio;
+begin
+  try
+    if not Assigned(FCaixas) then
+    begin
+      especificacao := TEspecificacaoCaixasDaConferencia.Create(self.codigo);
+      repositorio   := TFabricaRepositorio.GetRepositorio(TCaixaPedido.ClassName);
+      FCaixas       := repositorio.GetListaPorEspecificacao(especificacao, intToStr(self.codigo))
+    end;
+
+    result := FCaixas;
+  finally
+    FreeAndNil(repositorio);
+    FreeAndNil(especificacao);
+  end;
 end;
 
 function TConferenciaPedido.GetItens: TObjectList;

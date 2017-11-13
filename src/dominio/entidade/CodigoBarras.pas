@@ -17,6 +17,8 @@ type
     FCodCor: Integer;
     FCodGrade: Integer;
     FNumeracao: String;
+    FCod_sku: String;
+
     procedure SetNumeracao(const Value: String);
     procedure SetCodCor(const Value: Integer);
     procedure SetCodGrade(const Value: Integer);
@@ -38,6 +40,9 @@ type
     property CodCor        :Integer read FCodCor     write SetCodCor;
     property CodGrade      :Integer read FCodGrade   write SetCodGrade;
     property CodTamanho    :Integer read FCodTamanho write SetCodTamanho;
+    property Cod_sku       :String  read FCod_sku    write FCod_sku;
+
+  public
     property SequenciaCodBar :String read GetSequenciaCodBar;
 
   private

@@ -1,43 +1,41 @@
 object BuscaEmpresa: TBuscaEmpresa
   Left = 0
   Top = 0
-  Width = 486
-  Height = 63
+  Width = 490
+  Height = 70
   TabOrder = 0
   object gpbEmpresa: TGroupBox
     Left = 0
     Top = 0
-    Width = 486
-    Height = 63
+    Width = 490
+    Height = 70
     Align = alClient
     Caption = 'Empresa'
-    TabOrder = 1
+    TabOrder = 3
+    ExplicitTop = 8
   end
-  object lblCodigo: TStaticText
-    Left = 9
-    Top = 17
-    Width = 37
-    Height = 17
-    Caption = 'C'#243'digo'
+  object edtRazao: TEdit
+    Left = 110
+    Top = 36
+    Width = 368
+    Height = 21
+    TabStop = False
+    ReadOnly = True
     TabOrder = 2
   end
-  object edtCodigo: TEdit
-    Left = 9
-    Top = 36
-    Width = 58
-    Height = 21
-    TabOrder = 0
-    OnKeyDown = edtCodigoKeyDown
-    OnKeyPress = edtCodigoKeyPress
+  object lblRazao: TStaticText
+    Left = 110
+    Top = 17
+    Width = 64
+    Height = 17
+    Caption = 'Raz'#227'o Social'
+    TabOrder = 4
   end
   object btnBusca: TBitBtn
     Left = 75
     Top = 33
     Width = 25
     Height = 25
-    TabOrder = 3
-    OnClick = btnBuscaClick
-    OnEnter = btnBuscaEnter
     Glyph.Data = {
       36080000424D3608000000000000360000002800000020000000100000000100
       2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -106,22 +104,25 @@ object BuscaEmpresa: TBuscaEmpresa
       9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
       9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
     NumGlyphs = 2
+    TabOrder = 1
+    OnClick = btnBuscaClick
+    OnEnter = btnBuscaEnter
   end
-  object edtRazao: TEdit
-    Left = 110
+  object edtCodigo: TEdit
+    Left = 9
     Top = 36
-    Width = 368
+    Width = 58
     Height = 21
-    TabStop = False
-    ReadOnly = True
-    TabOrder = 4
+    TabOrder = 0
+    OnKeyDown = edtCodigoKeyDown
+    OnKeyPress = edtCodigoKeyPress
   end
-  object lblRazao: TStaticText
-    Left = 110
+  object lblCodigo: TStaticText
+    Left = 9
     Top = 17
-    Width = 67
+    Width = 37
     Height = 17
-    Caption = 'Raz'#227'o Social'
+    Caption = 'C'#243'digo'
     TabOrder = 5
   end
 end

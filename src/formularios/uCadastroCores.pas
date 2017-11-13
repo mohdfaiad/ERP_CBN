@@ -9,9 +9,11 @@ uses
   frameBuscaCor, frameListaCampo, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, JPEG;
 
 type
+  TRGBTripleArray = array[0..32767] of TRGBTriple;
+  PRGBTripleArray = ^TRGBTripleArray;
   TfrmCadastroCores = class(TfrmPadrao)
     panBotoes: TPanel;
     pgcCores: TPageControl;
@@ -50,7 +52,6 @@ type
     Label6: TLabel;
     lbCor: TLabel;
     gridCoresFilhas: TDBGridCBN;
-    BuscaCor1: TBuscaCor;
     BitBtn1: TBitBtn;
     cdsCoresFilhas: TClientDataSet;
     dsCoresFilhas: TDataSource;
@@ -61,7 +62,6 @@ type
     Label7: TLabel;
     Label8: TLabel;
     GroupBox2: TGroupBox;
-    ListaColecoes: TListaCampo;
     cdsCODIGO_COLECAO: TIntegerField;
     tsCoresKit: TTabSheet;
     Label9: TLabel;
@@ -69,7 +69,6 @@ type
     Label11: TLabel;
     Label12: TLabel;
     gridCoresKit: TDBGridCBN;
-    BuscaCor2: TBuscaCor;
     btnAddCorKit: TBitBtn;
     dsCoresKit: TDataSource;
     cdsCoresKit: TClientDataSet;
@@ -82,6 +81,15 @@ type
     cdsCoresKitREF_COR: TStringField;
     cdsCoresKitDESCRICAO: TStringField;
     qry: TFDQuery;
+    pnlFoto: TPanel;
+    imgCor: TImage;
+    Panel2: TPanel;
+    btnSelecionarImg: TSpeedButton;
+    btnDeletarImg: TSpeedButton;
+    imgPadrao: TImage;
+    ListaColecoes: TListaCampo;
+    BuscaCor1: TBuscaCor;
+    BuscaCor2: TBuscaCor;
     procedure FormShow(Sender: TObject);
     procedure cdsAfterScroll(DataSet: TDataSet);
     procedure btnIncluirClick(Sender: TObject);
@@ -101,6 +109,8 @@ type
     procedure cbPaiChange(Sender: TObject);
     procedure cmbKitChange(Sender: TObject);
     procedure edtReferenciaChange(Sender: TObject);
+    procedure btnSelecionarImgClick(Sender: TObject);
+    procedure btnDeletarImgClick(Sender: TObject);
   private
     CoresFilhasDeletadas :TStringList;
     CoresKitDeletadas :TStringList;
@@ -113,9 +123,13 @@ type
     function qtdeCodBarrasDaCor :integer;
     function existeReferencia(var cor:string) :Boolean;
 
+    procedure RedimensionarJPG(caminho :String; largura, altura: Integer);
     procedure habilitar(SN:Boolean);
     procedure mostra_dados;
     procedure salvar;
+    procedure salvaImagem;
+    procedure carregaImagem;
+    procedure verificaDelecao;
 
   public
     { Public declarations }
@@ -177,6 +191,8 @@ begin
   self.Tag              := 1;
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
+  btnDeletarImg.Enabled := true;
+  btnSelecionarImg.Enabled := true;
   edtReferencia.SetFocus;
   edtReferencia.OnChange := edtReferenciaChange;
   cmbKit.ItemIndex := -1;
@@ -189,6 +205,8 @@ begin
   pgcCores.ActivePageIndex := 0;
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
+  btnDeletarImg.Enabled := true;
+  btnSelecionarImg.Enabled := true;
   edtReferencia.SetFocus;
   pgcCores.Pages[1].Enabled := true;
 end;
@@ -201,6 +219,8 @@ begin
   edtReferencia.Enabled    := false;
   gpbDescricao2.Enabled    := false;
   FDesejaAlterarReferencia := false;
+  btnDeletarImg.Enabled := false;
+  btnSelecionarImg.Enabled := false;
   cds.Refresh;
   mostra_dados;
   pgcCores.Pages[1].Enabled := false;
@@ -213,6 +233,11 @@ begin
 
   self.Tag := 0;
   gridCores.SetFocus;
+end;
+
+procedure TfrmCadastroCores.btnDeletarImgClick(Sender: TObject);
+begin
+  imgCor.Picture := nil;
 end;
 
 procedure TfrmCadastroCores.btnSalvarClick(Sender: TObject);
@@ -243,6 +268,21 @@ begin
     salvar;
 end;
 
+procedure TfrmCadastroCores.btnSelecionarImgClick(Sender: TObject);
+var Dialog :TOpenDialog;
+begin
+  try
+    Dialog := TOpenDialog.Create(nil);
+    Dialog.Filter := 'Arquivos de fotos (*.jpg)|*.JPG|Arquivos de fotos (*.jpeg)|*.JPEG';
+    Dialog.Title  := 'Selecione a imagem desejada';
+    if Dialog.Execute then
+      RedimensionarJPG(Dialog.FileName, 110, 110);
+
+  finally
+    FreeAndNil(Dialog);
+  end;
+end;
+
 procedure TfrmCadastroCores.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -265,6 +305,26 @@ begin
     cbpai.Enabled         := SN;
     ListaColecoes.Enabled := SN;
     cmbKit.Enabled        := SN;
+end;
+
+procedure TfrmCadastroCores.salvaImagem;
+var server, caminhoBD, destino, nomeArq :String;
+  jpg: TJPEGImage;
+begin
+  try
+    server    := '\\'+fdm.FDConnection.Params.Values['server']+'\';
+    caminhoBD := copy(fdm.FDConnection.Params.Values['Database'], 4, length(fdm.FDConnection.Params.Values['Database']));
+    destino   := Copy(caminhoBD, 1, LastDelimiter('\', caminhoBD))+'imgCores\';
+    nomeArq   := edtCodigo.Text+'.jpg';
+    if not DirectoryExists(server+destino) then
+      CreateDirectory(PWideChar(server+destino), nil);
+
+    jpg := TJPEGImage.Create;
+    jpg.LoadFromFile(pnlFoto.Caption);
+    jpg.SaveToFile(server+destino+nomeArq);
+  finally
+    FreeAndNil(jpg);
+  end;
 end;
 
 procedure TfrmCadastroCores.salvar;
@@ -293,6 +353,7 @@ begin
   Cor.kit            := (cdsCoresKit.RecordCount > 0) and (cmbKit.Items[cmbKit.ItemIndex] = 'SIM');
 
   rep.Salvar(Cor);
+  edtCodigo.Text := IntToStr(Cor.Codigo);
 
   referencia := Cor.Referencia;
 
@@ -337,6 +398,11 @@ begin
       cdsCoresKit.Next;
     end;
   end;
+
+  if imgCor.Picture.Height > 0 then
+    salvaImagem
+  else
+    verificaDelecao;
 
   deleta_selecionadas( rep, CoresKitDeletadas);
 
@@ -442,6 +508,7 @@ begin
       end;
     end;
 
+    carregaImagem;
   Finally
     edtReferencia.OnChange := edtReferenciaChange;
     FreeAndNil(cor);
@@ -512,6 +579,18 @@ begin
   end;
 end;
 
+procedure TfrmCadastroCores.verificaDelecao;
+var server, caminhoBD, destino, nomeArq :String;
+begin
+  server    := '\\'+fdm.FDConnection.Params.Values['server']+'\';
+  caminhoBD := copy(fdm.FDConnection.Params.Values['Database'], 4, length(fdm.FDConnection.Params.Values['Database']));
+  destino   := Copy(caminhoBD, 1, LastDelimiter('\', caminhoBD))+'imgCores\';
+  nomeArq   := edtCodigo.Text+'.jpg';
+
+  if FileExists(server+destino+nomeArq) then
+    DeleteFile(server+destino+nomeArq);
+end;
+
 function TfrmCadastroCores.verifica_vinculo(codigo_cor: integer) :Boolean;
 begin
  result := (Campo_por_campo('CORES_FILHAS','CODIGO','CODIGO_COR_FILHA', IntToStr(codigo_cor)) <> '')
@@ -554,6 +633,20 @@ begin
   BuscaCor2.edtReferencia.SetFocus;
 end;
 
+procedure TfrmCadastroCores.carregaImagem;
+var server, caminhoBD, destino, nomeArq, arqPadrao :String;
+begin
+  arqPadrao := 'padrao.jpg';
+  server    := '\\'+fdm.FDConnection.Params.Values['server']+'\';
+  caminhoBD := copy(fdm.FDConnection.Params.Values['Database'], 4, length(fdm.FDConnection.Params.Values['Database']));
+  destino   := Copy(caminhoBD, 1, LastDelimiter('\', caminhoBD))+'imgCores\';
+  nomeArq   := edtCodigo.Text+'.jpg';
+  if FileExists(server+destino+nomeArq) then
+    RedimensionarJPG(server+destino+nomeArq,110,110)
+  else
+    imgCor.Picture := nil;
+end;
+
 procedure TfrmCadastroCores.cbPaiChange(Sender: TObject);
 begin
    tsCoresFilhas.TabVisible := (cbPai.ItemIndex = 0);
@@ -572,6 +665,63 @@ begin
   Fdm.qryGenerica.ParamByName('codcor').AsInteger := strToInt(edtCodigo.text);
   Fdm.qryGenerica.Open;
   result := Fdm.qryGenerica.FieldByName('CONT').AsInteger;
+end;
+
+procedure TFrmCadastroCores.RedimensionarJPG(caminho :String; largura, altura: Integer);
+var
+  bmp: TBitmap;
+  jpg: TJPEGImage;
+  scale: Double;
+  widthL, HeightL, pt1, pt2, pt3, pt4: integer;
+  verdd : boolean;
+begin
+  try
+    pnlFoto.Caption := caminho;
+    jpg := TJPEGImage.Create;
+    verdd := false;
+    try
+      //Dimensões
+      widthL := largura;
+      HeightL := altura;
+      jpg.LoadFromFile(caminho);
+      if (jpg.Height >= jpg.Width) AND (HeightL <= jpg.Height) then begin
+        scale := widthL / jpg.Height;
+      end else if (jpg.Height <= jpg.Width) AND (widthL <=  jpg.Width) then begin
+        scale := HeightL / jpg.Width;
+      end else begin
+        verdd := true;
+      end;
+          bmp := TBitmap.Create;
+          try
+            {Create thumbnail bitmap, keep pictures aspect ratio}
+            bmp.SetSize( widthL,HeightL);
+            if not verdd then begin
+                pt1 := (widthL - Round(jpg.Width * scale)) div 2;
+                pt2 := (HeightL - Round(jpg.Height * scale)) div 2;
+                pt3 := Round(jpg.Width * scale) + pt1;
+                pt4 := Round(jpg.Height * scale) + pt2;
+                bmp.Canvas.StretchDraw(Rect(pt1, pt2, pt3, pt4), jpg);
+            end else begin
+                pt1 := (widthL - jpg.Width) div 2;
+                pt2 := (HeightL - jpg.Height) div 2;
+                pt3 := jpg.Width + pt1;
+                pt4 := jpg.Height + pt2;
+                bmp.Canvas.StretchDraw(Rect(pt1, pt2, pt3, pt4), jpg);
+            end;
+
+            {Convert back to JPEG and save to file}
+            jpg.Assign(bmp);
+            imgCor.Canvas.Draw(0,0,jpg);
+          finally
+            bmp.free;
+          end;
+    finally
+      jpg.free;
+    end;
+  except
+    on e :Exception do
+       avisar('Erro ao redimensionar imagem.'+#13#10+e.Message);
+  end;
 end;
 
 end.

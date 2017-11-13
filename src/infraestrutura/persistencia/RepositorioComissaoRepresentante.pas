@@ -16,7 +16,7 @@ type
     function SQLSalvar                   :String;            override;                             
     function SQLGetAll                   :String;            override;                             
     function SQLRemover                  :String;            override;                             
-    function SQLGetExiste(campo: String): String;            override;                             
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected                                                                                        
     function IsInsercao(Objeto :TObject) :Boolean;           override;                             
@@ -155,9 +155,10 @@ begin
   result := 'select * from COMISSAO_REPRESENTANTE';                                                          
 end;                                                                                               
 
-function TRepositorioComissaoRepresentante.SQLGetExiste(campo: String): String;              
+function TRepositorioComissaoRepresentante.SQLGetExiste(arrayDeCampos :array of string): String;
 begin                                                                                              
-  result := 'select '+ campo +' from COMISSAO_REPRESENTANTE where '+ campo +' = :ncampo';                
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;                                                                                               
 
 function TRepositorioComissaoRepresentante.SQLRemover: String;                               

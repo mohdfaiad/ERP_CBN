@@ -3,12 +3,22 @@ inherited frmCadastroMateria: TfrmCadastroMateria
   Top = 131
   Caption = 'Cadastro de Mat'#233'rias'
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited pgGeral: TPageControl
-    ActivePage = tsConsulta
     inherited tsConsulta: TTabSheet
       inherited gridConsulta: TDBGridCBN
-        SalvaConfiguracoes = False
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'CODIGO'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DESCRICAO'
+            Width = 580
+            Visible = True
+          end>
       end
       inherited lblAjudaSelecionar: TStaticText
         ExplicitWidth = 696
@@ -16,9 +26,9 @@ inherited frmCadastroMateria: TfrmCadastroMateria
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitTop = 26
       ExplicitWidth = 696
-      ExplicitHeight = 378
+      ExplicitHeight = 376
       inherited pnlDados: TPanel
         object Label12: TLabel
           Left = 16
@@ -34,7 +44,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           ParentFont = False
         end
         object Label1: TLabel
-          Left = 120
+          Left = 128
           Top = 81
           Width = 80
           Height = 13
@@ -47,7 +57,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           ParentFont = False
         end
         object Label2: TLabel
-          Left = 224
+          Left = 240
           Top = 81
           Width = 74
           Height = 13
@@ -60,7 +70,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           ParentFont = False
         end
         object Label3: TLabel
-          Left = 328
+          Left = 352
           Top = 81
           Width = 86
           Height = 13
@@ -112,6 +122,19 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           Font.Style = [fsBold]
           ParentFont = False
         end
+        object Label7: TLabel
+          Left = 496
+          Top = 81
+          Width = 90
+          Height = 13
+          Caption = 'Controla estoque'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 3355443
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
         object edtCodigo: TEdit
           Left = 169
           Top = 16
@@ -132,7 +155,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           Left = 17
           Top = 41
           Width = 344
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           TabOrder = 1
         end
@@ -140,7 +163,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           Left = 377
           Top = 41
           Width = 128
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           MaxLength = 8
           TabOrder = 2
@@ -156,7 +179,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           TabOrder = 4
         end
         object edtPrecoVenda: TCurrencyEdit
-          Left = 120
+          Left = 128
           Top = 99
           Width = 89
           Height = 21
@@ -165,7 +188,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           TabOrder = 5
         end
         object edtEstoqueFisico: TCurrencyEdit
-          Left = 224
+          Left = 240
           Top = 99
           Width = 89
           Height = 21
@@ -175,7 +198,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           TabOrder = 6
         end
         object edtEstoqueMinimo: TCurrencyEdit
-          Left = 328
+          Left = 352
           Top = 99
           Width = 89
           Height = 21
@@ -187,7 +210,7 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           Left = 456
           Top = 208
           Width = 97
-          Height = 21
+          Height = 23
           TabOrder = 8
           Visible = False
           Items.Strings = (
@@ -213,8 +236,23 @@ inherited frmCadastroMateria: TfrmCadastroMateria
           end
           inherited comListaCampo: TComboBox
             Width = 89
+            Height = 23
             ExplicitWidth = 89
+            ExplicitHeight = 23
           end
+        end
+        object cbxControlaEstoque: TComboBox
+          Left = 496
+          Top = 99
+          Width = 113
+          Height = 23
+          Style = csDropDownList
+          ItemIndex = 1
+          TabOrder = 9
+          Text = 'N'#195'O'
+          Items.Strings = (
+            'SIM'
+            'N'#195'O')
         end
       end
     end

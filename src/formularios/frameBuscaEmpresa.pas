@@ -9,11 +9,11 @@ uses
 type
   TBuscaEmpresa = class(TFrame)
     gpbEmpresa: TGroupBox;
-    lblCodigo: TStaticText;
-    edtCodigo: TEdit;
-    btnBusca: TBitBtn;
     edtRazao: TEdit;
     lblRazao: TStaticText;
+    btnBusca: TBitBtn;
+    edtCodigo: TEdit;
+    lblCodigo: TStaticText;
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnBuscaEnter(Sender: TObject);

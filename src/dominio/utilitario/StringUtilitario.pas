@@ -14,6 +14,7 @@ type
     class function LetraPorSequencia(NumeroSequencia :Integer)                 :String;
     class function StringVazia                                                 :String;
     class function RemoveCaracter   (const Texto :String; const Caracter :String) :String;
+    class function RemoveCaracteresEspeciais (texto :String) :String;
     class function CaracterAEsquerda(Caracter :Char; Texto :String; tamanho_maximo :Integer) :String;
     class function remove_quebras   (texto :String) :String;
 end;
@@ -96,6 +97,18 @@ class function TStringUtilitario.RemoveCaracter(const Texto,
   Caracter: String): String;
 begin
    result := StringReplace(Texto, Caracter, '', [rfReplaceAll]);
+end;
+
+class function TStringUtilitario.RemoveCaracteresEspeciais(texto: String): String;
+const
+  NaoChar = '~`!@#$%^&*()_-+=|\<>,.?/æ';
+var
+  x: Integer;
+begin
+  for x := 1 to Length(NaoChar) do
+  if Pos(NaoChar[x], texto) > 0 then
+    texto := StringReplace(texto, NaoChar[x], '', [rfReplaceAll, rfIgnoreCase]);
+  result := texto;
 end;
 
 class function TStringUtilitario.remove_quebras(texto: String): String;

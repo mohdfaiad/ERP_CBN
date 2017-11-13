@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, ExtCtrls, frameBuscaCor, frameBuscaProduto,
   Buttons, Mask, RxToolEdit, RxCurrEdit, CriaBalaoInformacao, frameListaCampo,
-  ComCtrls;
+  ComCtrls, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, ConfiguracoesECommerce;
 
 type
   TfrmEntradaManualEstoque = class(TfrmPadrao)
@@ -57,6 +57,11 @@ type
     procedure btnNovoLoteClick(Sender: TObject);
     procedure btnDirecionaEntradasClick(Sender: TObject);
     procedure cbxSetorChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+
+  private
+    FConfiguracoes :TConfiguracoesECommerce;
 
   private
     procedure mostra_estoque_atual;
@@ -64,6 +69,10 @@ type
     function busca_por_codigoBarras :Boolean;
     function salvar_estoque :Boolean;
     procedure salva_entradaSaida;
+
+    procedure atualizaEstoquePlataforma(sku :String; quantidade :integer);
+    function getQuantidadeAtual(sku :String) :integer;
+    function getJsonProduto(sku :String) :String;
 
     function validaObrigatoriedades :Boolean;
 
@@ -77,7 +86,7 @@ var
 implementation
 
 uses Estoque, Repositorio, FabricaRepositorio, uModulo, DB, EspecificacaoEstoquePorProdutoCorTamanho, funcoes,
-  Math, StrUtils, entradaSaida,uDirecionarEntradas, permissoesAcesso;
+  Math, StrUtils, entradaSaida,uDirecionarEntradas, permissoesAcesso, REST.types, System.JSon, IdSSLOpenSSL;
 
 {$R *.dfm}
 
@@ -197,6 +206,47 @@ begin
  end;
 end;
 
+procedure TfrmEntradaManualEstoque.atualizaEstoquePlataforma(sku: String; quantidade :integer);
+var
+    Retorno, lJSO :String;
+    Parametros :TStrings;
+    jsonToSend : TStringStream;
+    IdHTTP1: TIdHTTP;
+    quantidadeAtualizada :Integer;
+    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+begin
+  quantidadeAtualizada := getQuantidadeAtual(sku);
+  quantidadeAtualizada := quantidadeAtualizada + quantidade;
+  try
+    IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdHTTP1 := TIdHTTP.Create(nil);
+    IdHTTP1.IOHandler   := IdSSL;
+  try
+    IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
+    IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
+    IdHTTP1.Request.ContentType     := 'application/json';
+    IdHTTP1.Request.Method          := 'POST';
+    IdHTTP1.Request.CharSet         := 'utf-8';
+    IdHttp1.Request.Accept          := 'application/json';
+    IdHTTP1.HandleRedirects         := true;
+
+    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-origin','*');
+    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Methods','GET, POST, PUT, DELETE');
+    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Headers','accept, authorization, origin');
+
+    lJSO := ('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+    jsonToSend := TStringStream.Create(lJSO,TEncoding.UTF8);
+
+    Retorno := IdHTTP1.Post(FConfiguracoes.url_base+'produtos/', jsonToSend);
+  Except
+   on e:Exception do
+     raise Exception.Create('Erro ao atualizar estoque na plataforma: '+e.Message);
+  end;
+  Finally
+    FreeAndNil(IdHTTP1);
+  end;
+end;
+
 procedure TfrmEntradaManualEstoque.btnDirecionaEntradasClick(Sender: TObject);
 begin
   self.AbreForm(TFrmDirecionarEntradas, paDirecionarEntradas);
@@ -236,6 +286,47 @@ begin
   ListaIntervalos.Visible := (entrada_saida = 0);
 end;
 
+function TfrmEntradaManualEstoque.getJsonProduto(sku: String): String;
+var
+    Retorno :String;
+    IdHTTP1: TIdHTTP;
+    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+begin
+ try
+ try
+   IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+   IdHTTP1 := TIdHTTP.Create(nil);
+   IdHTTP1.IOHandler   := IdSSL;
+   IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
+   IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
+   IdHTTP1.Request.ContentType    := 'application/json';
+   IdHTTP1.Request.Method               := 'GET';
+   IdHTTP1.Request.CharSet := 'utf-8';
+   IdHttp1.Request.Accept  := 'application/json';
+   IdHTTP1.HandleRedirects := true;
+
+   Retorno := IdHTTP1.Get(FConfiguracoes.url_base+'produto/'+sku);
+   result  := Retorno;
+ except
+   on e: Exception do
+     raise Exception.Create(e.Message);
+ end;
+ finally
+   FreeAndNil(IdHTTP1);
+ end;
+end;
+
+function TfrmEntradaManualEstoque.getQuantidadeAtual(sku: String): integer;
+var
+  Objeto :TJSONObject;
+begin
+  try
+    Objeto := TJSONObject.ParseJSONValue(getJsonProduto(sku)) as TJSONObject;
+    result := StrToIntDef(Objeto.GetValue('estoque').Value,0);
+  except
+  end;
+end;
+
 procedure TfrmEntradaManualEstoque.btnNovoLoteClick(Sender: TObject);
 begin
   if confirma('Confirma fechamento do lote nº '+edtlote.Text+' e abertura do lote nº '+inttostr(edtlote.AsInteger + 1)) then
@@ -248,11 +339,13 @@ end;
 procedure TfrmEntradaManualEstoque.btnSalvarClick(Sender: TObject);
 var ent_sai :String;
 begin
+
+
   if not validaObrigatoriedades then
     exit;
 
   ent_sai := IfThen(chkSaida.Checked, 'saída', 'entrada');
-  
+
   if not cbEntradaUnitaria.Checked and
      not confirma('Confirma a '+ent_sai+' na quandidade de: '+FormatFloat('##,###,##0.00',edtQtdEntrada.Value)+' Referente à: '+#13#10+#13#10+
                   'PRODUTO > '+BuscaProduto1.edtReferencia.Text+' - '+
@@ -261,8 +354,9 @@ begin
                   ' TAM > '+rgTamanhos.Items[rgTamanhos.itemIndex]+#13#10+
                   'Produzido em '+DateToStr(dtpDataProducao.Date)+' das '+ListaIntervalos.comListaCampo.Items[ListaIntervalos.comListaCampo.itemIndex]+'?') then
     Exit;
-
-
+ try
+ try
+  Fdm.conexao.TxOptions.AutoCommit := false;
 
   if salvar_estoque then begin
     Avisar('Estoque atualizado com sucesso!',1);
@@ -275,9 +369,20 @@ begin
   else
     Avisar('Erro ao salvar estoque!',1);
 
-  if not cbEntradaUnitaria.Checked then  
+  if not cbEntradaUnitaria.Checked then
     edtQtdEntrada.Clear;
 
+  fdm.conexao.Commit;
+ except
+   on e :Exception do
+   begin
+     fdm.conexao.Rollback;
+     avisar(e.message+#13#10+'Operação cancelada.');
+   end;
+ end;
+ finally
+   Fdm.conexao.TxOptions.AutoCommit := true;
+ end;
 end;
 
 function TfrmEntradaManualEstoque.salvar_estoque: Boolean;
@@ -286,12 +391,13 @@ var Estoque     :TEstoque;
     Especificacao :TEspecificacaoEstoquePorProdutoCorTamanho;
     codigo_produto,
     codigo_cor,
-    codigo_tamanho :integer;
+    codigo_tamanho, qtd_movimento :integer;
+    sku :String;
 begin
   Result      := false;
   Estoque     := nil;
   repositorio := nil;
-
+ try
  try
    codigo_produto := BuscaProduto1.CodigoProduto;
    codigo_cor     := BuscaCor1.CodigoCor;
@@ -314,10 +420,21 @@ begin
    Estoque.setor          := cbxSetor.ItemIndex+1;
 
    Estoque.quantidade     := Estoque.quantidade + IfThen(chkSaida.Checked, (edtQtdEntrada.Value * -1), edtQtdEntrada.Value);
-
    repositorio.Salvar( Estoque );
 
+   //atualiza plataforma apenas se for setor e-commerce
+   if Estoque.setor = 2 then
+   begin
+     qtd_movimento := Trunc(IfThen(chkSaida.Checked, (edtQtdEntrada.Value * -1), edtQtdEntrada.Value));
+     sku := BuscaProduto1.Prod.Referencia + rgTamanhos.Items[rgTamanhos.ItemIndex] + BuscaCor1.edtReferencia.Text;
+     atualizaEstoquePlataforma(sku, qtd_movimento);
+   end;
    Result := true;
+
+ except
+   on e :Exception do
+     raise Exception.Create(e.message);
+ end;
  finally
    if assigned(Estoque)     then  FreeAndNil(Estoque);
    if assigned(repositorio) then  FreeAndNil(repositorio);
@@ -365,6 +482,32 @@ end;
 procedure TfrmEntradaManualEstoque.cbxSetorChange(Sender: TObject);
 begin
   mostra_estoque_atual;
+end;
+
+procedure TfrmEntradaManualEstoque.FormCreate(Sender: TObject);
+var
+    repositorio :TRepositorio;
+begin
+  inherited;
+  try
+    repositorio    := TFabricaRepositorio.GetRepositorio(TConfiguracoesECommerce.ClassName);
+    FConfiguracoes := TConfiguracoesECommerce(repositorio.Get(1));
+
+    if not assigned(FConfiguracoes) then
+    begin
+      avisar('Atenção! Não será possível realizar o movimento de estoque envolvendo o setor de e-commerce, '+
+             'enquanto o cadastro das configurações de e-commerce não for efetuado');
+    end;
+  finally
+    FreeAndNil(repositorio);
+  end;
+end;
+
+procedure TfrmEntradaManualEstoque.FormDestroy(Sender: TObject);
+begin
+  if Assigned(self.FConfiguracoes) then
+    FreeAndNil(FConfiguracoes);
+  inherited;
 end;
 
 procedure TfrmEntradaManualEstoque.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -444,6 +587,10 @@ begin
   else if (ListaIntervalos.Visible) and (ListaIntervalos.CodCampo <= 0) then begin
     avisar('Intervalo de produção deve ser informado');
     ListaIntervalos.comListaCampo.SetFocus;
+  end
+  else if not assigned(FConfiguracoes) and (cbxSetor.ItemIndex = 1) then
+  begin
+    avisar('Antes de movimentar o estoque do e-commerce efetue o cadastro das configurações do mesmo');
   end
   else
     result := true;

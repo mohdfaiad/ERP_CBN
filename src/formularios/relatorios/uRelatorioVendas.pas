@@ -53,10 +53,8 @@ type
     Panel2: TPanel;
     Shape1: TShape;
     Panel3: TPanel;
-    Label10: TLabel;
     Label11: TLabel;
     DBEdit3: TDBEdit;
-    DBEdit4: TDBEdit;
     Splitter9: TSplitter;
     rgTipoData: TRadioGroup;
     Image5: TImage;
@@ -64,7 +62,6 @@ type
     GroupBox1: TGroupBox;
     btnBuscar: TBitBtn;
     btnImprimir: TSpeedButton;
-    Label4: TLabel;
     edtQuantidadePedidos: TEdit;
     chkInternet: TCheckBox;
     cdsTOTAL_PECAS: TAggregateField;
@@ -286,6 +283,13 @@ type
     cdsTOTAL_BRUTO: TBCDField;
     Label12: TLabel;
     lbContPedidos: TLabel;
+    cdsPRECO_CUSTO: TBCDField;
+    ClientDataSet1PRECO_CUSTO: TBCDField;
+    Label21: TLabel;
+    DBEdit6: TDBEdit;
+    Label10: TLabel;
+    DBEdit4: TDBEdit;
+    Label4: TLabel;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -399,7 +403,7 @@ begin
     RepositorioNotaFiscal := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
     NotaFiscal            := TNotaFiscal(RepositorioNotaFiscal.Get(cdsCODIGO_NOTA_FISCAL.AsInteger));
 
-    GeradorNFe            := TGeradorNFe.Create(FDM.Logo);
+    GeradorNFe            := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
     GeradorNFe.ImprimirComVisualizacao(NotaFiscal);
   finally
     FreeAndNil(GeradorNFe);
@@ -499,7 +503,7 @@ begin
             '       iif(P.DESPACHADO = ''S'', ''DESPACHADO'',                                                                                 '+#13#10+
             '           iif(P.aprovacao = ''A'',''APROVADO'',iif(P.aprovacao = ''E'', ''EM ESTUDO'', ''REPROVADO''))) STATUS,                 '+#13#10+
             ' sum(itens.QTD_TOTAL * pro.qtd_pecas) as qtd_pecas, '+IfThen(self.RelatorioSemValores, condicao_percent_estoque,' cast(''0.10'' as numeric(15,2)) perc_estoque, ')+'sum(itens.QTD_TOTAL) as qtd_itens   '+#13#10+'',
-            campos_analitico) + ', PF.codigo, PF.codigo_nota_fiscal '+
+            campos_analitico) + ', PF.codigo, PF.codigo_nota_fiscal, sum(iif(pt.preco is null, 0, pt.preco)) preco_custo  '+
             '       from pedidos P                                                                                                            '+#13#10+
             ' LEFT JOIN pedidos_faturados      PF  ON PF.CODIGO_PEDIDO = P.CODIGO                                                             '+#13#10+
             ' LEFT JOIN PESSOAS                C   ON C.CODIGO = P.COD_CLIENTE                                                                '+#13#10+
@@ -509,6 +513,7 @@ begin
             ' left join ITENS on itens.COD_PEDIDO = p.CODIGO '+#13#10+
             ' left join produtos pro on ITENS.COD_PRODUTO = pro.CODIGO '+#13#10+
             IfThen(rgLeiaute.ItemIndex = 0, '', ' left join cores cor  on cor.codigo = itens.cod_cor ') +
+            ' left join produto_tabela_preco pt on ((pt.codproduto = pro.codigo)and(pt.codtabela = 36)) '+
             ' left join naturezas_operacao nat on nat.codigo = nf.codigo_natureza '+#13#10+
             ' left join clientes cli on cli.codcli = c.codigo '+#13#10+
             '  LEFT JOIN get_totais_pedido(P.cod_repres, P.codigo) TP ON (1=1) '+

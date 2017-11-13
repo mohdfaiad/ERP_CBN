@@ -22,7 +22,7 @@ type
     function CondicaoSQLGetAll           :String;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -154,9 +154,10 @@ begin
   result := 'select * from Cliente_Representante '+ IfThen(FIdentificador = '','', CondicaoSQLGetAll);
 end;
                                                                                     
-function TRepositorioClienteRepresentante.SQLGetExiste(campo: String): String;                         
+function TRepositorioClienteRepresentante.SQLGetExiste(arrayDeCampos :array of string): String;
 begin                                                                                      
-  result := 'select '+ campo +' from Cliente_Representante where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;                                                                                       
                                                                                            
 function TRepositorioClienteRepresentante.SQLRemover: String;                                          

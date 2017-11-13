@@ -16,7 +16,7 @@ type
     function SQLSalvar                   :String;            override;                             
     function SQLGetAll                   :String;            override;                             
     function SQLRemover                  :String;            override;                             
-    function SQLGetExiste(campo: String): String;            override;                             
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected                                                                                        
     function IsInsercao(Objeto :TObject) :Boolean;           override;                             
@@ -306,9 +306,10 @@ begin
   result := 'select * from ITENS_NF_MATERIA';                                                          
 end;                                                                                               
 
-function TRepositorioItemNfMateria.SQLGetExiste(campo: String): String;              
-begin                                                                                              
-  result := 'select '+ campo +' from ITENS_NF_MATERIA where '+ campo +' = :ncampo';                
+function TRepositorioItemNfMateria.SQLGetExiste(arrayDeCampos :array of string): String;
+begin
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;                                                                                               
 
 function TRepositorioItemNfMateria.SQLRemover: String;                               

@@ -22,7 +22,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -169,9 +169,10 @@ begin
   result := 'select * from Formas_Pgto';
 end;
 
-function TRepositorioFormaPagamento.SQLGetExiste(campo: String): String;
+function TRepositorioFormaPagamento.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Formas_Pgto where '+ campo +' = :ncampo';
+   result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioFormaPagamento.SQLRemover: String;

@@ -341,7 +341,7 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
     Top = 0
     Width = 865
     Height = 495
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet

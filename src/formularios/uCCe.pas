@@ -72,12 +72,10 @@ type
     SpeedButton2: TSpeedButton;
     gridCorrecoes: TDBGrid;
     gridLotes: TDBGridCBN;
-    BuscaNotaFiscal1: TBuscaNotaFiscal;
     ImageList1: TImageList;
     edtID: TEdit;
     bitIncluir: TBitBtn;
     cdsCorrecoesCODNOTA: TIntegerField;
-    BuscaEmpresa1: TBuscaEmpresa;
     btnBuscar: TBitBtn;
     gridNotas: TDBGridCBN;
     DataSource1: TDataSource;
@@ -87,6 +85,8 @@ type
     cdsDeletadoscodigo_correcao: TIntegerField;
     dtLanc: TMaskEdit;
     qryLotes: TFDQuery;
+    BuscaNotaFiscal1: TBuscaNotaFiscal;
+    BuscaEmpresa1: TBuscaEmpresa;
     procedure BitIncluirClick(Sender: TObject);
     procedure btnIncClick(Sender: TObject);
     procedure btnAltClick(Sender: TObject);
@@ -609,11 +609,6 @@ begin
 
   Aguarda('Enviando Lote...');
 
-  AcbrNfe.Configuracoes.Certificados.NumeroSerie := BuscaEmpresa1.Empresa.ConfiguracoesNF.num_certificado;
-  if not TStringUtilitario.EstaVazia(BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado) then
-    AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
-
-
   if not (ACBrNFe.WebServices.StatusServico.Executar) then
     raise exception.Create(ACBrNFe.WebServices.StatusServico.Msg);
 
@@ -780,6 +775,10 @@ begin
         self.AcbrNfe.Configuracoes.WebServices.Ambiente   := taProducao
       else
         self.AcbrNfe.Configuracoes.WebServices.Ambiente   := taHomologacao;
+
+      AcbrNfe.Configuracoes.Certificados.NumeroSerie := BuscaEmpresa1.Empresa.ConfiguracoesNF.num_certificado;
+      if not TStringUtilitario.EstaVazia(BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado) then
+        AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
 
       result := true;
     end

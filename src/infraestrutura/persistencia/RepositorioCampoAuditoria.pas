@@ -20,7 +20,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String) :String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string) :String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -33,7 +33,7 @@ end;
 implementation
 
 uses
-  CampoAuditoria;
+  CampoAuditoria, SysUtils;
 
 { TRepositorioCampoAuditoria }
 
@@ -94,9 +94,10 @@ begin
    result := ' select * from '+self.GetNomeDaTabela;
 end;
 
-function TRepositorioCampoAuditoria.SQLGetExiste(campo: String): String;
+function TRepositorioCampoAuditoria.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-   result := ' select codigo from '+self.GetNomeDaTabela+' where codigo = :codigo ';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioCampoAuditoria.SQLRemover: String;

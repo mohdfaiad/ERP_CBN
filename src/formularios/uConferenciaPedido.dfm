@@ -5234,7 +5234,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Left = 459
         Top = 316
         Width = 137
-        Height = 17
+        Height = 15
         Anchors = [akRight, akBottom]
         Caption = 'Apenas n'#227'o conferidos'
         Enabled = False
@@ -5245,7 +5245,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Left = 624
         Top = 316
         Width = 137
-        Height = 17
+        Height = 15
         Anchors = [akRight, akBottom]
         Caption = 'Apenas conferidos'
         Enabled = False
@@ -5256,7 +5256,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Left = 288
         Top = 316
         Width = 137
-        Height = 17
+        Height = 15
         Anchors = [akRight, akBottom]
         Caption = 'Todos'
         Checked = True
@@ -5269,10 +5269,6 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object TabSheet2: TTabSheet
       Caption = 'Itens Conferidos'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1076
         392)
@@ -5579,7 +5575,6 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 340
         DesignSize = (
           1076
           54)
@@ -6623,6 +6618,16 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     TabStop = False
     OnClick = btnDesmembrarClick
   end
+  object btnAlteraCaixas: TBitBtn
+    Left = 352
+    Top = 72
+    Width = 86
+    Height = 25
+    Caption = 'Alterar'
+    TabOrder = 10
+    Visible = False
+    OnClick = btnAlteraCaixasClick
+  end
   object dsItens: TDataSource
     DataSet = cdsItens
     Left = 175
@@ -7001,7 +7006,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900F00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

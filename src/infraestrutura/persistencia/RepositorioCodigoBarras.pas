@@ -5,7 +5,7 @@ interface
 uses
   DB,
   Auditoria,
-  Repositorio;
+  Repositorio, SysUtils;
 
 type
   TRepositorioCodigoBarras = class(TRepositorio)
@@ -21,7 +21,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -43,7 +43,7 @@ end;
 implementation
 
 uses
-  SysUtils, CodigoBarras;
+  CodigoBarras;
 
 { TRepositorioCodigoBarras }
 
@@ -59,7 +59,8 @@ begin
    CodigoBarras.CodCor        := self.FQuery.fieldByName('codcor').AsInteger;
    CodigoBarras.CodGrade      := self.FQuery.fieldByName('codgrade').AsInteger;
    CodigoBarras.CodTamanho    := self.FQuery.fieldByName('codtamanho').AsInteger;
-   
+   CodigoBarras.Cod_sku       := self.FQuery.fieldByName('Cod_sku').AsString;
+
    result := CodigoBarras;
 end;
 
@@ -109,6 +110,9 @@ begin
 
    if (CodigoBarrasAntigo.CodTamanho <> CodigoBarrasNovo.CodTamanho) then
     Auditoria.AdicionaCampoAlterado('codtamanho', intToStr(CodigoBarrasAntigo.CodTamanho), intToStr(CodigoBarrasNovo.CodTamanho));
+
+   if (CodigoBarrasAntigo.Cod_sku <> CodigoBarrasNovo.Cod_sku) then
+    Auditoria.AdicionaCampoAlterado('Cod_sku', CodigoBarrasAntigo.Cod_sku, CodigoBarrasNovo.Cod_sku);
 end;
 
 procedure TRepositorioCodigoBarras.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -125,6 +129,7 @@ begin
    Auditoria.AdicionaCampoExcluido('codcor'     , intToStr(CodigoBarras.CodCor));
    Auditoria.AdicionaCampoExcluido('codgrade'   , intToStr(CodigoBarras.CodGrade));
    Auditoria.AdicionaCampoExcluido('codtamanho' , intToStr(CodigoBarras.CodTamanho));
+   Auditoria.AdicionaCampoExcluido('Cod_sku'    , CodigoBarras.Cod_sku);
 end;
 
 procedure TRepositorioCodigoBarras.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -138,9 +143,10 @@ begin
    Auditoria.AdicionaCampoIncluido('tipo'       , intToStr(CodigoBarras.Tipo));
    Auditoria.AdicionaCampoIncluido('numeracao'  , CodigoBarras.Numeracao);
    Auditoria.AdicionaCampoIncluido('codproduto' , intToStr(CodigoBarras.CodProduto));
-   Auditoria.AdicionaCampoIncluido('codcor'     , intToStr(CodigoBarras.CodCor));   
+   Auditoria.AdicionaCampoIncluido('codcor'     , intToStr(CodigoBarras.CodCor));
    Auditoria.AdicionaCampoIncluido('codgrade'   , intToStr(CodigoBarras.CodGrade));
    Auditoria.AdicionaCampoIncluido('codtamanho' , intToStr(CodigoBarras.CodTamanho));
+   Auditoria.AdicionaCampoIncluido('Cod_sku'    , CodigoBarras.Cod_sku);
 end;
 
 procedure TRepositorioCodigoBarras.SetIdentificador(Objeto: TObject;
@@ -164,6 +170,7 @@ begin
    self.FQuery.ParamByName('codcor').AsInteger     := CodigoBarras.CodCor;
    self.FQuery.ParamByName('codgrade').AsInteger   := CodigoBarras.CodGrade;
    self.FQuery.ParamByName('codtamanho').AsInteger := CodigoBarras.CodTamanho;
+   self.FQuery.ParamByName('Cod_sku').AsString     := CodigoBarras.Cod_sku;
 end;
 
 function TRepositorioCodigoBarras.SQLGet: String;
@@ -176,9 +183,10 @@ begin
   result := 'select * from Codigo_Barras';
 end;
 
-function TRepositorioCodigoBarras.SQLGetExiste(campo: String): String;
+function TRepositorioCodigoBarras.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Codigo_Barras where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), 'CODIGO_BARRAS', [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioCodigoBarras.SQLRemover: String;
@@ -189,8 +197,8 @@ end;
 function TRepositorioCodigoBarras.SQLSalvar: String;
 begin
   result := 'update or insert into Codigo_Barras      '+
-            '(codigo, tipo, numeracao, codproduto, codcor, codgrade, codtamanho)                '+
-            ' Values (:codigo, :tipo, :numeracao, :codproduto, :codcor, :codgrade, :codtamanho) ';
+            '(codigo, tipo, numeracao, codproduto, codcor, codgrade, codtamanho, cod_sku)                '+
+            ' Values (:codigo, :tipo, :numeracao, :codproduto, :codcor, :codgrade, :codtamanho, :cod_sku) ';
 end;
 
 end.

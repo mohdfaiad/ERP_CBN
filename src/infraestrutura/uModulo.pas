@@ -15,7 +15,7 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef, ConfiguracoesECommerce;
 
 type
   Tdm = class(TDataModule)
@@ -48,6 +48,7 @@ type
   private
     FCaixaLoja: TCaixa;
     FCaixaAberto: Boolean;
+    FConfiguracoesECommerce: TConfiguracoesECommerce;
     procedure SetArquivoConfiguracao(const Value: TArquivoConfiguracao);
     procedure SetLogErros           (const Value: TLogErros);
     procedure SetUsuario            (const Value: TUsuario);
@@ -55,18 +56,20 @@ type
 
     procedure PreencheDadosConexaoBancoDeDados(Sender: TObject);
     function getCaixaAberto: Boolean;
+    function getConfiguracoesECommerce: TConfiguracoesECommerce;
 
   public
     constructor Create(AOwner :TComponent); override;
 
   // Propriedades
   public
-     property LogErros              :TLogErros            read FLogErros            write SetLogErros;
-     property ArquivoConfiguracao   :TArquivoConfiguracao read FArquivoConfiguracao write SetArquivoConfiguracao;
-     property UsuarioLogado         :TUsuario             read FUsuario             write SetUsuario;
-     property Parametros            :TParametros          read GetParametros        write SetParametros;
-     property CaixaLoja             :TCaixa               read GetCaixaLoja         write FCaixaLoja;
-     property caixaAberto           :Boolean              read getCaixaAberto       write FCaixaAberto;
+     property LogErros               :TLogErros            read FLogErros            write SetLogErros;
+     property ArquivoConfiguracao    :TArquivoConfiguracao read FArquivoConfiguracao write SetArquivoConfiguracao;
+     property UsuarioLogado          :TUsuario             read FUsuario             write SetUsuario;
+     property Parametros             :TParametros          read GetParametros        write SetParametros;
+     property CaixaLoja              :TCaixa               read GetCaixaLoja         write FCaixaLoja;
+     property caixaAberto            :Boolean              read getCaixaAberto       write FCaixaAberto;
+     property configuracoesECommerce :TConfiguracoesECommerce read getConfiguracoesECommerce write FConfiguracoesECommerce;
 
      // Apenas leitura
      property DiretorioSistema          :String       read GetDiretorioSistema;
@@ -142,6 +145,8 @@ begin
    FreeAndNil(self.FConexaoBancoDeDados);
    FreeAndNil(self.FUsuario);
    FreeAndNil(self.FParametros);
+   if assigned(FConfiguracoesECommerce) then
+     FreeAndNil(self.FConfiguracoesECommerce);
 end;
 
 procedure Tdm.PreencheDadosConexaoBancoDeDados(Sender: TObject);
@@ -311,6 +316,22 @@ end;
 function Tdm.GetConexao: TFDConnection;
 begin
   Result := FConexaoBancoDeDados;
+end;
+
+function Tdm.getConfiguracoesECommerce: TConfiguracoesECommerce;
+var repositorio :TRepositorio;
+begin
+  if not Assigned(FConfiguracoesECommerce) then
+  begin
+    try
+      repositorio    := TFabricaRepositorio.GetRepositorio(TConfiguracoesECommerce.ClassName);
+      FConfiguracoesECommerce := TConfiguracoesECommerce(repositorio.Get(1));
+    finally
+      FreeAndNil(repositorio);
+    end;
+  end;
+
+  Result := FConfiguracoesECommerce;
 end;
 
 function Tdm.GetLogo: String;

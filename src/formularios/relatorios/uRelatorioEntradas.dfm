@@ -3,14 +3,14 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
   Top = 314
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio de entradas'
-  ClientHeight = 238
-  ClientWidth = 443
+  ClientHeight = 211
+  ClientWidth = 439
   OnDblClick = FormDblClick
   OnShow = FormShow
-  ExplicitWidth = 449
-  ExplicitHeight = 266
+  ExplicitWidth = 445
+  ExplicitHeight = 239
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object RLReport1: TRLReport
     Left = 379
     Top = 16
@@ -1688,11 +1688,13 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
   end
   object Panel1: TPanel
     Left = 0
-    Top = 197
-    Width = 443
+    Top = 170
+    Width = 439
     Height = 41
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 197
+    ExplicitWidth = 443
     object btnImprimir: TBitBtn
       Left = 232
       Top = 6

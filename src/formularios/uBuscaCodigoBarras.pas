@@ -13,9 +13,7 @@ uses
 type
   TfrmBuscaCodigoBarras = class(TfrmPadrao)
     gbProduto: TGroupBox;
-    BuscaProduto1: TBuscaProduto;
     gbCor: TGroupBox;
-    BuscaCor1: TBuscaCor;
     rgTamanhos: TRadioGroup;
     lblTitulo: TLabel;
     edtCodigoBarras: TEdit;
@@ -49,6 +47,8 @@ type
     Shape1: TShape;
     DBGrid2: TDBGrid;
     Label3: TLabel;
+    BuscaProduto1: TBuscaProduto;
+    BuscaCor1: TBuscaCor;
     procedure btnBuscarClick(Sender: TObject);
     procedure gbCorEnter(Sender: TObject);
     procedure btnCopiaClick(Sender: TObject);

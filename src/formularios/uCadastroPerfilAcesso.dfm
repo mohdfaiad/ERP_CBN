@@ -12,13 +12,13 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
   ExplicitWidth = 828
   ExplicitHeight = 589
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object pagPerfis: TPageControl
     Left = 0
     Top = 0
     Width = 822
     Height = 518
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 0
     TabStop = False
@@ -27,7 +27,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
       OnExit = TabSheet1Exit
       DesignSize = (
         814
-        490)
+        488)
       object gridPerfis: TDBGridCBN
         Left = 16
         Top = 16
@@ -283,7 +283,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         Top = 56
         Width = 814
         Height = 417
-        ActivePage = TabSheet8
+        ActivePage = TabSheet6
         TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'Permiss'#245'es B'#225'sicas'
@@ -488,6 +488,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Caption = 'Cadastrar Mapa Pedidos'
             TabOrder = 24
           end
+          object chk82: TCheckBox
+            Left = 272
+            Top = 224
+            Width = 226
+            Height = 17
+            Caption = 'Cadastrar configura'#231#245'es E-commerce'
+            TabOrder = 25
+          end
         end
         object TabSheet7: TTabSheet
           Caption = 'Permiss'#245'es Altera'#231#227'o/Cadastro'
@@ -515,17 +523,17 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
           object chk46: TCheckBox
             Left = 8
             Top = 32
-            Width = 185
+            Width = 206
             Height = 17
-            Caption = 'Entrada/Sa'#237'da Manual Estoque'
+            Caption = 'Entrada manual estoque (Produto)'
             TabOrder = 1
           end
           object chk52: TCheckBox
             Left = 8
             Top = 56
-            Width = 185
+            Width = 201
             Height = 17
-            Caption = 'Sa'#237'da Manual Estoque'
+            Caption = 'Sa'#237'da manual estoque (Produto)'
             TabOrder = 2
           end
           object chk58: TCheckBox
@@ -551,6 +559,22 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Direcionar entradas produ'#231#227'o'
             TabOrder = 5
+          end
+          object chk79: TCheckBox
+            Left = 8
+            Top = 176
+            Width = 201
+            Height = 17
+            Caption = 'Sa'#237'da manual estoque (Mat'#233'ria)'
+            TabOrder = 6
+          end
+          object chk78: TCheckBox
+            Left = 8
+            Top = 152
+            Width = 207
+            Height = 17
+            Caption = 'Entrada manual estoque (Mat'#233'ria)'
+            TabOrder = 7
           end
         end
         object TabSheet5: TTabSheet
@@ -752,6 +776,22 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Caption = 'Importar Ordens de Servi'#231'o'
             TabOrder = 10
           end
+          object chk83: TCheckBox
+            Left = 8
+            Top = 272
+            Width = 212
+            Height = 17
+            Caption = 'Sincronizador pedidos Shoopub'
+            TabOrder = 11
+          end
+          object chk84: TCheckBox
+            Left = 8
+            Top = 296
+            Width = 212
+            Height = 17
+            Caption = 'Verificar erros importa'#231#227'o pedido'
+            TabOrder = 12
+          end
         end
         object TabSheet6: TTabSheet
           Caption = 'Permiss'#245'es Relat'#243'rios'
@@ -923,6 +963,30 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Visualizar Fecha Comiss'#227'o E-commerce'
             TabOrder = 20
+          end
+          object chk80: TCheckBox
+            Left = 385
+            Top = 127
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Relat'#243'rio Entrada Sa'#237'da Mat'#233'ria'
+            TabOrder = 21
+          end
+          object chk81: TCheckBox
+            Left = 385
+            Top = 151
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Relat'#243'rio Estoque Mat'#233'ria'
+            TabOrder = 22
+          end
+          object chk85: TCheckBox
+            Left = 385
+            Top = 175
+            Width = 313
+            Height = 17
+            Caption = 'Visualizar Relat'#243'rio Pedidos Em Aberto'
+            TabOrder = 23
           end
         end
       end

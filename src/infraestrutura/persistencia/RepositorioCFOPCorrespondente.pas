@@ -18,7 +18,7 @@ type
     function SQLSalvar                   :String;            override;                             
     function SQLGetAll                   :String;            override;                             
     function SQLRemover                  :String;            override;                             
-    function SQLGetExiste(campo: String): String;            override;                             
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected                                                                                        
     function IsInsercao(Objeto :TObject) :Boolean;           override;                             
@@ -159,10 +159,11 @@ begin
             ' left join naturezas_operacao n_e  on  (n_e.CODIGO = cc.COD_CFOP_ENTRADA)           ';
 end;                                                                                               
 
-function TRepositorioCFOPCorrespondente.SQLGetExiste(campo: String): String;              
+function TRepositorioCFOPCorrespondente.SQLGetExiste(arrayDeCampos :array of string): String;
 begin                                                                                              
-  result := 'select '+ campo +' from CFOP_CORRESPONDENTE where '+ campo +' = :ncampo';                
-end;                                                                                               
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
+end;
 
 function TRepositorioCFOPCorrespondente.SQLRemover: String;                               
 begin                                                                                              

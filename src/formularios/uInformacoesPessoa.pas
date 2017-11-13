@@ -18,7 +18,6 @@ type
     edtUf: TEdit;
     edtCEP: TMaskEdit;
     edtPais: TEdit;
-    CpfCnpj: TMaskCpfCnpj;
     GridEmail: TDBGrid;
     Label1: TLabel;
     Label2: TLabel;
@@ -31,6 +30,7 @@ type
     cdsEmails: TClientDataSet;
     dsEmails: TDataSource;
     cdsEmailsemail: TStringField;
+    CpfCnpj: TMaskCpfCnpj;
     Fone1: TFone;
     procedure FormShow(Sender: TObject);
   private
@@ -50,7 +50,7 @@ var
 
 implementation
 
-uses FabricaRepositorio;
+uses FabricaRepositorio, System.StrUtils;
 
 {$R *.dfm}
 
@@ -72,15 +72,23 @@ begin
 end;
 
 procedure TfrmInformacoesPessoa.CarregaEmails(emails: String);
+var email :String;
+    existeSeparador :Boolean;
 begin
   if not cdsEmails.Active then  cdsEmails.CreateDataSet;
   
   while emails <> '' do begin
+    existeSeparador := pos(';',emails) > 0;
+    email := IfThen(existeSeparador, copy( emails, 1, ( pos( ';', emails ) -1 ) ), emails);
+
     cdsEmails.Append;
-    cdsEmailsemail.AsString := copy( emails, 1, ( pos( ';', emails ) -1 ) );
+    cdsEmailsemail.AsString := email;
     cdsEmails.Post;
 
-    emails := trim( copy( emails, (pos(';',emails) +1), length(emails) ) );
+    if existeSeparador then
+      emails := trim( copy( emails, (pos(';',emails) +1), length(emails) ) )
+    else
+      emails := '';
   end;
 end;
 

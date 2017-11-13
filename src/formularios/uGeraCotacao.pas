@@ -10,7 +10,6 @@ uses
 
 type
   TfrmGeraCotacao = class(TfrmPadrao)
-    BuscaEmpresa1: TBuscaEmpresa;
     GroupBox1: TGroupBox;
     Label1: TLabel;
     edtCidade: TEdit;
@@ -30,6 +29,7 @@ type
     btnSair: TSpeedButton;
     btnImprimir: TSpeedButton;
     BuscaCliente: TBuscaCliente;
+    BuscaEmpresa1: TBuscaEmpresa;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnSelecionaClick(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);

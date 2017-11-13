@@ -9551,4 +9551,238 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 213
     WordWrap = False
   end
+  object versao214: TMemo
+    Left = 33
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE CAIXAS_PEDIDO ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    NUMERO INTEGER,'
+      '    CODIGO_MATERIA INTEGER,'
+      '    CODIGO_CONFERENCIA INTEGER)'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint PK_CAIXAS_PEDIDO'
+      'primary key (CODIGO)'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint FK_CAIXAS_PEDIDO_2'
+      'foreign key (CODIGO_CONFERENCIA)'
+      'references CONFERENCIA_PEDIDO(CODIGO)'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint FK_CAIXAS_PEDIDO_1'
+      'foreign key (CODIGO_MATERIA)'
+      'references MATERIAS(CODIGO)'
+      '^')
+    TabOrder = 214
+    WordWrap = False
+  end
+  object Memo1: TMemo
+    Left = 57
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE CAIXAS_PEDIDO ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    NUMERO INTEGER,'
+      '    CODIGO_MATERIA INTEGER,'
+      '    CODIGO_CONFERENCIA INTEGER,'
+      '    BAIXOU_ESTOQUE CHAR(1))'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint PK_CAIXAS_PEDIDO'
+      'primary key (CODIGO)'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint FK_CAIXAS_PEDIDO_2'
+      'foreign key (CODIGO_CONFERENCIA)'
+      'references CONFERENCIA_PEDIDO(CODIGO)'
+      '^'
+      'alter table CAIXAS_PEDIDO'
+      'add constraint FK_CAIXAS_PEDIDO_1'
+      'foreign key (CODIGO_MATERIA)'
+      'references MATERIAS(CODIGO)'
+      '^')
+    TabOrder = 215
+    WordWrap = False
+  end
+  object versao215: TMemo
+    Left = 81
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_CAIXAS_PEDIDO_ID'
+      '^'
+      'CREATE TRIGGER CAIXAS_PEDIDO_BI FOR CAIXAS_PEDIDO'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) OR (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_CAIXAS_PEDIDO_ID,1);'
+      'END'
+      '^')
+    TabOrder = 216
+    WordWrap = False
+  end
+  object versao216: TMemo
+    Left = 105
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_ENTRADAS_SAIDAS_MATERIA_ID'
+      '^'
+      'CREATE TABLE ENTRADAS_SAIDAS_MATERIA ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_MATERIA INTEGER,'
+      '    QUANTIDADE NUMERIC(15,2),'
+      '    DATA_MOVIMENTO TIMESTAMP,'
+      '    TIPO CHAR(1))'
+      '^'
+      'alter table ENTRADAS_SAIDAS_MATERIA'
+      'add constraint PK_ENTRADAS_SAIDAS_MATERIA'
+      'primary key (CODIGO)'
+      '^'
+      'alter table ENTRADAS_SAIDAS_MATERIA'
+      'add constraint FK_ENTRADAS_SAIDAS_MATERIA_1'
+      'foreign key (CODIGO_MATERIA)'
+      'references MATERIAS(CODIGO)'
+      '^'
+      
+        'CREATE TRIGGER ENTRADAS_SAIDAS_MATERIA_BI FOR ENTRADAS_SAIDAS_MA' +
+        'TERIA'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_ENTRADAS_SAIDAS_MATERIA_ID,1);'
+      'END'
+      '^'
+      'ALTER TABLE MATERIAS'
+      'ADD CONTROLA_ESTOQUE CHAR(1)'
+      '^')
+    TabOrder = 217
+    WordWrap = False
+  end
+  object versao217: TMemo
+    Left = 129
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CODIGO_BARRAS'
+      'ADD COD_SKU VARCHAR(30)'
+      '^')
+    TabOrder = 218
+    WordWrap = False
+  end
+  object versao218: TMemo
+    Left = 153
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE TAMANHOS'
+      'ADD ORDEM SMALLINT'
+      '^')
+    TabOrder = 219
+    WordWrap = False
+  end
+  object versao219: TMemo
+    Left = 177
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ITENS'
+      'ADD QTD_PM INTEGER'
+      '^'
+      'CREATE TABLE CONFIGUCAROES_ECOMMERCE ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    TOKEN VARCHAR(44),'
+      '    URL_BASE VARCHAR(150),'
+      '    COD_TABELA_PRECO INTEGER,'
+      '    INTERVALO_VERIFICACAO SMALLINT,'
+      '    CODIGO_EMPRESA INTEGER,'
+      '    CODIGO_REPRESENTANTE INTEGER,'
+      '    CODIGO_FORMA_PAGTO INTEGER,'
+      '    ULTIMO_PED_IMPORTADO INTEGER)'
+      '^'
+      'alter table CONFIGUCAROES_ECOMMERCE'
+      'add constraint PK_CONFIGUCAROES_ECOMMERCE'
+      'primary key (CODIGO)'
+      '^'
+      'alter table CONFIGUCAROES_ECOMMERCE'
+      'add constraint FK_CONFIGUCAROES_ECOMMERCE_1'
+      'foreign key (COD_TABELA_PRECO)'
+      'references TABELAS_PRECO(CODIGO)'
+      '^'
+      'ALTER TABLE CLIENTES'
+      'ADD ECOMMERCE CHAR(1)'
+      '^'
+      'CREATE GENERATOR GEN_CONFIGUCAROES_ECOMMERCE_ID'
+      '^')
+    TabOrder = 220
+    WordWrap = False
+  end
+  object versao220: TMemo
+    Left = 201
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CAIXAS_PEDIDO'
+      'ADD BAIXOU_ESTOQUE CHAR(1)'
+      '^')
+    TabOrder = 221
+    WordWrap = False
+  end
+  object versao221: TMemo
+    Left = 225
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE LOG_ERROS_IMPORT_PEDIDOS ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    ERRO VARCHAR(1000),'
+      '    DATA DATE,'
+      '    HORA TIME,'
+      '    VERIFICADO CHAR(1))'
+      '^'
+      'alter table LOG_ERROS_IMPORT_PEDIDOS'
+      'add constraint PK_LOG_ERROS_IMPORT_PEDIDOS'
+      'primary key (CODIGO)'
+      '^'
+      'CREATE GENERATOR GEN_LOG_ERROS_IMPORT_PEDIDOS_ID'
+      '^'
+      
+        'CREATE TRIGGER LOG_ERROS_IMPORT_PEDIDOS_BI FOR LOG_ERROS_IMPORT_' +
+        'PEDIDOS'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_LOG_ERROS_IMPORT_PEDIDOS_ID,1);'
+      'END'
+      '^ ')
+    TabOrder = 222
+    WordWrap = False
+  end
+  object versao222: TMemo
+    Left = 249
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CORES ALTER DESC_PRODUCAO TYPE VARCHAR(100)'
+      '^')
+    TabOrder = 223
+    WordWrap = False
+  end
 end

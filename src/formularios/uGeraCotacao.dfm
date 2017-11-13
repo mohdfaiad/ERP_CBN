@@ -16,20 +16,6 @@ object frmGeraCotacao: TfrmGeraCotacao
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  inline BuscaEmpresa1: TBuscaEmpresa
-    Left = 15
-    Top = 184
-    Width = 485
-    Height = 63
-    TabOrder = 0
-    ExplicitLeft = 15
-    ExplicitTop = 184
-    ExplicitWidth = 485
-    inherited gpbEmpresa: TGroupBox
-      Width = 485
-      ExplicitWidth = 485
-    end
-  end
   object GroupBox1: TGroupBox
     Left = 15
     Top = 8
@@ -43,7 +29,7 @@ object frmGeraCotacao: TfrmGeraCotacao
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     object Label1: TLabel
       Left = 10
       Top = 64
@@ -76,7 +62,7 @@ object frmGeraCotacao: TfrmGeraCotacao
       Width = 390
       Height = 24
       ReadOnly = True
-      TabOrder = 0
+      TabOrder = 1
     end
     object edtEstado: TEdit
       Left = 406
@@ -84,23 +70,53 @@ object frmGeraCotacao: TfrmGeraCotacao
       Width = 70
       Height = 24
       ReadOnly = True
-      TabOrder = 1
+      TabOrder = 2
     end
     inline BuscaCliente: TBuscaCliente
-      Left = 9
-      Top = 19
+      Left = 8
+      Top = 22
       Width = 473
-      Height = 41
-      TabOrder = 2
+      Height = 44
+      TabOrder = 0
       OnExit = BuscaClienteExit
-      ExplicitLeft = 9
-      ExplicitTop = 19
+      ExplicitLeft = 8
+      ExplicitTop = 22
       ExplicitWidth = 473
-      ExplicitHeight = 41
+      ExplicitHeight = 44
+      inherited StaticText1: TStaticText
+        Top = -1
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ExplicitTop = -1
+        ExplicitHeight = 19
+      end
+      inherited edtCodigo: TCurrencyEdit
+        Top = 17
+        ExplicitTop = 17
+      end
+      inherited StaticText2: TStaticText
+        Top = -1
+        Width = 42
+        Height = 19
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ExplicitTop = -1
+        ExplicitWidth = 42
+        ExplicitHeight = 19
+      end
+      inherited btnBuscar: TBitBtn
+        Top = 15
+        ExplicitTop = 15
+      end
       inherited edtRazao: TEdit
-        Width = 366
+        Top = 17
+        Width = 367
         Height = 24
-        ExplicitWidth = 366
+        ExplicitTop = 17
+        ExplicitWidth = 367
         ExplicitHeight = 24
       end
     end
@@ -110,7 +126,7 @@ object frmGeraCotacao: TfrmGeraCotacao
     Top = 126
     Width = 485
     Height = 51
-    TabOrder = 2
+    TabOrder = 1
     object Label3: TLabel
       Left = 46
       Top = 3
@@ -184,7 +200,7 @@ object frmGeraCotacao: TfrmGeraCotacao
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 4
     object edtCaminho: TEdit
       Left = 13
       Top = 28
@@ -276,7 +292,7 @@ object frmGeraCotacao: TfrmGeraCotacao
     Width = 517
     Height = 45
     Align = alBottom
-    TabOrder = 4
+    TabOrder = 3
     DesignSize = (
       517
       45)
@@ -433,6 +449,26 @@ object frmGeraCotacao: TfrmGeraCotacao
         77008B847700847B6C009B9B9B009B9B9B009B9B9B009B9B9B00}
       NumGlyphs = 2
       OnClick = btnImprimirClick
+    end
+  end
+  inline BuscaEmpresa1: TBuscaEmpresa
+    Left = 16
+    Top = 180
+    Width = 484
+    Height = 68
+    TabOrder = 2
+    ExplicitLeft = 16
+    ExplicitTop = 180
+    ExplicitWidth = 484
+    ExplicitHeight = 68
+    inherited gpbEmpresa: TGroupBox
+      Width = 484
+      Height = 68
+      ExplicitTop = 0
+    end
+    inherited edtRazao: TEdit
+      Width = 362
+      ExplicitWidth = 362
     end
   end
 end

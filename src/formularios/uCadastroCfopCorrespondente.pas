@@ -137,8 +137,10 @@ begin
      if not Assigned(CFOPCorrespondente) then
       CFOPCorrespondente := TCFOPCorrespondente.Create;
 
-     CFOPCorrespondente.cod_CFOP_Saida           := self.ListaCFOPSaida.CodCampo;
-     CFOPCorrespondente.cod_CFOP_Entrada         := self.ListaCFOPEntrada.CodCampo;
+     CFOPCorrespondente.cod_CFOP_Saida    := self.ListaCFOPSaida.CodCampo;
+     CFOPCorrespondente.cod_CFOP_Entrada  := self.ListaCFOPEntrada.CodCampo;
+     CFOPCorrespondente.cfop_saida        := self.ListaCFOPSaida.comListaCampo.Items[self.ListaCFOPSaida.comListaCampo.ItemIndex];
+     CFOPCorrespondente.cfop_entrada      := self.ListaCFOPEntrada.comListaCampo.Items[self.ListaCFOPEntrada.comListaCampo.ItemIndex];
 
      RepositorioCFOPCorrespondente.Salvar(CFOPCorrespondente);
 
@@ -146,7 +148,6 @@ begin
 
    finally
      FreeAndNil(RepositorioCFOPCorrespondente);
-
    end;
 end;
 

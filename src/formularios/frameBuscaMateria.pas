@@ -18,9 +18,12 @@ type
     procedure btnBuscaClick(Sender: TObject);
     procedure btnBuscaEnter(Sender: TObject);
     procedure edtDescricaoEnter(Sender: TObject);
+    procedure edtCodigoChange(Sender: TObject);
   private
     FMateria          :TMateria;
     FcodMateria       :integer;
+    FFiltroDescricao   :String;
+    FTituloBusca      :String;
 
   private
     procedure SetcodMateria      (const Value: integer);
@@ -31,10 +34,16 @@ type
 
   public
     procedure Clear;
+    procedure Desabilitar;
+    procedure Habilitar;
 
   public
     property Materia          :TMateria     read FMateria          write SetMateria;
     property codMateria       :integer      read FcodMateria       write SetcodMateria;
+
+  public
+    property FiltroDescricao  :String    read FFiltroDescricao  write FFiltroDescricao;
+    property TituloBusca      :String    read FTituloBusca      write FTituloBusca;
   end;
 
 implementation
@@ -50,26 +59,33 @@ uses
 procedure TBuscaMateria.Buscar(const CodigoMateria: Integer);
 var
   Repositorio :TRepositorio;
-  Materia     :TMateria;
+  vMateria     :TMateria;
 begin
    Repositorio := nil;
 
    try
      Repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
-     Materia     := TMateria(Repositorio.Get(CodigoMateria));
+     vMateria     := TMateria(Repositorio.Get(CodigoMateria));
 
-     if not Assigned(Materia) then begin
+     if not Assigned(vMateria) then begin
        frmCadastroMateria := nil;
 
        try
          frmCadastroMateria := TfrmCadastroMateria.CreateModoBusca(nil);
+         if FFiltroDescricao <> '' then
+         begin
+           frmCadastroMateria.filtroDescricao := self.FFiltroDescricao;//' DESCRICAO LIKE ''CAIXA%'' ';
+           frmCadastroMateria.gridConsulta.BuscaHabilitada := false;
+         end;
+         if FTituloBusca <> '' then
+           frmCadastroMateria.Caption         := FTituloBusca;
          frmCadastroMateria.ShowModal;
 
          if (frmCadastroMateria.ModalResult = mrOK) then begin
-            Materia          := TMateria(Repositorio.Get(frmCadastroMateria.cdsCODIGO.AsInteger));
+            vMateria          := TMateria(Repositorio.Get(frmCadastroMateria.cdsCODIGO.AsInteger));
 
-            if Assigned(Materia) then
-              self.Materia := Materia;
+            if Assigned(vMateria) then
+              self.Materia := vMateria;
          end
          else
           self.Clear; 
@@ -79,7 +95,7 @@ begin
        end;
      end
      else
-       self.Materia := Materia;
+       self.Materia := vMateria;
    
    finally
      FreeAndNil(Repositorio);
@@ -91,6 +107,13 @@ begin
   self.FMateria  := nil;
   edtCodigo.Clear;
   edtDescricao.Clear;
+end;
+
+procedure TBuscaMateria.Desabilitar;
+begin
+  edtCodigo.Enabled     := false;
+  edtDescricao.Enabled  := false;
+  btnBusca.Enabled      := false;
 end;
 
 procedure TBuscaMateria.SetcodMateria(const Value: integer);
@@ -117,10 +140,19 @@ begin
    FMateria := Value;
 
   if Assigned(self.FMateria) then begin
+    self.edtCodigo.OnChange := nil;
     self.edtCodigo.Text     := IntToStr(self.FMateria.codigo);
     self.edtDescricao.Text  := self.FMateria.descricao;
+    self.edtCodigo.OnChange := self.edtCodigoChange;
   end;
 
+end;
+
+procedure TBuscaMateria.edtCodigoChange(Sender: TObject);
+begin
+  edtDescricao.Clear;
+  if assigned(self.FMateria) then
+    FreeAndNil(FMateria);
 end;
 
 procedure TBuscaMateria.edtCodigoKeyDown(Sender: TObject; var Key: Word;
@@ -146,8 +178,15 @@ end;
 
 procedure TBuscaMateria.edtDescricaoEnter(Sender: TObject);
 begin
-  if edtDescricao.Text <> '' then
+//  if edtDescricao.Text <> '' then
     keybd_event(VK_TAB, 0, 0, 0);
+end;
+
+procedure TBuscaMateria.Habilitar;
+begin
+  edtCodigo.Enabled     := true;
+  edtDescricao.Enabled  := true;
+  btnBusca.Enabled      := true;
 end;
 
 end.

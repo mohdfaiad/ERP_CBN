@@ -19,7 +19,7 @@ type
     function CondicaoSQLGetAll           :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -191,9 +191,10 @@ begin
   result := 'select * from PARCELAS '+ IfThen(FIdentificador = '','', CondicaoSQLGetAll);
 end;
 
-function TRepositorioParcela.SQLGetExiste(campo: String): String;
+function TRepositorioParcela.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from PARCELAS where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioParcela.SQLRemover: String;

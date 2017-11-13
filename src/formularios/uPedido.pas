@@ -292,7 +292,7 @@ implementation
 
 uses Math, FabricaRepositorio, StrUtils, uRelatorioExpedicao, PermissoesAcesso, funcoes, uRelatorioPedidoVenda,
      uCadastroCliente, uInformacoesPessoa, Tamanho, Estoque, EspecificacaoEstoquePorProdutoCorTamanho, ConferenciaItem,
-     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao;
+     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao, CaixaPedido;
 
 {$R *.dfm}
 
@@ -315,6 +315,8 @@ begin
     edtAprovado.Enabled := false;
     edtDtAprovacao.Clear;
   end;
+
+  calculaTotais;
 
   imgEstudo.Visible    := (cbAprovacao.ItemIndex = 0);
   imgAprovado.Visible  := (cbAprovacao.ItemIndex = 1);
@@ -628,7 +630,7 @@ begin
   if (ActiveControl = edtValorItens) and (tecla = VK_Return) then
     btnConfirma.Click;
 
-  if (tecla = VK_Escape) and not (confirma('Deseja realmente sair da tela de pedidos?')) then  tecla := 0;
+  if (tecla = VK_Escape) and not (confirma('Deseja realmente sair da tela de pedidos?')) then exit;
 
   inherited;
   if      tecla = vk_F1 then   pagPedido.ActivePageIndex := 0
@@ -738,7 +740,10 @@ begin
 
   TabSheet2.Tag := 1; //alterando
   TabSheet3.Enabled := false;
-  BuscaCor1.edtReferencia.SetFocus;
+  if BuscaCor1.Enabled then
+    BuscaCor1.edtReferencia.SetFocus
+  else
+    edtPreco.SetFocus;
 end;
 
 procedure TfrmPedido.deletarItem;
@@ -757,7 +762,7 @@ procedure TfrmPedido.edtPrecoExit(Sender: TObject);
 begin
   inherited;
   somaQtdCores;
-  if not FSalvando then
+  if not FSalvando and BuscaCor1.Enabled then
     BuscaCor1.edtReferencia.SetFocus;
 end;
 
@@ -971,96 +976,102 @@ begin
   FPedidoTricae := Value;
 
  // edtPercComissao.Value := IfThen(FPedidoTricae,30,0);
-  edtValorFrete.Enabled := FPedidoTricae;
+  edtValorFrete.Enabled := FPedidoTricae or (pos('CRISTIANO COELHO', buscaRepresentante.edtRazao.Text) > 0);
   edtPreco.ReadOnly     := not FPedidoTricae;
 end;
 
 procedure TfrmPedido.mostraPedido;
 var i :integer;
 begin
-  edtDescontoPedido.Value                := 0;
-  edtAcrescimoPedido.Value               := 0;
+  try
+          Aguarda('Carregando itens do pedido...');
+    edtDescontoPedido.Value                := 0;
+    edtAcrescimoPedido.Value               := 0;
 
-  BuscaCliente.codigo                    := BuscaPedido1.Ped.cod_cliente;
-  buscaRepresentante.codigo              := BuscaPedido1.Ped.cod_repres;
-  BuscaEmpresa.codEmpresa                := BuscaPedido1.Ped.cod_filial;
-  
-  BuscaFormaPagamento1.codigoFormaPagamento := BuscaPedido1.Ped.cod_forma_pag;
-  BuscaTabelaPreco1.codTabela            := intToStr(BuscaPedido1.Ped.cod_tab_preco);
-  BuscaTransportadora.cod_pessoa         := intToStr(BuscaPedido1.Ped.cod_transp);
-  cbTipoFrete.ItemIndex                  := BuscaPedido1.Ped.tipo_frete;
-  cbAprovacao.ItemIndex                  := IfThen(BuscaPedido1.Ped.aprovacao = 'E',0,IfThen(BuscaPedido1.Ped.aprovacao = 'A',1,2)) ;
-  edtAprovado.Text                       := BuscaPedido1.Ped.aprovado_por;
+    BuscaCliente.codigo                    := BuscaPedido1.Ped.cod_cliente;
+    buscaRepresentante.codigo              := BuscaPedido1.Ped.cod_repres;
+    BuscaEmpresa.codEmpresa                := BuscaPedido1.Ped.cod_filial;
 
-  if BuscaPedido1.Ped.dt_aprovacao > StrToDate('01/01/2000') then
-    edtDtAprovacao.Text                    := DateToStr(BuscaPedido1.Ped.dt_aprovacao);
+    BuscaFormaPagamento1.codigoFormaPagamento := BuscaPedido1.Ped.cod_forma_pag;
+    BuscaTabelaPreco1.codTabela            := intToStr(BuscaPedido1.Ped.cod_tab_preco);
+    BuscaTransportadora.cod_pessoa         := intToStr(BuscaPedido1.Ped.cod_transp);
+    cbTipoFrete.ItemIndex                  := BuscaPedido1.Ped.tipo_frete;
+    cbAprovacao.ItemIndex                  := IfThen(BuscaPedido1.Ped.aprovacao = 'E',0,IfThen(BuscaPedido1.Ped.aprovacao = 'A',1,2)) ;
+    edtAprovado.Text                       := BuscaPedido1.Ped.aprovado_por;
 
-  cbAprovacaoChange(nil);  
+    if BuscaPedido1.Ped.dt_aprovacao > StrToDate('01/01/2000') then
+      edtDtAprovacao.Text                    := DateToStr(BuscaPedido1.Ped.dt_aprovacao);
 
-  memObs.Text                            := BuscaPedido1.Ped.observacao;
-  dtpCadastro.DateTime                   := BuscaPedido1.Ped.dt_cadastro;
-  dtpRepresentante.DateTime              := BuscaPedido1.Ped.dt_representante;
-  edtPercComissao.Value                  := BuscaPedido1.Ped.comissao;
-  edtDescComiss.Value                    := BuscaPedido1.Ped.desconto_comiss;
-  dtpRecebido.DateTime                   := BuscaPedido1.Ped.dt_recebimento;
-  dtpInicio.DateTime                     := BuscaPedido1.Ped.dt_entrega;
-  dtpLimite.DateTime                     := BuscaPedido1.Ped.dt_limite_entrega;
-  rbSim.Checked                          := (BuscaPedido1.Ped.despachado = 'S');
-  rbNao.Checked                          := (BuscaPedido1.Ped.despachado <> 'S');
-  edtDataDespacho.Text                   :=  IfThen(BuscaPedido1.Ped.dt_despacho > strToDate('01/01/1900'), DateToStr(BuscaPedido1.Ped.dt_despacho), '');
-  edtDescontoItens.Value                 := BuscaPedido1.Ped.desconto_itens;
-  edtTotPedido.Value                     := BuscaPedido1.Ped.valor_total;
-  edtDescontoPedido.Value                := BuscaPedido1.Ped.desconto;
-  edtAcrescimoPedido.Value               := BuscaPedido1.Ped.acrescimo;
-  edtValorFrete.Value                    := BuscaPedido1.Ped.valor_frete;
-  rgStatus.ItemIndex                     := IfThen(BuscaPedido1.Ped.cancelado = 'S', 1, 0);
+    cbAprovacaoChange(nil);
 
-  if cdsItens.Active then
-    cdsitens.EmptyDataSet;
+    memObs.Text                            := BuscaPedido1.Ped.observacao;
+    dtpCadastro.DateTime                   := BuscaPedido1.Ped.dt_cadastro;
+    dtpRepresentante.DateTime              := BuscaPedido1.Ped.dt_representante;
+    edtPercComissao.Value                  := BuscaPedido1.Ped.comissao;
+    edtDescComiss.Value                    := BuscaPedido1.Ped.desconto_comiss;
+    dtpRecebido.DateTime                   := BuscaPedido1.Ped.dt_recebimento;
+    dtpInicio.DateTime                     := BuscaPedido1.Ped.dt_entrega;
+    dtpLimite.DateTime                     := BuscaPedido1.Ped.dt_limite_entrega;
+    rbSim.Checked                          := (BuscaPedido1.Ped.despachado = 'S');
+    rbNao.Checked                          := (BuscaPedido1.Ped.despachado <> 'S');
+    edtDataDespacho.Text                   :=  IfThen(BuscaPedido1.Ped.dt_despacho > strToDate('01/01/1900'), DateToStr(BuscaPedido1.Ped.dt_despacho), '');
+    edtDescontoItens.Value                 := BuscaPedido1.Ped.desconto_itens;
+    edtTotPedido.Value                     := BuscaPedido1.Ped.valor_total;
+    edtDescontoPedido.Value                := BuscaPedido1.Ped.desconto;
+    edtAcrescimoPedido.Value               := BuscaPedido1.Ped.acrescimo;
+    edtValorFrete.Value                    := BuscaPedido1.Ped.valor_frete;
+    rgStatus.ItemIndex                     := IfThen(BuscaPedido1.Ped.cancelado = 'S', 1, 0);
 
-  for i:= 0 to BuscaPedido1.Itens.Count - 1 do begin
-    if not cdsItens.Active then
-      cdsItens.CreateDataSet;
+    if cdsItens.Active then
+      cdsitens.EmptyDataSet;
 
-    cdsItens.Append;
-    cdsItensCODIGO.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).codigo;
-    cdsItensProduto.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).Produto.Referencia;
-    cdsItensCor.AsString           := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Descricao;
-    cdsItensRefCor.AsString        := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Referencia;
-    cdsItensCodPro.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_produto;
-    cdsItensCodCor.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_cor;
-    cdsItensValorUnit.AsFloat      := TItem(BuscaPedido1.Ped.Itens[i]).preco;
-    cdsItensDesconto.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).desconto;
-    cdsItensValorTotalItem.AsFloat := TItem(BuscaPedido1.Ped.Itens[i]).valor_total;
-    cdsItensTamRN.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
-    cdsItensTamP.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_P;
-    cdsItensTamM.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_M;
-    cdsItensTamG.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_G;
-    cdsItensTam1.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_1;
-    cdsItensTam2.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_2;
-    cdsItensTam3.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_3;
-    cdsItensTam4.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_4;
-    cdsItensTam6.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_6;
-    cdsItensTam8.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_8;
-    cdsItensTam10.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_10;
-    cdsItensTam12.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
-    cdsItensTam14.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
-    cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
-    cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Ped.Itens[i]).qtd_total;
-    cdsItensObsItem.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).observacao;
-    cdsItensDESMEMBRADO.AsString   := IfThen(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit > 0, 'S', 'N');
-    cdsItens.Post;
+    for i:= 0 to BuscaPedido1.Itens.Count - 1 do begin
+      Application.ProcessMessages;
+      if not cdsItens.Active then
+        cdsItens.CreateDataSet;
+
+      cdsItens.Append;
+      cdsItensCODIGO.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).codigo;
+      cdsItensProduto.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).Produto.Referencia;
+      cdsItensCor.AsString           := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Descricao;
+      cdsItensRefCor.AsString        := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Referencia;
+      cdsItensCodPro.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_produto;
+      cdsItensCodCor.AsInteger       := TItem(BuscaPedido1.Ped.Itens[i]).cod_cor;
+      cdsItensValorUnit.AsFloat      := TItem(BuscaPedido1.Ped.Itens[i]).preco;
+      cdsItensDesconto.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).desconto;
+      cdsItensValorTotalItem.AsFloat := TItem(BuscaPedido1.Ped.Itens[i]).valor_total;
+      cdsItensTamRN.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
+      cdsItensTamP.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_P;
+      cdsItensTamM.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_M;
+      cdsItensTamG.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_G;
+      cdsItensTam1.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_1;
+      cdsItensTam2.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_2;
+      cdsItensTam3.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_3;
+      cdsItensTam4.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_4;
+      cdsItensTam6.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_6;
+      cdsItensTam8.AsInteger         := TItem(BuscaPedido1.Ped.Itens[i]).qtd_8;
+      cdsItensTam10.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_10;
+      cdsItensTam12.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
+      cdsItensTam14.AsInteger        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
+      cdsItensTamUNICA.AsFloat       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
+      cdsItensTOTAL.AsFloat          := TItem(BuscaPedido1.Ped.Itens[i]).qtd_total;
+      cdsItensObsItem.AsString       := TItem(BuscaPedido1.Ped.Itens[i]).observacao;
+      cdsItensDESMEMBRADO.AsString   := IfThen(TItem(BuscaPedido1.Ped.Itens[i]).codigoProdutoKit > 0, 'S', 'N');
+      cdsItens.Post;
+    end;
+
+    calculaTotais;
+    btnImprimir.Enabled       := true;
+    btnImprimirPedido.Enabled := true;
+    btnGerarCotacao.Enabled   := true;
+    btnImprimeVerso.Enabled   := true;
+    btnInfCli.Visible         := true;
+
+    if not (BuscaPedido1.pedido_faturado) and (pnlNAlteravelCabecalho.Enabled) then
+        BuscaEmpresa.btnBusca.SetFocus
+  finally
+    FimAguarda();
   end;
-
-  calculaTotais;
-  btnImprimir.Enabled       := true;
-  btnImprimirPedido.Enabled := true;
-  btnGerarCotacao.Enabled   := true;
-  btnImprimeVerso.Enabled   := true;
-  btnInfCli.Visible         := true;
-
-  if not (BuscaPedido1.pedido_faturado) and (pnlNAlteravelCabecalho.Enabled) then
-    BuscaEmpresa.btnBusca.SetFocus
 end;
 
 function TfrmPedido.verificaObrigatoriosPedido: Boolean;
@@ -1149,8 +1160,6 @@ begin
 
           pagPedido.Enabled := true;
           btnSalvar.Enabled := true;
-          mostraPedido;
-
           if Buscapedido1.pedido_faturado then
           begin
             imgFaturado.Visible   := true;
@@ -1161,6 +1170,8 @@ begin
             lbfaturado.Visible    := false;
           end;
           BuscaPedido1.Enabled := false;
+
+          mostraPedido;
        end
        else if self.Tag = 0 then begin //incluindo
          if confirma('Já existe um pedido com esse número! Deseja aproveitar dados do mesmo?') then begin
@@ -1260,7 +1271,7 @@ begin
   imgFaturado.Visible := false;
   lbFaturado.Visible  := false;
   rgStatus.ItemIndex := 0;
-  
+
 end;
 
 procedure TfrmPedido.btnCancelarClick(Sender: TObject);
@@ -1409,14 +1420,14 @@ begin
     habilitaTamanhos;
     DBGrid1.ReadOnly := false;
   end;
-  if BuscaProduto1.edtReferencia.Text <> '' then
+  if (BuscaProduto1.edtReferencia.Text <> '') then
     BuscaCor1.Enabled:= True;
   if BuscaCor1.Enabled then
   begin
     if (pagPedido.ActivePageIndex = 1) then
       if (FPedidoTricae) then
         edtPreco.SetFocus
-      else
+      else if buscacor1.enabled then
         BuscaCor1.edtReferencia.SetFocus;
   end
   else
@@ -1425,7 +1436,8 @@ end;
 
 procedure TfrmPedido.buscaRepresentante1edtRazaoChange(Sender: TObject);
 begin
-  PedidoTricae := (pos('TRICAE', buscaRepresentante.edtRazao.Text) > 0);
+  if buscaRepresentante.edtRazao.Text <> '' then
+    PedidoTricae := (pos('TRICAE', buscaRepresentante.edtRazao.Text) > 0);
 end;
 
 procedure TfrmPedido.buscaRepresentanteExit(Sender: TObject);
@@ -1436,7 +1448,9 @@ begin
 end;
 
 procedure TfrmPedido.calculaTotais;
+var valorFrete :Real;
 begin
+  valorFrete := 0;
   if not cdsItens.active then   cdsItens.CreateDataSet;
   edtTotPedido.Value      := 0;
   edtTotItens.Value       := 0;
@@ -1453,8 +1467,11 @@ begin
     cdsItens.Next;
   end;
 
+  if cbTipoFrete.ItemIndex = 0 then
+    valorFrete := edtValorFrete.Value;
+
   edtTotItens.Value       := cdsItens.RecordCount;
-  edtTotPedidoBruto.Value := edtDescontoItens.Value + edtTotPedido.Value;
+  edtTotPedidoBruto.Value := edtDescontoItens.Value + edtTotPedido.Value + valorFrete;
  // edtTotPedidoBruto.Value := arredonda( edtTotPedidoBruto.Value );
 
   if ( edtTotPedido.Value > 0 ) then  begin
@@ -1462,10 +1479,11 @@ begin
     edtTotPedido.Value := edtTotPedido.Value - edtDescFPgto.Value;
     edtTotPedido.Value := edtTotPedido.Value - edtDescontoPedido.Value;
     edtTotPedido.Value := edtTotPedido.Value + edtAcrescimoPedido.Value;
+    edtTotPedido.Value := edtTotPedido.Value + valorFrete;
   //  edtTotPedido.Value := arredonda( edtTotPedido.Value );
   end;
 
-    cdsItens.EnableControls;
+  cdsItens.EnableControls;
 end;
 
 procedure TfrmPedido.btnImprimirPedidoClick(Sender: TObject);
@@ -1613,6 +1631,7 @@ end;
 
 procedure TfrmPedido.edtDescComissExit(Sender: TObject);
 begin
+  calculaTotais;
   if pagPedido.ActivePageIndex = 0 then
     memObs.SetFocus;
 end;
@@ -1636,6 +1655,7 @@ var i, adiciona_subtrai :integer;
     item_conferido      :TConferenciaItem;
     Especificacao       :TEspecificacaoItemConferidoPorCodigoItem;
     repositorio         :TRepositorio;
+    vCaixaPedido        :TCaixaPedido;
 begin
  try
    dm.qryGenerica.Close;
@@ -1643,6 +1663,13 @@ begin
    // multiplicador determina se os itens conferidos dão baixa no estoque (-1), ou se retornam pro estoque (+1)
    dm.qryGenerica.ParamByName('multiplicador').AsInteger := +1;
    dm.qryGenerica.ExecSQL;
+
+   if assigned(BuscaPedido1.Ped.Conferencia.Caixas) then
+   begin
+     for i := 0 to BuscaPedido1.Ped.Conferencia.Caixas.Count-1 do
+       if TCaixaPedido(BuscaPedido1.Ped.Conferencia.Caixas.Items[i]).baixou_estoque = 'S' then
+         TCaixaPedido(BuscaPedido1.Ped.Conferencia.Caixas.Items[i]).retornaEstoque;
+   end;
 
  Except
    on e : Exception do

@@ -119,6 +119,15 @@ type
     chk75: TCheckBox;
     chk76: TCheckBox;
     chk77: TCheckBox;
+    chk78: TCheckBox;
+    chk79: TCheckBox;
+    chk80: TCheckBox;
+    chk81: TCheckBox;
+    chk82: TCheckBox;
+    chk83: TCheckBox;
+    chk84: TCheckBox;
+    chk85: TCheckBox;
+
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -391,7 +400,7 @@ begin
       exit;
     end;
 
-    if (self.Tag = 1) and (Rep.GetExiste('nome',trim(edtNomePerfil.Text))) then begin
+    if (self.Tag = 1) and (Rep.GetExiste(['nome'],[trim(edtNomePerfil.Text)])) then begin
       self.avisar('Nome do perfil ja existe, favor alterar.');
       edtNomePerfil.SetFocus;
       exit;

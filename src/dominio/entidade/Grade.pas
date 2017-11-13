@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils,
-  Contnrs;
+  Contnrs, Generics.Collections, Tamanho;
 
 type
   TGrade = class
@@ -12,13 +12,13 @@ type
   private
     FCodigo     :Integer;
     FDescricao  :String;
-    FTamanhos: TObjectList;
+    FTamanhos: TObjectList<TTamanho>;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetDescricao  (const value :String);
 
   private
-    function GetTamanhos: TObjectList;
+    function GetTamanhos: TObjectList<TTamanho>;
 
   public
     property Codigo     :Integer     read FCodigo     write SetCodigo;
@@ -29,7 +29,7 @@ type
     destructor  Destroy; override;
 
   public
-    property Tamanhos   :TObjectList read GetTamanhos;
+    property Tamanhos   :TObjectList<TTamanho> read GetTamanhos;
   end;
 
 implementation
@@ -37,7 +37,7 @@ implementation
 uses
   Repositorio,
   FabricaRepositorio, Especificacao,
-  EspecificacaoGradeTamanhoPorCodigoGrade, Grade_Tamanhos, Tamanho;
+  EspecificacaoGradeTamanhoPorCodigoGrade, Grade_Tamanhos;
 
 { TGrade }
 
@@ -48,12 +48,13 @@ end;
 
 destructor TGrade.Destroy;
 begin
-  FreeAndNil(FTamanhos);
+  if assigned(FTamanhos) then
+    FreeAndNil(FTamanhos);
   
   inherited;
 end;
 
-function TGrade.GetTamanhos: TObjectList;
+function TGrade.GetTamanhos: TObjectList<TTamanho>;
 var
   RepositorioGradeTamanho, RepositorioTamanho :TRepositorio;
   GradeTamanhoPorGrade                        :TEspecificacao;
@@ -71,14 +72,14 @@ begin
        ListaGradesTamanhos      := RepositorioGradeTamanho.GetListaPorEspecificacao(GradeTamanhoPorGrade);
 
        if Assigned(ListaGradesTamanhos) and (ListaGradesTamanhos.Count > 0) then begin
-         self.FTamanhos := TObjectList.Create;
+         self.FTamanhos := TObjectList<TTamanho>.Create;
 
          for nX := 0 to (ListaGradesTamanhos.Count-1) do begin
             RepositorioTamanho      := nil;
 
             try
               RepositorioTamanho := TFabricaRepositorio.GetRepositorio(TTamanho.ClassName);
-              self.FTamanhos.Add(RepositorioTamanho.Get(TGrade_Tamanhos(ListaGradesTamanhos[nX]).Codtamanho));
+              self.FTamanhos.Add(TTamanho(RepositorioTamanho.Get(TGrade_Tamanhos(ListaGradesTamanhos[nX]).Codtamanho)));
             finally
               FreeAndNil(RepositorioTamanho);
             end;

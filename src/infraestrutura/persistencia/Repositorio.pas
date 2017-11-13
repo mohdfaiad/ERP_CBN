@@ -42,7 +42,7 @@ type
     function SQLGet                            :String;            virtual;
     function CondicaoSQLGetAll                 :String;            virtual;
     function SQLGetAll                         :String;            virtual;
-    function SQLGetExiste(campo:String)        :String;            virtual;
+    function SQLGetExiste(arrayDeCampos :array of string):String; virtual;
     function SQLSalvar                         :String;            virtual;
     function SQLRemover                        :String;            virtual;
 
@@ -74,12 +74,13 @@ type
 
   public
    //==============================================================================
-   // Métodos de recuperação de dados 
+   // Métodos de recuperação de dados
    //==============================================================================
+    function GetByArray              (const Identificadores :array of variant; const campos :array of string)   :TObject;
     function Get                     (const Identificador :Variant; const campo :String = '')           :TObject; overload;
     function GetListaPorIdentificador(const Identificador :Variant)                                     :TObjectList;
-    function GetAll                                                                                     :TObjectList;
-    function GetExiste               (const campo         :String;        const Identificador :Variant) :Boolean;
+    function GetAll                  (const condicao :String = '')                                      :TObjectList;
+    function GetExiste               (arrayDeCampos :array of string; arrayDeParametros :array of variant) :Boolean;
     function GetPorEspecificacao     (Especificacao       :TEspecificacao; const identificador :String = '') :TObject;
     function GetListaPorEspecificacao(Especificacao       :TEspecificacao; const identificador :String = '') :TObjectList;
 
@@ -134,35 +135,9 @@ begin
   inherited;
 end;
 
-function TRepositorio.Get(const Identificador :Variant; const campo :String): TObject;
+function TRepositorio.Get(const Identificador :Variant; const campo :String = ''): TObject;
 begin
-   try
-     result := nil;
-
-     if (self.FQuery.Connection.TxOptions.AutoCommit) and (self.FQuery.Connection.InTransaction) then
-       self.FQuery.Connection.Commit;
-
-     self.FQuery.SQL.Clear;
-
-     if campo = '' then begin
-       self.FQuery.SQL.Add(self.SQLGet);
-       self.FQuery.Params[0].Value := Identificador;
-     end
-     else begin
-       self.FQuery.SQL.Add(self.SQLGetExiste(campo));
-       self.FQuery.ParamByName(campo).Value := Identificador;
-     end;
-
-     self.FQuery.Open;
-
-     if not self.FQuery.IsEmpty then
-       result := self.Get(self.FQuery);
-   except
-     on E: Exception do begin
-      dm.LogErros.AdicionaErro('Repositorio', E.ClassName, E.Message);
-      raise Exception.Create(E.Message);
-     end;
-   end;
+  Result := GetByArray([Identificador], [campo]);
 end;
 
 function TRepositorio.SQLGet: String;
@@ -247,7 +222,7 @@ begin
    self.FQuery.ParamByName(NomeDoParametro).Clear;
 end;
 
-function TRepositorio.GetAll: TObjectList;
+function TRepositorio.GetAll(const condicao :String = ''): TObjectList;
 var
   obj :TObject;
 begin
@@ -255,7 +230,7 @@ begin
      result := nil;
 
      self.FQuery.SQL.Clear;
-     self.FQuery.SQL.Add(self.SQLGetAll);
+     self.FQuery.SQL.Add(self.SQLGetAll+condicao);
      self.FQuery.Open;
 
      if self.FQuery.IsEmpty then exit;
@@ -277,19 +252,59 @@ begin
    end;
 end;
 
+function TRepositorio.GetByArray(const Identificadores :array of variant; const campos :array of string): TObject;
+var i :integer;
+begin
+   try
+     result := nil;
+
+     if (self.FQuery.Connection.TxOptions.AutoCommit) and (self.FQuery.Connection.InTransaction) then
+       self.FQuery.Connection.Commit;
+
+     self.FQuery.SQL.Clear;
+
+     if campos[0] = '' then begin
+       self.FQuery.SQL.Add(self.SQLGet);
+       self.FQuery.Params[0].Value := Identificadores[0];
+     end
+     else begin
+       self.FQuery.SQL.Add(self.SQLGetExiste(campos));
+
+       for i := 0 to length(campos)-1 do
+         self.FQuery.ParamByName(campos[i]).Value := Identificadores[i];
+     end;
+
+     self.FQuery.Open;
+
+     if not self.FQuery.IsEmpty then
+       result := self.Get(self.FQuery);
+   except
+     on E: Exception do begin
+      dm.LogErros.AdicionaErro('Repositorio', E.ClassName, E.Message);
+      raise Exception.Create(E.Message);
+     end;
+   end;
+end;
+
 function TRepositorio.SQLGetAll: String;
 begin
    raise TExcecaoMetodoNaoImplementado.Create(self.ClassName, 'SQLGetAll: String;');
 end;
 
-function TRepositorio.GetExiste(const campo :String; const Identificador :Variant): Boolean;
+function TRepositorio.GetExiste(arrayDeCampos :array of string; arrayDeParametros :array of Variant): Boolean;
+var
+    i :integer;
 begin
   try
      result := false;
 
+
      self.FQuery.SQL.Clear;
-     self.FQuery.SQL.Add(self.SQLGetExiste(campo));
-     self.FQuery.Params[0].Value := Identificador;
+     self.FQuery.SQL.Add(self.SQLGetExiste(arrayDeCampos));
+
+     for i := 0 to length(arrayDeParametros)-1 do
+       self.FQuery.Params[i].Value := arrayDeParametros[i];
+
      self.FQuery.Open;
 
      if not self.FQuery.IsEmpty then
@@ -303,9 +318,19 @@ begin
   end;
 end;
 
-function TRepositorio.SQLGetExiste(campo:String): String;
+function TRepositorio.SQLGetExiste(arrayDeCampos :array of string): String;
+var
+    campo, campo1, camposSQL :String;
 begin
-     raise TExcecaoMetodoNaoImplementado.Create(self.ClassName, 'SQLGetExiste: String;');
+  for campo in arrayDeCampos do
+  begin
+ //   campo1    := campo;
+    camposSQL := camposSQL + ' AND '+ campo + ' = :'+campo;
+  end;
+
+  camposSQL := copy(camposSQL, 5, length(camposSQL));
+
+  result := 'select * from NOME_TABELA where '+ camposSQL;
 end;
 
 

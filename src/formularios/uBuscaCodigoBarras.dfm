@@ -10,7 +10,7 @@ inherited frmBuscaCodigoBarras: TfrmBuscaCodigoBarras
   ExplicitWidth = 605
   ExplicitHeight = 519
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Shape2: TShape
     Left = 0
     Top = 349
@@ -162,7 +162,7 @@ inherited frmBuscaCodigoBarras: TfrmBuscaCodigoBarras
   end
   object gbProduto: TGroupBox
     Left = 8
-    Top = 40
+    Top = 38
     Width = 575
     Height = 83
     Caption = ' [ Produto ] '
@@ -174,48 +174,17 @@ inherited frmBuscaCodigoBarras: TfrmBuscaCodigoBarras
     ParentFont = False
     TabOrder = 0
     inline BuscaProduto1: TBuscaProduto
-      Left = 4
-      Top = 14
-      Width = 558
-      Height = 66
+      Left = 12
+      Top = 17
+      Width = 553
+      Height = 52
       TabOrder = 0
-      ExplicitLeft = 4
-      ExplicitTop = 14
-      ExplicitWidth = 558
-      inherited StaticText3: TStaticText
-        Width = 33
-        Font.Style = []
-        ExplicitWidth = 33
-      end
-      inherited StaticText1: TStaticText
-        Width = 56
-        Font.Style = []
-        ExplicitWidth = 56
-      end
-      inherited StaticText2: TStaticText
-        Width = 52
-        Caption = 'Descri'#231#227'o'
-        Font.Style = []
-        ExplicitWidth = 52
-      end
-      inherited edtReferencia: TEdit
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
+      ExplicitLeft = 12
+      ExplicitTop = 17
+      ExplicitWidth = 553
+      ExplicitHeight = 52
       inherited edtDescricao: TEdit
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
         OnChange = BuscaProduto1edtDescricaoChange
-      end
-      inherited edtGrade: TEdit
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
       end
     end
   end
@@ -235,38 +204,23 @@ inherited frmBuscaCodigoBarras: TfrmBuscaCodigoBarras
     TabStop = True
     OnEnter = gbCorEnter
     inline BuscaCor1: TBuscaCor
-      Left = 8
-      Top = 16
-      Width = 425
+      Left = 13
+      Top = 19
+      Width = 427
       Height = 54
       TabOrder = 0
-      TabStop = True
       OnEnter = BuscaCor1Enter
       OnExit = BuscaCor1Exit
-      ExplicitLeft = 8
-      ExplicitTop = 16
-      ExplicitWidth = 425
+      ExplicitLeft = 13
+      ExplicitTop = 19
       inherited StaticText2: TStaticText
-        Width = 52
-        Font.Style = []
-        ExplicitWidth = 52
+        Transparent = True
       end
       inherited StaticText1: TStaticText
-        Width = 56
-        Font.Style = []
-        ExplicitWidth = 56
+        Transparent = True
       end
       inherited edtDescricao: TEdit
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      inherited edtReferencia: TEdit
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
+        OnChange = BuscaCor1edtDescricaoChange
       end
     end
   end

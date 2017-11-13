@@ -78,7 +78,7 @@ begin
 
   for i:= 0 to cds.Fields.Count -1 do
   begin
-    if cds.Fields[i].DataType in [ftFloat] then
+    if cds.Fields[i].DataType in [ftFloat, ftBCD] then
       TNumericField(cds.Fields[i]).DisplayFormat := ' ,0.00; -,0.00';
     if cds.Fields[i].FieldName = 'ATIVO' then
       cds.Fields[i].Visible:= False;

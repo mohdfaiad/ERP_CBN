@@ -6,7 +6,7 @@ inherited frmDevolucao: TfrmDevolucao
   ExplicitWidth = 1118
   ExplicitHeight = 704
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object pgcDevolucoes: TPageControl
     Left = 0
     Top = 0
@@ -18,6 +18,10 @@ inherited frmDevolucao: TfrmDevolucao
     OnChange = pgcDevolucoesChange
     object TabSheet1: TTabSheet
       Caption = 'Devolucoes'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label4: TLabel
         Left = 14
         Top = 93
@@ -254,6 +258,10 @@ inherited frmDevolucao: TfrmDevolucao
       Caption = 'Devolucao'
       ImageIndex = 1
       OnEnter = DevolucaoEnter
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 14
         Top = 537
@@ -841,35 +849,6 @@ inherited frmDevolucao: TfrmDevolucao
           Font.Style = [fsBold]
           ParentFont = False
         end
-        inline BuscaPedido1: TBuscaPedido
-          Left = 24
-          Top = 17
-          Width = 281
-          Height = 29
-          TabOrder = 0
-          OnExit = BuscaPedido1Exit
-          ExplicitLeft = 24
-          ExplicitTop = 17
-          ExplicitHeight = 29
-          inherited btnBuscar: TBitBtn
-            Top = 5
-            ExplicitTop = 5
-          end
-          inherited rgTipoBusca: TRadioGroup
-            Top = -24
-            ItemIndex = 1
-            Visible = False
-            ExplicitTop = -24
-          end
-          inherited edtNumPedido: TEdit
-            Top = 8
-            ExplicitTop = 8
-          end
-          inherited stNumPed: TStaticText
-            Top = 12
-            ExplicitTop = 12
-          end
-        end
         object edtDesconto: TCurrencyEdit
           Left = 604
           Top = 29
@@ -879,7 +858,7 @@ inherited frmDevolucao: TfrmDevolucao
           AutoSize = False
           DisplayFormat = ',0.00;-,0.00'
           ReadOnly = True
-          TabOrder = 1
+          TabOrder = 0
         end
         object edtTotBruto: TCurrencyEdit
           Left = 500
@@ -890,7 +869,7 @@ inherited frmDevolucao: TfrmDevolucao
           AutoSize = False
           DisplayFormat = ',0.00;-,0.00'
           ReadOnly = True
-          TabOrder = 2
+          TabOrder = 1
         end
         object edtDescontoFP: TCurrencyEdit
           Left = 708
@@ -912,18 +891,19 @@ inherited frmDevolucao: TfrmDevolucao
           AutoSize = False
           DisplayFormat = ',0.00;-,0.00'
           ReadOnly = True
-          TabOrder = 4
+          TabOrder = 2
         end
       end
       object Panel1: TPanel
         Left = 0
-        Top = 595
+        Top = 593
         Width = 1094
         Height = 43
         Align = alBottom
         BevelKind = bkTile
         BevelOuter = bvNone
         TabOrder = 4
+        ExplicitTop = 595
         object btnCancelar: TSpeedButton
           Left = 727
           Top = 8

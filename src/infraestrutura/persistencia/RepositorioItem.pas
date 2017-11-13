@@ -23,7 +23,7 @@ type
     function CondicaoSQLGetAll           :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -76,6 +76,7 @@ begin
    Item.preco             := self.FQuery.FieldByName('PRECO'       ).AsFloat;
    Item.desconto          := self.FQuery.FieldByName('DESCONTO'    ).AsFloat;
    Item.valor_total       := self.FQuery.FieldByName('VALOR_TOTAL' ).AsFloat;
+   Item.qtd_PM            := self.FQuery.FieldByName('QTD_PM'      ).AsInteger;
    Item.qtd_RN            := self.FQuery.FieldByName('QTD_RN'      ).AsInteger;
    Item.qtd_P             := self.FQuery.FieldByName('QTD_P'       ).AsInteger;
    Item.qtd_M             := self.FQuery.FieldByName('QTD_M'       ).AsInteger;
@@ -140,6 +141,8 @@ begin
     Auditoria.AdicionaCampoAlterado('desconto', FloatToStr(ItemAntigo.desconto), floatToStr(ItemNovo.desconto));
    if (ItemAntigo.valor_total <> ItemNovo.valor_total) then
     Auditoria.AdicionaCampoAlterado('valor_total', FloatToStr(ItemAntigo.valor_total), floatToStr(ItemNovo.valor_total));
+   if (ItemAntigo.qtd_PM <> ItemNovo.qtd_PM) then
+    Auditoria.AdicionaCampoAlterado('qtd_PM', IntToStr(ItemAntigo.qtd_PM), IntToStr(ItemNovo.qtd_PM));
    if (ItemAntigo.qtd_RN <> ItemNovo.qtd_RN) then
     Auditoria.AdicionaCampoAlterado('qtd_RN', IntToStr(ItemAntigo.qtd_RN), IntToStr(ItemNovo.qtd_RN));
    if (ItemAntigo.qtd_P <> ItemNovo.qtd_P) then
@@ -194,6 +197,7 @@ begin
    Auditoria.AdicionaCampoExcluido('PRECO'            , FloatToStr(Item.preco)            );
    Auditoria.AdicionaCampoExcluido('DESCONTO'         , FloatToStr(Item.desconto)         );   
    Auditoria.AdicionaCampoExcluido('VALOR_TOTAL'      , FloatToStr(Item.valor_total)      );
+   Auditoria.AdicionaCampoExcluido('QTD_PM'           , intToStr(Item.qtd_PM   )          );
    Auditoria.AdicionaCampoExcluido('QTD_RN'           , intToStr(Item.qtd_RN   )          );
    Auditoria.AdicionaCampoExcluido('QTD_P'            , intToStr(Item.qtd_P    )          );
    Auditoria.AdicionaCampoExcluido('QTD_M'            , intToStr(Item.qtd_M    )          );
@@ -229,6 +233,7 @@ begin
    Auditoria.AdicionaCampoIncluido('PRECO'            , FloatToStr(Item.preco)            );
    Auditoria.AdicionaCampoIncluido('DESCONTO'         , FloatToStr(Item.desconto)         );
    Auditoria.AdicionaCampoIncluido('VALOR_TOTAL'      , FloatToStr(Item.valor_total)      );
+   Auditoria.AdicionaCampoIncluido('QTD_PM'           , intToStr(Item.qtd_PM   )          );
    Auditoria.AdicionaCampoIncluido('QTD_RN'           , intToStr(Item.qtd_RN   )          );
    Auditoria.AdicionaCampoIncluido('QTD_P'            , intToStr(Item.qtd_P    )          );
    Auditoria.AdicionaCampoIncluido('QTD_M'            , intToStr(Item.qtd_M    )          );
@@ -275,6 +280,7 @@ begin
    inherited SetParametro('PRECO'            , Item.preco);
    inherited SetParametro('DESCONTO'         , Item.desconto);
    inherited SetParametro('VALOR_TOTAL'      , Item.valor_total);
+   inherited SetParametro('qtd_PM'           , Item.qtd_PM   );
    inherited SetParametro('QTD_RN'           , Item.qtd_RN   );
    inherited SetParametro('QTD_P'            , Item.qtd_P    );
    inherited SetParametro('QTD_M'            , Item.qtd_M    );
@@ -306,9 +312,10 @@ begin
   result := 'select * from ItenS '+ IfThen(FIdentificador = '','', CondicaoSQLGetAll) +' order by codigo';
 end;
 
-function TRepositorioItem.SQLGetExiste(campo: String): String;
+function TRepositorioItem.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from ItenS where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioItem.SQLRemover: String;
@@ -319,11 +326,11 @@ end;
 function TRepositorioItem.SQLSalvar: String;
 begin
   result := 'UPDATE OR INSERT INTO ITENS (CODIGO, COD_PEDIDO, COD_PRODUTO, COD_COR, QTD_TOTAL,      '+
-            '                             PRECO, DESCONTO,VALOR_TOTAL, QTD_RN, QTD_P, QTD_M,        '+
+            '                             PRECO, DESCONTO,VALOR_TOTAL, QTD_PM, QTD_RN, QTD_P, QTD_M,        '+
             '                             QTD_G, QTD_1, QTD_2, QTD_3,QTD_4, QTD_6, QTD_8,           '+
             '                             QTD_10, QTD_12, QTD_14, QTD_UNICA, OBSERVACAO, PESO, devolvido, codigo_kit)      '+
             'VALUES (:CODIGO, :COD_PEDIDO, :COD_PRODUTO, :COD_COR, :QTD_TOTAL, :PRECO, :DESCONTO,   '+
-            '        :VALOR_TOTAL, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, '+
+            '        :VALOR_TOTAL, :QTD_PM, :QTD_RN, :QTD_P, :QTD_M, :QTD_G, :QTD_1, :QTD_2, :QTD_3, :QTD_4, '+
             '        :QTD_6, :QTD_8, :QTD_10, :QTD_12, :QTD_14, :QTD_UNICA, :OBSERVACAO, :PESO, :devolvido, :codigo_kit)     ';
 
 end;

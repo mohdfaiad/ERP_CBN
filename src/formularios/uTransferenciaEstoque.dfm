@@ -11,6 +11,8 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignSize = (
     740
     603)
@@ -249,7 +251,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 2
     TabStop = True
     OnClick = rgTamanhos1Click
-    ExplicitWidth = 694
   end
   inline BuscaProduto2: TBuscaProduto
     Left = 34
@@ -341,7 +342,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     TabOrder = 5
     TabStop = True
     OnClick = rgTamanhos2Click
-    ExplicitWidth = 694
   end
   object edtEstoqueDestino: TCurrencyEdit
     Left = 552
@@ -406,7 +406,6 @@ object frmTransferenciaEstoque: TfrmTransferenciaEstoque
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 9
-    ExplicitWidth = 694
     object btnSalvar: TBitBtn
       Left = 567
       Top = 8

@@ -9,7 +9,7 @@ uses
   Repositorio, FormaPagamento, FormaPagamentoParcelas, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Imaging.pngimage;
 
 type
   TfrmCadastroFormasPagamento = class(TfrmPadrao)
@@ -26,7 +26,6 @@ type
     cdsCODIGO: TIntegerField;
     cdsDESCRICAO: TStringField;
     cdsNUMERO_PARCELAS: TIntegerField;
-    btnSalvar: TBitBtn;
     Label1: TLabel;
     edtDescricao: TEdit;
     Label2: TLabel;
@@ -55,6 +54,7 @@ type
     cdsPERC_COMISSAO: TBCDField;
     cdsDESCONTO: TBCDField;
     cdsACRESCIMO: TBCDField;
+    btnSalvar: TSpeedButton;
     procedure btnCriarParcClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -150,6 +150,7 @@ procedure TfrmCadastroFormasPagamento.btnIncluirClick(Sender: TObject);
 begin
   inherited;
   self.Tag := 1;
+  limpaCampos;
   pagFormasPgto.ActivePageIndex := 0;
   gridFormasPAg.SetFocus;
   pagFormasPgto.ActivePageIndex := 1;
@@ -190,8 +191,6 @@ begin
   else
     habilita(false);
 
-  limpaCampos;
-
   if self.Tag in [0,2] then
     mostraDados;
 end;
@@ -210,6 +209,7 @@ end;
 
 procedure TfrmCadastroFormasPagamento.mostraDados;
 begin
+  limpaCampos;
   edtCodigo.AsInteger      := cdsCODIGO.AsInteger;
   edtDescricao.Text        := cdsDESCRICAO.AsString;
   edtNumParcelas.AsInteger := cdsNUMERO_PARCELAS.AsInteger;

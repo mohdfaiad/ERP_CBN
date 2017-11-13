@@ -21,7 +21,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -55,6 +55,7 @@ begin
    Tamanho            := TTamanho.Create;
    Tamanho.Codigo     := self.FQuery.FieldByName('codigo'    ).AsInteger;
    Tamanho.Descricao  := self.FQuery.FieldByName('Descricao' ).AsString;
+   Tamanho.Ordem      := self.FQuery.FieldByName('Ordem'     ).AsInteger;
    result := Tamanho;
 end;
 
@@ -89,6 +90,9 @@ begin
 
    if (TamanhoAntigo.Descricao <> TamanhoNovo.Descricao) then
     Auditoria.AdicionaCampoAlterado('Descricao', TamanhoAntigo.Descricao, TamanhoNovo.Descricao);
+
+   if (TamanhoAntigo.Ordem <> TamanhoNovo.Ordem) then
+    Auditoria.AdicionaCampoAlterado('Ordem', intToStr(TamanhoAntigo.Ordem), intToStr(TamanhoNovo.Ordem));
 end;
 
 procedure TRepositorioTamanho.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -100,6 +104,7 @@ begin
 
    Auditoria.AdicionaCampoExcluido('codigo'    , intToStr(Tamanho.Codigo));
    Auditoria.AdicionaCampoExcluido('Descricao' , Tamanho.Descricao);
+   Auditoria.AdicionaCampoExcluido('Ordem'     , intToStr(Tamanho.Ordem));
 end;
 
 procedure TRepositorioTamanho.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -111,6 +116,7 @@ begin
 
    Auditoria.AdicionaCampoIncluido('codigo'    , intToStr(Tamanho.Codigo));
    Auditoria.AdicionaCampoIncluido('Descricao' , Tamanho.Descricao);
+   Auditoria.AdicionaCampoIncluido('Ordem'     , intToStr(Tamanho.Ordem));
 end;
 
 procedure TRepositorioTamanho.SetIdentificador(Objeto: TObject;
@@ -126,9 +132,10 @@ begin
    Tamanho := (Objeto as TTamanho);
 
    if (Tamanho.Codigo > 0) then  inherited SetParametro('codigo', Tamanho.Codigo)
-   else                         inherited LimpaParametro('codigo');
+   else                          inherited LimpaParametro('codigo');
 
-   self.FQuery.ParamByName('descricao').AsString        := Tamanho.Descricao;
+   self.FQuery.ParamByName('descricao').AsString  := Tamanho.Descricao;
+   self.FQuery.ParamByName('Ordem').AsInteger     := Tamanho.Ordem;
 end;
 
 function TRepositorioTamanho.SQLGet: String;
@@ -138,12 +145,13 @@ end;
 
 function TRepositorioTamanho.SQLGetAll: String;
 begin
-  result := 'select * from Tamanhos';
+  result := 'select * from Tamanhos order by ordem';
 end;
 
-function TRepositorioTamanho.SQLGetExiste(campo: String): String;
+function TRepositorioTamanho.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Tamanhos where '+ campo +' = :ncampo';
+   result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioTamanho.SQLRemover: String;
@@ -153,9 +161,9 @@ end;
 
 function TRepositorioTamanho.SQLSalvar: String;
 begin
-  result := 'update or insert into Tamanhos '+
-            '(codigo, descricao)            '+
-            ' Values (:codigo, :descricao)  ';
+  result := 'update or insert into Tamanhos        '+
+            '(codigo, descricao, ordem)            '+
+            ' Values (:codigo, :descricao, :ordem) ';
 end;
 
 end.

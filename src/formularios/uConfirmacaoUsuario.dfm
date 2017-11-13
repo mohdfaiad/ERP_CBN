@@ -53,13 +53,14 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
       BorderStyle = bsNone
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
+      Font.Height = -13
+      Font.Name = 'Calibri'
+      Font.Style = []
       ParentColor = True
       ParentFont = False
       ReadOnly = True
       TabOrder = 0
+      OnChange = memMsgChange
     end
     object panRodape: TPanel
       Left = 1
@@ -110,10 +111,6 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
         Width = 140
         Height = 25
         Caption = 'btn3opcao'
-        TabOrder = 2
-        TabStop = False
-        Visible = False
-        OnClick = btn3opcaoClick
         Glyph.Data = {
           36080000424D3608000000000000360000002800000020000000100000000100
           2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -182,6 +179,10 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
           9B009B9B9B009B9B9B00536A5300034103000019000000230000002300000019
           000003410300536A53009B9B9B009B9B9B009B9B9B009B9B9B00}
         NumGlyphs = 2
+        TabOrder = 2
+        TabStop = False
+        Visible = False
+        OnClick = btn3opcaoClick
       end
       object btnConfirma: TBitBtn
         Left = 279
@@ -189,9 +190,6 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
         Width = 140
         Height = 25
         Caption = ' <ENTER>  &Sim'
-        TabOrder = 0
-        TabStop = False
-        OnClick = btnConfirmaClick
         Glyph.Data = {
           36080000424D3608000000000000360000002800000020000000100000000100
           2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
@@ -260,6 +258,9 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
           9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
           9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
         NumGlyphs = 2
+        TabOrder = 0
+        TabStop = False
+        OnClick = btnConfirmaClick
       end
       object btnCancela: TBitBtn
         Left = 119
@@ -267,9 +268,6 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
         Width = 140
         Height = 25
         Caption = ' <ESC> &N'#227'o'
-        TabOrder = 1
-        TabStop = False
-        OnClick = btnCancelaClick
         Glyph.Data = {
           36080000424D3608000000000000360000002800000020000000100000000100
           2000000000000008000000000000000000000000000000000000FFFFFF00140E
@@ -338,6 +336,9 @@ object frmConfirmacaoUsuario: TfrmConfirmacaoUsuario
           8C0000008E00000089009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
           9B009B9B9B009B9B9B000000890000008E0000008C009B9B9B00}
         NumGlyphs = 2
+        TabOrder = 1
+        TabStop = False
+        OnClick = btnCancelaClick
       end
     end
   end

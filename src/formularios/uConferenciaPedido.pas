@@ -6,13 +6,13 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, Usuario, Grids, DBGrids, DBGridCBN, ComCtrls, Funcoes,
   frameBuscaPedido, StdCtrls, DB, DBClient, pngimage, ExtCtrls, Mask, ConferenciaItem,
-  RxToolEdit, RxCurrEdit, Item, Math,
+  RxToolEdit, RxCurrEdit, Item, Math, Generics.Collections,
   Buttons, ContNrs, StrUtils, ImgList, frameListaCampo, Pedido, ConferenciaPEdido,
   Provider, Menus, Produto, System.ImageList, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, ZAbstractRODataset,
-  ZAbstractDataset, ZDataset;
+  ZAbstractDataset, ZDataset, CaixaPedido;
 
 type
   TTipoProduto = (Acessorio, Vestuario);  
@@ -358,6 +358,7 @@ type
     cdsConferidosCOD_TAMANHO: TIntegerField;
     cdsConferidosQUANTIDADE: TFloatField;
     cdsItensTIPO_COR: TStringField;
+    btnAlteraCaixas: TBitBtn;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -404,8 +405,11 @@ type
     procedure btnSubstituiClick(Sender: TObject);
     procedure chkTodosClick(Sender: TObject);
     procedure btnDesmembrarClick(Sender: TObject);
+    procedure frameMateriaExit(Sender: TObject);
+    procedure btnAlteraCaixasClick(Sender: TObject);
 
   private
+    FCaixasDoPedido :TObjectList;
     hora_inicio :TTime;
     cdsTamanhos :TClientDataSet;
     linha_estoque_calculado :integer;
@@ -421,18 +425,14 @@ type
     procedure substitui_generico(coditem, codigo_cor :integer; refcor, cor, tamanho :String; quantidade :integer);
 
     function insere_altera_item(codpedido, codpro, codcor, quantidade: Integer; preco: Real; tamanho: String; const coditem: integer = 0): Integer;
-
     procedure atualiza_quantidade_item(coditem, quantidade :integer; tamanho :String; var excluiu :Boolean);
-
     { busca o codigo de barras do item, com base nos parametros informados }
     function busca_codigo_barras(codigo_produto, codigo_cor :integer; tamanho :String):String;
 
     { esta procedure faz o contrario da procedure "busca_codigo_barras" }
     procedure item_por_codigo_barras(var codigo_produto, codigo_cor :integer; var refcor, cor, tamanho :String; var masculino_feminino,
                                      cod_bar :String; var acessorio :Boolean);
-
     procedure calcula_percentagem_conferida;
-
     procedure seleciona_caixas;
 
     { cria um novo pedido com os itens que atualmente ainda não foram conferidos }
@@ -475,7 +475,8 @@ type
     procedure mostra_estoque;
 
     { feito para baixar o estoque das referencias contidas no pedido (usar apenas quando o pedido for 100% conferido)}
-    procedure atualiza_estoque(codigo_pedido :Integer; operacao :integer);
+    procedure atualizaEstoqueLocal(codigo_pedido :Integer; operacao :integer);
+    procedure atualizaEstoquePlataforma;
 
     procedure Busca_tamanhos(var cds :TClientDataSet);
 
@@ -492,6 +493,8 @@ type
     function  Conferencia_finalizada :Boolean;
     function  grade_imcompleta :Boolean;
     procedure  atualizaTabelaDirecionamento;
+    function adicionarCaixaPedido :boolean;
+    function selecionaMateriaCaixa :integer;
 
     { se ao dividir o pedido, for solicitado apenas grades fechadas, ele envia para o novo pedido, os itens com grades parcialmente conferidas}
     procedure transfere_conferencia(itens_deletar :String);
@@ -509,6 +512,7 @@ type
     procedure retornarProdutosAoKit(ConferenciaPedido :TConferenciaPedido);
     procedure filtraItens(checkBox :TCheckBox);
     procedure verificaMapaFinalizado;
+    procedure carregaCaixa;
 
   public
     property visualizarConferencia :Boolean read FVisualizarConferencia write FVisualizarConferencia;
@@ -519,13 +523,29 @@ var
 
 implementation
 
-uses uModulo, Repositorio, FabricaREpositorio, Especificacao, CriaBalaoInformacao, ProdutosKit,
+uses uModulo, Repositorio, FabricaREpositorio, Especificacao, CriaBalaoInformacao, ProdutosKit, frameBuscaMateria,
      EspecificacaoItemPorPedidoProdutoCor, Caixas, uBuscaCodigoBarras, uRelatorioRomaneio, DirecionamentoEntrada,
-     Tamanho, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, uVisualizacaoPedidoSeparacao, Mapa, PedidoMapa;
+     Tamanho, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, uVisualizacaoPedidoSeparacao, Mapa, PedidoMapa,
+     EspecificacaoCaixasDaConferencia, uAlteraCaixas, HTTPJSON;
 
 {$R *.dfm}
 
 { TfrmConferenciaPedido }
+
+procedure TfrmConferenciaPedido.carregaCaixa;
+var especificacao :TEspecificacaoCaixasDaConferencia;
+    repositorio   :TRepositorio;
+    FListaAux     :TObjectList<TCaixaPedido>;
+begin
+  try
+    repositorio     := TFabricaRepositorio.GetRepositorio(TcaixaPedido.ClassName);
+    especificacao   := TEspecificacaoCaixasDaConferencia.Create(BuscaPedido1.Ped.Conferencia.codigo);
+    FCaixasDoPedido := repositorio.GetListaPorEspecificacao(especificacao, intToStr(BuscaPedido1.Ped.Conferencia.codigo));
+  finally
+    FreeAndNil(especificacao);
+    FreeAndNil(repositorio);
+  end;
+end;
 
 procedure TfrmConferenciaPedido.carrega_dados;
 var i:integer;
@@ -589,6 +609,7 @@ begin
      panObs.Visible          := true;
 
      if cbCaixas.Visible then begin
+       carregaCaixa;
 
        cdsCaixas.Close;
        qryCaixas.ParamByName('cod_pedido').AsInteger := BuscaPedido1.Ped.Codigo;
@@ -690,28 +711,49 @@ function TfrmConferenciaPedido.busca_e_adiciona :Boolean;
 var
     codigo_produto, codigo_cor, quantidade :integer;
     tamanho, conferido, masculino_feminino, refcor, cor :String;
-    produtoComCorGenerica, acessorio :Boolean;
+    produtoComCorGenerica, acessorio, encontrou :Boolean;
     achou_especifico :integer;
     codigo_barras        :String;
-    linha_item_conferido, codigo_cor_pai :integer;
+    item_conferido, codigo_cor_pai :integer;
 begin
   Result                := false;
   achou_especifico      := 0;
   produtoComCorGenerica := false;
-  linha_item_conferido  := 0;
+  item_conferido  := 0;
 
   codigo_barras := trim(edtCodigoBarras.Text);
   item_por_codigo_barras(codigo_produto, codigo_cor, refcor, cor , tamanho, masculino_feminino, codigo_barras, acessorio);
 
   codigo_cor_pai := StrToIntDef(Campo_por_campo('CORES_FILHAS','CODIGO_COR_PAI', 'CODIGO_COR_FILHA', IntToStr(codigo_cor)),0);
 
+  cdsItens.IndexFieldNames := 'codpro;codcor';
   { se a referencia foi encontrada }
-  if (cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[]))
-    then
+  if (cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[])) then
+  begin     
+     cdsItens.Filtered := false;
+     cdsItens.Filter   := 'CODIGO_KIT = 0';
+     cdsItens.Filtered := true;
+     encontrou := cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[]);
+    { e se ainda não foi totalmente conferida = "achou_especifico (ou seja, encontrou um produto não genérico, referente a cor/tamanho do cod bar)"}
+     if encontrou and ( cdsItens.FieldByName('QTD_'+tamanho).AsString <> '' ) and not (cdsItensCONFERIDO.AsString = 'S') then
+       achou_especifico := 1;
+   
+
+     if (achou_especifico <> 1) then
+     begin
+       cdsItens.Filtered := false;
+       cdsItens.Filter   := 'CODIGO_KIT > 0';
+       cdsItens.Filtered := true;
+       cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[]);
        { e se ainda não foi totalmente conferida = "achou_especifico (ou seja, encontrou um produto não genérico, referente a cor/tamanho do cod bar)"}
        if ( cdsItens.FieldByName('QTD_'+tamanho).AsString <> '' ) and not (cdsItensCONFERIDO.AsString = 'S') then
-          achou_especifico := 1;
+         achou_especifico := 1;
 
+       if achou_especifico <> 1 then
+         cdsItens.Filtered := false;
+     end;
+  end;
+  
   {se não achou produto com a cor legítima ou encontrou mas não tem o tamanho disponível para baixar, entra em busca de um produto com cor genérica}
   if (achou_especifico = 0) or ((achou_especifico in [1]) and (cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0)) then begin
     if ( cdsItens.Locate('codpro;COR',VarArrayOf([codigo_produto, masculino_feminino]),[]) or
@@ -755,6 +797,7 @@ begin
 
     if cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0 then begin
       EmiteSomErro;
+      cdsItens.Filtered := false;      
       avisar('Peças deste produto ja foram totalmente conferidas',0,'S',1);
       Exit;
     end;
@@ -778,7 +821,9 @@ begin
 
    if cdsitens.FieldByName('QTD_'+tamanho).AsInteger > 0 then begin
         { **** Atualiza o respectivo tamanho **** }
-
+      item_conferido := cdsItensCODIGO.AsInteger;
+      cdsItens.Filtered := false;
+      cdsItens.Locate('CODIGO',item_conferido,[]);
       if (produtoComCorGenerica) or (acessorio and (achou_especifico = 2)) then
         substitui_generico(cdsItensCodigo.AsInteger, codigo_cor, refcor, cor, tamanho, quantidade);
 
@@ -824,15 +869,17 @@ begin
       btnSubstitui.Enabled       := false;
 
    end;
-
-    linha_item_conferido := cdsItens.RecNo;
+    // - - - >
+    item_conferido := cdsItensCODIGO.AsInteger;
+    if cdsItens.Filtered then
+      cdsItens.Filtered := false;
     cdsItensConferidos.IndexFieldNames := 'CODIGO_ITEM';
   end
   else begin
     EmiteSomErro;
+    cdsItens.Filtered := false;
     avisar('Produto não consta no pedido, ou inexistente',0,'S', 1);
   end;
-
   cdsItens.DisableControls;
   cdsItens.AfterScroll := nil;
 
@@ -841,8 +888,8 @@ begin
   cdsItens.EnableControls;
   cdsItens.AfterScroll := cdsItensAfterScroll;
 
-  if linha_item_conferido > 0 then
-    cdsItens.RecNo := linha_item_conferido;
+  if item_conferido > 0 then
+    cdsItens.Locate('CODIGO',item_conferido,[]);
   Result := true;
 end;
 
@@ -976,7 +1023,8 @@ begin
    //se foi 100% conferido
    if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then
    begin
-     atualiza_estoque( BuscaPedido1.Ped.codigo, -1);
+     atualizaEstoqueLocal( BuscaPedido1.Ped.codigo, -1);
+     atualizaEstoquePlataforma;
      retornarProdutosAoKit(ConferenciaPedido);
    end;
    result             := true;
@@ -1039,6 +1087,8 @@ begin
   chkConferidos.Enabled := false;
   chkNaoConferidos.Enabled := false;
   chkTodos.Checked := true;
+  if assigned(FCaixasDoPedido) then
+    FCaixasDoPedido.Clear;
 end;
 
 function TfrmConferenciaPedido.Conferencia_finalizada: Boolean;
@@ -1066,15 +1116,15 @@ begin
  end;
 end;
 
-procedure TfrmConferenciaPedido.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TfrmConferenciaPedido.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if assigned(BuscaPedido1.Ped) then begin
     if not confirma('Conferência em andamento, deseja sair sem salvar a operação?') then
       abort;
+  end;
 
-  end;    
-
+  if assigned(FCaixasDoPedido) then
+    FreeAndNil(FCaixasDoPedido);
   inherited;
 end;
 
@@ -1283,6 +1333,44 @@ begin
   flecha.Visible           := true;
   cx_aberta.Visible        := true;
 
+  if not adicionarCaixaPedido then
+    btnCancelarCaixa.Click;
+end;
+
+function TfrmConferenciaPedido.selecionaMateriaCaixa: integer;
+var buscaMateria :TBuscaMateria;
+    panel        :TPanel;
+    titulo       :TLabel;
+begin
+{  panel := TPanel.Create(nil);
+  panel.Parent := self;
+  panel.Width  := 400;
+  panel.Height := 80;
+  panel.Left := 350;
+  panel.Top  := 103;
+  panel.Color := $00F8F8F8;
+  panel.ParentColor := false;
+  panel.BevelKind   := bkTile;
+  panel.BevelOuter  := bvNone;
+
+  titulo := TLabel.Create(nil);
+  titulo.Caption := ' Selecione a caixa correspondente...';
+  titulo.Color   := $00D8D5AB;
+  titulo.Transparent := false;
+  titulo.Font.Style := [fsBold];
+  titulo.Parent  := panel;
+  titulo.Align   := alTop;     }
+
+  buscaMateria := TBuscaMateria.Create(nil);
+  buscaMateria.Parent := self;//panel;
+ // buscaMateria.OnExit := frameMateriaExit;
+  buscaMateria.Align  := alBottom;
+  buscaMateria.BringToFront;
+  buscamateria.FiltroDescricao := ' DESCRICAO LIKE ''CAIXA PAP.%'' ';
+  buscaMateria.TituloBusca     := 'Selecione o tamanho da nova caixa criada...';
+  buscamateria.btnBusca.Click;
+  result := buscaMateria.edtCodigo.AsInteger;
+  buscaMateria.Destroy;
 end;
 
 procedure TfrmConferenciaPedido.seleciona_caixas;
@@ -1540,7 +1628,7 @@ begin
     repositorio.Salvar( Conferencia );
 
     { baixa o estoque dos itens do pedido, correspondente a conferencia finalizada }
-    atualiza_estoque( Pedido.Codigo, -1);
+    atualizaEstoqueLocal(Pedido.Codigo, -1);
 
     avisar('Conferência parcial do pedido Nº '+BuscaPedido1.Ped.numpedido+' realizada com sucesso.'+#13#10+#13#10+
            'Pedido Nº '+pedidoNovo.numpedido+' gerado para o restante do pedido.');
@@ -1706,6 +1794,41 @@ begin
   inherited;
   BuscaPedido1.edtNumPedidoExit(Sender);
 
+end;
+
+function TfrmConferenciaPedido.adicionarCaixaPedido :Boolean;
+var caixaAux, caixa :TCaixaPedido;
+    encontrou :Boolean;
+    codigoMateria, i :integer;
+begin
+  if not assigned(FCaixasDoPedido) then
+    FCaixasDoPedido := TObjectList.Create;
+
+  codigoMateria := selecionaMateriaCaixa;
+  result        := false;
+
+  if codigoMateria > 0 then
+  begin
+    encontrou := false;
+    caixa                    := TcaixaPedido.Create;
+    caixa.numero             := StrToIntDef(cbCaixas.Text,0);
+    caixa.codigo_materia     := codigoMateria;
+    caixa.codigo_conferencia := BuscaPedido1.Ped.Conferencia.codigo;
+
+    for i := 0 to FCaixasDoPedido.Count -1 do
+      caixaAux := (FCaixasDoPedido.Items[0] as TCaixaPedido);
+
+      if caixaAux.numero = caixa.numero then
+      begin
+        caixaAux.codigo_materia := caixa.codigo_materia;
+        encontrou := true;
+      end;
+
+    if not encontrou then
+      FCaixasDoPedido.Add(caixa);
+
+    result := true;
+  end;
 end;
 
 procedure TfrmConferenciaPedido.armazena_substituto(codigo_item,
@@ -2087,13 +2210,23 @@ end;
 procedure TfrmConferenciaPedido.SalvarAtualizar_caixas;
 var repositorio        :TRepositorio;
     Caixas             :TCaixas;
-    codigo_caixa       :integer;
+    codigo_caixa, i    :integer;
     codigo_conferencia :integer;
 begin
   repositorio := nil;
+ try
+ try
+   repositorio        := TFabricaRepositorio.GetRepositorio(TcaixaPedido.ClassName);
 
- try
- try
+   for i := 0 to FCaixasDoPedido.Count-1 do
+   begin
+     if TCaixaPedido(FCaixasDoPedido.Items[i]).baixou_estoque <> 'S' then
+       TCaixaPedido(FCaixasDoPedido.Items[i]).baixarEstoque;
+     repositorio.Salvar( TCaixaPedido(FCaixasDoPedido.Items[i]) );
+   end;
+
+   FreeAndNil(repositorio);
+
    repositorio        := TFabricaRepositorio.GetRepositorio(TCaixas.ClassName);
    codigo_conferencia := self.BuscaPedido1.Ped.Conferencia.codigo;
 
@@ -2101,7 +2234,8 @@ begin
    cdsItens.AfterScroll := nil;
    cdsItens.First;
    while not cdsItens.Eof do begin
-
+     if cdsItensNUM_CAIXA.AsInteger > 0 then
+     begin
        codigo_caixa := 0;
        Caixas       := TCaixas.Create;
 
@@ -2134,6 +2268,7 @@ begin
 
        repositorio.Salvar(Caixas);
        FreeAndNil(Caixas);
+     end;
 
      cdsItens.Next;
    end;
@@ -2229,7 +2364,7 @@ begin
         perc_equivalente     := (qtde_substituida * 100) / (BuscaPedido1.Ped.Itens[i] as TItem).qtd_total;
         desconto_equivalente := (perc_equivalente * (BuscaPedido1.Ped.Itens[i] as TItem).desconto) / 100;
 
-        BuscaPedido1.Ped.Itens[i] :=  atualiza_qtd_item( (BuscaPedido1.Ped.Itens[i] as TItem), tamanho_substituido,
+        BuscaPedido1.Ped.Itens[i] := atualiza_qtd_item( (BuscaPedido1.Ped.Itens[i] as TItem), tamanho_substituido,
                                                          - qtde_substituida, 'A', desconto_equivalente);
 
         if (BuscaPedido1.Ped.Itens[i] as TItem).qtd_total = 0 then
@@ -2263,11 +2398,7 @@ begin
       end;
     end;
 
-   { if codigo_item_deletar > 0 then
-      remove_item(codigo_item_deletar);}
-
     avisar('Item substituído com sucesso!');
-
 
     Salvar_conferencia;
     reinicia_pedido;
@@ -2338,7 +2469,12 @@ begin
   btnSubstitui.Visible         := FVisualizarConferencia;
 end;
 
-procedure TfrmConferenciaPedido.atualiza_estoque(codigo_pedido :integer; operacao :integer);
+procedure TfrmConferenciaPedido.frameMateriaExit(Sender: TObject);
+begin
+  TPanel( TBuscaMateria(Sender).Parent).Destroy;
+end;
+
+procedure TfrmConferenciaPedido.atualizaEstoqueLocal(codigo_pedido :integer; operacao :integer);
 begin
   try
     dm.qryGenerica.Close;
@@ -2349,6 +2485,65 @@ begin
   Except
      on e :Exception do
        raise Exception.Create('Erro ao atualizar estoque.'+#13#10+e.message);
+  end;
+end;
+
+procedure TfrmConferenciaPedido.atualizaEstoquePlataforma;
+var sku :String;
+    i, x :integer;
+    refProduto, refCor, tamanho, json :String;
+    Lista : TStringList;
+    vHTTPJSON :THTTPJSON;
+begin
+  try
+  try
+    Lista := nil;
+    Lista := TStringList.Create;
+    Lista.Delimiter := ',';
+    Lista.StrictDelimiter := true;
+    Lista.QuoteChar := #0;
+
+    vHTTPJSON := nil;
+    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+
+    cdsItens.First;
+    while not cdsItens.Eof do
+    begin
+      for i := 0 to cdsItens.Fields.Count - 1 do
+      begin
+        //se for um campo quantidade
+        if pos('QTD',cdsItens.Fields[i].FieldName) > 0 then
+        begin
+          //se quantidade maior que zero
+          if cdsItens.Fields[i].Value > 0 then
+          begin
+            refProduto := cdsItensREFPRO.AsString;
+            refCor     := cdsItensREFCOR.AsString;
+            tamanho    := copy(cdsItens.Fields[i].FieldName, pos('QTD_',cdsItens.Fields[i].FieldName)+1, 10);
+            tamanho    := IfThen(tamanho = 'UNICA', 'UN', tamanho);
+            sku := refProduto + tamanho + refCor;
+
+            Lista.Add('{"sku": "'+sku+'", "estoque": '+cdsItens.Fields[i].AsString+'}');
+          end;
+        end;
+      end;
+      cdsItensConferidos.Next;
+    end;
+
+    json := '['+Lista.DelimitedText+']';
+
+    vHTTPJSON.Post(json);
+
+  Except
+    on e :Exception do
+    begin
+      avisar('Erro ao atualizar o estoque da plataforma'+#13#10+e.Message);
+     // verificar se da rollback
+    end;
+  end;
+  finally
+    FreeAndNil(Lista);
+    FreeAndNil(vHTTPJSON);
   end;
 end;
 
@@ -2409,7 +2604,7 @@ begin
     if (Estoque.codigo > 0) then begin
 
       Estoque.atualiza_estoque(quantidade);
-      
+
       repositorio.Salvar(Estoque);
     end;
 
@@ -2436,14 +2631,15 @@ procedure TfrmConferenciaPedido.gridItensDblClick(Sender: TObject);
 begin
   if trim( cbCaixas.Items[ cbCaixas.itemIndex ] ) = '' then
     Exit;
-    
+
+  if (cdsItensNUM_CAIXA.AsInteger > 0) and (cdsItensNUM_CAIXA.AsString <> cbCaixas.Text) then
+    exit;
+
   cdsItens.Edit;
-  
   if cdsItensNUM_CAIXA.AsInteger = strToInt(cbCaixas.Items[ cbCaixas.itemIndex ]) then
     cdsItensNUM_CAIXA.AsInteger := 0
   else
     cdsItensNUM_CAIXA.AsInteger := strToInt(cbCaixas.Items[ cbCaixas.itemIndex ]);
-
   cdsItens.Post;
 end;
 
@@ -2463,10 +2659,13 @@ end;
 procedure TfrmConferenciaPedido.habilita_desabilita_caixas(
   boleana: Boolean);
 begin
+  btnExcluir.Enabled       := not boleana;
   btnNovaCaixa.Visible     := boleana;
   btnFecharCaixa.Visible   := boleana;
   btnCancelarCaixa.Visible := boleana;
   cbCaixas.Visible         := boleana;
+  staTitulo.Visible        := boleana;
+  btnAlteraCaixas.Visible  := boleana;
   cx_fechada.Visible       := boleana;
 end;
 
@@ -3121,7 +3320,7 @@ begin
 
     repositorio.RemoverPorIdentificador(BuscaPedido1.Ped.Conferencia.codigo);
 
-    atualiza_estoque(BuscaPedido1.Ped.Codigo, 1);
+    atualizaEstoqueLocal(BuscaPedido1.Ped.Codigo, 1);
 
     dm.conexao.Commit;
 
@@ -3384,6 +3583,20 @@ begin
     FreeAndNil(repositorio);
     FreeAndNil(Item);
   end;
+end;
+
+procedure TfrmConferenciaPedido.btnAlteraCaixasClick(Sender: TObject);
+begin
+  if (FCaixasDoPedido.Count > 0) then
+  begin
+    frmAlteraCaixas := TfrmAlteraCaixas.Create(nil);
+    frmAlteraCaixas.CaixasDoPedido := self.FCaixasDoPedido;
+    frmAlteraCaixas.ShowModal;
+    frmAlteraCaixas.Release;
+    frmAlteraCaixas := nil;
+  end
+  else
+    avisar('Ainda não existem caixas incluídas');
 end;
 
 function TfrmConferenciaPedido.corGenerica(cor: String): Boolean;

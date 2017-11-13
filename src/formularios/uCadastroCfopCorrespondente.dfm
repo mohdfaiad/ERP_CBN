@@ -5,7 +5,7 @@ inherited frmCadastroCfopCorrespondente: TfrmCadastroCfopCorrespondente
   ClientWidth = 463
   ExplicitWidth = 479
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited pnlBotoes: TPanel
     Width = 463
     ExplicitWidth = 463
@@ -75,9 +75,9 @@ inherited frmCadastroCfopCorrespondente: TfrmCadastroCfopCorrespondente
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
-      ExplicitTop = 24
+      ExplicitTop = 26
       ExplicitWidth = 455
-      ExplicitHeight = 378
+      ExplicitHeight = 376
       inherited pnlDados: TPanel
         Width = 455
         ExplicitWidth = 455

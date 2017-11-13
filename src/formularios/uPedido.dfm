@@ -11,13 +11,13 @@ inherited frmPedido: TfrmPedido
   ExplicitWidth = 1051
   ExplicitHeight = 622
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object pagPedido: TPageControl
     Left = 0
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
@@ -25,7 +25,7 @@ inherited frmPedido: TfrmPedido
       Caption = 'F1 - Cabe'#231'alho'
       DesignSize = (
         1037
-        428)
+        426)
       object pnlNAlteravelCabecalho: TPanel
         Left = 0
         Top = 0
@@ -52,38 +52,51 @@ inherited frmPedido: TfrmPedido
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
             ParentFont = False
+            ExplicitTop = 0
             ExplicitWidth = 519
             ExplicitHeight = 72
           end
-          inherited lblCodigo: TStaticText
+          inherited lblCodigo: TStaticText [1]
             Left = 17
-            Top = 19
+            Top = 18
             Width = 42
+            Height = 19
             ExplicitLeft = 17
-            ExplicitTop = 19
+            ExplicitTop = 18
             ExplicitWidth = 42
+            ExplicitHeight = 19
           end
-          inherited edtCodigo: TEdit
-            Left = 17
-            Width = 68
-            ExplicitLeft = 17
-            ExplicitWidth = 68
+          inherited lblRazao: TStaticText
+            Left = 117
+            Top = 18
+            Width = 74
+            Height = 19
+            ExplicitLeft = 117
+            ExplicitTop = 18
+            ExplicitWidth = 74
+            ExplicitHeight = 19
           end
-          inherited btnBusca: TBitBtn
+          inherited edtRazao: TEdit [3]
+            Left = 117
+            Width = 382
+            Height = 23
+            ExplicitLeft = 117
+            ExplicitWidth = 382
+            ExplicitHeight = 23
+          end
+          inherited btnBusca: TBitBtn [4]
             Left = 87
             Width = 26
             ExplicitLeft = 87
             ExplicitWidth = 26
           end
-          inherited edtRazao: TEdit
-            Left = 117
-            Width = 382
-            ExplicitLeft = 117
-            ExplicitWidth = 382
-          end
-          inherited lblRazao: TStaticText
+          inherited edtCodigo: TEdit [5]
+            Left = 17
             Width = 68
+            Height = 23
+            ExplicitLeft = 17
             ExplicitWidth = 68
+            ExplicitHeight = 23
           end
         end
         object gbFormaPgto: TGroupBox
@@ -4131,8 +4144,8 @@ inherited frmPedido: TfrmPedido
         TabOrder = 2
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnColExit = DBGrid1ColExit
         OnDrawColumnCell = DBGrid1DrawColumnCell
@@ -8242,10 +8255,12 @@ inherited frmPedido: TfrmPedido
         Left = 95
         Top = 41
         Width = 143
+        Height = 23
         TabStop = False
         ExplicitLeft = 95
         ExplicitTop = 41
         ExplicitWidth = 143
+        ExplicitHeight = 23
       end
       inherited stNumPed: TStaticText
         Left = 5
@@ -8275,7 +8290,9 @@ inherited frmPedido: TfrmPedido
       end
       inherited edtRazao: TEdit
         Width = 385
+        Height = 23
         ExplicitWidth = 385
+        ExplicitHeight = 23
       end
     end
     inline buscaRepresentante: TbuscaRepresentante
@@ -8301,8 +8318,10 @@ inherited frmPedido: TfrmPedido
       end
       inherited edtRazao: TEdit
         Width = 385
+        Height = 23
         OnChange = buscaRepresentante1edtRazaoChange
         ExplicitWidth = 385
+        ExplicitHeight = 23
       end
     end
   end

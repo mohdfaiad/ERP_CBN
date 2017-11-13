@@ -12,6 +12,7 @@ type
   private
     FCodigo     :Integer;
     FDescricao  :String;
+    FOrdem: Integer;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetDescricao  (const value :String);
@@ -19,6 +20,7 @@ type
   public
     property Codigo     :Integer   read FCodigo     write SetCodigo;
     property Descricao  :String    read FDescricao  write SetDescricao;
+    property Ordem      :Integer   read FOrdem      write FOrdem;
   end;
 
 implementation

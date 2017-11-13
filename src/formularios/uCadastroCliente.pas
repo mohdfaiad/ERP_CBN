@@ -304,7 +304,6 @@ begin
   pagClientes.ActivePageIndex := 0;
   self.Tag := 0;
   habilita(false);
-  cds.RecNo := registroFocado;
   gridClientes.SetFocus;
 end;
 
@@ -405,13 +404,12 @@ begin
     Cliente.Endereco.Complemento := TRIM(edtComplemento.text);
 
     repositorio.Salvar(Cliente);
-
     btnCancelar.Click;
-
-    avisar('Operação realizada com sucesso!');
-
     cds.Close;
     cds.Open;
+    cds.RecNo := registroFocado;
+
+    avisar('Operação realizada com sucesso!');
  Finally
    FreeAndNil(Cliente);
    FreeAndNil(repositorio);
@@ -636,13 +634,23 @@ begin
 end;
 
 procedure TfrmCadastroCliente.carregaEmails(emails: String);
+var email :String;
 begin
   while emails <> '' do begin
-    cdsEmails.Append;
-    cdsEmailsEMAIL.AsString := copy( emails, 1, ( pos( ';', emails ) -1 ) );
-    cdsEmails.Post;
+    if pos(';', emails) > 0 then
+    begin
+      email := copy( emails, 1, ( pos( ';', emails ) -1 ) );
+      emails := trim( copy( emails, (pos(';',emails) +1), length(emails) ) );
+    end
+    else
+    begin
+      email  := emails;
+      emails := '';
+    end;
 
-    emails := trim( copy( emails, (pos(';',emails) +1), length(emails) ) );
+    cdsEmails.Append;
+    cdsEmailsEMAIL.AsString := email;
+    cdsEmails.Post;
   end;
 end;
 

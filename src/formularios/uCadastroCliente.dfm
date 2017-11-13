@@ -442,7 +442,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Top = 0
     Width = 880
     Height = 497
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -713,8 +713,8 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           9B00}
       end
       object gridClientes: TDBGridCBN
-        Left = 3
-        Top = 39
+        Left = 6
+        Top = 15
         Width = 854
         Height = 403
         Hint = 
@@ -1823,7 +1823,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C010103000400700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101030004007C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

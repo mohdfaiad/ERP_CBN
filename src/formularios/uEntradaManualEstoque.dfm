@@ -7,6 +7,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
   ClientHeight = 568
   ClientWidth = 734
   OldCreateOrder = True
+  OnDestroy = FormDestroy
   OnShow = FormShow
   ExplicitWidth = 740
   ExplicitHeight = 596
@@ -218,7 +219,6 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     TabStop = True
     OnClick = rgTamanhosClick
     OnEnter = rgTamanhosEnter
-    ExplicitWidth = 695
   end
   object pnlRodape: TPanel
     Left = 0
@@ -228,7 +228,6 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitWidth = 691
     object btnSalvar: TBitBtn
       Left = 555
       Top = 8
@@ -468,7 +467,6 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     Height = 105
     Align = alBottom
     TabOrder = 4
-    ExplicitWidth = 691
     DesignSize = (
       734
       105)
@@ -575,7 +573,7 @@ inherited frmEntradaManualEstoque: TfrmEntradaManualEstoque
     object cbEntradaUnitaria: TCheckBox
       Left = 507
       Top = 80
-      Width = 105
+      Width = 108
       Height = 17
       TabStop = False
       Caption = 'Entrada unit'#225'ria'

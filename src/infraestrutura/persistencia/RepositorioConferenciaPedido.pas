@@ -7,7 +7,7 @@ type
   TRepositorioConferenciaPedido = class(TRepositorio)                      
   protected                                                                                        
     function Get             (Dataset :TDataSet) :TObject; overload; override;                     
-    function GetNomeDaTabela                     :String;            override;                     
+    function GetNomeDaTabela                     :String;            override;
     function GetIdentificador(Objeto :TObject)   :Variant;           override;                     
     function GetRepositorio                     :TRepositorio;       override;                     
 
@@ -16,7 +16,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -191,9 +191,10 @@ begin
   result := 'select * from CONFERENCIA_PEDIDO';                                                          
 end;                                                                                               
 
-function TRepositorioConferenciaPedido.SQLGetExiste(campo: String): String;              
+function TRepositorioConferenciaPedido.SQLGetExiste(arrayDeCampos :array of string): String;
 begin                                                                                              
-  result := 'select '+ campo +' from CONFERENCIA_PEDIDO where '+ campo +' = :ncampo';                
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;                                                                                               
 
 function TRepositorioConferenciaPedido.SQLRemover: String;                               

@@ -23,7 +23,7 @@ type
     function CondicaoSQLGetAll           :String;            override;    
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -178,9 +178,10 @@ begin
   result := 'select * from Estoque'+ IfThen(FIdentificador = '','', CondicaoSQLGetAll) +' order by codigo';
 end;
 
-function TRepositorioEstoque.SQLGetExiste(campo: String): String;
+function TRepositorioEstoque.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Estoque where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioEstoque.SQLRemover: String;

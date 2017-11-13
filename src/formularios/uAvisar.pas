@@ -56,6 +56,12 @@ constructor TfrmAvisar.Create(AOwner: TComponent; mensagem: String;
 begin
   self.Create(aOwner);
   self.memMsg.Text  := mensagem;
+
+  if self.memMsg.Lines.Count > 1 then
+    self.memMsg.Alignment := taLeftJustify
+  else
+    self.memMsg.Alignment := taCenter;
+
   espera            := tempoEspera;
   FSemAtalho        := (semAtalho = 'S');
   if tipo = 1 then

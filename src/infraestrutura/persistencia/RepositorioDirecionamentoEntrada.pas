@@ -18,7 +18,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -152,9 +152,10 @@ begin
   result := 'select * from DIRECIONAMENTO_ENTRADA';
 end;
 
-function TRepositorioDirecionamentoEntrada.SQLGetExiste(campo: String): String;
+function TRepositorioDirecionamentoEntrada.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from DIRECIONAMENTO_ENTRADA where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioDirecionamentoEntrada.SQLRemover: String;

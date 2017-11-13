@@ -72,6 +72,7 @@ type
     procedure Setobservacao(const Value: String);
 
   private
+    Fqtd_PM: integer;
     function GetCor              :TCor;
     function GetPesoBrutoTotal   :Real;
     function GetPesoLiquidoTotal :Real;
@@ -79,6 +80,7 @@ type
     procedure Setqtd_10(const Value: integer);
     procedure Setqtd_12(const Value: integer);
     procedure Setqtd_14(const Value: integer);
+    procedure Setqtd_PM(const Value: integer);
 
   public
     constructor Create(const zera_codigo :boolean = true);
@@ -94,6 +96,7 @@ type
     property valor_total       :Real      read GetValor_total     write Setvalor_total;
     property ref_prod          :String    read Fref_prod          write Setref_prod;
     property ref_cor           :String    read Fref_cor           write Setref_cor;
+    property qtd_PM            :integer   read Fqtd_PM            write Setqtd_PM;
     property qtd_RN            :integer   read Fqtd_RN            write Setqtd_RN;
     property qtd_P             :integer   read Fqtd_P             write Setqtd_P;
     property qtd_M             :integer   read Fqtd_M             write Setqtd_M;
@@ -233,6 +236,11 @@ end;
 procedure TItem.Setqtd_P(const Value: integer);
 begin
   Fqtd_P := Value;
+end;
+
+procedure TItem.Setqtd_PM(const Value: integer);
+begin
+  Fqtd_PM := Value;
 end;
 
 procedure TItem.Setqtd_RN(const Value: integer);

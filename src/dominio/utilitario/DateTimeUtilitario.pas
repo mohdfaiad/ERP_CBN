@@ -10,6 +10,7 @@ type
     class function proximo_mes(data :TDateTime) :String;
     class function mes_extenso(mes :integer) :String;
     class function dia_semana(data :TDateTime) :String;
+    class function padrao_EUA_to_BR(data :String) :String;
 end;
 
 implementation
@@ -74,6 +75,19 @@ begin
     11 : Result := 'NOVEMBRO';
     12 : Result := 'DEZEMBRO';
   end;
+end;
+
+class function TDateTimeUtilitario.padrao_EUA_to_BR(data: String): String;
+var
+  D: TDateTime;
+  T: TFormatSettings;
+begin
+  T.ShortDateFormat := 'yyyy-mm-dd';
+  T.DateSeparator := '-';
+
+  D := StrToDate(data, T);
+
+  result := DateToStr(D);
 end;
 
 class function TDateTimeUtilitario.proximo_mes(data: TDateTime): String;

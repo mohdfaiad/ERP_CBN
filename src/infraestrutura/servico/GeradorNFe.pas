@@ -26,8 +26,8 @@ type
     FFatura          :TFatura;
 
   public
-   constructor Create(const CaminhoLogo :String); overload;
-   constructor Create; overload;
+   constructor Create(const CaminhoLogo :String; Config :TConfiguracoesNF); overload;
+   constructor Create(Config :TConfiguracoesNF); overload;
 
   public
    destructor Destroy; override;
@@ -157,8 +157,6 @@ begin
    if (TStringUtilitario.EstaVazia(Justificativa)) then
     Justificativa := 'CANCELAMENTO DE NF-E';
 
-  self.AjustarConfiguracoesDaEmpresa(NotaFiscal.Empresa.ConfiguracoesNF);    
-
    self.FACBrNFe.EventoNFe.Evento.Clear;
 
    with self.FACBrNFe.EventoNFe.Evento.Add do
@@ -184,8 +182,6 @@ procedure TGeradorNFe.ConsultarNFe(NotaFiscal: TNotaFiscal);
 begin
    if not Assigned(NotaFiscal) then
     raise TExcecaoParametroInvalido.Create(self.ClassName, 'ConsultarNFe(NotaFiscal: TNotaFiscal)', 'NotaFiscal');
-
-  self.AjustarConfiguracoesDaEmpresa(NotaFiscal.Empresa.ConfiguracoesNF);
 
   { self.FACBrNFe.WebServices.Consulta.NFeChave := NotaFiscal.NFe.ChaveAcesso;
    self.FACBrNFe.WebServices.Consulta.Executar; }
@@ -220,14 +216,16 @@ begin
    self.GerarXML(NotaFiscal);
 end;
 
-constructor TGeradorNFe.Create(const CaminhoLogo :String);
+constructor TGeradorNFe.Create(const CaminhoLogo :String; Config :TConfiguracoesNF);
 begin
   self.InicializaComponentes(CaminhoLogo);
+  self.AjustarConfiguracoesDaEmpresa(Config);
 end;
 
-constructor TGeradorNFe.Create;
+constructor TGeradorNFe.Create(Config :TConfiguracoesNF);
 begin
-   self.Create('');
+   self.Create('', Config);
+   self.AjustarConfiguracoesDaEmpresa(Config);
 end;
 
 destructor TGeradorNFe.Destroy;
@@ -245,9 +243,7 @@ begin
    if not Assigned(NotaFiscal) then
     raise TExcecaoParametroInvalido.Create(self.ClassName, 'EmitirNFe(NotaFiscal: TNotaFiscal)', 'NotaFiscal');
 
-   self.FACBrNFe.NotasFiscais.Clear;
-
-  self.AjustarConfiguracoesDaEmpresa(NotaFiscal.Empresa.ConfiguracoesNF);
+  self.FACBrNFe.NotasFiscais.Clear;
 
   self.GerarNFe(NotaFiscal);
 

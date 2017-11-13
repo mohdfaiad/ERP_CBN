@@ -72,7 +72,7 @@ object frmCCe: TfrmCCe
         Width = 952
         Height = 51
         Align = alBottom
-        TabOrder = 4
+        TabOrder = 0
         DesignSize = (
           952
           51)
@@ -290,7 +290,7 @@ object frmCCe: TfrmCCe
         ParentShowHint = False
         ReadOnly = True
         ShowHint = False
-        TabOrder = 2
+        TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -11
@@ -371,37 +371,108 @@ object frmCCe: TfrmCCe
             Visible = True
           end>
       end
+      object gridNotas: TDBGridCBN
+        Left = 768
+        Top = 96
+        Width = 174
+        Height = 458
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        Color = 14803425
+        DataSource = dsCorrecoes
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+        ParentFont = False
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 4
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnDrawColumnCell = gridCorrecoesDrawColumnCell
+        OnEnter = gridLotesEnter
+        BuscaHabilitada = True
+        ConfCores.Normal.CorFonte = clWindowText
+        ConfCores.Normal.CorFundo = 14803425
+        ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+        ConfCores.Normal.Tipo.Color = clWindowText
+        ConfCores.Normal.Tipo.Height = -11
+        ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+        ConfCores.Normal.Tipo.Style = []
+        ConfCores.Zebrada.CorFonte = clWindowText
+        ConfCores.Zebrada.CorFundo = clWhite
+        ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+        ConfCores.Zebrada.Tipo.Color = clWindowText
+        ConfCores.Zebrada.Tipo.Height = -11
+        ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+        ConfCores.Zebrada.Tipo.Style = []
+        ConfCores.Selecao.CorFonte = clWindowText
+        ConfCores.Selecao.CorFundo = 16037533
+        ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+        ConfCores.Selecao.Tipo.Color = clWindowText
+        ConfCores.Selecao.Tipo.Height = -11
+        ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+        ConfCores.Selecao.Tipo.Style = []
+        ConfCores.Destacado.CorFonte = 8650884
+        ConfCores.Destacado.CorFundo = clWhite
+        ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+        ConfCores.Destacado.Tipo.Color = 8650884
+        ConfCores.Destacado.Tipo.Height = -11
+        ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+        ConfCores.Destacado.Tipo.Style = [fsBold]
+        ConfCores.Titulo.CorFonte = clWindowText
+        ConfCores.Titulo.CorFundo = clBtnFace
+        ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+        ConfCores.Titulo.Tipo.Color = clWindowText
+        ConfCores.Titulo.Tipo.Height = -11
+        ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+        ConfCores.Titulo.Tipo.Style = []
+        Ordenavel = True
+        TipoBusca.ListarApenasEncontrados = False
+        TipoBusca.QualquerParte = False
+        SalvaConfiguracoes = False
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'NRNOTA'
+            Title.Caption = 'N'#186' da Nota'
+            Width = 98
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'STATUS'
+            Title.Caption = 'Status'
+            Width = 38
+            Visible = True
+          end>
+      end
       inline BuscaEmpresa1: TBuscaEmpresa
-        Left = 7
-        Top = 3
-        Width = 940
+        Left = 6
+        Top = 6
+        Width = 935
         Height = 63
-        TabOrder = 0
-        ExplicitLeft = 7
-        ExplicitTop = 3
-        ExplicitWidth = 940
+        TabOrder = 1
+        ExplicitLeft = 6
+        ExplicitTop = 6
+        ExplicitWidth = 935
+        ExplicitHeight = 63
         inherited gpbEmpresa: TGroupBox
-          Width = 940
-          Caption = ' Empresa '
-          ExplicitWidth = 940
+          Width = 935
+          Height = 63
+          ExplicitTop = 0
+          ExplicitWidth = 935
+          ExplicitHeight = 63
         end
-        inherited lblRazao: TStaticText [1]
+        inherited lblRazao: TStaticText
           Width = 67
           ExplicitWidth = 67
-        end
-        inherited lblCodigo: TStaticText [2]
-        end
-        inherited edtCodigo: TEdit [3]
-          Top = 33
-          ExplicitTop = 33
-        end
-        inherited btnBusca: TBitBtn [4]
-          Top = 30
-          ExplicitTop = 30
-        end
-        inherited edtRazao: TEdit [5]
-          Top = 33
-          ExplicitTop = 33
         end
       end
       object btnBuscar: TBitBtn
@@ -478,95 +549,17 @@ object frmCCe: TfrmCCe
           9B0085808200654F500055382F005F3C33005B3B3200685553008D8A8B009B9B
           9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
         NumGlyphs = 2
-        TabOrder = 1
+        TabOrder = 2
         OnClick = btnBuscarClick
-      end
-      object gridNotas: TDBGridCBN
-        Left = 768
-        Top = 96
-        Width = 174
-        Height = 458
-        Anchors = [akLeft, akTop, akRight, akBottom]
-        Color = 14803425
-        DataSource = dsCorrecoes
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        ParentShowHint = False
-        ReadOnly = True
-        ShowHint = False
-        TabOrder = 3
-        TitleFont.Charset = DEFAULT_CHARSET
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'MS Sans Serif'
-        TitleFont.Style = []
-        OnDrawColumnCell = gridCorrecoesDrawColumnCell
-        OnEnter = gridLotesEnter
-        BuscaHabilitada = True
-        ConfCores.Normal.CorFonte = clWindowText
-        ConfCores.Normal.CorFundo = 14803425
-        ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
-        ConfCores.Normal.Tipo.Color = clWindowText
-        ConfCores.Normal.Tipo.Height = -11
-        ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
-        ConfCores.Normal.Tipo.Style = []
-        ConfCores.Zebrada.CorFonte = clWindowText
-        ConfCores.Zebrada.CorFundo = clWhite
-        ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
-        ConfCores.Zebrada.Tipo.Color = clWindowText
-        ConfCores.Zebrada.Tipo.Height = -11
-        ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
-        ConfCores.Zebrada.Tipo.Style = []
-        ConfCores.Selecao.CorFonte = clWindowText
-        ConfCores.Selecao.CorFundo = 16037533
-        ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
-        ConfCores.Selecao.Tipo.Color = clWindowText
-        ConfCores.Selecao.Tipo.Height = -11
-        ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
-        ConfCores.Selecao.Tipo.Style = []
-        ConfCores.Destacado.CorFonte = 8650884
-        ConfCores.Destacado.CorFundo = clWhite
-        ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
-        ConfCores.Destacado.Tipo.Color = 8650884
-        ConfCores.Destacado.Tipo.Height = -11
-        ConfCores.Destacado.Tipo.Name = 'Lucida Console'
-        ConfCores.Destacado.Tipo.Style = [fsBold]
-        ConfCores.Titulo.CorFonte = clWindowText
-        ConfCores.Titulo.CorFundo = clBtnFace
-        ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
-        ConfCores.Titulo.Tipo.Color = clWindowText
-        ConfCores.Titulo.Tipo.Height = -11
-        ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
-        ConfCores.Titulo.Tipo.Style = []
-        Ordenavel = True
-        TipoBusca.ListarApenasEncontrados = False
-        TipoBusca.QualquerParte = False
-        SalvaConfiguracoes = False
-        Columns = <
-          item
-            Expanded = False
-            FieldName = 'NRNOTA'
-            Title.Caption = 'N'#186' da Nota'
-            Width = 98
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'STATUS'
-            Title.Caption = 'Status'
-            Width = 38
-            Visible = True
-          end>
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Corre'#231#245'es'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 0
@@ -1023,26 +1016,8 @@ object frmCCe: TfrmCCe
           Ctl3D = False
           ParentCtl3D = False
           ReadOnly = True
-          TabOrder = 0
-          Visible = False
-        end
-        inline BuscaNotaFiscal1: TBuscaNotaFiscal
-          Left = 184
-          Top = 6
-          Width = 169
-          Height = 48
           TabOrder = 1
-          OnExit = BuscaNotaFiscal1Exit
-          ExplicitLeft = 184
-          ExplicitTop = 6
-          ExplicitWidth = 169
-          ExplicitHeight = 48
-          inherited edtNrNota: TCurrencyEdit
-            OnEnter = BuscaNotaFiscal1edtNrNotaEnter
-          end
-          inherited rgStatus: TRadioGroup
-            Visible = False
-          end
+          Visible = False
         end
         object edtID: TEdit
           Left = 440
@@ -1051,7 +1026,7 @@ object frmCCe: TfrmCCe
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 2
+          TabOrder = 3
         end
         object bitIncluir: TBitBtn
           Left = 744
@@ -1127,8 +1102,23 @@ object frmCCe: TfrmCCe
             9B009B9B9B009B9B9B00536A5300034103000019000000230000002300000019
             000003410300536A53009B9B9B009B9B9B009B9B9B009B9B9B00}
           NumGlyphs = 2
-          TabOrder = 3
+          TabOrder = 2
           OnClick = BitIncluirClick
+        end
+        inline BuscaNotaFiscal1: TBuscaNotaFiscal
+          Left = 176
+          Top = 6
+          Width = 169
+          Height = 50
+          TabOrder = 0
+          OnExit = BuscaNotaFiscal1Exit
+          ExplicitLeft = 176
+          ExplicitTop = 6
+          ExplicitWidth = 169
+          ExplicitHeight = 50
+          inherited edtNrNota: TCurrencyEdit
+            OnEnter = BuscaNotaFiscal1edtNrNotaEnter
+          end
         end
       end
       object pnBtn: TPanel
@@ -1614,7 +1604,7 @@ object frmCCe: TfrmCCe
     Left = 28
     Top = 472
     Bitmap = {
-      494C010103000400240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000002C2BEB003D47EB003A42
       EB00393FE700393EE5003237E0001319DB001019D900292ED7003031D7002D2D

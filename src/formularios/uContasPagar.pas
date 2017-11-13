@@ -18,11 +18,9 @@ type
     pnlParcelas: TPanel;
     GroupBox1: TGroupBox;
     edtCodigo: TEdit;
-    BuscaNotaFiscal1: TBuscaNotaFiscal;
     edtNumDocumento: TCurrencyEdit;
     dtpDataDocumento: TDateTimePicker;
     Label2: TLabel;
-    BuscaFornecedor: TBuscaPessoa;
     edtValor: TCurrencyEdit;
     edtObservacao: TEdit;
     Label3: TLabel;
@@ -76,7 +74,6 @@ type
     cdsParcelasVALOR_PAGO: TFloatField;
     Label13: TLabel;
     edtDataLancamento: TEdit;
-    BuscaMateria1: TBuscaMateria;
     DBGridCBN2: TDBGridCBN;
     edtValorPendente: TCurrencyEdit;
     edtNParcela: TCurrencyEdit;
@@ -101,7 +98,6 @@ type
     btnFiltrar: TBitBtn;
     btnCancelaConta: TSpeedButton;
     gpbFiltroFornecedor: TGroupBox;
-    BuscaFornecedor2: TBuscaPessoa;
     SpeedButton1: TSpeedButton;
     GroupBox5: TGroupBox;
     edtNDoc: TCurrencyEdit;
@@ -116,7 +112,6 @@ type
     GroupBox3: TGroupBox;
     chkDebitoAut: TCheckBox;
     Shape2: TShape;
-    BuscaContaBanco1: TBuscaContaBanco;
     GroupBox4: TGroupBox;
     Shape3: TShape;
     Label18: TLabel;
@@ -137,6 +132,11 @@ type
     Shape4: TShape;
     btnConfirma: TBitBtn;
     btnAborta: TSpeedButton;
+    BuscaFornecedor: TBuscaPessoa;
+    BuscaNotaFiscal1: TBuscaNotaFiscal;
+    BuscaFornecedor2: TBuscaPessoa;
+    BuscaMateria1: TBuscaMateria;
+    BuscaContaBanco1: TBuscaContaBanco;
     procedure btnNovoClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -755,6 +755,8 @@ begin
   inherited;
   BuscaFornecedor.TipoPessoa := tpFornecedor;
   BuscaFornecedor2.TipoPessoa := tpFornecedor;
+  pgGeral.ActivePageIndex := 1;
+  pgGeral.ActivePageIndex := 0;
 end;
 
 procedure TfrmContasPagar.btnGerarParcelasClick(Sender: TObject);

@@ -23,7 +23,7 @@ type
     function CondicaoSQLGetAll           :String;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -85,6 +85,7 @@ begin
    Cliente.Funcionario    := Dataset.FieldByName('funcionario').AsString = 'S';
    Cliente.bloqueado      := Dataset.FieldByName('bloqueado').AsString;
    Cliente.motivoBloqueio := Dataset.FieldByName('motivo_bloqueio').AsString;
+   Cliente.ECommerce      := Dataset.FieldByName('ECommerce').AsString = 'S';
 
    result := Cliente;
 end;
@@ -171,6 +172,9 @@ begin
 
    if (ClienteAntigo.motivoBloqueio <> ClienteNovo.motivoBloqueio) then
     Auditoria.AdicionaCampoAlterado('motivo_Bloqueio', ClienteAntigo.motivoBloqueio, ClienteNovo.motivoBloqueio);
+
+   if (ClienteAntigo.ECommerce <> ClienteNovo.ECommerce) then
+    Auditoria.AdicionaCampoAlterado('ECommerce', IfThen(ClienteAntigo.ECommerce,'S','N'), IfThen(ClienteNovo.ECommerce,'S','N'));
 end;
 
 procedure TRepositorioCliente.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -188,7 +192,7 @@ begin
    Auditoria.AdicionaCampoExcluido('CodRepresentante' , intToStr(Cliente.CodRepresentante));
    Auditoria.AdicionaCampoExcluido('bloqueado'        , Cliente.bloqueado);
    Auditoria.AdicionaCampoExcluido('motivo_Bloqueio'  , Cliente.motivoBloqueio);
-
+   Auditoria.AdicionaCampoExcluido('ECommerce'        , IfThen(Cliente.ECommerce,'S','N'));
 end;
 
 procedure TRepositorioCliente.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -206,6 +210,7 @@ begin
    Auditoria.AdicionaCampoIncluido('CodRepresentante' , intToStr(Cliente.CodRepresentante));
    Auditoria.AdicionaCampoIncluido('bloqueado'        , Cliente.bloqueado);
    Auditoria.AdicionaCampoIncluido('motivo_Bloqueio'  , Cliente.motivoBloqueio);
+   Auditoria.AdicionaCampoIncluido('ECommerce'        , IfThen(Cliente.ECommerce,'S','N'));
 end;
 
 procedure TRepositorioCliente.SetIdentificador(Objeto: TObject;
@@ -236,11 +241,12 @@ begin
    self.FQuery.ParamByName('funcionario').AsString         := IfThen( Cliente.funcionario, 'S', 'N');
    self.FQuery.ParamByName('bloqueado').AsString           := Cliente.bloqueado;
    self.FQuery.ParamByName('motivo_bloqueio').AsString     := Cliente.motivoBloqueio;
+   self.FQuery.ParamByName('ECommerce').AsString           := IfThen(Cliente.ECommerce, 'S', 'N');
 end;
 
 function TRepositorioCliente.SQLGet: String;
 begin
-   result := ' select p.*, cli.codigo CODIGO_CLIENTE, cli.codtabelapreco, cli.codformaspgto, '+
+   result := ' select p.*, cli.codigo CODIGO_CLIENTE, cli.codtabelapreco, cli.codformaspgto, cli.ecommerce, '+
              ' cli.codtransportadora, cli.funcionario, cli.codrepresentante, cli.bloqueado, cli.motivo_bloqueio '+
              ' from pessoas p                                        '+
              ' left join clientes cli on (cli.codcli = p.codigo)          '+
@@ -249,16 +255,17 @@ end;
 
 function TRepositorioCliente.SQLGetAll: String;
 begin
-  result := ' select p.*, cli.codigo CODIGO_CLIENTE, cli.codtabelapreco, cli.codformaspgto, '+
+  result := ' select p.*, cli.codigo CODIGO_CLIENTE, cli.codtabelapreco, cli.codformaspgto, cli.ecommerce, '+
             ' cli.codtransportadora, cli.funcionario, cli.codrepresentante, cli.bloqueado, cli.motivo_bloqueio '+
             ' from clientes cli      '+
             ' inner join pessoas p on (cli.codcli = p.codigo) order by CODIGO_EMPRESA '
             + IfThen(FIdentificador = '','', self.CondicaoSQLGetAll);
 end;
 
-function TRepositorioCliente.SQLGetExiste(campo: String): String;
+function TRepositorioCliente.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from CLIENTES where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioCliente.SQLRemover: String;
@@ -269,8 +276,8 @@ end;
 function TRepositorioCliente.SQLSalvar: String;
 begin
   result := 'update or insert into CLIENTES                                                                    '+
-            '(codigo, codcli, codtabelapreco, codformaspgto, CodTransportadora, funcionario, codrepresentante, bloqueado, motivo_bloqueio) '+
-            ' Values (:codigo, :codcli, :codtabelapreco, :codformaspgto, :CodTransportadora, :funcionario, :codrepresentante, :bloqueado, :motivo_bloqueio) ';
+            '(codigo, codcli, codtabelapreco, codformaspgto, CodTransportadora, funcionario, codrepresentante, bloqueado, motivo_bloqueio, ecommerce) '+
+            ' Values (:codigo, :codcli, :codtabelapreco, :codformaspgto, :CodTransportadora, :funcionario, :codrepresentante, :bloqueado, :motivo_bloqueio, :ecommerce) ';
 end;
 
 end.

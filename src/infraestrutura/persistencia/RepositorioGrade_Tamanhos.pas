@@ -21,7 +21,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -145,12 +145,15 @@ end;
 
 function TRepositorioGrade_Tamanhos.SQLGetAll: String;
 begin
-  result := 'select * from grade_Tamanhos';
+  result := 'select gt.* from grade_Tamanhos gt '+
+            ' inner join tamanhos t on t.codigo = gt.codtamanho '+
+            ' order by t.ordem ';
 end;
 
-function TRepositorioGrade_Tamanhos.SQLGetExiste(campo: String): String;
+function TRepositorioGrade_Tamanhos.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Grade_Tamanhos where '+ campo +' = :ncampo';
+   result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), self.GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioGrade_Tamanhos.SQLRemover: String;

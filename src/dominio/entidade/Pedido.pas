@@ -121,6 +121,8 @@ type
     procedure commit;
     procedure rollBack;
     function GetFaturado: Boolean;
+    function verificaLista(Item :TItem) :SmallInt;
+    procedure atualizaItem(Item :TItem; indiceItem :SmallInt);
 
   public
     property Codigo            :Integer      read FCodigo            write SetCodigo;
@@ -376,6 +378,30 @@ begin
   dm.conexao.Rollback; //desfaz generator
 end;
 
+procedure TPedido.atualizaItem(Item: TItem; indiceItem: SmallInt);
+begin
+  TItem(FItens.Items[indiceItem]).qtd_PM      := TItem(FItens.Items[indiceItem]).qtd_PM    + Item.qtd_PM;
+  TItem(FItens.Items[indiceItem]).qtd_RN      := TItem(FItens.Items[indiceItem]).qtd_RN    + Item.qtd_RN;
+  TItem(FItens.Items[indiceItem]).qtd_P       := TItem(FItens.Items[indiceItem]).qtd_P     + Item.qtd_P;
+  TItem(FItens.Items[indiceItem]).qtd_M       := TItem(FItens.Items[indiceItem]).qtd_M     + Item.qtd_M;
+  TItem(FItens.Items[indiceItem]).qtd_G       := TItem(FItens.Items[indiceItem]).qtd_G     + Item.qtd_G;
+  TItem(FItens.Items[indiceItem]).qtd_1       := TItem(FItens.Items[indiceItem]).qtd_1     + Item.qtd_1;
+  TItem(FItens.Items[indiceItem]).qtd_2       := TItem(FItens.Items[indiceItem]).qtd_2     + Item.qtd_2;
+  TItem(FItens.Items[indiceItem]).qtd_3       := TItem(FItens.Items[indiceItem]).qtd_3     + Item.qtd_3;
+  TItem(FItens.Items[indiceItem]).qtd_4       := TItem(FItens.Items[indiceItem]).qtd_4     + Item.qtd_4;
+  TItem(FItens.Items[indiceItem]).qtd_6       := TItem(FItens.Items[indiceItem]).qtd_6     + Item.qtd_6;
+  TItem(FItens.Items[indiceItem]).qtd_8       := TItem(FItens.Items[indiceItem]).qtd_8     + Item.qtd_8;
+  TItem(FItens.Items[indiceItem]).qtd_10      := TItem(FItens.Items[indiceItem]).qtd_10    + Item.qtd_10;
+  TItem(FItens.Items[indiceItem]).qtd_12      := TItem(FItens.Items[indiceItem]).qtd_12    + Item.qtd_12;
+  TItem(FItens.Items[indiceItem]).qtd_14      := TItem(FItens.Items[indiceItem]).qtd_14    + Item.qtd_14;
+  TItem(FItens.Items[indiceItem]).qtd_UNICA   := TItem(FItens.Items[indiceItem]).qtd_UNICA + Item.qtd_UNICA;
+  //Atualiza quantidade total e valor total
+  TItem(FItens.Items[indiceItem]).qtd_total   := TItem(FItens.Items[indiceItem]).qtd_total;
+  TItem(FItens.Items[indiceItem]).valor_total := TItem(FItens.Items[indiceItem]).valor_total;
+  //Libera o objeto do item que seria inserido
+  FreeAndNil(Item);
+end;
+
 procedure TPedido.commit;
 begin
   dm.qryGenerica.Connection.Commit;
@@ -434,13 +460,19 @@ begin
 end;
 
 procedure TPedido.AdicionarItem(I: TItem);
+var itemEncontrado :SmallInt;
 begin
    if not Assigned(self.FItens) then begin
      self.FItens           := TObjectList.Create;
      self.FCriouListaItens := true;
    end;
 
-   self.FItens.Add(I);
+   itemEncontrado := verificaLista(I);
+
+   if (itemEncontrado >= 0) then
+     atualizaItem(I, itemEncontrado)
+   else
+     self.FItens.Add(I);
 end;
 
 function TPedido.GetFaturado: Boolean;
@@ -556,6 +588,20 @@ begin
    end;
    
    result := (ValorAtual + I.PesoLiquidoTotal);
+end;
+
+function TPedido.verificaLista(Item: TItem): SmallInt;
+var i :integer;
+begin
+  result := -1;
+  for i := 0 to FItens.Count -1 do
+    if ((TItem(FItens.Items[i]).cod_produto = Item.cod_produto) and
+        (TItem(FItens.Items[i]).cod_cor = Item.cod_cor) and
+        (TItem(FItens.Items[i]).preco = Item.preco)) then
+    begin
+      result := i;
+      exit;
+    end;
 end;
 
 function TPedido.GetPesoBrutoTotal: Real;

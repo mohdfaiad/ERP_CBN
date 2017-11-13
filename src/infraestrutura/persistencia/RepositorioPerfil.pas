@@ -21,7 +21,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -144,9 +144,10 @@ begin
    result := 'select * from perfis'; 
 end;
 
-function TRepositorioPerfil.SQLGetExiste(campo: String): String;
+function TRepositorioPerfil.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Perfis where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), 'PERFIS', [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioPerfil.SQLRemover: String;

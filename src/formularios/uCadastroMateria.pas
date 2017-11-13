@@ -28,11 +28,14 @@ type
     cdsCODIGO: TIntegerField;
     cdsDESCRICAO: TStringField;
     ListaUnidade: TListaCampo;
+    Label7: TLabel;
+    cbxControlaEstoque: TComboBox;
     procedure FormShow(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure edtCodNCMKeyPress(Sender: TObject; var Key: Char);
   private
     FProdutoNfe :TProd;
+    FFiltroDescricao :String;
 
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
 
@@ -62,6 +65,7 @@ type
   public
 
     property produtoNfe :TProd read FprodutoNfe write SetprodutoNfe;
+    property filtroDescricao :String read FFiltroDescricao write FFiltroDescricao;
   end;
 
 var
@@ -69,7 +73,7 @@ var
 
 implementation
 
-uses Materia, Repositorio, FabricaRepositorio;
+uses Materia, Repositorio, FabricaRepositorio, Math;
 
 {$R *.dfm}
 
@@ -110,6 +114,7 @@ begin
          self.IncluirRegistroNoCDS(Materias.Items[nX]);
          
     end;
+
   finally
     FreeAndNil(Repositorio);
     FreeAndNil(Materias);
@@ -126,7 +131,6 @@ procedure TfrmCadastroMateria.ExecutarDepoisIncluir;
 begin
   inherited;
   edtDescricao.SetFocus;
-
 end;
 
 function TfrmCadastroMateria.GravarDados: TObject;
@@ -153,6 +157,7 @@ begin
      Materia.estoque_fisico           := self.edtEstoqueFisico.Value;
      Materia.estoque_minimo           := self.edtEstoqueMinimo.Value;
      Materia.unidade                  := ListaUnidade.comListaCampo.Items[ListaUnidade.comListaCampo.itemIndex];//self.cbUnidade.Text;
+     Materia.controla_estoque         := copy(cbxControlaEstoque.Text,1,1);
 
      RepositorioMateria.Salvar(Materia);
 
@@ -202,6 +207,7 @@ begin
   edtEstoqueFisico.Clear;
   edtEstoqueMinimo.Clear;
   ListaUnidade.comListaCampo.ItemIndex := 0;
+  cbxControlaEstoque.ItemIndex := 1;
 end;
 
 procedure TfrmCadastroMateria.MostrarDados;
@@ -230,6 +236,7 @@ begin
     self.edtEstoqueFisico.Value       := Materia.estoque_fisico;
     self.edtEstoqueMinimo.Value       := Materia.estoque_minimo;
     self.ListaUnidade.comListaCampo.ItemIndex := self.ListaUnidade.comListaCampo.Items.IndexOf(UPPERCASE(Materia.unidade));
+    self.cbxControlaEstoque.ItemIndex := IfThen(Materia.controla_estoque = 'S', 0, 1);
 
   finally
     FreeAndNil(RepositorioMateria);
@@ -265,6 +272,20 @@ end;
 procedure TfrmCadastroMateria.FormShow(Sender: TObject);
 begin
   inherited;
+
+  if filtroDescricao <> '' then
+  begin
+    cds.Filtered := false;
+    cds.Filter   := filtroDescricao;
+    cds.Filtered := true;
+  end;
+
+  if cds.IsEmpty then
+  begin
+    avisar('Não foi encontrada nenhuma matéria, correspondente a "CAIXA", cadastrada.');
+    self.Close;
+  end;
+
   if assigned(FProdutoNfe) then begin
     btnIncluir.Click;
     edtDescricao.Text      := FProdutoNfe.xProd;

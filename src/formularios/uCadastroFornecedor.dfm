@@ -331,7 +331,7 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
     Top = 0
     Width = 863
     Height = 540
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -764,9 +764,11 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
           ExplicitWidth = 435
           ExplicitHeight = 51
           inherited StaticText3: TStaticText
+            Left = 398
             Width = 18
             Font.Color = 3355443
             Font.Name = 'Segoe UI'
+            ExplicitLeft = 398
             ExplicitWidth = 18
           end
           inherited StaticText2: TStaticText

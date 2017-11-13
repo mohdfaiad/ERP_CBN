@@ -92,6 +92,14 @@ const
   paFechaComissaoECommerce       = 75;
   paCadastroMapaPedidos          = 76;
   paDirecionarEntradas           = 77;
+  paEntradaManualMateria         = 78;
+  paSaídaManualMateria           = 79;
+  paRelatorioEntradaSaidaMateria = 80;
+  paRelatorioEstoqueMateria      = 81;
+  paCadastroConfiguracoesEcommerce = 82;
+  paSincronizaProdutosShoppub     = 83;
+  paVerificaErrosImportacaoPedido = 84;
+  paRelatorioPedidosEmAberto      = 85;
 
 implementation
 
@@ -158,7 +166,10 @@ begin
         if (lPedeSupervisor) and (TfrmSupervisor.LiberaFuncao(nPermissao)) then
           Result := true
         else
-           TfrmPadrao.Create(nil).avisar(msgRetorno);
+        begin
+          if msgRetorno <> '' then
+            TfrmPadrao.Create(nil).avisar(msgRetorno);
+        end;
           //raise Exception.Create(msgRetorno);
 
       Except

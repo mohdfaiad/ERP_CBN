@@ -19,6 +19,7 @@ type
     Fcod_ncm: String;
     Fdescricao: String;
     Funidade: String;
+    FControla_estoque: String;
     
     procedure Setcod_ncm(const Value: String);
     procedure Setcodigo(const Value: integer);
@@ -30,6 +31,10 @@ type
     procedure Setunidade(const Value: String);
 
   public
+    procedure incrementaEstoque(value :Real);
+    procedure decrementaEstoque(value :Real);
+
+  public
     property codigo          :integer read Fcodigo         write Setcodigo;
     property descricao       :String  read Fdescricao      write Setdescricao;
     property cod_ncm         :String  read Fcod_ncm        write Setcod_ncm;
@@ -38,6 +43,7 @@ type
     property estoque_fisico  :Real    read Festoque_fisico write Setestoque_fisico;
     property estoque_minimo  :Real    read Festoque_minimo write Setestoque_minimo;
     property unidade         :String  read Funidade        write Setunidade;
+    property controla_estoque:String  read FControla_estoque write FControla_estoque;
 
 end;
 
@@ -48,6 +54,16 @@ implementation
 procedure TMateria.Setcod_ncm(const Value: String);
 begin
   Fcod_ncm := Value;
+end;
+
+procedure TMateria.decrementaEstoque(value: Real);
+begin
+  self.Festoque_fisico := self.Festoque_fisico - value;
+end;
+
+procedure TMateria.incrementaEstoque(value: Real);
+begin
+  self.Festoque_fisico := self.Festoque_fisico + value;
 end;
 
 procedure TMateria.Setcodigo(const Value: integer);

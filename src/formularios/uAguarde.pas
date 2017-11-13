@@ -37,10 +37,8 @@ end;
 
 procedure TfrmAguarde.FormShow(Sender: TObject);
 begin
-  Application.ProcessMessages;
   frmAguarde.gifAguarde.Filename := ExtractFilePath( Application.ExeName )+'\erp img\Aguarda.gif';
   frmAguarde.gifAguarde.Active   := true;
-  Application.ProcessMessages;
 end;
 
 end.

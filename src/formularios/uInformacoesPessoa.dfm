@@ -9,7 +9,7 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
   ExplicitWidth = 597
   ExplicitHeight = 289
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
@@ -124,49 +124,49 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       Left = 148
       Top = 30
       Width = 130
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 0
+      TabOrder = 1
     end
     object edtLogradouro: TEdit
       Left = 8
       Top = 72
       Width = 270
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 1
+      TabOrder = 2
     end
     object edtNumero: TEdit
       Left = 296
       Top = 72
       Width = 71
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 2
+      TabOrder = 3
     end
     object edtBairro: TEdit
       Left = 384
       Top = 72
       Width = 174
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 3
+      TabOrder = 4
     end
     object edtCidade: TEdit
       Left = 8
       Top = 112
       Width = 270
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 4
+      TabOrder = 5
     end
     object edtUf: TEdit
       Left = 8
       Top = 152
       Width = 30
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 5
+      TabOrder = 6
     end
     object edtCEP: TMaskEdit
       Left = 55
@@ -182,66 +182,16 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       MaxLength = 9
       ParentFont = False
       ReadOnly = True
-      TabOrder = 6
+      TabOrder = 7
       Text = ''
     end
     object edtPais: TEdit
       Left = 176
       Top = 152
       Width = 103
-      Height = 21
+      Height = 23
       ReadOnly = True
-      TabOrder = 7
-    end
-    inline CpfCnpj: TMaskCpfCnpj
-      Left = 4
-      Top = 14
-      Width = 141
-      Height = 41
       TabOrder = 8
-      ExplicitLeft = 4
-      ExplicitTop = 14
-      ExplicitWidth = 141
-      ExplicitHeight = 41
-      inherited Label19: TLabel
-        Top = 5
-        Visible = False
-        ExplicitTop = 5
-      end
-      inherited comPessoa: TComboBox [1]
-        Top = 16
-        OnChange = nil
-        ExplicitTop = 16
-      end
-      inherited StaticText1: TStaticText [2]
-        Left = 5
-        Top = 0
-        Width = 40
-        Font.Name = 'Segoe UI'
-        ExplicitLeft = 5
-        ExplicitTop = 0
-        ExplicitWidth = 40
-      end
-      inherited StaticText2: TStaticText [3]
-        Left = 4
-        Top = -1
-        Width = 69
-        AutoSize = False
-        Caption = 'CPF / CNPJ'
-        Font.Name = 'Segoe UI'
-        ExplicitLeft = 4
-        ExplicitTop = -1
-        ExplicitWidth = 69
-      end
-      inherited edtCpf: TMaskEdit [4]
-        Left = 5
-        Top = 16
-        Width = 126
-        ReadOnly = True
-        ExplicitLeft = 5
-        ExplicitTop = 16
-        ExplicitWidth = 126
-      end
     end
     object GridEmail: TDBGrid
       Left = 296
@@ -255,8 +205,8 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       TabOrder = 9
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Segoe UI'
+      TitleFont.Height = -13
+      TitleFont.Name = 'Calibri'
       TitleFont.Style = []
       Columns = <
         item
@@ -266,6 +216,37 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
           Visible = True
         end>
     end
+    inline CpfCnpj: TMaskCpfCnpj
+      Left = 0
+      Top = 5
+      Width = 138
+      Height = 50
+      TabOrder = 0
+      ExplicitTop = 5
+      ExplicitWidth = 138
+      ExplicitHeight = 50
+      inherited Label19: TLabel
+        Visible = False
+      end
+      inherited comPessoa: TComboBox [1]
+        Height = 23
+        Visible = False
+        ExplicitHeight = 23
+      end
+      inherited StaticText1: TStaticText [2]
+        Visible = False
+      end
+      inherited StaticText2: TStaticText [3]
+        Left = 9
+        ExplicitLeft = 9
+      end
+      inherited edtCpf: TMaskEdit [4]
+        Left = 8
+        Height = 23
+        ExplicitLeft = 8
+        ExplicitHeight = 23
+      end
+    end
     inline Fone1: TFone
       Left = 6
       Top = 176
@@ -274,19 +255,9 @@ inherited frmInformacoesPessoa: TfrmInformacoesPessoa
       TabOrder = 10
       ExplicitLeft = 6
       ExplicitTop = 176
-      inherited Label12: TLabel
-        Width = 45
-        Caption = 'Telefone'
-        Font.Color = clBlack
-        ExplicitWidth = 45
-      end
       inherited edtFone: TMaskEdit
-        Width = 99
-        EditMask = '!\(99\)99999\-9999;1; '
-        Font.Color = clBlack
-        Font.Name = 'Segoe UI'
-        ParentFont = False
-        ExplicitWidth = 99
+        Height = 23
+        ExplicitHeight = 23
       end
     end
   end

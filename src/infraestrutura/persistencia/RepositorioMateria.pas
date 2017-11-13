@@ -21,7 +21,7 @@ type
     function SQLSalvar                   :String;            override;
     function SQLGetAll                   :String;            override;
     function SQLRemover                  :String;            override;
-    function SQLGetExiste(campo: String): String;            override;
+    function SQLGetExiste(arrayDeCampos :array of string): String;            override;
 
   protected
     function IsInsercao(Objeto :TObject) :Boolean;           override;
@@ -61,6 +61,7 @@ begin
    Materia.estoque_fisico := self.FQuery.FieldByName('estoque_fisico').AsFloat;
    Materia.estoque_minimo := self.FQuery.FieldByName('estoque_minimo').AsFloat;
    Materia.unidade        := self.FQuery.FieldByName('unidade'       ).AsString;
+   Materia.controla_estoque := self.FQuery.FieldByName('controla_estoque').AsString;
 
    result := Materia;
 end;
@@ -115,6 +116,8 @@ begin
    if (MateriaAntigo.unidade <> MateriaNovo.unidade) then
     Auditoria.AdicionaCampoAlterado('unidade', MateriaAntigo.unidade, MateriaNovo.unidade);
 
+   if (MateriaAntigo.controla_estoque <> MateriaNovo.controla_estoque) then
+    Auditoria.AdicionaCampoAlterado('controla_estoque', MateriaAntigo.controla_estoque, MateriaNovo.controla_estoque);
 end;
 
 procedure TRepositorioMateria.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -132,6 +135,7 @@ begin
    Auditoria.AdicionaCampoExcluido('ESTOQUE_FISICO', floatToStr(Materia.estoque_fisico));
    Auditoria.AdicionaCampoExcluido('ESTOQUE_MINIMO', floatToStr(Materia.estoque_minimo));
    Auditoria.AdicionaCampoExcluido('UNIDADE'       , Materia.unidade);
+   Auditoria.AdicionaCampoExcluido('controla_estoque', Materia.controla_estoque);
 end;
 
 procedure TRepositorioMateria.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -149,6 +153,7 @@ begin
    Auditoria.AdicionaCampoIncluido('ESTOQUE_FISICO', floatToStr(Materia.estoque_fisico));
    Auditoria.AdicionaCampoIncluido('ESTOQUE_MINIMO', floatToStr(Materia.estoque_minimo));
    Auditoria.AdicionaCampoIncluido('UNIDADE'       , Materia.unidade);
+   Auditoria.AdicionaCampoIncluido('controla_estoque', Materia.controla_estoque);
 end;
 
 procedure TRepositorioMateria.SetIdentificador(Objeto: TObject;
@@ -173,7 +178,7 @@ begin
    self.FQuery.ParamByName('ESTOQUE_FISICO').AsFloat  := Materia.estoque_fisico;
    self.FQuery.ParamByName('ESTOQUE_MINIMO').AsFloat  := Materia.estoque_minimo;
    self.FQuery.ParamByName('UNIDADE').AsString        := Materia.unidade;
-
+   self.FQuery.ParamByName('controla_estoque').AsString := Materia.controla_estoque;
 end;
 
 function TRepositorioMateria.SQLGet: String;
@@ -186,9 +191,10 @@ begin
   result := 'select * from Materias';
 end;
 
-function TRepositorioMateria.SQLGetExiste(campo: String): String;
+function TRepositorioMateria.SQLGetExiste(arrayDeCampos :array of string): String;
 begin
-  result := 'select '+ campo +' from Materias where '+ campo +' = :ncampo';
+  result := inherited;
+  result := StringReplace(result, UpperCase('NOME_TABELA'), GetNomeDaTabela, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TRepositorioMateria.SQLRemover: String;
@@ -198,9 +204,9 @@ end;
 
 function TRepositorioMateria.SQLSalvar: String;
 begin
-  result := 'update or insert into Materias                                                                                  '+
-            '(CODIGO, DESCRICAO, COD_NCM, PRECO_CUSTO, PRECO_VENDA, ESTOQUE_FISICO, ESTOQUE_MINIMO, UNIDADE)                 '+
-            ' Values (:CODIGO, :DESCRICAO, :COD_NCM, :PRECO_CUSTO, :PRECO_VENDA, :ESTOQUE_FISICO, :ESTOQUE_MINIMO, :UNIDADE) ';
+  result := 'update or insert into Materias                                                                                    '+
+            '(CODIGO, DESCRICAO, COD_NCM, PRECO_CUSTO, PRECO_VENDA, ESTOQUE_FISICO, ESTOQUE_MINIMO, UNIDADE, CONTROLA_ESTOQUE) '+
+            ' Values (:CODIGO, :DESCRICAO, :COD_NCM, :PRECO_CUSTO, :PRECO_VENDA, :ESTOQUE_FISICO, :ESTOQUE_MINIMO, :UNIDADE, :CONTROLA_ESTOQUE) ';
 end;
 
 end.

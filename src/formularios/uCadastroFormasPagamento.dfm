@@ -2,19 +2,26 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
   Left = 287
   Top = 180
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsSingle
   Caption = 'Cadastro de Formas de Pagamento'
-  ClientHeight = 372
+  ClientHeight = 412
   ClientWidth = 597
   OldCreateOrder = True
   OnShow = FormShow
   ExplicitWidth = 603
-  ExplicitHeight = 400
+  ExplicitHeight = 440
   PixelsPerInch = 96
-  TextHeight = 15
+  TextHeight = 13
+  inherited pnlPropaganda: TPanel
+    Top = 336
+    Width = 597
+    TabOrder = 2
+    inherited Shape8: TShape
+      Width = 595
+    end
+  end
   object panBotoes: TPanel
     Left = 0
-    Top = 331
+    Top = 371
     Width = 597
     Height = 41
     Align = alBottom
@@ -248,12 +255,12 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       NumGlyphs = 2
       OnClick = btnCancelarClick
     end
-    object btnSalvar: TBitBtn
-      Left = 393
+    object btnSalvar: TSpeedButton
+      Left = 394
       Top = 5
       Width = 120
       Height = 30
-      Caption = 'Salvar'
+      Caption = ' Salvar'
       Enabled = False
       Glyph.Data = {
         36080000424D3608000000000000360000002800000020000000100000000100
@@ -323,7 +330,6 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         1E0090661900846324008B6B30008B703400896B2E008A6C2E008A6C2F008E6F
         32009373370092723700826026008751000099958E009B9B9B00}
       NumGlyphs = 2
-      TabOrder = 0
       OnClick = btnSalvarClick
     end
   end
@@ -331,8 +337,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
     Left = 0
     Top = 0
     Width = 597
-    Height = 331
-    ActivePage = TabSheet1
+    Height = 336
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -340,12 +346,12 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       OnExit = TabSheet1Exit
       DesignSize = (
         589
-        301)
+        308)
       object gridFormasPAg: TDBGridCBN
         Left = 8
         Top = 8
         Width = 571
-        Height = 285
+        Height = 325
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -448,8 +454,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       ImageIndex = 1
       OnEnter = TabSheet2Enter
       object Label1: TLabel
-        Left = 48
-        Top = 48
+        Left = 85
+        Top = 40
         Width = 49
         Height = 13
         Caption = 'Descri'#231#227'o'
@@ -461,7 +467,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label2: TLabel
-        Left = 48
+        Left = 85
         Top = 100
         Width = 59
         Height = 13
@@ -474,7 +480,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label4: TLabel
-        Left = 136
+        Left = 181
         Top = 100
         Width = 49
         Height = 13
@@ -487,8 +493,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 232
-        Top = 100
+        Left = 85
+        Top = 156
         Width = 53
         Height = 13
         Caption = 'Acr'#233'scimo'
@@ -501,7 +507,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       end
       object lblAsterisco: TLabel
         Left = 7
-        Top = 279
+        Top = 311
         Width = 11
         Height = 32
         Caption = '*'
@@ -514,7 +520,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
       end
       object lblCamposObrigatorios: TLabel
         Left = 21
-        Top = 286
+        Top = 318
         Width = 127
         Height = 17
         Caption = 'Campos Obrigat'#243'rios'
@@ -526,8 +532,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label3: TLabel
-        Left = 35
-        Top = 38
+        Left = 72
+        Top = 30
         Width = 11
         Height = 32
         Caption = '*'
@@ -539,7 +545,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label6: TLabel
-        Left = 35
+        Left = 72
         Top = 89
         Width = 11
         Height = 32
@@ -552,8 +558,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label7: TLabel
-        Left = 35
-        Top = 145
+        Left = 368
+        Top = 169
         Width = 11
         Height = 32
         Caption = '*'
@@ -565,8 +571,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object Label8: TLabel
-        Left = 328
-        Top = 100
+        Left = 181
+        Top = 156
         Width = 63
         Height = 13
         Caption = '% Comiss'#227'o'
@@ -578,45 +584,45 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         ParentFont = False
       end
       object edtDescricao: TEdit
-        Left = 48
-        Top = 64
-        Width = 489
-        Height = 23
+        Left = 85
+        Top = 56
+        Width = 419
+        Height = 21
         CharCase = ecUpperCase
         Ctl3D = True
         ParentCtl3D = False
         TabOrder = 0
       end
       object edtNumParcelas: TCurrencyEdit
-        Left = 48
+        Left = 85
         Top = 117
-        Width = 65
+        Width = 70
         Height = 21
         AutoSize = False
         DisplayFormat = '0'
         TabOrder = 1
       end
       object edtDesconto: TCurrencyEdit
-        Left = 136
+        Left = 181
         Top = 117
-        Width = 73
+        Width = 70
         Height = 21
         AutoSize = False
         DisplayFormat = ',0.00;-,0.00'
         TabOrder = 2
       end
       object edtAcrescimo: TCurrencyEdit
-        Left = 232
-        Top = 117
-        Width = 73
+        Left = 85
+        Top = 173
+        Width = 70
         Height = 21
         AutoSize = False
         DisplayFormat = ',0.00;-,0.00'
         TabOrder = 3
       end
       object edtCodigo: TCurrencyEdit
-        Left = 48
-        Top = 21
+        Left = 85
+        Top = 13
         Width = 49
         Height = 21
         AutoSize = False
@@ -625,16 +631,16 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         Visible = False
       end
       object dbgridParcelas: TDBGrid
-        Left = 48
-        Top = 152
-        Width = 257
-        Height = 129
+        Left = 298
+        Top = 109
+        Width = 206
+        Height = 180
         DataSource = dsParc
         TabOrder = 7
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -13
-        TitleFont.Name = 'Calibri'
+        TitleFont.Height = -11
+        TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         OnExit = dbgridParcelasExit
         Columns = <
@@ -665,9 +671,9 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
           end>
       end
       object btnCriarParc: TBitBtn
-        Left = 426
-        Top = 115
-        Width = 111
+        Left = 85
+        Top = 219
+        Width = 166
         Height = 25
         Caption = ' Criar Parcelas'
         Glyph.Data = {
@@ -742,9 +748,9 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         OnClick = btnCriarParcClick
       end
       object edtPercComissao: TCurrencyEdit
-        Left = 328
-        Top = 117
-        Width = 73
+        Left = 181
+        Top = 173
+        Width = 70
         Height = 21
         AutoSize = False
         DisplayFormat = ',0.00;-,0.00'

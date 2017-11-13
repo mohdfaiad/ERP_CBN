@@ -344,10 +344,11 @@ end;
 procedure TBuscaPedido.edtNumPedidoKeyPress(Sender: TObject;
   var Key: Char);
 begin
+  key := uppercase(key)[1];
   if (Key = '-') and (Pos('-',self.edtNumPedido.Text) > 0) then
     Key := #0;
     
-  If not( key in['0'..'9',#08,'-','#','L','l'] ) then
+  If not( key in['0'..'9',#08,'-','#','L','M','R'] ) then
     key := #0;
 end;
 

@@ -5,9 +5,9 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, xpman, jpeg, ExtCtrls, Menus, Buttons,
-  frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math,
+  frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math, Firedac.Comp.Client,
   ServicoVerificadorSistemaEmManutencao, uImpressaoEtiquetasCoppel, uEntradaNota,
-  IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts,
+  IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts, contnrs,
   RLReport, System.ImageList, System.StrUtils, DBGridCBN, RLPreviewForm, RLFilters, RLPDFFilter;
 
 type
@@ -82,10 +82,7 @@ type
     labVersaoBD: TLabel;
     Image3: TImage;
     s: TImage;
-    BotaoImg2: TBotaoImg;
-    BotaoImg1: TBotaoImg;
     Shape1: TShape;
-    BotaoImg3: TBotaoImg;
     MapadeReferncias1: TMenuItem;
     Representantes2: TMenuItem;
     ClientesporRepresentante1: TMenuItem;
@@ -95,7 +92,6 @@ type
     VisualizaComissoRepresentante1: TMenuItem;
     Produtos2: TMenuItem;
     TotalizaEstoque1: TMenuItem;
-    BotaoImg4: TBotaoImg;
     TotalizarVendas1: TMenuItem;
     ConfPedido1: TMenuItem;
     VendasSemTotais1: TMenuItem;
@@ -105,9 +101,7 @@ type
     Colees1: TMenuItem;
     Intervalosdeproduo1: TMenuItem;
     Entradas1: TMenuItem;
-    Importador1: TMenuItem;
     Contasapagar1: TMenuItem;
-    BotaoImg5: TBotaoImg;
     ContasaPAgar2: TMenuItem;
     Confernciaproduo1: TMenuItem;
     Clientes2: TMenuItem;
@@ -115,7 +109,6 @@ type
     PedidoConsumidorFinal1: TMenuItem;
     ransfernciaEstoque1: TMenuItem;
     Contasbancrias1: TMenuItem;
-    BotaoImg6: TBotaoImg;
     ImportadorOS1: TMenuItem;
     CaixaLoja1: TMenuItem;
     Loja1: TMenuItem;
@@ -131,6 +124,32 @@ type
     Mapas1: TMenuItem;
     RLPDFFilter1: TRLPDFFilter;
     RLPreviewSetup1: TRLPreviewSetup;
+    Image5: TImage;
+    EntradaManualEstoqueMatria1: TMenuItem;
+    SadaManualEstoqueMatria1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    Matrias2: TMenuItem;
+    Relatrioentradaesada1: TMenuItem;
+    Estoque1: TMenuItem;
+    BotaoImg2: TBotaoImg;
+    BotaoImg1: TBotaoImg;
+    BotaoImg3: TBotaoImg;
+    BotaoImg4: TBotaoImg;
+    BotaoImg5: TBotaoImg;
+    ImageList2: TImageList;
+    BotaoImg6: TBotaoImg;
+    ConfiguraesEcommerce1: TMenuItem;
+    Ecommerce1: TMenuItem;
+    ImportadorTricae1: TMenuItem;
+    Sincronizadorprodutosshoppub1: TMenuItem;
+    timerLogErros: TTimer;
+    shpErro: TShape;
+    lbDescErro: TLabel;
+    btnVerificar: TBitBtn;
+    lbTituloErro: TLabel;
+    lbErros: TLabel;
+    EmAberto1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -194,7 +213,6 @@ type
     procedure Colees1Click(Sender: TObject);
     procedure Intervalosdeproduo1Click(Sender: TObject);
     procedure Entradas1Click(Sender: TObject);
-    procedure Importador1Click(Sender: TObject);
     procedure Contasapagar1Click(Sender: TObject);
     procedure BotaoImg5Label1Click(Sender: TObject);
     procedure ContasaPAgar2Click(Sender: TObject);
@@ -218,6 +236,16 @@ type
     procedure Mapas1Click(Sender: TObject);
     procedure RLPreviewSetup1Send(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure EntradaManualEstoqueMatria1Click(Sender: TObject);
+    procedure SadaManualEstoqueMatria1Click(Sender: TObject);
+    procedure Relatrioentradaesada1Click(Sender: TObject);
+    procedure Estoque1Click(Sender: TObject);
+    procedure ConfiguraesEcommerce1Click(Sender: TObject);
+    procedure ImportadorTricae1Click(Sender: TObject);
+    procedure Sincronizadorprodutosshoppub1Click(Sender: TObject);
+    procedure timerLogErrosTimer(Sender: TObject);
+    procedure btnVerificarClick(Sender: TObject);
+    procedure EmAberto1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -230,6 +258,8 @@ type
     procedure DesabilitaContagemRegressiva;
     procedure MostraTempoRestante(TempoRestante :String);
     procedure efetuaDebitosDoDia;
+    procedure verificarErros;
+    procedure iniciaVErificadorErroImportacao(temPermissao :Boolean);
 
   public
     constructor Create(AOwner :TComponent); override;
@@ -280,15 +310,15 @@ uses
   uRelatorioRaioXRepresentante,
   uRelatorioNotaEntrada,
   uRelatorioClientes,
-  uRelatorioReferencias,
-  uFechaComissaoRepresentante,
-  uSintegra, uParcelamento,
+  uRelatorioReferencias, LogErroImportPedido,
+  uFechaComissaoRepresentante, uSincronizaProdutoEcommerce,
+  uSintegra, uParcelamento, uErrosImportacaoPedido,
   uEFDContribuicoes, uCadastroGrupo,
-  uCadastroContador, uImportadorOrdemServico,
-  uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM,
-  uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido,
-  uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque, uCadastroMapaPedidos,
-  uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco,
+  uCadastroContador, uImportadorOrdemServico, uPedidosEmAberto,
+  uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM, uRelatorioMaterias,
+  uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido, uEntradaManualMateria,
+  uAtalhoCadastros, uRelatorioMapaReferencias, uEntradaManualEstoque, uCadastroMapaPedidos, uCadastroConfiguracoesECommerce,
+  uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco, uRelatorioEstoqueMateria,
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao;
@@ -327,12 +357,26 @@ begin
   labVersaoBD.Top  := label5.Top;
 
   efetuaDebitosDoDia;
+  iniciaVerificadorErroImportacao(TPermissoesAcesso.VerificaPermissao(paVerificaErrosImportacaoPedido,'',false));
 end;
 
 procedure TfrmInicial.Usurios1Click(Sender: TObject);
 begin
   try
      self.AbreForm(TFrmCadastroUsuario, paCadastroUsuario);
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
+end;
+
+procedure TfrmInicial.btnVerificarClick(Sender: TObject);
+begin
+  try
+     self.AbreForm(TfrmErrosImportacaoPedido, paVerificaErrosImportacaoPedido);
+     verificarErros;
   except
     on e : Exception do
       begin
@@ -446,7 +490,7 @@ destructor TfrmInicial.Destroy;
 begin
   if Assigned(self.FVerificadorManutencao) then
     FreeAndNil(self.FVerificadorManutencao);
-    
+
   inherited;
 end;
 
@@ -855,7 +899,6 @@ begin
      Action := caNone;
 
 //  frmAtalhoCadastros.Release;
-
 end;
 
 procedure TfrmInicial.FormCreate(Sender: TObject);
@@ -871,7 +914,6 @@ end;
 
 procedure TfrmInicial.PessoasCadastradas1Click(Sender: TObject);
 begin
-  //self.AbreForm(TfrmRelatorioVendas, paRelatorioVendas);
   if not TPermissoesAcesso.VerificaPermissao(paRelatorioVendas, 'Usuário sem permissão para acessar esta funcionalidade!', False) then
     Exit;
   frmRelatorioVendas := TfrmRelatorioVendas.Create(Self);
@@ -905,6 +947,11 @@ begin
   self.AbreForm(TFrmEntradaNota, paImportarXML);
 end;
 
+procedure TfrmInicial.EmAberto1Click(Sender: TObject);
+begin
+  self.AbreForm(TFrmPedidosEmAberto, paRelatorioPedidosEmAberto);
+end;
+
 procedure TfrmInicial.Entrada1Click(Sender: TObject);
 begin
   self.AbreForm(TFrmRelatorioNotaEntrada, paRelatorioNotasFiscaisEntrada);
@@ -913,6 +960,11 @@ end;
 procedure TfrmInicial.Referncias1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioReferencias, paRelatorioReferencias);
+end;
+
+procedure TfrmInicial.Relatrioentradaesada1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmRelatorioMaterias, paRelatorioEntradaSaidaMateria);
 end;
 
 procedure TfrmInicial.GerarArquivoMagntico2Click(Sender: TObject);
@@ -967,6 +1019,18 @@ begin
   frmConferenciaPedido.ShowModal;
   frmConferenciaPedido.Release;
   frmConferenciaPedido := nil;
+end;
+
+procedure TfrmInicial.ConfiguraesEcommerce1Click(Sender: TObject);
+begin
+  try
+     self.AbreForm(TfrmCadastroConfiguracoesECommerce, paCadastroConfiguracoesEcommerce);
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
 end;
 
 procedure TfrmInicial.Venda1Click(Sender: TObject);
@@ -1025,6 +1089,15 @@ begin
   frmEntradaManualEstoque.Release;
 end;
   
+procedure TfrmInicial.EntradaManualEstoqueMatria1Click(Sender: TObject);
+begin
+  if not TPermissoesAcesso.VerificaPermissao(paEntradaManualMateria, 'Usuário sem permissão para acessar esta funcionalidade!', False) then
+    Exit;
+  frmEntradaManualMateria:= TfrmEntradaManualMateria.Create(Self, 0);
+  frmEntradaManualMateria.ShowModal;
+  frmEntradaManualMateria.Release;
+end;
+
 procedure TfrmInicial.VisualizaComissoRepresentante1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioComissoesRepresentantes, paEntradaManualEstoque);
@@ -1053,6 +1126,24 @@ begin
   frmRelatorioVendas.Release;
 end;
 
+procedure TfrmInicial.verificarErros;
+var qry :TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := dm.conexao;
+    qry.Close;
+    qry.SQL.Text := 'SELECT COUNT(CODIGO) QTD FROM LOG_ERROS_IMPORT_PEDIDOS'+
+                    ' WHERE VERIFICADO = ''N''                         ';
+    qry.Open();
+
+    lbErros.Caption      := qry.FieldByName('QTD').AsString;
+    btnVerificar.Enabled := qry.FieldByName('QTD').AsInteger > 0;
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
 procedure TfrmInicial.ImprimirRomaneio1Click(Sender: TObject);
 begin
   inherited;
@@ -1061,6 +1152,21 @@ begin
   frmBuscarRomaneio:= TfrmBuscarRomaneio.Create(Self);
   frmBuscarRomaneio.ShowModal;
   frmBuscarRomaneio.Release;
+end;
+
+procedure TfrmInicial.iniciaVerificadorErroImportacao(temPermissao :Boolean);
+begin
+  shpErro.Visible       := temPermissao;
+  lbTituloErro.Visible  := temPermissao;
+  lbDescErro.Visible    := temPermissao;
+  lbErros.Visible       := temPermissao;
+  btnVerificar.Visible  := temPermissao;
+  //fixo em 5min
+  if temPermissao then
+  begin
+    timerLogErros.Enabled := true;
+    timerLogErrosTimer(nil);
+  end;
 end;
 
 procedure TfrmInicial.SadaManualEstoque1Click(Sender: TObject);
@@ -1073,16 +1179,34 @@ begin
   frmEntradaManualEstoque.Release;
 end;
 
+procedure TfrmInicial.SadaManualEstoqueMatria1Click(Sender: TObject);
+begin
+  if not TPermissoesAcesso.VerificaPermissao(paSaídaManualMateria, 'Usuário sem permissão para acessar esta funcionalidade!', False) then
+    Exit;
+  frmEntradaManualMateria:= TfrmEntradaManualMateria.Create(Self, 1);
+  frmEntradaManualMateria.ShowModal;
+  frmEntradaManualMateria.Release;
+end;
+
+procedure TfrmInicial.Sincronizadorprodutosshoppub1Click(Sender: TObject);
+begin
+  inherited;
+  self.AbreForm(TfrmSincronizaProdutoEcommerce, paSincronizaProdutosShoppub);
+end;
+
+procedure TfrmInicial.timerLogErrosTimer(Sender: TObject);
+begin
+  verificarErros;
+end;
+
 procedure TfrmInicial.PrevisodeEstoque1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioPrevisaoEstoque, paRelatorioPrevisaoEstoque);
 end;
 
 procedure TfrmInicial.Button1Click(Sender: TObject);
-var result :Real;
 begin
-  inherited;
-  TotalizaEstoque1Click(nil);
+//testes
 end;
       {
 Initialization
@@ -1103,9 +1227,9 @@ begin
   self.AbreForm(TfrmRelatorioEntradas, paRelatorioEntradas);
 end;
 
-procedure TfrmInicial.Importador1Click(Sender: TObject);
+procedure TfrmInicial.Estoque1Click(Sender: TObject);
 begin
-  self.AbreForm(TfrmImportadadorClientesTricae, paImportadorClientesTricae);
+  self.AbreForm(TFrmRelatorioEstoqueMateria, paRelatorioEstoqueMateria);
 end;
 
 procedure TfrmInicial.ImportadorOS1Click(Sender: TObject);
@@ -1118,6 +1242,11 @@ begin
         Avisar(e.Message);
       end;
   end;
+end;
+
+procedure TfrmInicial.ImportadorTricae1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmImportadadorClientesTricae, paImportadorClientesTricae);
 end;
 
 procedure TfrmInicial.Contasapagar1Click(Sender: TObject);

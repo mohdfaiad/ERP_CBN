@@ -455,47 +455,6 @@ begin
                       (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
                       (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-'), 'Favor informar ao menos um telefone para contato', Fone1.edtFone) and
             verificar((self.rgrpRegimeTributario.ItemIndex < 0) or (self.rgrpRegimeTributario.ItemIndex > 2), 'Favor informar o regime tributário da empresa', rgrpRegimeTributario);
-
- { if trim(edtRazao.Text) = '' then begin
-    avisar('Favor informar o Nome / Razão social do cliente');
-    edtRazao.SetFocus;
-  end
-  else if trim(edtCpf.Text) = '' then begin
-    avisar('Favor informar o CPF / CNPJ do cliente');
-    edtCpf.SetFocus;
-  end
-  else if trim(edtRG.Text) = '' then begin
-    avisar('Favor informar o RG / IE do cliente');
-    edtRG.SetFocus;
-  end
-  else if trim(edtLogradouro.Text) = '' then begin
-    avisar('Endereço obrigatório! Favor informe o Logradouro');
-    edtLogradouro.SetFocus;
-  end
-  else if trim(edtNumero.Text) = '' then begin
-    avisar('Endereço obrigatório! Favor informe o número');
-    edtNumero.SetFocus;
-  end
-  else if trim(edtBairro.Text) = '' then begin
-    avisar('Endereço obrigatório! Favor informe o bairro');
-    edtBairro.SetFocus;
-  end
-  else if trim(Cidade.edtCidade.Text) = '' then begin
-    avisar('Endereço obrigatório! Favor informe a cidade');
-    cidade.edtCodCid.SetFocus;
-  end
-  else if (StringReplace(trim(Fone1.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
-          (StringReplace(trim(Fone2.edtFone.Text),' ','',[rfReplaceAll]) = '()-') and
-          (StringReplace(trim(FoneFax.edtFone.Text),' ','',[rfReplaceAll]) = '()-') then begin
-    avisar('Favor informar ao menos um telefone para contato');
-    Fone1.edtFone.SetFocus;
-  end
-  else if (self.rgrpRegimeTributario.ItemIndex < 0) or (self.rgrpRegimeTributario.ItemIndex > 2) then begin
-    inherited Avisar('Favor informar o regime tributário da empresa');
-    self.rgrpRegimeTributario.SetFocus;
-  end
-  else
-    result := true;}
 end;
 
 procedure TfrmCadastroEmpresa.BitBtn1Click(Sender: TObject);

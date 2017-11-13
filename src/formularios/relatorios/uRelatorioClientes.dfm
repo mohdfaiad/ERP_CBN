@@ -1093,11 +1093,11 @@ inherited frmRelatorioClientes: TfrmRelatorioClientes
     ExplicitWidth = 487
     ExplicitHeight = 74
     inherited grpPeriodo: TGroupBox
-      Left = 242
+      Left = 240
       Top = 3
       Width = 242
       Caption = ' Per'#237'odo da compra '
-      ExplicitLeft = 242
+      ExplicitLeft = 240
       ExplicitTop = 3
       ExplicitWidth = 242
     end

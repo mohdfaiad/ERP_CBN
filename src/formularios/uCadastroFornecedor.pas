@@ -64,8 +64,6 @@ type
     btnAlterar: TSpeedButton;
     pagFornecedores: TPageControl;
     gridFornecedores: TDBGridCBN;
-    btnCancelar: TBitBtn;
-    btnSalvar: TBitBtn;
     CpfCnpj: TMaskCpfCnpj;
     cdsRAZAO: TStringField;
     cdsNUMERO: TStringField;
@@ -97,6 +95,8 @@ type
     Fone1: TFone;
     Fone2: TFone;
     FoneFax: TFone;
+    btnSalvar: TBitBtn;
+    btnCancelar: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
