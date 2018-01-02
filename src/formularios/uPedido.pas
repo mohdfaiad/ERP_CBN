@@ -10,7 +10,7 @@ uses
   DBClient, DBGridCBN, Buttons, Grids, DBGrids, frameBuscaProduto,
   ExtCtrls, Mask, RxToolEdit, RxCurrEdit, Menus, Pedido, Item, Repositorio, pngimage,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
-  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, HTTPJSON,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, frameBuscaCliente, frameBuscaRepresentante;
 
 type
@@ -145,7 +145,6 @@ type
     Label19: TLabel;
     edtPercComissao: TCurrencyEdit;
     edtDescComiss: TCurrencyEdit;
-    edtEstoque: TEdit;
     DBGrid2: TDBGrid;
     cdsEstoque: TClientDataSet;
     IntegerField1: TIntegerField;
@@ -183,6 +182,7 @@ type
     cdsItensDESMEMBRADO: TStringField;
     BuscaCliente: TBuscaCliente;
     buscaRepresentante: TbuscaRepresentante;
+    edtEstoque: TCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbAprovacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -273,9 +273,13 @@ type
 
     function  verificaObrigatoriosItem :Boolean;
     function  verificaObrigatoriosPedido :Boolean;
+    function  pedidoECommerce :Boolean;
     function  salvar: boolean;
     function  TabelaProdutoSelecionada : boolean;
     procedure Atualiza_estoque(pedido :TPedido);
+    procedure AtualizaEstoquePlataforma;
+    function  getQuantidadeAtual(sku: String; httpJson :THTTPJSON): integer;
+
 //    procedure Salva_estoque(cod_produto, cod_cor, cod_tamanho :integer; quantidade :Real);
     procedure Busca_tamanhos(var cds :TClientDataSet);
     procedure subtrai_estoque_reservado;
@@ -290,9 +294,9 @@ var
 
 implementation
 
-uses Math, FabricaRepositorio, StrUtils, uRelatorioExpedicao, PermissoesAcesso, funcoes, uRelatorioPedidoVenda,
+uses Math, FabricaRepositorio, StrUtils, uRelatorioExpedicao, PermissoesAcesso, funcoes, uRelatorioPedidoVenda, System.JSon,
      uCadastroCliente, uInformacoesPessoa, Tamanho, Estoque, EspecificacaoEstoquePorProdutoCorTamanho, ConferenciaItem,
-     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao, CaixaPedido;
+     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao, CaixaPedido, TipoSetorEstoque, StringUtilitario;
 
 {$R *.dfm}
 
@@ -643,8 +647,9 @@ end;
 
 procedure TfrmPedido.BuscaCor1Exit(Sender: TObject);
 var i: Integer;
+    totalEstoque :Real;
 begin
-        //n estiver alterando
+  //n estiver alterando
   if not (TabSheet2.Tag = 1) and (cdsItens.Active) and
      (cdsItens.Locate('CODPRO;CODCOR', VarArrayOf([StrToIntDef(BuscaProduto1.codproduto,0), BuscaCor1.edtCodigo.AsInteger]), [])) then
   begin
@@ -653,17 +658,6 @@ begin
     BuscaCor1.edtReferencia.SetFocus;
   end;
   Qry.Close;
-  Qry.SQL.Clear;
-  Qry.SQL.Add('SELECT COALESCE(SUM(QUANTIDADE),0) AS QTD FROM ESTOQUE '+
-              'LEFT OUTER JOIN PRODUTOS ON (PRODUTOS.CODIGO = ESTOQUE.CODIGO_PRODUTO) '+
-              'LEFT OUTER JOIN CORES ON CORES.CODIGO = ESTOQUE.CODIGO_COR '+
-              'WHERE PRODUTOS.REFERENCIA = '+QuotedStr(BuscaProduto1.edtReferencia.Text)+' AND '+
-              'CORES.REFERENCIA='+QuotedStr(BuscaCor1.edtReferencia.Text));
-  Qry.Open;
-  if not Qry.IsEmpty then
-    edtEstoque.Text:= Qry.Fields[0].AsString
-  else
-    edtEstoque.Text:= '0';
 
   if not cdsEstoque.Active then
     cdsEstoque.CreateDataSet;
@@ -674,15 +668,18 @@ begin
               'LEFT JOIN PRODUTOS ON PRODUTOS.CODIGO = ESTOQUE.CODIGO_PRODUTO '+
               'LEFT JOIN TAMANHOS ON TAMANHOS.CODIGO = ESTOQUE.CODIGO_TAMANHO '+
               'LEFT JOIN CORES ON CORES.CODIGO = ESTOQUE.CODIGO_COR '+
-              'WHERE PRODUTOS.REFERENCIA = '+QuotedStr(BuscaProduto1.edtReferencia.Text)+' AND '+
-              'CORES.REFERENCIA='+QuotedStr(BuscaCor1.edtReferencia.Text)+' '+
+              'WHERE ESTOQUE.CODIGO_PRODUTO = '+IntToStr(BuscaProduto1.Prod.Codigo)+' AND '+
+              'ESTOQUE.CODIGO_COR = '+IntToStr(BuscaCor1.CodigoCor)+
+              ' AND ESTOQUE.SETOR = '+intToStr(IfThen(pedidoECommerce, integer(tpECommerce), integer(tpFabrica)))+
               'ORDER BY TAMANHOS.CODIGO');
   Qry.Open;
   if Qry.IsEmpty then
     Exit;
   Qry.First;
+  totalEstoque := 0;
   while not Qry.Eof do
   begin
+    totalEstoque := totalEstoque + Qry.fieldByName('QUANTIDADE').AsFloat;
     cdsEstoque.Edit;
     for i:= 0 to cdsEstoque.Fields.Count - 1 do
     begin
@@ -696,6 +693,8 @@ begin
     cdsEstoque.Post;
     Qry.Next;
   end;
+
+  edtEstoque.Value := totalEstoque;
 
   subtrai_estoque_reservado;
 end;
@@ -894,9 +893,16 @@ begin
      Pedido.desconto_itens    := edtDescontoItens.Value;  //itens
      Pedido.valor_frete       := edtValorFrete.Value;
 
-     {se pedido já tem conferencia associada e esta sendo cancelado, retorna o estoque conferido}
-     if assigned(BuscaPedido1.Ped) and assigned(BuscaPedido1.Ped.Conferencia) and (Pedido.cancelado <> 'S') and (rgStatus.ItemIndex = 1) then
+     {se pedido já já foi totalmente conferido e esta sendo cancelado, retorna o estoque conferido}
+     if assigned(BuscaPedido1.Ped) and assigned(BuscaPedido1.Ped.Conferencia)
+     and (Pedido.cancelado <> 'S') and (rgStatus.ItemIndex = 1) then
+     begin
        Atualiza_estoque(BuscaPedido1.Ped);
+       { se for pedido e-commerce e nao for referente a shoppub o estoque da shoppub tem que ser atualizado }
+       if assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce and
+         (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+         AtualizaEstoquePlataforma;
+     end;
 
      Pedido.cancelado         := IfThen(rgStatus.ItemIndex = 1, 'S', '');
 
@@ -906,10 +912,8 @@ begin
      {if not(aprovado) and (Pedido.aprovacao = 'A') then
        Pedido.dt_aprovacao      := date;}
 
-
      Pedido.observacao        := memObs.Text;
      Pedido.tipo_frete        := cbTipoFrete.ItemIndex;
-
 
  { - - - - - - - - - - - INSERÇÃO DOS ITENS DO PEDIDO - - - - - - - - - - - }
 
@@ -1186,7 +1190,7 @@ begin
            BuscaPedido1.limpa;
            BuscaPedido1.edtNumPedido.SetFocus;
          end;
-       end
+       end;
     end
     else
     begin
@@ -1288,6 +1292,12 @@ begin
   end;
 end;
 
+function TfrmPedido.pedidoECommerce: Boolean;
+begin
+  result :=     assigned(buscaRepresentante.Representante) and assigned(buscaRepresentante.Representante.DadosRepresentante)
+            and (buscaRepresentante.Representante.DadosRepresentante.rep_ecommerce);
+end;
+
 procedure TfrmPedido.BuscaClienteExit(Sender: TObject);
 begin
   if (pagPedido.Enabled) and ((BuscaEmpresa.edtCodigo.Text = '0') or (BuscaEmpresa.edtCodigo.Text = '')) then
@@ -1314,14 +1324,18 @@ begin
     btnInfCli.Visible     := true;
   end;
 
-  {se estiver na tela de alteração do pedido e o rep. salvo no pedido for diferente do atualmente vinculado ao cliente...}
-  if assigned(BuscaPedido1.Ped) and assigned(BuscaCliente.Cliente) and (BuscaPedido1.Ped.cod_repres <> BuscaCliente.Cliente.Representante.Codigo) then
+  {se estiver na tela de alteração do pedido, o cliente ainda for o mesmo do pedido e o rep. salvo no pedido for diferente
+    do atualmente vinculado ao cliente...}
+  if assigned(BuscaPedido1.Ped) and assigned(BuscaCliente.Cliente) and not(BuscaPedido1.Ped.Cliente <> BuscaCliente.Cliente) and
+    (BuscaPedido1.Ped.cod_repres <> BuscaCliente.Cliente.Representante.Codigo) then
     buscaRepresentante.codigo := BuscaPedido1.Ped.cod_repres
   else if assigned(BuscaCliente.Cliente) and assigned(BuscaCliente.Cliente.Representante) then
     buscaRepresentante.codigo := BuscaCliente.Cliente.Representante.Codigo;
 
   if assigned(buscaRepresentante.Representante) and assigned(buscaRepresentante.Representante.DadosRepresentante) and (buscaRepresentante.Representante.DadosRepresentante.percentagem_comissao > 0) then
     edtPercComissao.Value := BuscaRepresentante.Representante.DadosRepresentante.percentagem_comissao;
+
+  inherited;
 end;
 
 procedure TfrmPedido.gridItensKeyDown(Sender: TObject; var Key: Word;
@@ -1649,6 +1663,169 @@ begin
 
 end;
 
+procedure TfrmPedido.AtualizaEstoquePlataforma;
+var sku :String;
+    json :String;
+    i :integer;
+    Lista : TStringList;
+    vHTTPJSON :THTTPJSON;
+    quantidadeAtualizada :integer;
+    itemConferencia :TConferenciaItem;
+begin
+  try
+  try
+    Lista := nil;
+    Lista := TStringList.Create;
+    Lista.Delimiter := ',';
+    Lista.StrictDelimiter := true;
+    Lista.QuoteChar := #0;
+
+    vHTTPJSON := nil;
+    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+
+    for i := 0 to BuscaPedido1.Ped.Conferencia.Itens.Count - 1 do
+    begin
+      itemConferencia := (BuscaPedido1.Ped.Conferencia.Itens[i] as TConferenciaItem);
+
+      if itemConferencia.QTD_RN > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + 'RN' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_RN;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_P > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + 'P' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_P;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_M > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + 'M' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_M;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_G > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + 'G' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_G;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_1 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '1' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_1;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_2 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '2' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_2;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_3 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '3' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_3;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_4 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '4' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_4;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_6 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '6' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_6;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_8 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '8' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_8;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_10 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '10' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_10;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_12 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '12' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_12;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_14 > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + '14' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_14;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+
+      if itemConferencia.QTD_UNICA > 0 then
+      begin
+         sku := TStringUtilitario.RemoveCaracteresEspeciais(itemConferencia.Item.Produto.Referencia + 'UN' + itemConferencia.Item.Cor.Referencia);
+         quantidadeAtualizada := getQuantidadeAtual(sku, vHTTPJSON);
+         quantidadeAtualizada := quantidadeAtualizada + itemConferencia.QTD_UNICA;
+         Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      end;
+    end;
+
+    json := '['+Lista.DelimitedText+']';
+    vHTTPJSON.Post(json);
+  Except
+    on e :Exception do
+    begin
+      raise Exception.Create('Erro ao atualizar o estoque da plataforma.'+#13#10+'Aguarde 1 min e tente novamente por favor.'+#13#10+e.Message);
+    end;
+  end;
+  finally
+    FreeAndNil(Lista);
+    FreeAndNil(vHTTPJSON);
+  end;
+end;
+
+function TfrmPedido.getQuantidadeAtual(sku: String; httpJson :THTTPJSON): integer;
+var
+  Objeto :TJSONObject;
+begin
+  try
+    result := 0;
+    Objeto := TJSONObject.ParseJSONValue(httpJson.Get('produto/'+sku)) as TJSONObject;
+    result := StrToIntDef(Objeto.GetValue('estoque').Value,0);
+  except
+  end;
+end;
+
 procedure TfrmPedido.Atualiza_estoque(pedido :TPedido);
 var i, adiciona_subtrai :integer;
     cdsTamanhos         :TClientDataSet;
@@ -1786,25 +1963,33 @@ end;
 
 procedure TfrmPedido.subtrai_estoque_reservado;
 var i :integer;
+    condicaoTipoEstoque :String;
 begin
 
+  if pedidoECommerce then
+    condicaoTipoEstoque := ' and (not(dr.codigo is null) and (dr.rep_ecommerce = ''S''))'
+  else
+    condicaoTipoEstoque := ' and ((dr.codigo is null) or (dr.rep_ecommerce <> ''S''))';
+
   dm.qryGenerica.Close;
-  dm.qryGenerica.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,    '+
-                                  ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,       '+
-                                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_10) QTD_8, sum(ci.qtd_8) QTD_12,     '+
-                                  ' sum(ci.qtd_14) QTD_14, sum(ci.qtd_unica) QTD_unica,                                       '+
-                                  ' pro.referencia REFPRODUTO , cor.referencia REFCOR                       from ITENS i      '+
+  dm.qryGenerica.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G, '+
+                             ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,         '+
+                             ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_10) QTD_8, sum(ci.qtd_8) QTD_12,       '+
+                             ' sum(ci.qtd_14) QTD_14, sum(ci.qtd_unica) QTD_unica,                                         '+
+                             ' pro.referencia REFPRODUTO , cor.referencia REFCOR                       from ITENS i        '+
 
-                                  ' left join conferencia_itens  ci on ci.codigo_item = i.codigo                              '+
-                                  ' left join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                      '+
-                                  ' left join cores              cor on cor.codigo = i.cod_cor                                '+
-                                  ' left join produtos           pro on pro.codigo = i.cod_produto                            '+
+                             ' left join conferencia_itens   ci on ci.codigo_item = i.codigo                               '+
+                             ' left join conferencia_pedido  cp on cp.codigo = ci.codigo_conferencia                       '+
+                             ' left join cores               cor on cor.codigo = i.cod_cor                                 '+
+                             ' left join produtos            pro on pro.codigo = i.cod_produto                             '+
+                             ' left join pedidos             ped on ped.codigo = i.cod_pedido                              '+
+                             ' left join dados_representante dr  on dr.codigo_representante = ped.cod_repres               '+
 
-                                  ' where cp.fim < ''01.01.1900'' and i.cod_produto = ' +IntToStr(BuscaProduto1.CodigoProduto) +
-                                  '   and cor.codigo = ' +IntToStr(BuscaCor1.CodigoCor) +
+                             ' where cp.fim < ''01.01.1900'' and i.cod_produto = ' +IntToStr(BuscaProduto1.CodigoProduto) +
+                             '   and cor.codigo = ' +IntToStr(BuscaCor1.CodigoCor) + condicaoTipoEstoque +
 
-                                  ' group by pro.referencia, cor.referencia                                                   '+
-                                  ' order by pro.referencia, cor.referencia                                                   ';
+                             ' group by pro.referencia, cor.referencia                                                   '+
+                             ' order by pro.referencia, cor.referencia                                                   ';
 
   dm.qryGenerica.Open;
 

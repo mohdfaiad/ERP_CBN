@@ -7,18 +7,10 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
   ClientWidth = 597
   OldCreateOrder = True
   OnShow = FormShow
-  ExplicitWidth = 603
-  ExplicitHeight = 440
+  ExplicitWidth = 613
+  ExplicitHeight = 450
   PixelsPerInch = 96
-  TextHeight = 13
-  inherited pnlPropaganda: TPanel
-    Top = 336
-    Width = 597
-    TabOrder = 2
-    inherited Shape8: TShape
-      Width = 595
-    end
-  end
+  TextHeight = 15
   object panBotoes: TPanel
     Left = 0
     Top = 371
@@ -337,16 +329,20 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
     Left = 0
     Top = 0
     Width = 597
-    Height = 336
+    Height = 371
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'F1 - Formas'
       OnExit = TabSheet1Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         589
-        308)
+        341)
       object gridFormasPAg: TDBGridCBN
         Left = 8
         Top = 8
@@ -587,7 +583,7 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         Left = 85
         Top = 56
         Width = 419
-        Height = 21
+        Height = 23
         CharCase = ecUpperCase
         Ctl3D = True
         ParentCtl3D = False
@@ -639,8 +635,8 @@ inherited frmCadastroFormasPagamento: TfrmCadastroFormasPagamento
         TabOrder = 7
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Segoe UI'
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
         TitleFont.Style = []
         OnExit = dbgridParcelasExit
         Columns = <

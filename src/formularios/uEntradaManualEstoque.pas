@@ -85,8 +85,8 @@ var
 
 implementation
 
-uses Estoque, Repositorio, FabricaRepositorio, uModulo, DB, EspecificacaoEstoquePorProdutoCorTamanho, funcoes,
-  Math, StrUtils, entradaSaida,uDirecionarEntradas, permissoesAcesso, REST.types, System.JSon, IdSSLOpenSSL;
+uses Estoque, Repositorio, FabricaRepositorio, uModulo, DB, EspecificacaoEstoquePorProdutoCorTamanho, funcoes, StringUtilitario,
+  Math, StrUtils, entradaSaida,uDirecionarEntradas, permissoesAcesso, REST.types, System.JSon, IdSSLOpenSSL, HTTPJSON;
 
 {$R *.dfm}
 
@@ -211,39 +211,25 @@ var
     Retorno, lJSO :String;
     Parametros :TStrings;
     jsonToSend : TStringStream;
-    IdHTTP1: TIdHTTP;
+    vHTTPJSON: THTTPJSON;
     quantidadeAtualizada :Integer;
-    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
 begin
+  sku := TStringUtilitario.RemoveCaracteresEspeciais(sku);
   quantidadeAtualizada := getQuantidadeAtual(sku);
   quantidadeAtualizada := quantidadeAtualizada + quantidade;
   try
-    IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdHTTP1 := TIdHTTP.Create(nil);
-    IdHTTP1.IOHandler   := IdSSL;
+    vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
   try
-    IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
-    IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
-    IdHTTP1.Request.ContentType     := 'application/json';
-    IdHTTP1.Request.Method          := 'POST';
-    IdHTTP1.Request.CharSet         := 'utf-8';
-    IdHttp1.Request.Accept          := 'application/json';
-    IdHTTP1.HandleRedirects         := true;
-
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-origin','*');
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Methods','GET, POST, PUT, DELETE');
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Headers','accept, authorization, origin');
-
     lJSO := ('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
     jsonToSend := TStringStream.Create(lJSO,TEncoding.UTF8);
 
-    Retorno := IdHTTP1.Post(FConfiguracoes.url_base+'produtos/', jsonToSend);
+    Retorno := vHTTPJSON.Post(lJSO);
   Except
    on e:Exception do
      raise Exception.Create('Erro ao atualizar estoque na plataforma: '+e.Message);
   end;
   Finally
-    FreeAndNil(IdHTTP1);
+    FreeAndNil(vHTTPJSON);
   end;
 end;
 
@@ -289,30 +275,20 @@ end;
 function TfrmEntradaManualEstoque.getJsonProduto(sku: String): String;
 var
     Retorno :String;
-    IdHTTP1: TIdHTTP;
-    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+    vHTTPJSON :THTTPJSON;
 begin
  try
  try
-   IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-   IdHTTP1 := TIdHTTP.Create(nil);
-   IdHTTP1.IOHandler   := IdSSL;
-   IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
-   IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
-   IdHTTP1.Request.ContentType    := 'application/json';
-   IdHTTP1.Request.Method               := 'GET';
-   IdHTTP1.Request.CharSet := 'utf-8';
-   IdHttp1.Request.Accept  := 'application/json';
-   IdHTTP1.HandleRedirects := true;
+   vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
 
-   Retorno := IdHTTP1.Get(FConfiguracoes.url_base+'produto/'+sku);
+   Retorno := vHTTPJSON.Get('produto/'+sku);
    result  := Retorno;
  except
    on e: Exception do
      raise Exception.Create(e.Message);
  end;
  finally
-   FreeAndNil(IdHTTP1);
+   FreeAndNil(vHTTPJSON);
  end;
 end;
 
@@ -339,8 +315,6 @@ end;
 procedure TfrmEntradaManualEstoque.btnSalvarClick(Sender: TObject);
 var ent_sai :String;
 begin
-
-
   if not validaObrigatoriedades then
     exit;
 
@@ -552,6 +526,7 @@ begin
    EntradaSaida.codigo_tamanho   := strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos.Items[rgTamanhos.itemIndex]) );
    EntradaSaida.data_lancamento  := Date;
    EntradaSaida.lote             := edtLote.AsInteger;
+   EntradaSaida.setor            := cbxSetor.ItemIndex + 1;
 
    if (entrada_saida = 0) then begin
      EntradaSaida.data_producao    := dtpDataProducao.Date;

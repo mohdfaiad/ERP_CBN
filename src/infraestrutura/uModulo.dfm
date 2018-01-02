@@ -20,7 +20,6 @@ object dm: Tdm
     Top = 24
   end
   object qryGenerica2: TFDQuery
-    Connection = FDConnection
     Left = 184
     Top = 96
   end
@@ -30,7 +29,6 @@ object dm: Tdm
     Top = 96
   end
   object qryGenerica: TFDQuery
-    Connection = FDConnection
     Left = 184
     Top = 32
   end

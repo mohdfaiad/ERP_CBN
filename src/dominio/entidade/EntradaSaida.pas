@@ -18,6 +18,8 @@ type
     Fquantidade :Real;
     Ftipo :String;
     FLote: integer;
+    FSetor: integer;
+    FCodigo_transferencia: integer;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -30,6 +32,8 @@ type
     property quantidade            :Real read Fquantidade               write Fquantidade;
     property tipo                  :String read Ftipo                   write Ftipo;
     property lote                  :integer read FLote                  write FLote;
+    property setor                 :integer read FSetor                 write FSetor;
+    property codigo_transferencia  :integer read FCodigo_transferencia  write FCodigo_transferencia;
 end;
 
 implementation

@@ -61,6 +61,7 @@ type
     procedure mostraEstoqueOrigem;
     procedure mostraEstoqueDestino;
     procedure EfetuaTransferencia;
+    procedure lancaEntradaSaida(codproduto, codcor, codtamanho, quantidade, setor, codtransferencia :integer; ent_sai :String);
     procedure AlteraEstoque(codigo_produto, codigo_cor, codigo_tamanho, quantidade, setor :integer; sku :String);
     procedure habilitaTamanhos(radGroup :TRadioGroup; grade :TGrade);
 
@@ -76,7 +77,8 @@ var
 
 implementation
 
-uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, Funcoes, Tamanho, REST.types, System.JSon, IdSSLOpenSSL;
+uses repositorio, FabricaRepositorio, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, Funcoes, Tamanho,
+     uModulo, REST.types, System.JSon, IdSSLOpenSSL, EntradaSaida, StringUtilitario, HTTPJSON;
 
 {$R *.dfm}
 
@@ -135,25 +137,14 @@ end;
 function TfrmTransferenciaEstoque.getJsonProduto(sku: String): String;
 var
     Retorno :String;
-    IdHTTP1: TIdHTTP;
-    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+    vHTTPJSON: THTTPJSON;
 begin
 try
-  IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-  IdHTTP1 := TIdHTTP.Create(nil);
-  IdHTTP1.IOHandler   := IdSSL;
-  IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
-  IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
-  IdHTTP1.Request.ContentType    := 'application/json';
-  IdHTTP1.Request.Method               := 'GET';
-  IdHTTP1.Request.CharSet := 'utf-8';
-  IdHttp1.Request.Accept  := 'application/json';
-  IdHTTP1.HandleRedirects := true;
-
-  Retorno := IdHTTP1.Get(FConfiguracoes.url_base+'produto/'+sku);
+  vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+  Retorno := vHTTPJSON.Get('produto/'+sku);
   result  := Retorno;
 finally
-  FreeAndNil(IdHTTP1);
+  FreeAndNil(vHTTPJSON);
 end;
 end;
 
@@ -176,39 +167,25 @@ var
     Retorno, lJSO :String;
     Parametros :TStrings;
     jsonToSend : TStringStream;
-    IdHTTP1: TIdHTTP;
     quantidadeAtualizada :Integer;
-    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+    vHTTPJSON :THTTPJSON;
 begin
+   sku := TStringUtilitario.RemoveCaracteresEspeciais(sku);
    quantidadeAtualizada := getQuantidadeAtual(sku);
    quantidadeAtualizada := quantidadeAtualizada + quantidade;
   try
-    IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdHTTP1 := TIdHTTP.Create(nil);
-    IdHTTP1.IOHandler   := IdSSL;
+    vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
   try
-    IdHTTP1.Request.CustomHeaders.AddValue('Authorization','Token '+FConfiguracoes.token);
-    IdHTTP1.Request.CustomHeaders.AddValue('Content-Type','application/json');
-    IdHTTP1.Request.ContentType     := 'application/json';
-    IdHTTP1.Request.Method          := 'POST';
-    IdHTTP1.Request.CharSet         := 'utf-8';
-    IdHttp1.Request.Accept          := 'application/json';
-    IdHTTP1.HandleRedirects         := true;
-
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-origin','*');
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Methods','PUT, POST, GET');
-    IdHTTP1.Response.CustomHeaders.AddValue('access-control-allow-Headers','accept, authorization, origin');
-
     lJSO := ('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
     jsonToSend := TStringStream.Create(lJSO,TEncoding.UTF8);
 
-    Retorno := IdHTTP1.POST(FConfiguracoes.url_base+'produtos/', jsonToSend);
+    Retorno := vHTTPJSON.POST(lJSO);
   Except
    on e:Exception do
      raise Exception.Create('Erro ao atualizar estoque na plataforma: '+e.Message);
   end;
   Finally
-    FreeAndNil(IdHTTP1);
+    FreeAndNil(vHTTPJSON);
   end;
 end;
 
@@ -327,42 +304,62 @@ end;
 
 procedure TfrmTransferenciaEstoque.EfetuaTransferencia;
 var sku1, sku2 :String;
+    codigo_tamanho, codigo_transferencia :integer;
 begin
-   sku1 := BuscaProduto1.Prod.Referencia + rgTamanhos1.Items[rgTamanhos1.ItemIndex] + BuscaCor1.edtReferencia.Text;
+  sku1 := BuscaProduto1.Prod.Referencia + rgTamanhos1.Items[rgTamanhos1.ItemIndex] + BuscaCor1.edtReferencia.Text;
 
   try
   try
-    Fdm.conexao.TxOptions.AutoCommit := false;
+    dm.conexao.TxOptions.AutoCommit := false;
+    codigo_tamanho := StrToInt(Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos1.Items[rgTamanhos1.itemIndex]));
     {atualiza estoque origem}
     AlteraEstoque(StrToInt(BuscaProduto1.codproduto),
                   StrToInt(BuscaCor1.codCor),
-                  StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos1.Items[rgTamanhos1.itemIndex]) ),
+                  codigo_tamanho,
                   (edtQtdTransferir.AsInteger * -1),
                   cbxSetorOrigem.ItemIndex+1,
                   sku1);
 
+    codigo_transferencia := dm.GetValorGenerator('GEN_TRANSFERENCIA',1);
+    lancaEntradaSaida(StrToInt(BuscaProduto2.codproduto),
+                      StrToInt(BuscaCor2.codCor),
+                      codigo_tamanho,
+                      edtQtdTransferir.AsInteger,
+                      cbxSetorDestino.ItemIndex+1,
+                      codigo_transferencia,
+                      'S');
+
     sku2 := BuscaProduto1.Prod.Referencia + rgTamanhos1.Items[rgTamanhos1.ItemIndex] + BuscaCor1.edtReferencia.Text;
 
+    codigo_tamanho := StrToInt(Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]));
     {atualiza estoque destino}
     AlteraEstoque(StrToInt(BuscaProduto2.codproduto),
                   StrToInt(BuscaCor2.codCor),
-                  StrToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO', rgTamanhos2.Items[rgTamanhos2.itemIndex]) ),
+                  codigo_tamanho,
                   edtQtdTransferir.AsInteger,
                   cbxSetorDestino.ItemIndex+1,
                   sku2);
 
+    lancaEntradaSaida(StrToInt(BuscaProduto2.codproduto),
+                      StrToInt(BuscaCor2.codCor),
+                      codigo_tamanho,
+                      edtQtdTransferir.AsInteger,
+                      cbxSetorDestino.ItemIndex+1,
+                      codigo_transferencia,
+                      'E');
+
     Avisar('Transferência efetuada com sucesso!');
     btnLimpar.Click;
-    fdm.conexao.Commit;
+    dm.conexao.Commit;
   except
    on e: Exception do
    begin
-     fdm.conexao.Rollback;
+     dm.conexao.Rollback;
      avisar(e.message+#13#10+'Operação cancelada.');
    end;
   end;
   finally
-    Fdm.conexao.TxOptions.AutoCommit := true;
+    dm.conexao.TxOptions.AutoCommit := true;
   end;
 end;
 
@@ -401,6 +398,32 @@ begin
       if TCustomRadioGroup(radGroup.Components[i]).Enabled then
         break;
     end;
+end;
+
+procedure TfrmTransferenciaEstoque.lancaEntradaSaida(codproduto, codcor, codtamanho, quantidade, setor, codtransferencia :integer; ent_sai :String);
+var EntradaSaida :TEntradaSaida;
+    repositorio  :TRepositorio;
+begin
+ try
+   EntradaSaida := TEntradaSaida.Create;
+   repositorio := TFabricaRepositorio.GetRepositorio(TEntradaSaida.ClassName);
+
+   EntradaSaida.codigo_produto   := codproduto;
+   EntradaSaida.codigo_cor       := codcor;
+   EntradaSaida.codigo_tamanho   := codtamanho;
+   EntradaSaida.data_lancamento  := Date;
+   EntradaSaida.lote             := -1;
+
+   EntradaSaida.quantidade       := quantidade;
+   EntradaSaida.tipo             := ent_sai;
+   EntradaSaida.setor            := setor;
+   EntradaSaida.codigo_transferencia := codtransferencia;
+
+   repositorio.Salvar(EntradaSaida);
+ Finally
+   FreeAndNil(repositorio);
+   FreeAndNil(EntradaSaida);
+ end;
 end;
 
 procedure TfrmTransferenciaEstoque.mostraEstoqueOrigem;
@@ -463,7 +486,7 @@ begin
    BuscaCor2.Enabled     := rgpOpcaoTransferencia.ItemIndex = 0;
    rgTamanhos2.Enabled   := rgpOpcaoTransferencia.ItemIndex = 0;
 
-
+   btnLimpar.Click;
 end;
 
 procedure TfrmTransferenciaEstoque.mostraEstoqueDestino;

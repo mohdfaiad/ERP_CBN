@@ -53,6 +53,8 @@ begin
    EntradaSaida.quantidade       := self.FQuery.FieldByName('quantidade').AsFloat;
    EntradaSaida.tipo             := self.FQuery.FieldByName('tipo').AsString;
    EntradaSaida.lote             := self.FQuery.FieldByName('lote').AsInteger;
+   EntradaSaida.setor            := self.FQuery.FieldByName('setor').AsInteger;
+   EntradaSaida.codigo_transferencia := self.FQuery.FieldByName('codigo_transferencia').AsInteger;
 
    result := EntradaSaida;
 end;
@@ -111,6 +113,12 @@ begin
 
    if (EntradaSaidaAntigo.lote <> EntradaSaidaNovo.lote) then
      Auditoria.AdicionaCampoAlterado('lote', IntToStr(EntradaSaidaAntigo.lote), IntToStr(EntradaSaidaNovo.lote));
+
+   if (EntradaSaidaAntigo.setor <> EntradaSaidaNovo.setor) then
+     Auditoria.AdicionaCampoAlterado('setor', IntToStr(EntradaSaidaAntigo.setor), IntToStr(EntradaSaidaNovo.setor));
+
+   if (EntradaSaidaAntigo.codigo_transferencia <> EntradaSaidaNovo.codigo_transferencia) then
+     Auditoria.AdicionaCampoAlterado('codigo_transferencia', IntToStr(EntradaSaidaAntigo.codigo_transferencia), IntToStr(EntradaSaidaNovo.codigo_transferencia));
 end;
 
 procedure TRepositorioEntradaSaida.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -128,6 +136,8 @@ begin
   Auditoria.AdicionaCampoExcluido('quantidade'      , FloatToStr(EntradaSaida.quantidade));
   Auditoria.AdicionaCampoExcluido('tipo'            , EntradaSaida.tipo);
   Auditoria.AdicionaCampoExcluido('lote'            , IntToStr(EntradaSaida.lote));
+  Auditoria.AdicionaCampoExcluido('setor'           , IntToStr(EntradaSaida.setor));
+  Auditoria.AdicionaCampoExcluido('codigo_transferencia', IntToStr(EntradaSaida.codigo_transferencia));
 end;
 
 procedure TRepositorioEntradaSaida.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -145,6 +155,8 @@ begin
   Auditoria.AdicionaCampoIncluido('quantidade'      , FloatToStr(EntradaSaida.quantidade));
   Auditoria.AdicionaCampoIncluido('tipo'            , EntradaSaida.tipo);
   Auditoria.AdicionaCampoIncluido('lote'            , IntToStr(EntradaSaida.lote));
+  Auditoria.AdicionaCampoIncluido('setor'           , IntToStr(EntradaSaida.setor));
+  Auditoria.AdicionaCampoIncluido('codigo_transferencia', IntToStr(EntradaSaida.codigo_transferencia));
 end;
 
 procedure TRepositorioEntradaSaida.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -170,6 +182,8 @@ begin
   self.FQuery.ParamByName('quantidade').AsFloat         := EntradaSaida.quantidade;
   self.FQuery.ParamByName('tipo').AsString              := EntradaSaida.tipo;
   self.FQuery.ParamByName('lote').AsInteger             := EntradaSaida.lote;
+  self.FQuery.ParamByName('setor').AsInteger            := EntradaSaida.setor;
+  self.FQuery.ParamByName('codigo_transferencia').AsInteger := EntradaSaida.codigo_transferencia;
 end;
 
 function TRepositorioEntradaSaida.SQLGet: String;
@@ -195,8 +209,8 @@ end;
 
 function TRepositorioEntradaSaida.SQLSalvar: String;
 begin
-  result := 'update or insert into ENTRADAS_SAIDAS (CODIGO ,CODIGO_PRODUTO ,CODIGO_COR ,CODIGO_TAMANHO ,CODIGO_INTERVALO ,DATA_LANCAMENTO ,DATA_PRODUCAO ,QUANTIDADE , TIPO, LOTE) '+
-           '                      values ( :CODIGO , :CODIGO_PRODUTO , :CODIGO_COR , :CODIGO_TAMANHO , :CODIGO_INTERVALO , :DATA_LANCAMENTO , :DATA_PRODUCAO , :QUANTIDADE , :TIPO, :LOTE) ';
+  result := 'update or insert into ENTRADAS_SAIDAS (CODIGO ,CODIGO_PRODUTO ,CODIGO_COR ,CODIGO_TAMANHO ,CODIGO_INTERVALO ,DATA_LANCAMENTO ,DATA_PRODUCAO ,QUANTIDADE , TIPO, LOTE, SETOR, CODIGO_TRANSFERENCIA) '+
+            '                      values ( :CODIGO , :CODIGO_PRODUTO , :CODIGO_COR , :CODIGO_TAMANHO , :CODIGO_INTERVALO , :DATA_LANCAMENTO , :DATA_PRODUCAO , :QUANTIDADE , :TIPO, :LOTE, :SETOR, :CODIGO_TRANSFERENCIA) ';
 end;
 
 end.

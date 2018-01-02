@@ -403,7 +403,7 @@ begin
     RepositorioNotaFiscal := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
     NotaFiscal            := TNotaFiscal(RepositorioNotaFiscal.Get(cdsCODIGO_NOTA_FISCAL.AsInteger));
 
-    GeradorNFe            := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
+    GeradorNFe            := TGeradorNFe.Create(FDM.Logo);
     GeradorNFe.ImprimirComVisualizacao(NotaFiscal);
   finally
     FreeAndNil(GeradorNFe);
@@ -485,7 +485,7 @@ begin
   if chkInternet.Checked then
     condicao_internet := ''
   else
-    condicao_internet := 'AND not C.RAZAO like ''%MINHA ROUPINHA%'' '+#13#10;
+    condicao_internet := ' AND ((DR.CODIGO IS NULL) or (DR.REP_ECOMMERCE <> ''S'')) '+#13#10;
 
   if chkFuncionarios.Checked then
     condicao_funcionario := ''
@@ -516,7 +516,8 @@ begin
             ' left join produto_tabela_preco pt on ((pt.codproduto = pro.codigo)and(pt.codtabela = 36)) '+
             ' left join naturezas_operacao nat on nat.codigo = nf.codigo_natureza '+#13#10+
             ' left join clientes cli on cli.codcli = c.codigo '+#13#10+
-            '  LEFT JOIN get_totais_pedido(P.cod_repres, P.codigo) TP ON (1=1) '+
+            ' left join dados_representante dr on dr.codigo_representante = p.cod_repres '+#13#10+
+            ' LEFT JOIN get_totais_pedido(P.cod_repres, P.codigo) TP ON (1=1) '+
             ' WHERE not (p.cancelado = ''S'')                                     '+#13#10;
 
   result := result + condicao_data;

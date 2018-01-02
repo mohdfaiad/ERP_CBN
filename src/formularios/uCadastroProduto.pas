@@ -304,6 +304,7 @@ type
     cdsCoresKitCONT: TIntegerField;
     btnClonar: TSpeedButton;
     cdsEstoqueSETOR: TStringField;
+    lbQtdCodigosDisponiveis: TLabel;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -394,6 +395,9 @@ type
     procedure removeKit;
     procedure selecionaDeseleciona;
     procedure deselecionaTodos;
+
+  private
+    function getQtdeCodigosDisponiveis :integer;
     
   public
     { Public declarations }
@@ -1044,6 +1048,8 @@ end;
 procedure TfrmCadastroProduto.TabSheet5Enter(Sender: TObject);
 begin
   inherited;
+  lbQtdCodigosDisponiveis.Caption := IntToStr(getQtdeCodigosDisponiveis) + ' Códigos disponíveis para criação';
+
   if self.Tag <> 1 then begin
     TabSheet5.Enabled := true;
 
@@ -1217,7 +1223,6 @@ begin
 
   avisar('Código de barras gerado com sucesso!');
   TabSheet5Enter(nil);
-
 end;
 
 procedure TfrmCadastroProduto.edtLinhaEnter(Sender: TObject);
@@ -1375,6 +1380,17 @@ begin
   BuscaCor1.codCor   := cdsCorREFERENCIA.AsString;
   cbGenero.ItemIndex := cbGenero.Items.IndexOf( IfThen(cdsCorGENERO.AsString = 'F','FEMININO','MASCULINO'));
   cbGenero.SetFocus;
+end;
+
+function TfrmCadastroProduto.getQtdeCodigosDisponiveis: integer;
+var CodigoBarras :TCodigoBarras;
+begin
+  try
+    CodigoBarras := TCodigoBarras.Create;
+    result       := CodigoBarras.QtdCodigosDisponiveis;
+  finally
+    FreeAndNil(CodigoBarras);
+  end;
 end;
 
 procedure TfrmCadastroProduto.gridCoresDrawColumnCell(Sender: TObject;

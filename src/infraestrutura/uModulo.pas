@@ -35,6 +35,8 @@ type
     FConexaoBancoDeDados      :TFDConnection;
     FUsuario                  :TUsuario;
     FParametros               :TParametros;
+    FInformouSenhaSertificado :Boolean;
+
     function GetParametros    :TParametros;
     function GetConexao       :TFDConnection;
     function GetLogo: String;
@@ -63,20 +65,21 @@ type
 
   // Propriedades
   public
-     property LogErros               :TLogErros            read FLogErros            write SetLogErros;
-     property ArquivoConfiguracao    :TArquivoConfiguracao read FArquivoConfiguracao write SetArquivoConfiguracao;
-     property UsuarioLogado          :TUsuario             read FUsuario             write SetUsuario;
-     property Parametros             :TParametros          read GetParametros        write SetParametros;
-     property CaixaLoja              :TCaixa               read GetCaixaLoja         write FCaixaLoja;
-     property caixaAberto            :Boolean              read getCaixaAberto       write FCaixaAberto;
-     property configuracoesECommerce :TConfiguracoesECommerce read getConfiguracoesECommerce write FConfiguracoesECommerce;
+     property LogErros                 :TLogErros               read FLogErros            write SetLogErros;
+     property ArquivoConfiguracao      :TArquivoConfiguracao    read FArquivoConfiguracao write SetArquivoConfiguracao;
+     property UsuarioLogado            :TUsuario                read FUsuario             write SetUsuario;
+     property Parametros               :TParametros             read GetParametros        write SetParametros;
+     property CaixaLoja                :TCaixa                  read GetCaixaLoja         write FCaixaLoja;
+     property caixaAberto              :Boolean                 read getCaixaAberto       write FCaixaAberto;
+     property configuracoesECommerce   :TConfiguracoesECommerce read getConfiguracoesECommerce write FConfiguracoesECommerce;
+     property informouSenhaSertificado :Boolean                 read FInformouSenhaSertificado write FInformouSenhaSertificado;
 
      // Apenas leitura
-     property DiretorioSistema          :String       read GetDiretorioSistema;
-     property NomeDoTerminal            :String       read GetNomeDoTerminal;
-     property IsConectadoBancoDeDados   :Boolean      read GetIsConectadoBancoDeDados;
+     property DiretorioSistema          :String        read GetDiretorioSistema;
+     property NomeDoTerminal            :String        read GetNomeDoTerminal;
+     property IsConectadoBancoDeDados   :Boolean       read GetIsConectadoBancoDeDados;
      property conexao                   :TFDConnection read GetConexao;
-     property Logo                      :String       read GetLogo;
+     property Logo                      :String        read GetLogo;
 
   public
      procedure AbreConexaoBancoDeDados;
@@ -129,8 +132,10 @@ begin
 
    FUsuario                             := nil;
    FParametros                          := nil;
+   FInformouSenhaSertificado            := false;
 
-   qryGenerica.Connection := self.FConexaoBancoDeDados;
+   qryGenerica.Connection  := self.FConexaoBancoDeDados;
+   qryGenerica2.Connection := self.FConexaoBancoDeDados;
 end;
 
 function Tdm.GetDiretorioSistema: String;
@@ -180,6 +185,7 @@ begin
 
   self.FConexaoBancoDeDados               := TFDConnection.Create(nil);
   self.FConexaoBancoDeDados.BeforeConnect := self.PreencheDadosConexaoBancoDeDados;
+  FConfiguracoesECommerce := nil;
 end;
 
 procedure Tdm.AbreConexaoBancoDeDados;
@@ -228,6 +234,7 @@ begin
    result               := TFDQuery.Create(nil);
    result.Connection    := self.FConexaoBancoDeDados;
    result.CachedUpdates := true;
+   result.Close;
    result.SQL.Clear;
 end;
 

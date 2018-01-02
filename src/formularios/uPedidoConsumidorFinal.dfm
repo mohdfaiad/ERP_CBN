@@ -16,8 +16,6 @@ object frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   DesignSize = (
     1130
     673)

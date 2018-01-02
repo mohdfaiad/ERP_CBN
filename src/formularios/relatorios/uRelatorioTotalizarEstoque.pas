@@ -581,7 +581,7 @@ begin
   if BuscaProduto2.edtReferencia.Text <> '' then
     cWhere:= cWhere + IfThen(cWhere <> '', 'AND', 'WHERE')+' PRODUTOS.REFERENCIA = '+QuotedStr(BuscaProduto2.edtReferencia.Text)+' ';
   if BuscaProduto2.edtRefCor.Text <> '' then
-    cWhere:= cWhere+'AND CORES.REFERENCIA = '+QuotedStr(BuscaProduto2.edtRefCor.Text)+' ';
+    cWhere:= cWhere+'AND CORES.CODIGO = '+intToStr(BuscaProduto2.CodigoCor)+' ';
   if BuscaProduto2.edtCodTamanho.Text <> '' then
     cWhere:= cWhere+'AND ESTOQUE.CODIGO_TAMANHO = '+BuscaProduto2.edtCodTamanho.Text+' ';
   if cWhere <> '' then

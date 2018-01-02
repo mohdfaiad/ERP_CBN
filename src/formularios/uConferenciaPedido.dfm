@@ -3201,10 +3201,10 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         1076
         392)
       object gridItens: TDBGridCBN
-        Left = 9
-        Top = 3
+        Left = 3
+        Top = -1
         Width = 1064
-        Height = 311
+        Height = 309
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = 14803425
         DataSource = dsItens
@@ -3558,7 +3558,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Shape = stRoundRect
         end
         object Label1: TLabel
-          Left = 825
+          Left = 801
           Top = 36
           Width = 70
           Height = 15
@@ -3573,7 +3573,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object labelQtde: TLabel
-          Left = 901
+          Left = 877
           Top = 33
           Width = 9
           Height = 20
@@ -3588,7 +3588,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object Label6: TLabel
-          Left = 952
+          Left = 936
           Top = 36
           Width = 73
           Height = 15
@@ -3603,7 +3603,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
           Transparent = True
         end
         object labelQtdePecas: TLabel
-          Left = 1029
+          Left = 1013
           Top = 33
           Width = 9
           Height = 20
@@ -3979,7 +3979,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edtRN: TCurrencyEdit
           Left = 111
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -3999,7 +3999,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edtP: TCurrencyEdit
           Left = 179
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4019,7 +4019,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edtM: TCurrencyEdit
           Left = 248
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4039,7 +4039,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edtG: TCurrencyEdit
           Left = 317
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4059,7 +4059,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt1: TCurrencyEdit
           Left = 384
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4079,7 +4079,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt2: TCurrencyEdit
           Left = 450
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4099,7 +4099,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt3: TCurrencyEdit
           Left = 515
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4119,7 +4119,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt4: TCurrencyEdit
           Left = 582
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4139,7 +4139,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt6: TCurrencyEdit
           Left = 647
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4159,7 +4159,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt8: TCurrencyEdit
           Left = 713
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4179,7 +4179,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edtUnica: TCurrencyEdit
           Left = 1031
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4199,7 +4199,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt14: TCurrencyEdit
           Left = 933
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4219,7 +4219,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt12: TCurrencyEdit
           Left = 859
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -4239,7 +4239,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         end
         object edt10: TCurrencyEdit
           Left = 788
-          Top = 2
+          Top = 4
           Width = 45
           Height = 20
           Alignment = taLeftJustify
@@ -5232,7 +5232,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       end
       object chkNaoConferidos: TCheckBox
         Left = 459
-        Top = 316
+        Top = 314
         Width = 137
         Height = 15
         Anchors = [akRight, akBottom]
@@ -5243,7 +5243,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       end
       object chkConferidos: TCheckBox
         Left = 624
-        Top = 316
+        Top = 314
         Width = 137
         Height = 15
         Anchors = [akRight, akBottom]
@@ -5254,7 +5254,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
       end
       object chkTodos: TCheckBox
         Left = 288
-        Top = 316
+        Top = 314
         Width = 137
         Height = 15
         Anchors = [akRight, akBottom]
@@ -6628,6 +6628,17 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Visible = False
     OnClick = btnAlteraCaixasClick
   end
+  object Button1: TButton
+    Left = 840
+    Top = 88
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    Enabled = False
+    TabOrder = 11
+    Visible = False
+    OnClick = Button1Click
+  end
   object dsItens: TDataSource
     DataSet = cdsItens
     Left = 175
@@ -6665,7 +6676,11 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     end
     object cdsItensConferidosREFPRO: TStringField
       FieldName = 'REFPRO'
-      Size = 18
+      Size = 30
+    end
+    object cdsItensConferidosREFCOR: TStringField
+      FieldName = 'REFCOR'
+      Size = 30
     end
     object cdsItensConferidosQTD_RN_O: TIntegerField
       FieldName = 'QTD_RN_O'
@@ -7006,7 +7021,7 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     Left = 495
     Top = 313
     Bitmap = {
-      494C010104000900F00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900540110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7524,22 +7539,6 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
         ParamType = ptInput
       end>
   end
-  object qry: TFDQuery
-    Connection = dm.FDConnection
-    SQL.Strings = (
-      'select ci.* from conferencia_itens ci'
-      
-        'left join conferencia_pedido cp on cp.codigo = ci.codigo_confere' +
-        'ncia'
-      'where cp.codigo_pedido = :codigo')
-    Left = 298
-    Top = 90
-    ParamData = <
-      item
-        Name = 'CODIGO'
-        ParamType = ptInput
-      end>
-  end
   object qryCaixas: TFDQuery
     Connection = dm.FDConnection
     SQL.Strings = (
@@ -7650,7 +7649,8 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     SQL.Strings = (
       
         'select ci.codigo, ci.codigo_item, pro.descricao produto, pro.cod' +
-        'igo codpro, cor.codigo codcor, pro.referencia refpro,'
+        'igo codpro, cor.codigo codcor, pro.referencia refpro, cor.refere' +
+        'ncia refcor,'
       
         '           iif((cor.desc_producao is null) or (TRIM(cor.desc_pro' +
         'ducao) = '#39#39'), cor.descricao, cor.desc_producao|| '#39' '#39' ||cor.cor) ' +
@@ -7731,8 +7731,19 @@ inherited frmConferenciaPedido: TfrmConferenciaPedido
     object cdsConferidosCOD_TAMANHO: TIntegerField
       FieldName = 'COD_TAMANHO'
     end
+    object cdsConferidosTIPO_COR: TStringField
+      FieldName = 'TIPO_COR'
+      Size = 1
+    end
     object cdsConferidosQUANTIDADE: TFloatField
       FieldName = 'QUANTIDADE'
+    end
+    object cdsConferidosSKU: TStringField
+      FieldName = 'SKU'
+      Size = 80
+    end
+    object cdsConferidosESTOQUE_ATUAL: TFloatField
+      FieldName = 'ESTOQUE_ATUAL'
     end
   end
 end

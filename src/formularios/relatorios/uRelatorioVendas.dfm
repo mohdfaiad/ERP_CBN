@@ -181,17 +181,17 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
         OnClick = chkTodosClick
       end
       object chkInternet: TCheckBox
-        Left = 407
+        Left = 389
         Top = 71
-        Width = 71
+        Width = 82
         Height = 17
         TabStop = False
-        Caption = 'Internet'
+        Caption = 'E-Commerce'
         TabOrder = 2
         OnClick = rgTipoDataClick
       end
       object chkFuncionarios: TCheckBox
-        Left = 303
+        Left = 285
         Top = 70
         Width = 90
         Height = 17
@@ -852,7 +852,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 2
-          ExplicitLeft = 233
         end
       end
       object DBEdit1: TDBEdit
@@ -3234,7 +3233,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060009008C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000

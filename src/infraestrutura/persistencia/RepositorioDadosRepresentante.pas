@@ -34,7 +34,7 @@ end;
 
 implementation
 
-uses SysUtils, DadosRepresentante;
+uses SysUtils, DadosRepresentante, System.StrUtils;
 
 { TRepositorioDadosRepresentante }
 
@@ -46,7 +46,7 @@ begin
    DadosRepresentante.codigo               := self.FQuery.FieldByName('codigo').AsInteger;
    DadosRepresentante.codigo_representante := self.FQuery.FieldByName('codigo_representante').AsInteger;
    DadosRepresentante.percentagem_comissao := self.FQuery.FieldByName('percentagem_comissao').AsFloat;
-   DadosRepresentante.rep_ecommerce        := self.FQuery.FieldByName('rep_ecommerce').AsString;
+   DadosRepresentante.rep_ecommerce        := self.FQuery.FieldByName('rep_ecommerce').AsString = 'S';
 
    result := DadosRepresentante;
 end;
@@ -85,8 +85,8 @@ begin
    if (DadosRepresentanteAntigo.percentagem_comissao <> DadosRepresentanteNovo.percentagem_comissao) then
      Auditoria.AdicionaCampoAlterado('percentagem_comissao', FloatToStr(DadosRepresentanteAntigo.percentagem_comissao), FloatToStr(DadosRepresentanteNovo.percentagem_comissao));
 
-   if (DadosRepresentanteAntigo.rep_ecommerce <> DadosRepresentanteNovo.rep_ecommerce) then
-     Auditoria.AdicionaCampoAlterado('rep_ecommerce', DadosRepresentanteAntigo.rep_ecommerce, DadosRepresentanteNovo.rep_ecommerce);
+  // if (DadosRepresentanteAntigo.rep_ecommerce <> DadosRepresentanteNovo.rep_ecommerce) then
+  //   Auditoria.AdicionaCampoAlterado('rep_ecommerce', DadosRepresentanteAntigo.rep_ecommerce, DadosRepresentanteNovo.rep_ecommerce);
 end;
 
 procedure TRepositorioDadosRepresentante.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -97,7 +97,7 @@ begin
   Auditoria.AdicionaCampoExcluido('codigo'              , IntToStr(DadosRepresentante.codigo));
   Auditoria.AdicionaCampoExcluido('codigo_representante', IntToStr(DadosRepresentante.codigo_representante));
   Auditoria.AdicionaCampoExcluido('percentagem_comissao', FloatToStr(DadosRepresentante.percentagem_comissao));
-  Auditoria.AdicionaCampoExcluido('rep_ecommerce',        DadosRepresentante.rep_ecommerce);
+ // Auditoria.AdicionaCampoExcluido('rep_ecommerce',        DadosRepresentante.rep_ecommerce);
 end;
 
 procedure TRepositorioDadosRepresentante.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -108,7 +108,7 @@ begin
   Auditoria.AdicionaCampoIncluido('codigo'              ,    IntToStr(DadosRepresentante.codigo));
   Auditoria.AdicionaCampoIncluido('codigo_representante',    IntToStr(DadosRepresentante.codigo_representante));
   Auditoria.AdicionaCampoIncluido('percentagem_comissao',    FloatToStr(DadosRepresentante.percentagem_comissao));
-  Auditoria.AdicionaCampoIncluido('rep_ecommerce',           DadosRepresentante.rep_ecommerce);
+  //Auditoria.AdicionaCampoIncluido('rep_ecommerce',           DadosRepresentante.rep_ecommerce);
 end;
 
 procedure TRepositorioDadosRepresentante.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -124,7 +124,7 @@ begin
   self.FQuery.ParamByName('codigo').AsInteger               := DadosRepresentante.codigo;
   self.FQuery.ParamByName('codigo_representante').AsInteger := DadosRepresentante.codigo_representante;
   self.FQuery.ParamByName('percentagem_comissao').AsFloat   := DadosRepresentante.percentagem_comissao;
-  self.FQuery.ParamByName('rep_ecommerce').AsString         := DadosRepresentante.rep_ecommerce;
+  self.FQuery.ParamByName('rep_ecommerce').AsString         := IfThen(DadosRepresentante.rep_ecommerce, 'S', 'N');
 end;
 
 function TRepositorioDadosRepresentante.SQLGet: String;

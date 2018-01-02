@@ -487,17 +487,13 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 838
     Height = 476
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Produtos'
       OnExit = TabSheet1Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -1958,10 +1954,6 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 0
         object TabSheet7: TTabSheet
           Caption = 'C'#243'digos de Barra'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           DesignSize = (
             822
             415)
@@ -2272,9 +2264,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
           end
           object btnGeraCodBar: TSpeedButton
             Left = 570
-            Top = 347
+            Top = 376
             Width = 241
-            Height = 59
+            Height = 30
             Anchors = [akLeft, akBottom]
             Caption = ' Gerar C'#243'digo de Barras'
             Glyph.Data = {
@@ -2304,9 +2296,20 @@ inherited frmCadastroProduto: TfrmCadastroProduto
               BEBEBEB0B0B0E6E6E6BBBBBBCACACADCDCDCB6B6B6C4C4C4BBBBBBD6D6D6B2B2
               B2BDBDBDE2E2E2F6F6F6FFFFFFE2E2E2F6F6F6FEFEFEEEEEEEFFFFFFFCFCFCF6
               F6F6FFFFFFFDFDFDFFFFFFF2F2F2FCFCFCF5F5F5E1E1E1FFFFFF}
-            Layout = blGlyphTop
             OnClick = btnGeraCodBarClick
-            ExplicitTop = 355
+          end
+          object lbQtdCodigosDisponiveis: TLabel
+            Left = 573
+            Top = 354
+            Width = 6
+            Height = 13
+            Caption = '0'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 3355443
+            Font.Height = -11
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
           object gridReferencias: TDBGridCBN
             Left = 6
@@ -4618,7 +4621,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900C80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

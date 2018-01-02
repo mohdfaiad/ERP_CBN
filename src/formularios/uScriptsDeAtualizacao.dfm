@@ -9785,4 +9785,112 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 223
     WordWrap = False
   end
+  object versao223: TMemo
+    Left = 273
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ENDERECOS ALTER NUMERO TYPE VARCHAR(30)'
+      '^')
+    TabOrder = 224
+    WordWrap = False
+  end
+  object versao224: TMemo
+    Left = 297
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE LOG_MOV_EST_ECOMM ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_USUARIO INTEGER,'
+      '    CODIGO_ITEM INTEGER,'
+      '    CODIGO_ENTRADA_SAIDA INTEGER,'
+      '    CODIGO_PRODUTO INTEGER,'
+      '    CODIGO_COR INTEGER,'
+      '    CODIGO_TAMANHO INTEGER,'
+      '    ESTOQUE_ATUAL_FAB NUMERIC(15,2),'
+      '    ESTOQUE_ATUAL_ECOM NUMERIC(15,2),'
+      '    QTD_MOVIMENTO NUMERIC(15,2),'
+      '    LOCAL_MOVIMENTO VARCHAR(100),'
+      '    DATA_HORA TIMESTAMP)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint PK_LOG_MOV_EST_ECOMM'
+      'primary key (CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_1'
+      'foreign key (CODIGO_USUARIO)'
+      'references USUARIOS(CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_6'
+      'foreign key (CODIGO_TAMANHO)'
+      'references TAMANHOS(CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_4'
+      'foreign key (CODIGO_PRODUTO)'
+      'references PRODUTOS(CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_2'
+      'foreign key (CODIGO_ITEM)'
+      'references ITENS(CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_3'
+      'foreign key (CODIGO_ENTRADA_SAIDA)'
+      'references ENTRADAS_SAIDAS(CODIGO)'
+      '^'
+      'alter table LOG_MOV_EST_ECOMM'
+      'add constraint FK_LOG_MOV_EST_ECOMM_5'
+      'foreign key (CODIGO_COR)'
+      'references CORES(CODIGO)'
+      '^'
+      'ALTER TABLE ENTRADAS_SAIDAS'
+      'ADD SETOR SMALLINT'
+      '^'
+      'CREATE GENERATOR GEN_LOG_MOV_EST_ECOMM_ID'
+      '^'
+      'CREATE TRIGGER LOG_MOV_EST_ECOMM_BI FOR LOG_MOV_EST_ECOMM'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (new.codigo = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_LOG_MOV_EST_ECOMM_ID,1);'
+      'END'
+      '^'
+      'ALTER TABLE ENTRADAS_SAIDAS'
+      'ADD CODIGO_TRANSFERENCIA INTEGER'
+      '^'
+      'CREATE GENERATOR GEN_TRANSFERENCIA'
+      '^')
+    TabOrder = 225
+    WordWrap = False
+  end
+  object versao225: TMemo
+    Left = 321
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE PESSOAS ALTER OBSERVACAO TYPE VARCHAR(400)'
+      '^')
+    TabOrder = 226
+    WordWrap = False
+  end
+  object versao226: TMemo
+    Left = 345
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ITENS_NF_MATERIA ALTER QUANTIDADE TYPE NUMERIC(17,4)'
+      '^')
+    TabOrder = 227
+    WordWrap = False
+  end
 end

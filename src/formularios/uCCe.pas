@@ -778,7 +778,13 @@ begin
 
       AcbrNfe.Configuracoes.Certificados.NumeroSerie := BuscaEmpresa1.Empresa.ConfiguracoesNF.num_certificado;
       if not TStringUtilitario.EstaVazia(BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado) then
-        AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
+      begin
+        if not dm.informouSenhaSertificado then
+        begin
+          AcbrNfe.Configuracoes.Certificados.Senha       := BuscaEmpresa1.Empresa.ConfiguracoesNF.SenhaCertificado;
+          dm.informouSenhaSertificado := true;
+        end;
+      end;
 
       result := true;
     end

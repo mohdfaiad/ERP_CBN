@@ -701,7 +701,6 @@ var
   HouveErros                 :Boolean;
   GeradorFinaceiro           :TGeradorFinanceiro;
   Fatura                     :TFatura;
-  CNPJEmpresa :String;
 begin
    dm.conexao.TxOptions.AutoCommit := false;
 
@@ -717,24 +716,13 @@ begin
    try
      RepositorioNotaFiscal      := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
      GeradorFinaceiro           := TGeradorFinanceiro.Create;
+     GeradorNFe                 := TGeradorNFe.Create;
 
      for nX := 0 to (self.FNotasSelecionadas.Count-1) do
         try
 
           NotaFiscal := nil;
           NotaFiscal := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-       if not assigned(GeradorNFe) then
-       begin
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end
-       else if assigned(GeradorNFe) and (CNPJEmpresa <> NotaFiscal.Empresa.CPF_CNPJ) then
-       begin
-         FreeAndNil(GeradorNFe);
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end;
 
           self.AtualizarEstadoDaOperacao('Buscando certificado digital...');
 
@@ -899,14 +887,14 @@ var
   nX                         :Integer;
   HouveErros                 :Boolean;
   Justificativa              :String;
-  CNPJEmpresa :String;
 begin
-   if not inherited Confirma('Deseja cancelar as notas selecionadas?') then
+    if not inherited Confirma('Deseja cancelar as notas selecionadas?') then
     exit;
 
    RepositorioNotaFiscal      := nil;
    GeradorNFe                 := nil;
    HouveErros                 := false;
+   GeradorNFe                 := TGeradorNFe.Create();
 
    dm.conexao.TxOptions.AutoCommit := false;
 
@@ -917,18 +905,6 @@ begin
      for nX := 0 to (self.FNotasSelecionadas.Count-1) do
         try
           NotaFiscal := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-       if not assigned(GeradorNFe) then
-       begin
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end
-       else if assigned(GeradorNFe) and (CNPJEmpresa <> NotaFiscal.Empresa.CPF_CNPJ) then
-       begin
-         FreeAndNil(GeradorNFe);
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end;
 
           self.AtualizarEstadoDaOperacao('Buscando certificado digital...');
 
@@ -1048,7 +1024,6 @@ var
   HouveErros                 :Boolean;
   GeradorFinanceiro          :TGeradorFinanceiro;
   Fatura                     :TFatura;
-  CNPJEmpresa :String;
 begin
    if not inherited Confirma('Deseja imprimir as notas selecionadas?') then
     exit;
@@ -1057,6 +1032,7 @@ begin
    GeradorNFe                 := nil;
    GeradorFinanceiro          := nil;
    Fatura                     := nil;
+   GeradorNFe                 := TGeradorNFe.Create();
    HouveErros                 := false;
 
    try
@@ -1066,18 +1042,6 @@ begin
      for nX := 0 to (self.FNotasSelecionadas.Count-1) do
         try
           NotaFiscal := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-       if not assigned(GeradorNFe) then
-       begin
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end
-       else if assigned(GeradorNFe) and (CNPJEmpresa <> NotaFiscal.Empresa.CPF_CNPJ) then
-       begin
-         FreeAndNil(GeradorNFe);
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end;
 
           { Gerando o financeiro (Duplicatas) para aparecer na visualização do DANFE }
           try
@@ -1134,7 +1098,6 @@ var
   NotaFiscal                 :TNotaFiscal;
   nX                         :Integer;
   HouveErros                 :Boolean;
-  CNPJEmpresa :String;
 begin
    if not inherited Confirma('Deseja enviar e-mail das notas selecionadas?') then
     exit;
@@ -1142,6 +1105,7 @@ begin
    RepositorioNotaFiscal      := nil;
    GeradorNFe                 := nil;
    HouveErros                 := false;
+   GeradorNFe                 := TGeradorNFe.Create;
 
    try
      RepositorioNotaFiscal      := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
@@ -1149,18 +1113,6 @@ begin
      for nX := 0 to (self.FNotasSelecionadas.Count-1) do
         try
           NotaFiscal := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-       if not assigned(GeradorNFe) then
-       begin
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end
-       else if assigned(GeradorNFe) and (CNPJEmpresa <> NotaFiscal.Empresa.CPF_CNPJ) then
-       begin
-         FreeAndNil(GeradorNFe);
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end;
 
           { Enviar E-mail }
           try
@@ -1365,7 +1317,7 @@ begin
 
       for j := 0 to Pedido.Itens.Count - 1 do begin
 
-         setor := IfThen((Pedido.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+         setor := IfThen(Pedido.Representante.DadosRepresentante.rep_ecommerce and
                          ((Pedido.Itens.Items[j] as TItem).Produto.Tipo = 'E'), 2, 1);
 
          if ( (Pedido.Itens.Items[j] as TItem).qtd_RN > 0) then begin
@@ -1549,30 +1501,18 @@ var
   GeradorNFe                 :TGeradorNFe;
   NotaFiscal                 :TNotaFiscal;
   nX                         :Integer;
-  CNPJEmpresa                :String;
 begin
  try
     RepositorioNotaFiscal  := nil;
     GeradorNFe             := nil;
     NotaFiscal             := nil;
 
+    GeradorNFe             := TGeradorNFe.Create;
     RepositorioNotaFiscal  := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
 
     for nX := 0 to (self.FNotasSelecionadas.Count-1) do
     begin
        NotaFiscal             := (self.FNotasSelecionadas[nX] as TNotaFiscal);
-
-       if not assigned(GeradorNFe) then
-       begin
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end
-       else if assigned(GeradorNFe) and (CNPJEmpresa <> NotaFiscal.Empresa.CPF_CNPJ) then
-       begin
-         FreeAndNil(GeradorNFe);
-         GeradorNFe   := TGeradorNFe.Create(FDM.Logo, NotaFiscal.Empresa.ConfiguracoesNF);
-         CNPJEmpresa  := NotaFiscal.Empresa.CPF_CNPJ;
-       end;
 
        Aguarda('Consultando nota fiscal '+IntToStr(NotaFiscal.NumeroNotaFiscal));
        Application.ProcessMessages;

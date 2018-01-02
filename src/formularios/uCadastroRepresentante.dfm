@@ -347,6 +347,10 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
     object TabSheet1: TTabSheet
       Caption = 'F1 - Representantes'
       OnExit = TabSheet1Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         857
         465)
@@ -483,6 +487,10 @@ inherited frmCadastroRepresentante: TfrmCadastroRepresentante
       ImageIndex = 1
       OnEnter = TabSheet2Enter
       OnExit = TabSheet2Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 24
         Top = 17

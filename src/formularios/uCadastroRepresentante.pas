@@ -356,7 +356,7 @@ begin
      representante.DadosRepresentante := TDadosRepresentante.Create;
 
    representante.DadosRepresentante.percentagem_comissao := edtComissao.Value;
-   representante.DadosRepresentante.rep_ecommerce        := copy(cmbEcommerce.Items[cmbEcommerce.ItemIndex],1,1);
+   representante.DadosRepresentante.rep_ecommerce        := copy(cmbEcommerce.Items[cmbEcommerce.ItemIndex],1,1) = 'S';
 
    if not assigned(representante.Endereco) then
       representante.Endereco := TEndereco.Create;

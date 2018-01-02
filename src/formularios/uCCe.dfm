@@ -18,6 +18,8 @@ object frmCCe: TfrmCCe
   PrintScale = poNone
   OnKeyDown = FormKeyDown
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -37,6 +39,10 @@ object frmCCe: TfrmCCe
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Lotes'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         952
         615)
@@ -1604,7 +1610,7 @@ object frmCCe: TfrmCCe
     Left = 28
     Top = 472
     Bitmap = {
-      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000002C2BEB003D47EB003A42
       EB00393FE700393EE5003237E0001319DB001019D900292ED7003031D7002D2D

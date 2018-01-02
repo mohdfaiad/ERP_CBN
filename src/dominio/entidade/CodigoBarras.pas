@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils,
-  Contnrs;
+  Contnrs,
+  FireDAC.Comp.Client;
 
 type
   TCodigoBarras = class
@@ -41,9 +42,12 @@ type
     property CodGrade      :Integer read FCodGrade   write SetCodGrade;
     property CodTamanho    :Integer read FCodTamanho write SetCodTamanho;
     property Cod_sku       :String  read FCod_sku    write FCod_sku;
+  private
+    function GetQtdCodigosDisponiveis: Integer;
 
   public
     property SequenciaCodBar :String read GetSequenciaCodBar;
+    property QtdCodigosDisponiveis :Integer read GetQtdCodigosDisponiveis;
 
   private
 
@@ -52,6 +56,7 @@ type
 
 CONST
   prefixos : Array[1..4] of string = ('78992426','78991340','78996349','78999967');
+  QTD_MAX_COD_POR_PREFIXO = 10000;
 
 implementation
 
@@ -92,6 +97,37 @@ end;
 procedure TCodigoBarras.SetTipo(const Value: Integer);
 begin
   FTipo := Value;
+end;
+
+function TCodigoBarras.GetQtdCodigosDisponiveis: Integer;
+var qry :TFDQuery;
+begin
+  try
+    qry          := dm.GetConsulta;
+    qry.SQL.Text := ' select  (count(cb.codigo) +                         '+
+                    '         ( select count(cb.codigo)                   '+
+                    '           from codigo_barras cb                     '+
+                    '           where numeracao like :prefixo2||''%'' ) + '+
+                    '         ( select count(cb.codigo)                   '+
+                    '           from codigo_barras cb                     '+
+                    '           where numeracao like :prefixo3||''%'' ) + '+
+                    '         ( select count(cb.codigo)                   '+
+                    '           from codigo_barras cb                     '+
+                    '           where numeracao like :prefixo4||''%'' ))  '+
+                    '         QTD_CODIGOS                                 '+
+                    '     from codigo_barras cb                           '+
+                    ' where numeracao like :prefixo1||''%''               ';
+
+    qry.ParamByName('prefixo1').AsString := prefixos[1];
+    qry.ParamByName('prefixo2').AsString := prefixos[2];
+    qry.ParamByName('prefixo3').AsString := prefixos[3];
+    qry.ParamByName('prefixo4').AsString := prefixos[4];
+    qry.Open;
+
+    result := (length(prefixos) * QTD_MAX_COD_POR_PREFIXO) - qry.FieldByName('QTD_CODIGOS').AsInteger;
+  finally
+    FreeAndNil(qry);
+  end;
 end;
 
 function TCodigoBarras.GetSequenciaCodBar: String;

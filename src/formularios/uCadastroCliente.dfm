@@ -442,7 +442,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Top = 0
     Width = 880
     Height = 497
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -1200,7 +1200,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
           Font.Height = -11
           Font.Name = 'Segoe UI'
           Font.Style = []
-          MaxLength = 10
+          MaxLength = 30
           ParentFont = False
           TabOrder = 1
         end
@@ -1823,7 +1823,7 @@ inherited frmCadastroCliente: TfrmCadastroCliente
     Left = 180
     Top = 440
     Bitmap = {
-      494C0101030004007C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

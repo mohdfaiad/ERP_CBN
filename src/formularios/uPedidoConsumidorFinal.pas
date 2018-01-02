@@ -317,7 +317,7 @@ begin
    begin
      codigo_tamanho := 11;//strToInt( Campo_por_campo('TAMANHOS', 'CODIGO', 'DESCRICAO',  );
      setor := IfThen(assigned(Pedido.Representante.DadosRepresentante) and
-                     (Pedido.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                     (Pedido.Representante.DadosRepresentante.rep_ecommerce) and
                      (TItem(Pedido.Itens[i]).Produto.Tipo = 'E'),2,1);
 
      Especificacao  := TEspecificacaoEstoquePorProdutoCorTamanho.Create(setor,

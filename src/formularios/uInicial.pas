@@ -150,6 +150,7 @@ type
     lbTituloErro: TLabel;
     lbErros: TLabel;
     EmAberto1: TMenuItem;
+    tmrVerificaPedidosEmAberto: TTimer;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -246,6 +247,7 @@ type
     procedure timerLogErrosTimer(Sender: TObject);
     procedure btnVerificarClick(Sender: TObject);
     procedure EmAberto1Click(Sender: TObject);
+    procedure tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -321,7 +323,8 @@ uses
   uRelatorioComissoesRepresentantes, uRelatorioPrevisaoEstoque, uRelatorioTabelasPreco, uRelatorioEstoqueMateria,
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
-  uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao;
+  uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao,
+  uGeraArquivoMeusPedidos;
 
 {$R *.dfm}
 
@@ -1199,6 +1202,13 @@ begin
   verificarErros;
 end;
 
+procedure TfrmInicial.tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
+begin
+  tmrVerificaPedidosEmAberto.Enabled := false;
+  if TPermissoesAcesso.VerificaPermissao(paRelatorioPedidosEmAberto) then
+    EmAberto1Click(nil);
+end;
+
 procedure TfrmInicial.PrevisodeEstoque1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioPrevisaoEstoque, paRelatorioPrevisaoEstoque);
@@ -1206,7 +1216,10 @@ end;
 
 procedure TfrmInicial.Button1Click(Sender: TObject);
 begin
-//testes
+  frmGeraArquivoMeusPedidos := TfrmGeraArquivoMeusPedidos.Create(nil);
+  frmGeraArquivoMeusPedidos.ShowModal;
+  frmGeraArquivoMeusPedidos.Release;
+  frmGeraArquivoMeusPedidos := nil;
 end;
       {
 Initialization

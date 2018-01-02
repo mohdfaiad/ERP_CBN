@@ -15,8 +15,6 @@ uses
   ZAbstractDataset, ZDataset, CaixaPedido;
 
 type
-  TTipoProduto = (Acessorio, Vestuario);  
-type
   TfrmConferenciaPedido = class(TfrmPadrao)
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
@@ -243,7 +241,6 @@ type
     cdsItensTIPO: TIntegerField;
     Timer3: TTimer;
     qryItens: TFDQuery;
-    qry: TFDQuery;
     qryCaixas: TFDQuery;
     qryCaixasCODIGO: TIntegerField;
     qryCaixasNUMERO_CAIXA: TStringField;
@@ -359,6 +356,11 @@ type
     cdsConferidosQUANTIDADE: TFloatField;
     cdsItensTIPO_COR: TStringField;
     btnAlteraCaixas: TBitBtn;
+    cdsConferidosTIPO_COR: TStringField;
+    cdsConferidosSKU: TStringField;
+    cdsItensConferidosREFCOR: TStringField;
+    cdsConferidosESTOQUE_ATUAL: TFloatField;
+    Button1: TButton;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -407,20 +409,31 @@ type
     procedure btnDesmembrarClick(Sender: TObject);
     procedure frameMateriaExit(Sender: TObject);
     procedure btnAlteraCaixasClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
 
   private
-    FCaixasDoPedido :TObjectList;
-    hora_inicio :TTime;
-    cdsTamanhos :TClientDataSet;
+    FCaixasDoPedido         :TObjectList;
+    cdsTamanhos             :TClientDataSet;
+    hora_inicio             :TTime;
     linha_estoque_calculado :integer;
-    FVisualizarConferencia :Boolean;
-    LinhaSubstituicao :integer;
+    FVisualizarConferencia  :Boolean;
+    LinhaSubstituicao       :integer;
 
+    { mostra os dados da conferencia na tela }
     procedure carrega_dados;
+    { carrega os itens do pedido }
+    procedure AbreItensDoPedido(pCodigoPedido :integer);
+    { carrega os itens da conferencia, se existir }
+    procedure AbreItensConferidos(pCodigoPedido :integer);
 
     { busca uma referencia mediante seu codigo de barras e marca no grid ,o item correspondente, como conferido }
     function busca_e_adiciona :Boolean;
 
+    { faz algumas validacoes de busca e retorna o codigo do item correspondente ao produto, cor e tamanho passados por parametro }
+    function referenciaEncontrada(codpro, codcor, codigo_cor_pai :integer; tam, masculino_feminino: String; pAcessorio :Boolean;
+                                  var achouEspecifico, qtdeTamanhoDisponivel, produtoComCorGenerica :boolean) :integer;
+
+    { verifica se o}
     procedure calcula_completo_imcompleto;
     procedure substitui_generico(coditem, codigo_cor :integer; refcor, cor, tamanho :String; quantidade :integer);
 
@@ -430,8 +443,8 @@ type
     function busca_codigo_barras(codigo_produto, codigo_cor :integer; tamanho :String):String;
 
     { esta procedure faz o contrario da procedure "busca_codigo_barras" }
-    procedure item_por_codigo_barras(var codigo_produto, codigo_cor :integer; var refcor, cor, tamanho :String; var masculino_feminino,
-                                     cod_bar :String; var acessorio :Boolean);
+    procedure item_por_codigo_barras(var codigo_produto, codigo_cor :integer; var refpro, refcor, cor, tamanho :String; var masculino_feminino,
+                                     cod_bar, tipo_cor :String; var acessorio :Boolean);
     procedure calcula_percentagem_conferida;
     procedure seleciona_caixas;
 
@@ -439,6 +452,7 @@ type
     procedure divide_pedido;
     procedure recalcula_valores;
     function corGenerica(cor :String):Boolean;
+    function generoValido(corItemComparado, corItemConferindo :String) :Boolean;
     procedure deleta_itens(codigos_itens :String);
     procedure deleta_conferencia_itens(codigos_conferencia_itens :String);
 
@@ -448,14 +462,8 @@ type
     { faz a mesma coisa que a procedure acima, mas para inserir no novo pedido criado }
     function  cria_item(Pedido :TPedido; Item :TItem; var total :Real; var desconto_itens :Real; grades_inteiras :Boolean) :Boolean;
 
-    { vai armazenando os itens que vao substituindo os itens das cores genericas ('MASCULINO' e 'FEMININO')}
-    procedure armazena_substituto(codigo_item, codigo_cor, quantidade :integer; tamanho, genero :String);
-
     procedure AtualizaValoresConferenciaItem(Item :TConferenciaItem; Q_RN, Q_P, Q_M, Q_G, Q_1, Q_2, Q_3, Q_4, Q_6, Q_8, Q_10, Q_12, Q_14, Q_unica :integer);
     function item_conferido(codigo_item :integer) :Boolean;
-
-    { atualiza o pedido, substituindo os itens genericos, por aqueles previamente armazenados na procedure "armazena_substituto"}
-    procedure substitui_produto_generico;
 
     { criado para substituir um item de determinada cor e tamanho por outro item da mesma cor, somente mudando o tamanho }
     procedure substitui_item_por_item(cod_bar_substituto :String; qtde_substituida :Integer; tamanho_substituido :String);
@@ -465,21 +473,28 @@ type
     { quando o produto eh vestuario e a cor eh generica(M ou F), ele so pode ser substituido por outra cor generica }
     procedure substitui_item_generico;
 
+    function getJsonProduto(sku: String): String;
+    
     procedure habilita_desabilita_caixas(boleana :Boolean);
 
     function  busca_estoque(codproduto :String; codcor :integer; Tamanho:String) :Real;
-    procedure busca_estoque_reservado(codproduto :String; codcor :integer);
-    procedure busca_estoque_normal(codproduto :String; codcor :integer);
+    procedure busca_estoque_reservado(qry :TFDQuery; codproduto :integer; codcor :integer);
+    procedure busca_estoque_normal(qry :TFDQuery; codproduto :integer; codcor :integer);
 
     { mostra o estoque da referencia selecionada no grid }
     procedure mostra_estoque;
 
     { feito para baixar o estoque das referencias contidas no pedido (usar apenas quando o pedido for 100% conferido)}
-    procedure atualizaEstoqueLocal(codigo_pedido :Integer; operacao :integer);
-    procedure atualizaEstoquePlataforma;
+    procedure atualizaEstoqueLocal(pedidoEcommerce :Boolean);
+    procedure atualizaEstoquePedidoTotal(Pedido :TPedido; multiplicador :integer);
+    procedure atualizaEstoquePlataforma(multiplicador :integer);
+    procedure atualizaEstoquePlataformaPeloPedido(multiplicador :integer);
 
     procedure Busca_tamanhos(var cds :TClientDataSet);
 
+    function getQuantidadeAtual(sku: String): integer;
+    procedure getEstoqueAtualProdutos;
+    function buscaProdutos(page :integer) :String;
     { SALVAR }
 
     procedure Salva_estoque(cod_produto, cod_cor :integer; descricao_tamanho :String; quantidade :Real);
@@ -492,6 +507,7 @@ type
 
     function  Conferencia_finalizada :Boolean;
     function  grade_imcompleta :Boolean;
+    function verificaDesmembramento :Boolean;
     procedure  atualizaTabelaDirecionamento;
     function adicionarCaixaPedido :boolean;
     function selecionaMateriaCaixa :integer;
@@ -505,14 +521,13 @@ type
     procedure limpa_edits_substituicao;
 
     procedure reinicia_pedido;
-    function verificaSeEKit(codigo_produto :integer) :String;
-    function produtosKit :String;
     function possuiKit :Boolean;
     procedure desmembrarKits;
     procedure retornarProdutosAoKit(ConferenciaPedido :TConferenciaPedido);
     procedure filtraItens(checkBox :TCheckBox);
     procedure verificaMapaFinalizado;
     procedure carregaCaixa;
+    procedure aguardarUmMinuto;
 
   public
     property visualizarConferencia :Boolean read FVisualizarConferencia write FVisualizarConferencia;
@@ -521,12 +536,16 @@ type
 var
   frmConferenciaPedido: TfrmConferenciaPedido;
 
+const
+    Tamanhos : array[1..14] of string=('RN','P','M','G','1','2','3','4','6','8','10','12','14','UNICA');
+    TEMPO_ESPERA = 65000;
+
 implementation
 
 uses uModulo, Repositorio, FabricaREpositorio, Especificacao, CriaBalaoInformacao, ProdutosKit, frameBuscaMateria,
      EspecificacaoItemPorPedidoProdutoCor, Caixas, uBuscaCodigoBarras, uRelatorioRomaneio, DirecionamentoEntrada,
      Tamanho, EspecificacaoEstoquePorProdutoCorTamanho, Estoque, uVisualizacaoPedidoSeparacao, Mapa, PedidoMapa,
-     EspecificacaoCaixasDaConferencia, uAlteraCaixas, HTTPJSON;
+     EspecificacaoCaixasDaConferencia, uAlteraCaixas, HTTPJSON, TipoProduto, System.JSon, IdHTTP, IdSSLOpenSSL, StringUtilitario;
 
 {$R *.dfm}
 
@@ -553,17 +572,9 @@ begin
 
   if not assigned(BuscaPedido1.Ped) then EXIT;
 
-  qry.Close;
-  qry.ParamByName('codigo').AsInteger := BuscaPedido1.Ped.Codigo;
-  qry.Open;
+  AbreItensDoPedido( BuscaPedido1.Ped.Codigo );
 
-  cdsItens.Close;
-  qryItens.ParamByName('codpedido').AsInteger := BuscaPedido1.Ped.Codigo;
-  cdsItens.Open;
-
-  cdsItensConferidos.Close;
-  qryItensConferidos.ParamByName('codpedido').AsInteger := BuscaPedido1.Ped.Codigo;
-  cdsItensConferidos.Open;
+  AbreItensConferidos( BuscaPedido1.Ped.Codigo );
 
   calcula_percentagem_conferida;
 end;
@@ -655,6 +666,28 @@ begin
 
 end;
 
+function TfrmConferenciaPedido.buscaProdutos(page :integer): String;
+var vHTTPJSON :THTTPJSON;
+    skus      :String;
+begin
+  try
+    //monta o parametro dos skus dos produtos que devem ser buscados
+    cdsConferidos.First;
+    while not cdsConferidos.Eof do
+    begin
+      skus := skus + ', '+cdsConferidosSKU.AsString;
+      cdsConferidos.Next;
+    end;
+
+    vHTTPJSON := nil;
+    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+
+    result := vHTTPJSON.Get('produtos/?page='+intToStr(page));//???
+  finally
+    FreeAndNil(vHTTPJSON);
+  end;
+end;
+
 function TfrmConferenciaPedido.busca_codigo_barras(codigo_produto, codigo_cor: integer;
  tamanho: String): String;
 var codigo_tamanho :Integer;
@@ -710,94 +743,31 @@ end;
 function TfrmConferenciaPedido.busca_e_adiciona :Boolean;
 var
     codigo_produto, codigo_cor, quantidade :integer;
-    tamanho, conferido, masculino_feminino, refcor, cor :String;
+    tamanho, conferido, masculino_feminino, refcor, refpro, cor :String;
     produtoComCorGenerica, acessorio, encontrou :Boolean;
-    achou_especifico :integer;
-    codigo_barras        :String;
-    item_conferido, codigo_cor_pai :integer;
+    codigo_barras, tipo_cor :String;
+    codigoItem, codigo_cor_pai :integer;
+    achouEspecifico, qtdeTamanhoDisponivel :Boolean;
 begin
   Result                := false;
-  achou_especifico      := 0;
   produtoComCorGenerica := false;
-  item_conferido  := 0;
 
   codigo_barras := trim(edtCodigoBarras.Text);
-  item_por_codigo_barras(codigo_produto, codigo_cor, refcor, cor , tamanho, masculino_feminino, codigo_barras, acessorio);
+  item_por_codigo_barras(codigo_produto, codigo_cor, refpro, refcor, cor , tamanho, masculino_feminino, codigo_barras, tipo_cor, acessorio);
 
   codigo_cor_pai := StrToIntDef(Campo_por_campo('CORES_FILHAS','CODIGO_COR_PAI', 'CODIGO_COR_FILHA', IntToStr(codigo_cor)),0);
 
   cdsItens.IndexFieldNames := 'codpro;codcor';
   { se a referencia foi encontrada }
-  if (cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[])) then
-  begin     
-     cdsItens.Filtered := false;
-     cdsItens.Filter   := 'CODIGO_KIT = 0';
-     cdsItens.Filtered := true;
-     encontrou := cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[]);
-    { e se ainda não foi totalmente conferida = "achou_especifico (ou seja, encontrou um produto não genérico, referente a cor/tamanho do cod bar)"}
-     if encontrou and ( cdsItens.FieldByName('QTD_'+tamanho).AsString <> '' ) and not (cdsItensCONFERIDO.AsString = 'S') then
-       achou_especifico := 1;
-   
-
-     if (achou_especifico <> 1) then
-     begin
-       cdsItens.Filtered := false;
-       cdsItens.Filter   := 'CODIGO_KIT > 0';
-       cdsItens.Filtered := true;
-       cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[]);
-       { e se ainda não foi totalmente conferida = "achou_especifico (ou seja, encontrou um produto não genérico, referente a cor/tamanho do cod bar)"}
-       if ( cdsItens.FieldByName('QTD_'+tamanho).AsString <> '' ) and not (cdsItensCONFERIDO.AsString = 'S') then
-         achou_especifico := 1;
-
-       if achou_especifico <> 1 then
-         cdsItens.Filtered := false;
-     end;
-  end;
-  
-  {se não achou produto com a cor legítima ou encontrou mas não tem o tamanho disponível para baixar, entra em busca de um produto com cor genérica}
-  if (achou_especifico = 0) or ((achou_especifico in [1]) and (cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0)) then begin
-    if ( cdsItens.Locate('codpro;COR',VarArrayOf([codigo_produto, masculino_feminino]),[]) or
-         cdsItens.Locate('codpro;codCor',VarArrayOf([codigo_produto, codigo_cor_pai]),[]) ) and not acessorio then
-      produtoComCorGenerica   := true
-    else if cdsItens.Locate('codpro;codcor',VarArrayOf([codigo_produto, codigo_cor]),[])  then begin
-      if cdsitens.FieldByName('QTD_'+tamanho).AsString <> '' then
-         achou_especifico := 2;
-    end;
-  end;
-                       {achou_especifico = 0 - nao achou especifico (pode ter generico)
-                                           1 - achou especifico (pode ter generico)
-                                           2 - achou especifico porem nao tem qtd do tamanho }
-
-                                                              //produto de kit desmembrado
-  if ((produtoComCorGenerica or (achou_especifico = 1) or (cdsItensCODIGO_KIT.AsInteger > 0))
-   and (cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0)) or not produtoComCorGenerica then
-                        //produto de kit desmembrado
-     if ((acessorio) or (cdsItensCODIGO_KIT.AsInteger > 0)) and (achou_especifico in[0,2]) then
-     begin
-        achou_especifico := 2;
-        cdsItens.IndexFieldNames := 'CodPro';
-
-        if ( cdsItens.Locate('codpro',VarArrayOf([codigo_produto]),[])) then
-          while (cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0)
-             or (not corGenerica(cdsitens.FieldByName('COr').AsString) and not(cdsItensCODIGO_KIT.AsInteger > 0)) do begin
-            cdsItens.Next;
-
-            if not (cdsItensCodPro.AsInteger = codigo_produto) or (cdsItens.Eof) then begin
-              achou_especifico := 0;
-              break;
-            end;
-          end;
-
-
-     end;
+  codigoItem := referenciaEncontrada(codigo_produto, codigo_cor, codigo_cor_pai, tamanho, masculino_feminino, acessorio,
+                                     achouEspecifico, qtdeTamanhoDisponivel, produtoComCorGenerica);
 
   conferido := 'N';
 
-  if ( codigo_produto > 0 ) and ( ( achou_especifico in [1,2] ) or ( produtoComCorGenerica   ) ) then begin
+  if (codigoItem > 0) and ( achouEspecifico or produtoComCorGenerica ) then begin
 
-    if cdsitens.FieldByName('QTD_'+tamanho).AsInteger = 0 then begin
+    if not qtdeTamanhoDisponivel then begin
       EmiteSomErro;
-      cdsItens.Filtered := false;      
       avisar('Peças deste produto ja foram totalmente conferidas',0,'S',1);
       Exit;
     end;
@@ -805,26 +775,24 @@ begin
    { Quantidade Padrão }
    quantidade := 1;
 
-   if cbInformarQuantidade.Checked then begin
-     quantidade := cdsitens.FieldByName('QTD_'+tamanho).AsInteger +1;
+    if cbInformarQuantidade.Checked then begin
+      quantidade := cdsitens.FieldByName('QTD_'+tamanho).AsInteger +1;
 
-     while quantidade > cdsitens.FieldByName('QTD_'+tamanho).AsInteger do begin
-       quantidade := StrToIntDef( chamaInput('INTEGER','Informe a quantidade á conferir [ Qtd. Máx. = '+cdsitens.FieldByName('QTD_'+tamanho).AsString+' ]'), 0 );
+      while quantidade > cdsitens.FieldByName('QTD_'+tamanho).AsInteger do begin
+        quantidade := StrToIntDef( chamaInput('INTEGER','Informe a quantidade á conferir [ Qtd. Máx. = '+cdsitens.FieldByName('QTD_'+tamanho).AsString+' ]'), 0 );
 
-       if quantidade > cdsitens.FieldByName('QTD_'+tamanho).AsInteger then begin
-         EmiteSomErro;
-         avisar('A quantidade informada ultrapassa a quantidade disponível.');
-       end;
-     end;
-   end;
+        if quantidade > cdsitens.FieldByName('QTD_'+tamanho).AsInteger then begin
+          EmiteSomErro;
+          avisar('A quantidade informada ultrapassa a quantidade disponível.');
+        end;
+      end;
+    end;
 
 
-   if cdsitens.FieldByName('QTD_'+tamanho).AsInteger > 0 then begin
-        { **** Atualiza o respectivo tamanho **** }
-      item_conferido := cdsItensCODIGO.AsInteger;
-      cdsItens.Filtered := false;
-      cdsItens.Locate('CODIGO',item_conferido,[]);
-      if (produtoComCorGenerica) or (acessorio and (achou_especifico = 2)) then
+    if qtdeTamanhoDisponivel then
+    begin
+      { **** Atualiza o respectivo tamanho **** }
+      if (produtoComCorGenerica) then
         substitui_generico(cdsItensCodigo.AsInteger, codigo_cor, refcor, cor, tamanho, quantidade);
 
       if not cdsItensConferidos.Locate('codigo_item',cdsItensCODIGO.AsInteger, []) then begin
@@ -838,6 +806,7 @@ begin
         cdsItensConferidosCodPro.AsInteger       := cdsItensCodPro.AsInteger;
         cdsItensConferidosCodCor.AsInteger       := cdsItensCodCor.AsInteger;
         cdsItensConferidos.Post;
+        cdsItensConferidos.Locate('codigo_item',cdsItensCODIGO.AsInteger, []);
       end;
 
       cdsItensConferidos.Edit;
@@ -856,6 +825,9 @@ begin
         cdsConferidosCOD_PRODUTO.AsInteger := cdsItensConferidosCodPro.AsInteger;
         cdsConferidosCOD_COR.AsInteger     := cdsItensConferidosCodCor.AsInteger;
         cdsConferidosCOD_TAMANHO.AsInteger := cdsTamanhos.FieldByName('CODIGO').AsInteger;
+        cdsConferidosTIPO_COR.AsString     := tipo_cor;
+        cdsConferidosSKU.AsString          := refpro + IfThen(tamanho = 'UNICA', 'UN', tamanho) + refcor;
+        cdsConferidosSKU.AsString          := TStringUtilitario.RemoveCaracteresEspeciais( cdsConferidosSKU.AsString );
       end;
       cdsConferidosQUANTIDADE.AsFloat := cdsConferidosQUANTIDADE.AsFloat + quantidade;
       cdsConferidos.Post;
@@ -865,14 +837,11 @@ begin
       cdsItens.Post;
 
       btnConfParcial.Enabled     := false;
+      btnExcluir.Enabled         := false;
       SubstituirProduto1.Visible := false;
       btnSubstitui.Enabled       := false;
 
-   end;
-    // - - - >
-    item_conferido := cdsItensCODIGO.AsInteger;
-    if cdsItens.Filtered then
-      cdsItens.Filtered := false;
+    end;
     cdsItensConferidos.IndexFieldNames := 'CODIGO_ITEM';
   end
   else begin
@@ -880,6 +849,7 @@ begin
     cdsItens.Filtered := false;
     avisar('Produto não consta no pedido, ou inexistente',0,'S', 1);
   end;
+
   cdsItens.DisableControls;
   cdsItens.AfterScroll := nil;
 
@@ -887,9 +857,7 @@ begin
 
   cdsItens.EnableControls;
   cdsItens.AfterScroll := cdsItensAfterScroll;
-
-  if item_conferido > 0 then
-    cdsItens.Locate('CODIGO',item_conferido,[]);
+  cdsItens.Locate('CODIGO',codigoItem, []);
   Result := true;
 end;
 
@@ -945,6 +913,7 @@ var repositorio        :TRepositorio;
     ConferenciaPedido  :TConferenciaPedido;
     ConferenciaItem    :TConferenciaItem;
     cdsTemp            :TClientDataSet;
+    pedEcommerce       :Boolean;
 begin
   repositorio        := nil;
   ConferenciaPedido  := nil;
@@ -1020,15 +989,21 @@ begin
 
    atualizaTabelaDirecionamento;
 
+   pedEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce;
+   atualizaEstoqueLocal(pedEcommerce);
+
+   //se for pedido de representante E-Commerce e não for pedido da própria plataforma, o estoque é atualizado na mesma
+   if pedEcommerce and (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+   begin
+//     getEstoqueAtualProdutos;
+     atualizaEstoquePlataforma(-1);
+   end;
+
    //se foi 100% conferido
    if labelQtdePecas.Caption = labelQtdePecasConferidos.Caption then
-   begin
-     atualizaEstoqueLocal( BuscaPedido1.Ped.codigo, -1);
-     atualizaEstoquePlataforma;
      retornarProdutosAoKit(ConferenciaPedido);
-   end;
-   result             := true;
 
+   result             := true;
  finally
    freeAndNil( repositorio );
    FreeAndNil( repositorioItem );
@@ -1214,16 +1189,16 @@ begin
          
 end;
 
-procedure TfrmConferenciaPedido.item_por_codigo_barras(var codigo_produto, codigo_cor :integer; var refcor, cor, tamanho :String;
- var masculino_feminino, cod_bar :String; var acessorio :Boolean);
+procedure TfrmConferenciaPedido.item_por_codigo_barras(var codigo_produto, codigo_cor :integer; var refpro, refcor, cor, tamanho :String;
+ var masculino_feminino, cod_bar, tipo_cor :String; var acessorio :Boolean);
 begin
   codigo_produto := 0;
   codigo_cor     := 0;
 
   fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := ' select cb.codproduto, cb.codcor, cor.referencia, cor.descricao cor, tam.descricao tamanho, '+
+  fdm.qryGenerica.SQL.Text := ' select cb.codproduto, cb.codcor, cor.referencia refcor, pro.referencia refpro, cor.descricao cor, tam.descricao tamanho, '+
                               ' iif(pc.genero = ''M'',''MASCULINO'',                                                       '+
-                              '      iif(pc.genero = ''F'', ''FEMININO'','''')) GENERO, tp.descricao tipo                  '+
+                              '      iif(pc.genero = ''F'', ''FEMININO'','''')) GENERO, tp.descricao tipo, cor.tipo tipocor '+
                               ' from codigo_barras cb                                                                      '+
                               ' left join tamanhos tam on tam.codigo = cb.codtamanho                                       '+
                               ' left join produtos pro on pro.codigo = cb.codproduto                                       '+
@@ -1240,12 +1215,13 @@ begin
 
   codigo_produto      := fdm.qryGenerica.fieldByName('codproduto').AsInteger;
   codigo_cor          := fdm.qryGenerica.fieldByName('codcor').AsInteger;
-  refcor              := fdm.qryGenerica.fieldByName('referencia').AsString;
+  refpro              := fdm.qryGenerica.fieldByName('refpro').AsString;
+  refcor              := fdm.qryGenerica.fieldByName('refcor').AsString;
   cor                 := fdm.qryGenerica.fieldByName('cor').AsString;
   tamanho             := fdm.qryGenerica.fieldByName('tamanho').AsString;
   masculino_feminino  := fdm.qryGenerica.fieldByName('genero').AsString;
   acessorio           := (fdm.qryGenerica.fieldByName('tipo').AsString = 'ACESSORIO');
-
+  tipo_cor            := fdm.qryGenerica.fieldByName('tipocor').AsString;
 end;
 
 procedure TfrmConferenciaPedido.calcula_percentagem_conferida;
@@ -1342,28 +1318,8 @@ var buscaMateria :TBuscaMateria;
     panel        :TPanel;
     titulo       :TLabel;
 begin
-{  panel := TPanel.Create(nil);
-  panel.Parent := self;
-  panel.Width  := 400;
-  panel.Height := 80;
-  panel.Left := 350;
-  panel.Top  := 103;
-  panel.Color := $00F8F8F8;
-  panel.ParentColor := false;
-  panel.BevelKind   := bkTile;
-  panel.BevelOuter  := bvNone;
-
-  titulo := TLabel.Create(nil);
-  titulo.Caption := ' Selecione a caixa correspondente...';
-  titulo.Color   := $00D8D5AB;
-  titulo.Transparent := false;
-  titulo.Font.Style := [fsBold];
-  titulo.Parent  := panel;
-  titulo.Align   := alTop;     }
-
-  buscaMateria := TBuscaMateria.Create(nil);
+  buscaMateria        := TBuscaMateria.Create(nil);
   buscaMateria.Parent := self;//panel;
- // buscaMateria.OnExit := frameMateriaExit;
   buscaMateria.Align  := alBottom;
   buscaMateria.BringToFront;
   buscamateria.FiltroDescricao := ' DESCRICAO LIKE ''CAIXA PAP.%'' ';
@@ -1450,6 +1406,11 @@ begin
   gridItens.Repaint;
 end;
 
+function TfrmConferenciaPedido.generoValido(corItemComparado, corItemConferindo: String): Boolean;
+begin
+  result := corItemConferindo.IsEmpty or (corItemComparado.Equals(corItemConferindo));
+end;
+
 function TfrmConferenciaPedido.grade_imcompleta: Boolean;
 begin
   result := false;
@@ -1486,7 +1447,9 @@ end;
 
 procedure TfrmConferenciaPedido.btnConfParcialClick(Sender: TObject);
 begin
- if btnFecharCaixa.Enabled then
+ if verificaDesmembramento then
+    avisar('Existem kits desmembrados conferidos parcialmente, impossibilitando assim o fechamento da conferência parcial.')
+ else if btnFecharCaixa.Enabled then
     avisar('Caixa '+cbCaixas.Items[cbCaixas.itemindex]+' ainda está aberta.'+#13#10+'Favor, fecha-la antes fechar conferência parcial.')
  else begin
 
@@ -1540,11 +1503,13 @@ begin
 
   try
     Aguarda('Gerando conferência parcial');
+    dm.conexao.TxOptions.AutoCommit := false;
   try
 
     repositorio := TFabricaRepositorio.GetRepositorio( TPedido.ClassName );
     Pedido      := TPedido( repositorio.Get( BuscaPedido1.Ped.Codigo ) );
 
+    //verifica, pois existe possibilidade de ja ser um pedido parcial
     if Pedido.cod_pedido_matriz = 0 then
       Pedido.cod_pedido_matriz := BuscaPedido1.codigo;
       
@@ -1554,23 +1519,23 @@ begin
     total          := 0;
     desconto_itens := 0;
 
-    { Adiciona itens conferidos para alterar o pedido ja criado }
+    { deixa apenas os itens conferidos no pedido atual }
     for i := 0 to BuscaPedido1.Ped.Itens.Count - 1 do begin
 
       codItem := (BuscaPedido1.Ped.Itens[i] as TItem).codigo;
 
+      { GRADE FECHADA = todas as peças de todos os tamanhos do item estao conferidas }
+      //se o item esta com a grade fechada ele ja entra sem verificação
       if  ( cdsItens.Locate('CODIGO', codItem, [] ) ) and ( cdsItensCONFERIDO.AsString = 'S') then begin
-
         Pedido.Itens.Add( (BuscaPedido1.Ped.Itens[i] as TItem) );
         total          := total + (BuscaPedido1.Ped.Itens[i] as TItem).valor_total;
         desconto_itens := desconto_itens + (BuscaPedido1.Ped.Itens[i] as TItem).desconto;
         existe_grade_fechada := true;
       end
+      //se apenas_grades_fechadas = true, ou se o item não tiver nenhuma peça conferida, o item é deletado e só entra no novo pedido
       else begin
-
         if (apenas_grades_fechadas) or not atualiza_item( Pedido, codItem, total, desconto_itens) then
           itens_deletar := itens_deletar + intToStr( codItem ) + ',';
-
       end;
     end;
 
@@ -1628,8 +1593,16 @@ begin
     repositorio.Salvar( Conferencia );
 
     { baixa o estoque dos itens do pedido, correspondente a conferencia finalizada }
-    atualizaEstoqueLocal(Pedido.Codigo, -1);
+    atualizaEstoquePedidoTotal(Pedido, -1);
 
+    if assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce and
+       (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+    begin
+      AbreItensDoPedido(Pedido.Codigo);
+      atualizaEstoquePlataformaPeloPedido(-1);
+    end;
+
+    dm.conexao.Commit;
     avisar('Conferência parcial do pedido Nº '+BuscaPedido1.Ped.numpedido+' realizada com sucesso.'+#13#10+#13#10+
            'Pedido Nº '+pedidoNovo.numpedido+' gerado para o restante do pedido.');
 
@@ -1638,11 +1611,14 @@ begin
   Except
     on e : Exception do
      begin
+       dm.conexao.Rollback;
+       reinicia_pedido;
        avisar(e.Message);
      end;
   end;
 
   finally
+    dm.conexao.TxOptions.AutoCommit := true;
     FreeAndNil(repositorio);
     FimAguarda();
   end;
@@ -1687,6 +1663,63 @@ begin
   repositorio.Salvar( Pedido );
 end;
 
+function TfrmConferenciaPedido.referenciaEncontrada(codpro, codcor, codigo_cor_pai :integer; tam, masculino_feminino: String; pAcessorio :Boolean;
+var achouEspecifico, qtdeTamanhoDisponivel, produtoComCorGenerica :boolean): integer;
+begin
+  try
+    result := 0;
+    achouEspecifico       := false;
+    qtdeTamanhoDisponivel := false;
+    cdsItens.Filtered     := false;
+    cdsItens.Filter       := '(CODPRO = '+intToStr(codpro)+') and (CODCOR = '+intToStr(codcor)+')';
+    cdsItens.Filtered     := true;
+
+    cdsItens.First;
+    { * * Encontra referencia especifica, independente se tiver ou não tamanho disponivel para conferir * * }
+    while not cdsItens.Eof do
+    begin
+      achouEspecifico       := (cdsItens.FieldByName('QTD_'+tam).AsString <> '');
+      qtdeTamanhoDisponivel := (cdsItens.FieldByName('QTD_'+tam).AsInteger > 0);
+
+      if achouEspecifico then
+      begin
+        result := cdsItensCODIGO.AsInteger;
+        if qtdeTamanhoDisponivel then
+          break;
+      end;
+      cdsItens.next;
+    end;
+
+    { se nao achou a REFERENCIA EXATA(produto, cor e tamanho correspondente) ou encontrou mas nao tem o tamanho disponivel para baixar,
+      entra para verificar se existe produto com cor generica em que o produto conferido se encaixe }
+    if (result = 0) or ((result > 0) and (not qtdeTamanhoDisponivel)) then
+    begin
+      cdsItens.Filtered     := false;
+      cdsItens.Filter       := '(CODPRO = '+intToStr(codpro)+')';
+      cdsItens.Filtered     := true;
+      cdsItens.First;
+      while not cdsItens.Eof do
+      begin
+        if (corGenerica(cdsitens.FieldByName('COr').AsString) and generoValido(cdsitens.FieldByName('COr').AsString, masculino_feminino)
+           or (cdsItensCODCOR.AsInteger = codigo_cor_pai)) then
+        begin
+          produtoComCorGenerica := true;
+          qtdeTamanhoDisponivel := (cdsItens.FieldByName('QTD_'+tam).AsInteger > 0);
+          result                := cdsItensCODIGO.AsInteger;
+          { se tem qtde disponivel sai do laço, caso contrario, continua procurando pela cor generica ou pela cor_pai }
+          if qtdeTamanhoDisponivel then
+            break;
+        end;
+        cdsItens.Next;
+      end;
+    end;
+
+  finally
+    cdsItens.Filtered     := false;
+    cdsItens.Locate('CODIGO',result, []);
+  end;
+end;
+
 function TfrmConferenciaPedido.atualiza_item(Pedido: TPedido;
   codigo_item: Integer; var total :Real; var desconto_itens :Real): Boolean;
 var qtd_real :Double;
@@ -1725,8 +1758,8 @@ begin
       Item.qtd_14     := cdsItensConferidosQTD_14.AsInteger;
       Item.qtd_UNICA  := cdsItensConferidosQTD_UNICA.AsInteger;
 
-                        { como o item.valor_total ja pega o total sem o desconto total, após isso se tem que tirar a diferença do
-                        desconto referente apenas a quantidade real de pessas do item que sera adicionado }
+                        { como o item.valor_total ja pega o total sem o desconto total, posteriormente tem que tirar a diferença do
+                          desconto referente apenas a quantidade real de peças do item que sera adicionado }
       Item.valor_total:= Item.valor_total + (Item.desconto - ( ( ((Item.qtd_total * 100) / qtd_real) * Item.desconto) /100 ));
       Item.desconto   := ( ( ((Item.qtd_total * 100) / qtd_real) * Item.desconto) /100 );
 
@@ -1796,6 +1829,20 @@ begin
 
 end;
 
+procedure TfrmConferenciaPedido.AbreItensConferidos(pCodigoPedido: integer);
+begin
+  cdsItensConferidos.Close;
+  qryItensConferidos.ParamByName('codpedido').AsInteger := pCodigoPedido;
+  cdsItensConferidos.Open;
+end;
+
+procedure TfrmConferenciaPedido.AbreItensDoPedido(pCodigoPedido: integer);
+begin
+  cdsItens.Close;
+  qryItens.ParamByName('codpedido').AsInteger := pCodigoPedido;
+  cdsItens.Open;
+end;
+
 function TfrmConferenciaPedido.adicionarCaixaPedido :Boolean;
 var caixaAux, caixa :TCaixaPedido;
     encontrou :Boolean;
@@ -1831,209 +1878,11 @@ begin
   end;
 end;
 
-procedure TfrmConferenciaPedido.armazena_substituto(codigo_item,
-  codigo_cor, quantidade: integer; tamanho, GENERO: String);
+procedure TfrmConferenciaPedido.aguardarUmMinuto;
 begin
-  if not cdsSubstitutos.Active then cdsSubstitutos.CreateDataSet;
-
-  if cdsSubstitutos.Locate('CODIGO_ITEM;CODIGO_COR',VarArrayOf([codigo_item, codigo_cor]), []) then begin
-    cdsSubstitutos.Edit;
-    cdsSubstitutos.FieldByName('TAM_'+tamanho).AsInteger := cdsSubstitutos.fieldByName('TAM_'+tamanho).AsInteger + quantidade;
-  end
-  else begin
-    cdsSubstitutos.Append;
-    cdsSubstitutos.FieldByName('TAM_'+tamanho).AsInteger := quantidade;
-    cdsSubstitutosCODIGO_ITEM.AsInteger                  := codigo_item;
-    cdsSubstitutosCODIGO_COR.AsInteger                   := codigo_cor;
-    cdsSubstitutosGENERO.asString                        := genero;
-    cdsSubstitutosNUMERO_CAIXA.AsString                  := cbCaixas.Text;
-  end;
-
-  cdsSubstitutosQTD_TOTAL.AsFloat := cdsSubstitutosQTD_TOTAL.AsFloat + quantidade;
-  cdsSubstitutos.Post;
-end;
-
-procedure TfrmConferenciaPedido.substitui_produto_generico;
-var Item :TItem;
-    i, x, codigo_item_generico, codigo_item_adicionadoAlterado :Integer;
-    itens_deletar, conferencia_itens_deletar :String;
-    total_itens, perc_equivalente, valor_equivalente :Real;
-    Repositorio            : TRepositorio;
-    repositorioConferencia : TRepositorio;
-    repositorioItem        : TRepositorio;
-    Especificacao          : TEspecificacao;
-    ConferenciaPedido      : TConferenciaPedido;
-    ConferenciaItem        : TConferenciaItem;
-    AtualizouItens         :boolean;
-    TotalItens :Integer;
-label
-  Inicio;
-begin
-  Repositorio       := nil;
-  repositorioConferencia := nil;
-  repositorioItem   := nil;
-  Especificacao     := nil;
-  itens_deletar     := '';
-
-  repositorioConferencia := TFabricaRepositorio.GetRepositorio(TConferenciaPedido.ClassName);
-  ConferenciaPedido      := TConferenciaPedido.Create( BuscaPedido1.Ped.Codigo );
-
-  TotalItens := BuscaPedido1.Ped.Itens.Count;
-
-  for i := 0 to TotalItens - 1 do begin
-
-    codigo_item_generico := TItem(BuscaPedido1.Ped.Itens[i]).codigo;
-    AtualizouItens       := false;
-
-    Inicio:
-
-    if cdsSubstitutos.Locate('CODIGO_ITEM', codigo_item_generico, []) then begin
-
-      total_itens := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_total;
-
-      { remove/atualiza do/no item generico, a quantidade e valores, agora sem a parte correspondente do item substituto da vez }
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_RN    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_RN    - cdsSubstitutosTAM_RN.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_P     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_P     - cdsSubstitutosTAM_P.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_M     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_M     - cdsSubstitutosTAM_M.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_G     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_G     - cdsSubstitutosTAM_G.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_1     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_1     - cdsSubstitutosTAM_1.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_2     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_2     - cdsSubstitutosTAM_2.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_3     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_3     - cdsSubstitutosTAM_3.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_4     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_4     - cdsSubstitutosTAM_4.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_6     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_6     - cdsSubstitutosTAM_6.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_8     := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_8     - cdsSubstitutosTAM_8.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_10    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_10    - cdsSubstitutosTAM_10.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_12    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_12    - cdsSubstitutosTAM_12.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_14    := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_14    - cdsSubstitutosTAM_14.AsInteger;
-      (BuscaPedido1.Ped.Itens[i] as TItem).qtd_UNICA := (BuscaPedido1.Ped.Itens[i] as TItem).qtd_UNICA - cdsSubstitutosTAM_UNICA.AsInteger;
-
-      perc_equivalente  := ( cdsSubstitutosQTD_TOTAL.AsFloat * 100 ) / total_itens;
-      valor_equivalente := (perc_equivalente * (BuscaPedido1.Ped.Itens[i] as TItem).desconto)/100;
-
-      (BuscaPedido1.Ped.Itens[i] as TItem).desconto  := (BuscaPedido1.Ped.Itens[i] as TItem).desconto - valor_equivalente;
-
-
-
-      Repositorio   := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
-      Especificacao := TEspecificacaoItemPorPedidoProdutoCor.Create( (BuscaPedido1.Ped.Itens[i] as TItem).cod_pedido,
-                                                                     (BuscaPedido1.Ped.Itens[i] as TItem).cod_produto,
-                                                                      cdsSubstitutosCODIGO_COR.AsInteger );
-      Application.ProcessMessages;
-      Item          := TItem( Repositorio.GetPorEspecificacao(especificacao, IntToStr(BuscaPedido1.Ped.Codigo)) );
-
-      FreeAndNil(Especificacao);
-
-      { cria-se o item que esta substituindo o generico (MASCULINO ou FEMININO) }
-
-      if not assigned(Item) then Item := TItem.Create;
-
-      Item.cod_pedido     := (BuscaPedido1.Ped.Itens[i] as TItem).cod_pedido;
-      Item.cod_produto    := (BuscaPedido1.Ped.Itens[i] as TItem).cod_produto;
-      Item.cod_cor        := cdsSubstitutosCODIGO_COR.AsInteger;
-      Item.preco          := (BuscaPedido1.Ped.Itens[i] as TItem).preco;
-      Item.desconto       := Item.desconto + valor_equivalente;
-      Item.ref_prod       := (BuscaPedido1.Ped.Itens[i] as TItem).ref_prod;
-      Item.ref_cor        := (BuscaPedido1.Ped.Itens[i] as TItem).ref_cor;
-      Item.qtd_RN         := Item.qtd_RN    + cdsSubstitutosTAM_RN.AsInteger;
-      Item.qtd_P          := Item.qtd_P     + cdsSubstitutosTAM_P.AsInteger;
-      Item.qtd_M          := Item.qtd_M     + cdsSubstitutosTAM_M.AsInteger;
-      Item.qtd_G          := Item.qtd_G     + cdsSubstitutosTAM_G.AsInteger;
-      Item.qtd_1          := Item.qtd_1     + cdsSubstitutosTAM_1.AsInteger;
-      Item.qtd_2          := Item.qtd_2     + cdsSubstitutosTAM_2.AsInteger;
-      Item.qtd_3          := Item.qtd_3     + cdsSubstitutosTAM_3.AsInteger;
-      Item.qtd_4          := Item.qtd_4     + cdsSubstitutosTAM_4.AsInteger;
-      Item.qtd_6          := Item.qtd_6     + cdsSubstitutosTAM_6.AsInteger;
-      Item.qtd_8          := Item.qtd_8     + cdsSubstitutosTAM_8.AsInteger;
-      Item.qtd_10         := Item.qtd_10    + cdsSubstitutosTAM_10.AsInteger;
-      Item.qtd_12         := Item.qtd_12    + cdsSubstitutosTAM_12.AsInteger;
-      Item.qtd_14         := Item.qtd_14    + cdsSubstitutosTAM_14.AsInteger;
-      Item.qtd_UNICA      := Item.qtd_UNICA + cdsSubstitutosTAM_UNICA.AsInteger;
-      Item.qtd_total      := Item.qtd_total;
-      Item.valor_total    := Item.valor_total;
-
-   {   if (BuscaPedido1.Ped.Itens[i] as TItem).qtd_total = 0 then
-        itens_deletar := itens_deletar + intToStr((BuscaPedido1.Ped.Itens[i] as TItem).Codigo )+','; }
-
-      codigo_item_adicionadoAlterado := Item.codigo;
-
-      BuscaPedido1.Ped.Itens.Add( Item ); { Adiciona o novo item ao pedido, ou altera um ja criado }
-      { bug_140: http://homegentoo.no-ip.org/bugzilla/show_bug.cgi?id=140
-        Como estava removendo o item da lista e está ocorrendo a iteração nessa mesma lista, então acontecia erro de pegar índice errado da lista }
-      BuscaPedido1.Ped.salvarSemDeletar;
-      BuscaPedido1.Ped.Itens.Free;
-      Buscapedido1.Ped.Itens := nil;
-
-      repositorioItem := TFabricaRepositorio.GetRepositorio( TConferenciaItem.ClassName );
-
-      if codigo_item_adicionadoAlterado <= 0 then begin
-        ConferenciaItem := TConferenciaItem.Create;
-        ConferenciaItem.codigo_conferencia := ConferenciaPedido.codigo;
-        ConferenciaItem.codigo_item        := strToInt(Maior_Valor_Cadastrado('Itens', 'Codigo'));
-        ConferenciaItem.QTD_RN             := cdsSubstitutosTAM_RN.AsInteger;
-        ConferenciaItem.QTD_P              := cdsSubstitutosTAM_P.AsInteger;
-        ConferenciaItem.QTD_M              := cdsSubstitutosTAM_M.AsInteger;
-        ConferenciaItem.QTD_G              := cdsSubstitutosTAM_G.AsInteger;
-        ConferenciaItem.QTD_1              := cdsSubstitutosTAM_1.AsInteger;
-        ConferenciaItem.QTD_2              := cdsSubstitutosTAM_2.AsInteger;
-        ConferenciaItem.QTD_3              := cdsSubstitutosTAM_3.AsInteger;
-        ConferenciaItem.QTD_4              := cdsSubstitutosTAM_4.AsInteger;
-        ConferenciaItem.QTD_6              := cdsSubstitutosTAM_6.AsInteger;
-        ConferenciaItem.QTD_8              := cdsSubstitutosTAM_8.AsInteger;
-        ConferenciaItem.QTD_10             := cdsSubstitutosTAM_10.AsInteger;
-        ConferenciaItem.QTD_12             := cdsSubstitutosTAM_12.AsInteger;
-        ConferenciaItem.QTD_14             := cdsSubstitutosTAM_14.AsInteger;
-        ConferenciaItem.QTD_UNICA          := cdsSubstitutosTAM_UNICA.AsInteger;
-
-        ConferenciaPedido.Itens.Add( ConferenciaItem );
-      end;
-
-
-      for x := 0 to ConferenciaPedido.Itens.Count - 1 do begin
-
-        if (codigo_item_adicionadoAlterado > 0) and ((ConferenciaPedido.Itens[x] as TConferenciaItem).codigo_item = codigo_item_adicionadoAlterado) then
-          AtualizaValoresConferenciaItem((ConferenciaPedido.Itens[x] as TConferenciaItem),
-                                          cdsSubstitutosTAM_RN.AsInteger, cdsSubstitutosTAM_P.AsInteger, cdsSubstitutosTAM_M.AsInteger,
-                                          cdsSubstitutosTAM_G.AsInteger, cdsSubstitutosTAM_1.AsInteger, cdsSubstitutosTAM_2.AsInteger,
-                                          cdsSubstitutosTAM_3.AsInteger, cdsSubstitutosTAM_4.AsInteger, cdsSubstitutosTAM_6.AsInteger,
-                                          cdsSubstitutosTAM_8.AsInteger, cdsSubstitutosTAM_10.AsInteger, cdsSubstitutosTAM_12.AsInteger,
-                                          cdsSubstitutosTAM_14.AsInteger, cdsSubstitutosTAM_unica.AsInteger);
-
-        if codigo_item_generico = (ConferenciaPedido.Itens[x] as TConferenciaItem).codigo_item then
-          AtualizaValoresConferenciaItem((ConferenciaPedido.Itens[x] as TConferenciaItem),
-                                         -cdsSubstitutosTAM_RN.AsInteger, -cdsSubstitutosTAM_P.AsInteger, -cdsSubstitutosTAM_M.AsInteger,
-                                         -cdsSubstitutosTAM_G.AsInteger, -cdsSubstitutosTAM_1.AsInteger, -cdsSubstitutosTAM_2.AsInteger,
-                                         -cdsSubstitutosTAM_3.AsInteger, -cdsSubstitutosTAM_4.AsInteger, -cdsSubstitutosTAM_6.AsInteger,
-                                         -cdsSubstitutosTAM_8.AsInteger, -cdsSubstitutosTAM_10.AsInteger, -cdsSubstitutosTAM_12.AsInteger,
-                                         -cdsSubstitutosTAM_14.AsInteger, -cdsSubstitutosTAM_unica.AsInteger);
-
-          if ((ConferenciaPedido.Itens[x] as TConferenciaItem).QTD_TOTAL = 0)or
-              (codigo_item_generico = (ConferenciaPedido.Itens[x] as TConferenciaItem).codigo_item) then
-            conferencia_itens_deletar := conferencia_itens_deletar + intToStr( (ConferenciaPedido.Itens[x] as TConferenciaItem).Codigo )+',';
-     end;
-
-     AtualizouItens := true;
-     cdsSubstitutos.Delete;
-
-     {Retorna ao inicio, para caso tiver mais um do mesmo produto com otra cor, substituir sua parte no generico tbm }
-     GOTO Inicio;
-    end;
-
-{   if AtualizouItens then
-     BuscaPedido1.Ped.salvar;}
-
-  end;//fim do FOR
-
-  { bug_140: http://homegentoo.no-ip.org/bugzilla/show_bug.cgi?id=140 }
-  BuscaPedido1.Ped.Salvar;
-  ConferenciaPedido.RemoverItensZerados;
-  { bug_140: http://homegentoo.no-ip.org/bugzilla/show_bug.cgi?id=140 }
-
-  repositorioConferencia.Salvar( ConferenciaPedido );
-
- // if itens_deletar <> '' then  deleta_itens( itens_deletar );
- // if conferencia_itens_deletar <> '' then  deleta_conferencia_itens(conferencia_itens_deletar);
-
-  cdsSubstitutos.EmptyDataSet;
+  Aguarda('Limite de requisições por minuto atingida. Por favor aguarde alguns instantes.');
+  sleep( TEMPO_ESPERA );
+  FimAguarda();
 end;
 
 procedure TfrmConferenciaPedido.deleta_itens(codigos_itens: String);
@@ -2053,51 +1902,59 @@ procedure TfrmConferenciaPedido.desmembrarKits;
 var i :integer;
     repositorio :TRepositorio;
     Item :TItem;
+    qry :TFDquery;
 begin
-  for i := 0 to BuscaPedido1.Ped.Itens.Count -1 do
-  begin
-    if TItem(BuscaPedido1.Ped.Itens[i]).Produto.Kit then
+  try
+    qry := dm.GetConsulta;
+    
+    for i := 0 to BuscaPedido1.Ped.Itens.Count -1 do
     begin
-      dm.qryGenerica2.Close;
-      dm.qryGenerica2.SQL.Text := 'SELECT * FROM PRODUTOS_KIT WHERE CODIGO_KIT = :COD_PROD_KIT AND CODIGO_COR_KIT = :CODIGO_COR';
-      dm.qryGenerica2.ParamByName('cod_prod_kit').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).Produto.Codigo;
-      dm.qryGenerica2.ParamByName('codigo_cor').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Codigo;
-      dm.qryGenerica2.Open;
-
-      try
-        repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
-        Item        := TItem.Create;
-        while not dm.qryGenerica2.Eof do
-        begin
-          Item.codigo      := IfThen(dm.qryGenerica2.RecNo = (dm.qryGenerica2.RecordCount), TItem(BuscaPedido1.Ped.Itens[i]).codigo, 0);
-          Item.cod_pedido  := BuscaPedido1.Ped.Codigo;
-          Item.cod_produto := dm.qryGenerica2.FieldByName('codigo_produto').AsInteger;
-          Item.cod_cor     := dm.qryGenerica2.FieldByName('codigo_cor').AsInteger;
-          Item.preco       := TItem(BuscaPedido1.Ped.Itens[i]).preco;
-          Item.qtd_RN      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
-          Item.qtd_P       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_P;
-          Item.qtd_M       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_M;
-          Item.qtd_G       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_G;
-          Item.qtd_1       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_1;
-          Item.qtd_2       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_2;
-          Item.qtd_3       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_3;
-          Item.qtd_4       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_4;
-          Item.qtd_6       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_6;
-          Item.qtd_8       := TItem(BuscaPedido1.Ped.Itens[i]).qtd_8;
-          Item.qtd_10      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_10;
-          Item.qtd_12      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
-          Item.qtd_14      := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
-          Item.qtd_UNICA   := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
-          Item.codigoProdutoKit   := dm.qryGenerica2.FieldByName('codigo').AsInteger;
-
-          repositorio.Salvar(Item);
-          dm.qryGenerica2.Next;
+      if TItem(BuscaPedido1.Ped.Itens[i]).Produto.Kit then
+      begin
+        qry.Close;
+        qry.SQL.Text := 'SELECT * FROM PRODUTOS_KIT WHERE CODIGO_KIT = :COD_PROD_KIT AND CODIGO_COR_KIT = :CODIGO_COR';
+        qry.ParamByName('cod_prod_kit').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).Produto.Codigo;
+        qry.ParamByName('codigo_cor').AsInteger := TItem(BuscaPedido1.Ped.Itens[i]).Cor.Codigo;
+        qry.Open;
+   
+        try
+          repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
+          Item        := TItem.Create;
+          while not qry.Eof do
+          begin
+            Item.codigo           := IfThen(qry.RecNo = (qry.RecordCount), TItem(BuscaPedido1.Ped.Itens[i]).codigo, 0);
+            Item.cod_pedido       := BuscaPedido1.Ped.Codigo;
+            Item.cod_produto      := qry.FieldByName('codigo_produto').AsInteger;
+            Item.cod_cor          := qry.FieldByName('codigo_cor').AsInteger;
+            Item.preco            := TItem(BuscaPedido1.Ped.Itens[i]).preco;
+            Item.qtd_RN           := TItem(BuscaPedido1.Ped.Itens[i]).qtd_RN;
+            Item.qtd_P            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_P;
+            Item.qtd_M            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_M;
+            Item.qtd_G            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_G;
+            Item.qtd_1            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_1;
+            Item.qtd_2            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_2;
+            Item.qtd_3            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_3;
+            Item.qtd_4            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_4;
+            Item.qtd_6            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_6;
+            Item.qtd_8            := TItem(BuscaPedido1.Ped.Itens[i]).qtd_8;
+            Item.qtd_10           := TItem(BuscaPedido1.Ped.Itens[i]).qtd_10;
+            Item.qtd_12           := TItem(BuscaPedido1.Ped.Itens[i]).qtd_12;
+            Item.qtd_14           := TItem(BuscaPedido1.Ped.Itens[i]).qtd_14;
+            Item.qtd_UNICA        := TItem(BuscaPedido1.Ped.Itens[i]).qtd_UNICA;
+            Item.codigoProdutoKit := qry.FieldByName('codigo').AsInteger;
+   
+            repositorio.Salvar(Item);
+            qry.Next;
+          end;
+        finally
+          FreeAndNil(repositorio);
+          FreeAndNil(Item);
         end;
-      finally
-        FreeAndNil(repositorio);
-        FreeAndNil(Item);
       end;
     end;
+    
+  finally
+    FreeAndNil(qry);
   end;
 end;
 
@@ -2137,12 +1994,7 @@ begin
                                                                                          cdsConferidosCOD_TAMANHO.AsInteger])) then
         begin
           falta := Fdm.qryGenerica.FieldByName('quantidade').AsFloat - Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat;
-          {direcionamento                  := repositorio.Get(Fdm.qryGenerica.FieldByName('codigo').AsInteger);
-          direcionamento.quantidade_conf  := direcionamento.quantidade_conf + IfThen(qtdconferido > falta, falta, qtdconferido);
-          direcionamento.conferido        := IfThen(direcionamento.quantidade_conf = direcionamento.quantidade, 'S', 'N');
-          repositorio.Salvar(direcionamento);
 
-          FreeAndNil(direcionamento);}
           fdm.qryGenerica.Edit;
           fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat := Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat + IfThen(qtdconferido > falta, falta, qtdconferido);
           fdm.qryGenerica.FieldByName('conferido').AsString := IfThen(Fdm.qryGenerica.FieldByName('quantidade_conf').AsFloat = Fdm.qryGenerica.FieldByName('quantidade').AsFloat, 'S', 'N');
@@ -2314,7 +2166,7 @@ end;
 
 procedure TfrmConferenciaPedido.cdsItensAfterScroll(DataSet: TDataSet);
 begin
-  if (cdsItensCONFERIDO.AsString = 'S') or ( AnsiMatchStr(cdsItensCor.AsString, ['MASCULINO', 'FEMININO']) and (TTipoProduto(cdsItensTIPO.AsInteger) = Acessorio))
+  if (cdsItensCONFERIDO.AsString = 'S') or ( AnsiMatchStr(cdsItensCor.AsString, ['MASCULINO', 'FEMININO']) and (TTipoProduto(cdsItensTIPO.AsInteger) = tpAcessorio))
                                         or ( AnsiMatchStr(cdsItensCor.AsString, ['MASCULINO', 'FEMININO']) and not btnConfParcial.Enabled) then
   begin
     SubstituirProduto1.Visible := false;
@@ -2335,7 +2187,7 @@ procedure TfrmConferenciaPedido.substitui_item_por_item(
   tamanho_substituido: String);
 var
     cod_produto, cod_cor, i :Integer;
-    tamanho, M_F, refcor, cor :String;
+    tamanho, M_F, refcor, refpro, cor, tipo_cor :String;
     Item                    :TItem;
     indice_existente        :Integer;
     codigo_item_deletar     :integer;
@@ -2345,10 +2197,8 @@ var
 begin
   indice_existente    := -1;
   codigo_item_deletar := 0;
-
   try
-
-    item_por_codigo_barras(cod_produto, cod_cor, refcor, cor, tamanho, M_F, cod_bar_substituto, acessorio);
+    item_por_codigo_barras(cod_produto, cod_cor, refpro, refcor, cor, tamanho, M_F, cod_bar_substituto, tipo_cor, acessorio);
 
     { verifica se ja existe o item que sera o substituto, para caso existir, apenas alterar }
     for i:= 0 to BuscaPedido1.Ped.Itens.Count -1 do
@@ -2474,77 +2324,210 @@ begin
   TPanel( TBuscaMateria(Sender).Parent).Destroy;
 end;
 
-procedure TfrmConferenciaPedido.atualizaEstoqueLocal(codigo_pedido :integer; operacao :integer);
+procedure TfrmConferenciaPedido.atualizaEstoqueLocal(pedidoEcommerce :Boolean);
+var qry :TFDquery;
 begin
+  if cdsConferidos.IsEmpty then
+    exit;
   try
-    dm.qryGenerica.Close;
-    dm.qryGenerica.SQL.Text := 'execute procedure baixa_pedido_estoque('+intToStr(codigo_pedido)+', :multiplicador)';
-    // multiplicador determina se os itens conferidos dão baixa no estoque (-1), ou se retornam pro estoque (+1)
-    dm.qryGenerica.ParamByName('multiplicador').AsInteger := -1;
-    dm.qryGenerica.ExecSQL;
+    qry := dm.GetConsulta;
+
+    cdsConferidos.First;
+    while not cdsConferidos.Eof do
+    begin
+      qry.SQL.Text := ' execute procedure altera_cria_estoque(:quantidade, :codigo_produto, :codigo_cor, :codigo_tamanho, :setor) ';
+
+      qry.ParamByName('quantidade').AsInteger     := cdsConferidosQUANTIDADE.AsInteger * -1;
+      qry.ParamByName('codigo_produto').AsInteger := cdsConferidosCOD_PRODUTO.AsInteger;
+      qry.ParamByName('codigo_cor').AsInteger     := cdsConferidosCOD_COR.AsInteger;
+      qry.ParamByName('codigo_tamanho').AsInteger := cdsConferidosCOD_TAMANHO.AsInteger;
+      qry.ParamByName('setor').AsInteger          := ifThen(pedidoEcommerce and (cdsConferidosTIPO_COR.AsString = 'E'), 2, 1);
+      qry.ExecSQL;
+
+      cdsConferidos.Next;
+    end;
   Except
      on e :Exception do
        raise Exception.Create('Erro ao atualizar estoque.'+#13#10+e.message);
   end;
 end;
 
-procedure TfrmConferenciaPedido.atualizaEstoquePlataforma;
+procedure TfrmConferenciaPedido.atualizaEstoquePedidoTotal(Pedido: TPedido; multiplicador :integer);
+begin
+   dm.qryGenerica.Close;
+   dm.qryGenerica.SQL.Text := 'execute procedure baixa_pedido_estoque('+intToStr(Pedido.Codigo)+', :multiplicador)';
+   // multiplicador determina se os itens conferidos dão baixa no estoque (-1), ou se retornam pro estoque (+1)
+   dm.qryGenerica.ParamByName('multiplicador').AsInteger := multiplicador;
+   dm.qryGenerica.ExecSQL;
+end;
+
+procedure TfrmConferenciaPedido.atualizaEstoquePlataforma(multiplicador :integer);
 var sku :String;
-    i, x :integer;
-    refProduto, refCor, tamanho, json :String;
+    json :String;
     Lista : TStringList;
     vHTTPJSON :THTTPJSON;
+    quantidadeAtualizada, qtdRequisicoes :integer;
 begin
   try
   try
-    Lista := nil;
-    Lista := TStringList.Create;
-    Lista.Delimiter := ',';
+    Lista                 := nil;
+    Lista                 := TStringList.Create;
+    Lista.Delimiter       := ',';
     Lista.StrictDelimiter := true;
-    Lista.QuoteChar := #0;
+    Lista.QuoteChar       := #0;
+    qtdRequisicoes        := 10;
 
-    vHTTPJSON := nil;
-    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+    vHTTPJSON             := nil;
+    vHTTPJSON             := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
 
-    cdsItens.First;
-    while not cdsItens.Eof do
+    cdsConferidos.First;
+    while not cdsConferidos.Eof do
     begin
-      for i := 0 to cdsItens.Fields.Count - 1 do
-      begin
-        //se for um campo quantidade
-        if pos('QTD',cdsItens.Fields[i].FieldName) > 0 then
-        begin
-          //se quantidade maior que zero
-          if cdsItens.Fields[i].Value > 0 then
-          begin
-            refProduto := cdsItensREFPRO.AsString;
-            refCor     := cdsItensREFCOR.AsString;
-            tamanho    := copy(cdsItens.Fields[i].FieldName, pos('QTD_',cdsItens.Fields[i].FieldName)+1, 10);
-            tamanho    := IfThen(tamanho = 'UNICA', 'UN', tamanho);
-            sku := refProduto + tamanho + refCor;
+      sku := cdsConferidosSKU.AsString;
 
-            Lista.Add('{"sku": "'+sku+'", "estoque": '+cdsItens.Fields[i].AsString+'}');
-          end;
-        end;
+      quantidadeAtualizada := getQuantidadeAtual( sku );
+      quantidadeAtualizada := quantidadeAtualizada + (cdsConferidosQUANTIDADE.AsInteger * multiplicador);
+      Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      cdsConferidos.Next;
+
+      inc( qtdRequisicoes );
+
+      if qtdRequisicoes >= 300 then
+      begin
+        aguardarUmMinuto;
+        qtdRequisicoes := 10;
       end;
-      cdsItensConferidos.Next;
     end;
 
     json := '['+Lista.DelimitedText+']';
-
     vHTTPJSON.Post(json);
-
   Except
     on e :Exception do
     begin
-      avisar('Erro ao atualizar o estoque da plataforma'+#13#10+e.Message);
-     // verificar se da rollback
+      raise Exception.Create('Erro ao atualizar o estoque da plataforma.'+#13#10+'Aguarde 1 min e tente novamente por favor.'+#13#10+e.Message);
     end;
   end;
   finally
     FreeAndNil(Lista);
     FreeAndNil(vHTTPJSON);
   end;
+end;
+
+procedure TfrmConferenciaPedido.atualizaEstoquePlataformaPeloPedido(multiplicador :integer);
+var sku :String;
+    i :integer;
+    refProduto, refCor, tamanho :String;
+begin
+    cdsItensConferidos.First;
+    while not cdsItensConferidos.Eof do
+    begin
+      for i := 0 to cdsItensConferidos.Fields.Count - 1 do
+      begin
+        //se for um campo quantidade e não for referente a quantidade total mas sim a conferida
+        if (pos('QTD',cdsItensConferidos.Fields[i].FieldName) > 0) and not (pos('_O',cdsItensConferidos.Fields[i].FieldName) > 0) then
+        begin
+          //se quantidade maior que zero
+          if cdsItensConferidos.Fields[i].Value > 0 then
+          begin
+            refProduto := cdsItensConferidosREFPRO.AsString;
+            refCor     := cdsItensConferidosREFCOR.AsString;
+            tamanho    := trim(copy(cdsItensConferidos.Fields[i].FieldName, pos('QTD_',cdsItensConferidos.Fields[i].FieldName)+4, 10));
+            tamanho    := IfThen(tamanho = 'UNICA', 'UN', tamanho);
+            sku        := refProduto + tamanho + refCor;
+            sku        := TStringUtilitario.RemoveCaracteresEspeciais( sku );
+
+            cdsConferidos.Append;
+            cdsConferidosSKU.AsString       := sku;
+            cdsConferidosQUANTIDADE.AsFloat := cdsItensConferidos.Fields[i].AsInteger;
+            cdsConferidos.Post;
+          end;
+        end;
+      end;
+      cdsItensConferidos.Next;
+    end;
+
+    //getEstoqueAtualProdutos;
+    atualizaEstoquePlataforma(multiplicador);
+end;
+
+function TfrmConferenciaPedido.getQuantidadeAtual(sku: String): integer;
+var
+  Objeto :TJSONObject;
+begin
+  try
+    result := 0;
+    Objeto := TJSONObject.ParseJSONValue(getJsonProduto(sku)) as TJSONObject;
+    result := StrToIntDef(Objeto.GetValue('estoque').Value,0);
+  except
+  end;
+end;
+
+procedure TfrmConferenciaPedido.getEstoqueAtualProdutos;
+var
+  Produtos :TJSONArray;
+  Objeto :TJSONObject;
+  ProdutoJSON :TJSONObject;
+  i, x, codigoProduto, codigoCor :integer;
+  refPro, refCor, tamanho, sku, nextPage, erro :String;
+  id_ultimo_produto, page, totalProdutos :integer;
+begin
+  try
+    page     := 1;
+    Objeto   := TJSONObject.ParseJSONValue( buscaProdutos(page) ) as TJSONObject;
+    cdsConferidos.First;
+
+    while nextPage <> 'null' do
+    begin
+      Application.ProcessMessages;
+      inc(page);
+      nextPage := Objeto.GetValue('next').Value;
+      Produtos := Objeto.GetValue('results') as TJSONArray;
+
+      for i := 0 to Produtos.Count-1 do
+      begin
+        ProdutoJSON := (Produtos.Items[i] as TJSONObject);
+
+        if cdsConferidos.Locate('SKU',ProdutoJSON.GetValue('sku').Value, []) then
+        begin
+          cdsConferidos.Edit;
+          cdsConferidosESTOQUE_ATUAL.AsFloat := strToFloatDef(ProdutoJSON.GetValue('estoque').Value,0);
+          cdsConferidos.Post;
+        end;
+      end;
+
+      if nextPage <> 'null' then
+         Objeto   := TJSONObject.ParseJSONValue( buscaProdutos(page) ) as TJSONObject;
+    end;
+
+  except
+    on e :Exception do
+    begin
+      erro := e.Message;
+      if pos('429',erro) > 0 then
+        erro := 'Retorno 429 - Limite de requisições por minuto atingida. Por favor aguarde alguns instantes.';
+      raise Exception.Create('Falha ao buscar relação de produtos.'+#13#10+erro);
+    end;
+  end;
+end;
+
+function TfrmConferenciaPedido.getJsonProduto(sku: String): String;
+var
+    Retorno :String;
+    vHTTPJSON: THTTPJSON;
+begin
+ try
+ try
+   vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+
+   Retorno := vHTTPJSON.Get('produto/'+sku);
+   result  := Retorno;
+ except
+   on e: Exception do
+     raise Exception.Create(e.Message);
+ end;
+ finally
+   FreeAndNil(vHTTPJSON);
+ end;
 end;
 
 procedure TfrmConferenciaPedido.Busca_tamanhos(var cds: TClientDataSet);
@@ -2579,6 +2562,11 @@ begin
    lista.Free;
  end;
 
+end;
+
+procedure TfrmConferenciaPedido.Button1Click(Sender: TObject);
+begin
+//  atualizaEstoquePlataformaPeloPedido(-1);
 end;
 
 procedure TfrmConferenciaPedido.Salva_estoque(cod_produto, cod_cor : integer; descricao_tamanho :String;
@@ -2673,7 +2661,7 @@ procedure TfrmConferenciaPedido.transfere_conferencia(itens_deletar: String);
 var ConferenciaItem      :TConferenciaItem;
     ConferenciaPedido    :TConferenciaPedido;
     repositorio          :TRepositorio;
-    repositorioPedido    :TRepositorio;    
+    repositorioPedido    :TRepositorio;
     ultimo_pedido        :integer;
     cod_produto          :integer;
     cod_cor, i           :integer;
@@ -2834,58 +2822,45 @@ begin
 end;
 
 procedure TfrmConferenciaPedido.mostra_estoque;
-var codigo_produto :String;
+var 
+    qryEstoque            :TFDQuery;
+    qryEstoqueReservado   :TFDQuery;
 begin
-  if cdsItens.IsEmpty then Exit;
+ if cdsItens.IsEmpty then Exit;
+ try
+   qryEstoque          := dm.GetConsulta;
+   qryEstoqueReservado := dm.GetConsulta;   
+   
+   busca_estoque_reservado(qryEstoqueReservado, cdsItensCodPro.AsInteger, cdsItensCodCor.AsInteger);
+   busca_estoque_normal(qryEstoque, cdsItensCodPro.AsInteger, cdsItensCodCor.AsInteger);
 
-  codigo_produto := verificaSeEKit(cdsItensCodPro.AsInteger);
+   qryEstoque.First;
+   while not qryEstoque.Eof do
+   begin
+     case AnsiIndexStr(UpperCase(qryEstoque.FieldByName('TAM').AsString), Tamanhos)  of
+       0:  edtRN.Value    := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_RN').AsInteger;
+       1:  edtP.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_P').AsInteger;
+       2:  edtM.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_M').AsInteger;
+       3:  edtG.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_G').AsInteger;
+       4:  edt1.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_1').AsInteger;
+       5:  edt2.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_2').AsInteger;
+       6:  edt3.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_3').AsInteger;
+       7:  edt4.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_4').AsInteger;
+       8:  edt6.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_6').AsInteger;
+       9:  edt8.Value     := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_8').AsInteger;
+       10: edtUNICA.Value := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_UNICA').AsInteger;
+       11: edt10.Value    := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_10').AsInteger;
+       12: edt12.Value    := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_12').AsInteger;
+       13: edt14.Value    := qryEstoque.fieldByName('QTDE').AsInteger - qryEstoqueReservado.fieldByName('QTD_14').AsInteger;
+     end;     
 
-  busca_estoque_reservado(codigo_produto, cdsItensCodCor.AsInteger);
-  busca_estoque_normal(codigo_produto, cdsItensCodCor.AsInteger);
-
-  dm.qryGenerica.First;
-  edtRN.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_RN').AsInteger;
-  dm.qryGenerica.Next;
-  edtP.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_P').AsInteger;
-  dm.qryGenerica.Next;
-  edtM.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_M').AsInteger;
-  dm.qryGenerica.Next;
-  edtG.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_G').AsInteger;
-  dm.qryGenerica.Next;
-  edt1.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_1').AsInteger;
-  dm.qryGenerica.Next;
-  edt2.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_2').AsInteger;
-  dm.qryGenerica.Next;
-  edt3.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_3').AsInteger;
-  dm.qryGenerica.Next;
-  edt4.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_4').AsInteger;
-  dm.qryGenerica.Next;
-  edt6.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_6').AsInteger;
-  dm.qryGenerica.Next;
-  edt8.Value     := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_8').AsInteger;
-  dm.qryGenerica.Next;
-  edtUNICA.Value := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_UNICA').AsInteger;
-  dm.qryGenerica.Next;
-  edt10.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_10').AsInteger;
-  dm.qryGenerica.Next;
-  edt12.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_12').AsInteger;
-  dm.qryGenerica.Next;
-  edt14.Value    := dm.qryGenerica.fieldByName('QUANTIDADE').AsInteger -
-                    dm.qryGenerica2.fieldByName('QTD_14').AsInteger;
-
+     qryEstoque.Next;  
+   end;
+   
+ finally
+   FreeAndNil(qryEstoque);
+   FreeAndNil(qryEstoqueReservado);   
+ end;
 end;
 
 function TfrmConferenciaPedido.possuiKit: Boolean;
@@ -2900,22 +2875,6 @@ begin
     end;
 end;
 
-function TfrmConferenciaPedido.produtosKit: String;
-var i :integer;
-begin
-  result := '';
-  for i := 0 to BuscaPedido1.Ped.Itens.Count-1 do
-  begin
-    if TItem(BuscaPedido1.Ped.Itens[i]).Produto.Kit then
-      result := result + ',' + intToStr(TItem(BuscaPedido1.Ped.Itens[i]).Produto.Codigo);
-  end;
-
-  if result <> '' then
-    result := copy(result,2,length(result))
-  else
-    result := '0';
-end;
-
 function TfrmConferenciaPedido.busca_estoque(codproduto :String; codcor: integer; Tamanho:String): Real;
 var
   i :integer;
@@ -2923,8 +2882,10 @@ begin
   result         := 0;
   i              := 0;
 
+    { se nao existir "," no parametro codproduto, significa que ha apenas 1 codigo, portanto nao e kit }
     if pos(',',codproduto) = 0 then
-      if ( Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',codproduto) = '2' )
+      { se o tipo do produto for VESTUARIO e for uma COR GENERICA }
+      if ( StrToIntDef( Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',codproduto),0) = integer(tpVestuario) )
       and (codcor in [55,66]) then
         codcor := 0;
 
@@ -2946,7 +2907,6 @@ begin
 end;
 
 procedure TfrmConferenciaPedido.btnPedidosSeparacaoClick(Sender: TObject);
-var codigo_produto :String;
 begin
   if not assigned(BuscaPedido1.Ped) then exit;
 
@@ -2958,20 +2918,16 @@ begin
 
    if not gridItens.columns[31].Visible then
    begin
-     cdsItens.AfterScroll := nil;
+    // cdsItens.AfterScroll := nil;
      cdsItens.DisableControls;
      cdsitens.First;
      while not cdsItens.Eof do begin
-       codigo_produto := verificaSeEKit(cdsItensCODPRO.AsInteger);
-
-       busca_estoque_reservado(codigo_produto, cdsItensCODCOR.AsInteger);
        calcula_completo_imcompleto;
-
        cdsItens.Next;
        Application.ProcessMessages;
      end;
      cdsItens.EnableControls;
-     cdsItens.AfterScroll := cdsItensAfterScroll;
+   //  cdsItens.AfterScroll := cdsItensAfterScroll;
      
      gridItens.columns[31].Visible := true;
    end;
@@ -3190,108 +3146,96 @@ begin
   end;
 end;
 
-procedure TfrmConferenciaPedido.busca_estoque_normal(codproduto: String; codcor: integer);
-var estoqueEcommerce :Boolean;
+procedure TfrmConferenciaPedido.busca_estoque_normal(qry :TFDQuery; codproduto: integer; codcor: integer);
+var estoqueEcommerce, corGenerica :Boolean;
     setor :integer;
+    condicaoCorGenerica :String;
+    joinCorGenerica :String;
 begin
+  if ( StrToIntDef(Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',intToStr(codproduto)),0) = integer(tpVestuario) )
+  and (codcor in [55,66]) then
+    codcor := 0;
+  //55 masc - 66 fem
+  corGenerica := codcor = 0;
+
+  if corGenerica then
+  begin
+    joinCorGenerica := ' left join produto_cores pc on ((pc.codproduto = e.codigo_produto) and (pc.codcor = e.codigo_cor)) ';
+    condicaoCorGenerica := ' and ('+ IfThen(codcor = 55, 'pc.genero = ''M''', 'pc.genero = ''F''') + ' or pc.genero = '''' or pc.genero is null)';
+  end;
+
+  { * * e-commerce tem o proprio estoque de estampados e divide o de lisos e listrados com a fábrica * * }
   estoqueEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and
-                      (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce = 'S') and
+                      (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce) and
                       (cdsItensTIPO_COR.AsString = 'E');
 
   setor := IfThen(estoqueEcommerce, 2,1);
 
-  if pos(',',codproduto) = 0 then
-      if ( Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',codproduto) = '2' )
-      and (codcor in [55,66]) then
-        codcor := 0;
+  qry.SQL.Text := 'select tam.descricao TAM,                           '+
+                  '( select sum(e.quantidade) from estoque e           '+
+                    joinCorGenerica+
+                  '  where e.codigo_tamanho = tam.codigo               '+
+                  '    and e.codigo_produto = :codprod                 '+
+                  '    and ((:codcor = 0) or (e.codigo_cor = :codcor)) '+
+                  '    and e.setor = :s '+condicaoCorGenerica+
+                  ') qtde from tamanhos tam ';
 
-  dm.qryGenerica.Close;
-  dm.qryGenerica.SQL.Text :=  '  select sum(e.quantidade) quantidade, 1 TAMANHO from estoque e                                   '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 1 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 2 TAM_P from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 2 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 3 TAM_M from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 3 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 4 TAM_G from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 4 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 5 TAM_1 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 5 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 6 TAM_2 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 6 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 7 TAM_3 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 7 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 8 TAM_4 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 8 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 9 TAM_6 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 9 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 10 TAM_8 from estoque e                                      '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 10 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 11 TAM_UNICA from estoque e                                  '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 11 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 16 TAM_10 from estoque e                                     '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 16 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 17 TAM_12 from estoque e                                     '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 17 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              '    union all                                                                                                       '+
-                              'select sum(e.quantidade) quantidade, 18 TAM_14 from estoque e                                     '+
-                              'where e.codigo_produto in ('+codproduto+') and e.codigo_tamanho = 18 and ((:codcor = 0) or (:codcor = e.codigo_cor)) and e.setor = :s '+
-                              'order by 2                                                                                                          ';
-
-   dm.qryGenerica.ParamByName('codcor').AsInteger := codcor;
-   dm.qryGenerica.ParamByName('s').AsInteger := setor;
-   dm.qryGenerica.open;
+  qry.ParamByName('codcor').AsInteger  := codcor;
+  qry.ParamByName('s').AsInteger       := setor;
+  qry.ParamByName('codprod').AsInteger := codproduto;   
+  qry.open;
 end;
 
-procedure TfrmConferenciaPedido.busca_estoque_reservado(codproduto :String; codcor: integer);
-var estoqueEcommerce :boolean;
-  joinsEcommerce, condicaoEcommerce :string;
+procedure TfrmConferenciaPedido.busca_estoque_reservado(qry :TFDQuery; codproduto :integer; codcor: integer);
+var estoqueEcommerce, corGenerica :boolean;
+  joinsEcommerce, condicaoEcommerce, condicaoCorGenerica :string;
 begin
-  estoqueEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and
-                      (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce = 'S') and
-                      (cdsItensTIPO_COR.AsString = 'E');
+  if ( StrToIntDef(Campo_por_campo('PRODUTOS','COD_TIPO','CODIGO',intToStr(codproduto)),0) = integer(tpVestuario) )
+  and (codcor in [55,66]) then
+    codcor := 0;
+  //55 masc - 66 fem
+  corGenerica := codcor = 0;
+
+  { * * e-commerce tem o proprio estoque de estampados e divide o de lisos e listrados com a fábrica * * }
+  estoqueEcommerce    := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and
+                         (BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce) and
+                         (cdsItensTIPO_COR.AsString = 'E');
+
+  if corGenerica then
+    condicaoCorGenerica := 'and ('+ IfThen(codcor = 55, 'pc.genero = ''M''', 'pc.genero = ''F''') + ' or pc.genero = '''' or pc.genero is null)';
 
   if estoqueEcommerce then
   begin
-    joinsEcommerce   := 'inner join pedidos            ped on ped.codigo = i.cod_pedido           '+
-                      'inner join pessoas            rep on rep.codigo = ped.cod_repres         '+
-                      'left join  dados_representante dr on dr.codigo_representante = rep.codigo';
+    joinsEcommerce   := 'inner join pedidos             ped on ped.codigo = i.cod_pedido           '+
+                        'inner join pessoas             rep on rep.codigo = ped.cod_repres         '+
+                        'left join  dados_representante  dr on dr.codigo_representante = rep.codigo';
 
     condicaoEcommerce := ' and dr.rep_ecommerce = ''S'' and pro.tipo = ''E'' ';
   end;
 
-  dm.qryGenerica2.Close;
-  dm.qryGenerica2.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,  '+
-                              ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,          '+
-                              ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_8) QTD_10, sum(ci.qtd_8) QTD_12,        '+
-                              ' sum(ci.qtd_8) QTD_14, sum(ci.qtd_unica) QTD_unica                                            '+
-                              ' from ITENS i                                                                                 '+
-                              ' inner join conferencia_itens  ci on ci.codigo_item = i.codigo                                '+
-                              ' inner join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                        '+
-                              ' inner join cores              cor on cor.codigo = i.cod_cor                                  '+
-                              ' inner join produtos           pro on pro.codigo = i.cod_produto                              '+
-                                joinsEcommerce +
+  qry.Close;
+  qry.SQL.Text := 'select sum(ci.qtd_rn) QTD_RN, sum(ci.qtd_p) QTD_P, sum(ci.qtd_m) QTD_M, sum(ci.qtd_g) QTD_G,     '+
+                  ' sum(ci.qtd_1) QTD_1, sum(ci.qtd_2) QTD_2, sum(ci.qtd_3) QTD_3, sum(ci.qtd_4) QTD_4,             '+
+                  ' sum(ci.qtd_6) QTD_6, sum(ci.qtd_8) QTD_8, sum(ci.qtd_8) QTD_10, sum(ci.qtd_8) QTD_12,           '+
+                  ' sum(ci.qtd_8) QTD_14, sum(ci.qtd_unica) QTD_unica                                               '+
+                  ' from ITENS i                                                                                    '+
+                  ' inner join conferencia_itens  ci on ci.codigo_item = i.codigo                                   '+
+                  ' inner join conferencia_pedido cp on cp.codigo = ci.codigo_conferencia                           '+
+                  ' inner join cores              cor on cor.codigo = i.cod_cor                                     '+
+                  ' inner join produtos           pro on pro.codigo = i.cod_produto                                 '+
+                  ' inner join produto_cores      pc  on ((pc.codproduto = pro.codigo) and (pc.codcor = cor.codigo))'+
+                    joinsEcommerce +
 
-                              { < 01/01/1990 pois a data padrao do fb é 30/12/1899, significando conferencia em aberto }
-                              ' where cp.fim < ''01.01.1900'' and i.cod_produto in (' + codproduto + ')' +
-                                IfThen(codcor in [55,66],'','   and cor.codigo = ' + IntToStr(codcor)) + condicaoEcommerce +
-                              { quando é 55 ou 66 significa cor generica, então soma-se o estoque das cores que se enquadram }
+                  { < 01/01/1990 pois a data padrao do fb é 30/12/1899, significando conferencia em aberto }
+                  ' where cp.fim < ''01.01.1900'' and i.cod_produto = :codpro                                    '+
+                    IfThen(corGenerica,'','   and cor.codigo = ' + IntToStr(codcor)) + condicaoEcommerce + condicaoCorGenerica +
+                  { quando é 55 ou 66 significa cor generica, então soma-se o estoque das cores que se enquadram }
 
-                              ' group by pro.referencia, cor.referencia                                                     '+
-                              ' order by pro.referencia, cor.referencia                                                     ';
-
-  dm.qryGenerica2.Open;
+                  ' group by pro.referencia'+IfThen(corGenerica,'',', cor.referencia ')+
+                  ' order by pro.referencia'+IfThen(corGenerica,'',', cor.referencia ');
+                  
+  qry.ParamByName('codpro').AsInteger := codproduto;
+  qry.Open;
 end;
 
 procedure TfrmConferenciaPedido.btnExcluirClick(Sender: TObject);
@@ -3308,6 +3252,13 @@ begin
   try
     dm.conexao.TxOptions.AutoCommit := false;
 
+    atualizaEstoquePedidoTotal(BuscaPedido1.Ped, +1);
+
+    //se for pedido de representante E-Commerce e não for pedido da própria plataforma, o estoque é atualizado na mesma
+    if assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce and
+      (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+      atualizaEstoquePlataformaPeloPedido(+1);
+
     repositorio := TFabricaRepositorio.GetRepositorio(TConferenciaItem.ClassName);
 
     repositorio.RemoverPorIdentificador(BuscaPedido1.Ped.Conferencia.codigo);
@@ -3319,8 +3270,6 @@ begin
     repositorio := TFabricaRepositorio.GetRepositorio(TConferenciaPedido.ClassName);
 
     repositorio.RemoverPorIdentificador(BuscaPedido1.Ped.Conferencia.codigo);
-
-    atualizaEstoqueLocal(BuscaPedido1.Ped.Codigo, 1);
 
     dm.conexao.Commit;
 
@@ -3342,36 +3291,45 @@ begin
 end;
 
 procedure TfrmConferenciaPedido.calcula_completo_imcompleto;
-var Qtd_estoque :Real;
-    i, linha :integer;
-    tamanho :String;
-const
-    Tamanhos : array[1..14] of string=('QTD_RN','QTD_P','QTD_M','QTD_G','QTD_1','QTD_2','QTD_3','QTD_4','QTD_6','QTD_8','QTD_10','QTD_12','QTD_14','QTD_UNICA');
+var
+    tamanho    :String;
+    i, linha   :integer;
+    incompleto :Boolean;
 begin
-
-    for i := 1 to 14 do begin
-
-      tamanho := copy(cdsitens.FieldByName(Tamanhos[i]).FieldName, 5, 5);
-
-      Qtd_estoque := busca_estoque(verificaSeEKit( cdsItensCODPRO.AsInteger), cdsItensCODCOR.AsInteger, tamanho);
-
-      if cdsitens.FieldByName(Tamanhos[i]+'_O').AsInteger <= 0 then
-        continue;
-
-      linha := cdsItens.recno;
-      cdsItens.Edit;
-      cdsItensC_I.AsString   := IfThen((cdsitens.FieldByName(Tamanhos[i]).AsInteger > 0) and
-                                       (cdsitens.FieldByName(Tamanhos[i]).AsInteger > (Qtd_estoque -
-                                                                                       dm.qryGenerica2.FieldByName('QTD_'+tamanho).AsInteger) )
-                                        , 'N', 'S');
-      cdsItens.Append;
-      cdsItens.recno := linha;
-
-      if cdsItensC_I.AsString = 'N' then
-        Break;
-
+  with cdsItens do
+  begin
+    for i := 0 to Fields.Count do
+    begin
+      if (pos('QTD_',Fields[i].FieldName) > 0) and (pos('_O',Fields[i].FieldName) = 0) then
+      begin
+        tamanho     := copy(Fields[i].AsString, pos('QTD_',Fields[i].FieldName)+4, 5);
+        case AnsiIndexStr(tamanho, Tamanhos)  of
+          0:  incompleto := edtRN.Value < fields[i].AsInteger;
+          1:  incompleto := edtP.Value < fields[i].AsInteger;
+          2:  incompleto := edtM.Value < fields[i].AsInteger;
+          3:  incompleto := edtG.Value < fields[i].AsInteger;
+          4:  incompleto := edt1.Value < fields[i].AsInteger;
+          5:  incompleto := edt2.Value < fields[i].AsInteger;
+          6:  incompleto := edt3.Value < fields[i].AsInteger;
+          7:  incompleto := edt4.Value < fields[i].AsInteger;
+          8:  incompleto := edt6.Value < fields[i].AsInteger;
+          9:  incompleto := edt8.Value < fields[i].AsInteger;
+          10: incompleto := edtUNICA.Value < fields[i].AsInteger;
+          11: incompleto := edt10.Value < fields[i].AsInteger;
+          12: incompleto := edt12.Value < fields[i].AsInteger;
+          13: incompleto := edt14.Value < fields[i].AsInteger;
+        end;
+      end;
+      if incompleto then
+        break;
     end;
 
+    linha := cdsItens.recno;
+    cdsItens.Edit;
+    cdsItensC_I.AsString   := IfThen(incompleto, 'N', 'S');
+    cdsItens.Append;
+    cdsItens.recno := linha;
+  end;
 end;
 
 procedure TfrmConferenciaPedido.cdsItensConferidosCalcFields(DataSet: TDataSet);
@@ -3432,7 +3390,6 @@ var produto, refpro, num_caixa :String;
     preco :Real;
     excluiu :Boolean;
 begin
-//  try
     produto   := cdsItensPRODUTO.AsString;
     refpro    := cdsItensREFPRO.AsString;
     num_caixa := cdsItensNUM_CAIXA.AsString;
@@ -3475,13 +3432,6 @@ begin
     cdsItens.FieldByName('QTD_'+tamanho).AsInteger      := quantidade;
     cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger := cdsItens.FieldByName('QTD_'+tamanho+'_O').AsInteger + quantidade;
     cdsItens.Post;
- { Except
-    on e :Exception do
-    begin
-      avisar('Erro ao substituir item genérico'+ #13#10 +e.Message);
-      dm.LogErros.AdicionaErro('uConferenciaPedido','Substituir Item Genérico', e.Message);
-    end;
-  end;   }
 end;
 
 procedure TfrmConferenciaPedido.Timer2Timer(Sender: TObject);
@@ -3495,10 +3445,19 @@ function TfrmConferenciaPedido.insere_altera_item(codpedido, codpro, codcor, qua
   const coditem: integer): Integer;
 var repositorio :TRepositorio;
     Item        :TItem;
+    i           :integer;
 begin
   try
+    if coditem > 0 then
+    begin
+      for i := 0 to BuscaPedido1.Ped.Itens.Count - 1 do
+        if TItem(BuscaPedido1.Ped.Itens[i]).codigo = coditem then
+           Item := TItem(BuscaPedido1.Ped.Itens[i]);
+    end
+    else
+      Item := TITem.Create(false);
+
     repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
-    Item        := TItem( repositorio.Get(coditem) );
 
     if not assigned(Item) then
       Item := TItem.Create(false);
@@ -3530,22 +3489,34 @@ begin
 
     repositorio.Salvar(Item);
 
+    if coditem > 0 then
+      Item.codigo      := coditem
+    else
+      BuscaPedido1.Ped.Itens.Add(Item);
+
     result := Item.codigo;
   Finally
     FreeAndNil(repositorio);
-    FreeAndNil(Item);
   end;
 end;
 
 procedure TfrmConferenciaPedido.atualiza_quantidade_item(coditem, quantidade: integer; tamanho :String; var excluiu :Boolean);
 var repositorio :TRepositorio;
     Item        :TItem;
+    i           :integer;
 begin
-  //try
   try
+    if coditem > 0 then
+    begin
+      for i := 0 to BuscaPedido1.Ped.Itens.Count - 1 do
+        if TItem(BuscaPedido1.Ped.Itens[i]).codigo = coditem then
+           Item := TItem(BuscaPedido1.Ped.Itens[i]);
+    end
+    else
+      Item := TITem.Create(false);
+
     excluiu     := false;
     repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);
-    Item        := TItem( repositorio.Get(coditem) );
 
     case AnsiIndexStr(UpperCase(tamanho), ['RN','P','M','G','1','2','3','4','6','8','10','12','14','UNICA']) of
      0  : Item.qtd_RN    := Item.qtd_RN    - quantidade;
@@ -3567,21 +3538,17 @@ begin
     if Item.qtd_total = 0 then
     begin
       repositorio.Remover(Item);
+      BuscaPedido1.Ped.Itens.Remove(Item);
       excluiu := true;
     end
     else
-      repositorio.Salvar(Item);
-
-{  Except
-    on e :Exception do
     begin
-      avisar('Erro ao atualizar item genérico'+ #13#10 +e.Message);
-      dm.LogErros.AdicionaErro('uConferenciaPedido', 'Atualizar Item Genérico', e.Message);
+      repositorio.Salvar(Item);
+      Item.codigo := coditem;
     end;
-  end;   }
+
   Finally
     FreeAndNil(repositorio);
-    FreeAndNil(Item);
   end;
 end;
 
@@ -3618,6 +3585,38 @@ begin
   end;
 end;
 
+function TfrmConferenciaPedido.verificaDesmembramento: Boolean;
+var linha :integer;
+    status, aux :String;
+begin
+  result := true;
+  try
+    linha  := cdsItens.RecNo;
+    cdsItens.DisableControls;
+    cdsItens.First;
+    while not cdsItens.Eof do
+    begin
+      if cdsItensCODIGO_KIT.AsInteger > 0 then
+      begin
+        if cdsItensConferidos.Locate('CODIGO_ITEM',cdsItensCODIGO.AsInteger, []) then
+          aux := IfThen(cdsItensConferidosconferido.AsString = 'S', 'C', 'I');
+
+        if not(status.IsEmpty) and (aux <> status) then
+          exit;
+
+        status := aux;
+      end;
+
+      cdsItens.Next;
+    end;
+
+    result := false;
+  finally
+    cdsItens.EnableControls;
+    cdsItens.RecNo := linha;
+  end;
+end;
+
 procedure TfrmConferenciaPedido.verificaMapaFinalizado;
 var codmapa, i :integer;
     mapa    :TMapa;
@@ -3645,36 +3644,6 @@ begin
     FreeAndNil(repositorio);
     FreeAndNil(mapa);
   end;
-end;
-
-function TfrmConferenciaPedido.verificaSeEKit(codigo_produto: integer): String;
-var
-  Produto       :TProduto;
-  repositorio   :TRepositorio;
-  i             :integer;
-begin
-  repositorio    := nil;
-  Produto        := nil;
-
- try
-    repositorio := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
-    Produto     := TProduto(repositorio.Get(codigo_produto));
-
-    if Assigned(Produto.ProdutosKit) and (Produto.ProdutosKit.Count > 0) then begin
-      result := '';
-
-      for i := 0 to Produto.ProdutosKit.Count - 1 do
-        result := result +','+ IntToStr(TProdutosKit(Produto.ProdutosKit.Items[i]).codigo_produto);
-
-      result := copy(result, 2, length(result));
-    end
-    else
-      result := intToStr(codigo_produto);
-
- finally
-   FreeAndNil(Produto);
-   FreeAndNil(repositorio);
- end;
 end;
 
 end.

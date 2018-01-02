@@ -475,7 +475,10 @@ uses
   RepositorioLogErroImportPedido in 'src\infraestrutura\persistencia\RepositorioLogErroImportPedido.pas',
   uErrosImportacaoPedido in 'src\formularios\uErrosImportacaoPedido.pas' {frmErrosImportacaoPedido},
   HTTPJSON in 'src\dominio\utilitario\HTTPJSON.pas',
-  uPedidosEmAberto in 'src\formularios\uPedidosEmAberto.pas' {frmPedidosEmAberto};
+  uPedidosEmAberto in 'src\formularios\uPedidosEmAberto.pas' {frmPedidosEmAberto},
+  uGeraArquivoMeusPedidos in 'src\formularios\uGeraArquivoMeusPedidos.pas' {frmGeraArquivoMeusPedidos},
+  TipoSetorEstoque in 'src\dominio\tipo\TipoSetorEstoque.pas',
+  TipoProduto in 'src\dominio\tipo\TipoProduto.pas';
 
 {$R *.res}
 {$R win7810.res}
@@ -492,6 +495,7 @@ begin
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrmPedidosEmAberto, frmPedidosEmAberto);
+  Application.CreateForm(TfrmGeraArquivoMeusPedidos, frmGeraArquivoMeusPedidos);
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

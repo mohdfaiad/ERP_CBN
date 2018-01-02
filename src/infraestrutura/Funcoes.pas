@@ -398,7 +398,7 @@ begin
   Result           := '';
   try
     query            := TFDQuery.Create(nil);
-    query.Connection := dm.FDConnection;
+    query.Connection := dm.conexao;
 
     if campo_referencia2 <> '' then
       segunda_condicao := ' AND '+campo_referencia2+' = :param2';
@@ -427,7 +427,7 @@ begin
   finally
     FreeAndNil(query);
   end;
-end;
+  end;
 
 //pode ser usada para recuperar ultimo registro cadastrado
 function Maior_Valor_Cadastrado(Tabela, campo :String): String;

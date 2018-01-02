@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, ComObj, System.StrUtils,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  frameBuscaOS;
+  frameBuscaOS, ClipBrd, System.ImageList, Vcl.ImgList;
 
 type
   TfrmImpressaoEtiquetas = class(TfrmPadrao)
@@ -105,6 +105,8 @@ type
     btnData: TSpeedButton;
     edtDataInteger: TCurrencyEdit;
     cdsImpDATA: TStringField;
+    BalloonHint1: TBalloonHint;
+    ImageList1: TImageList;
     procedure btnImprimirZebraClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure gridImpDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -328,7 +330,6 @@ begin
 
   gridImp.Canvas.FillRect(Rect);
   gridImp.Canvas.TextOut(Rect.Left + 2,Rect.Top, Column.Field.AsString);
-
 end;
 
 procedure TfrmImpressaoEtiquetas.insereAFila;
@@ -358,10 +359,21 @@ end;
 
 procedure TfrmImpressaoEtiquetas.gridImpKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
+var
+  Pt: TPoint;
 begin
   if (key = vk_delete) and not (cdsImp.IsEmpty) and (cdsImp.Active) then begin
     edtQtde.AsInteger := edtQtde.AsInteger - cdsImpQTDE.AsInteger;
     cdsImp.Delete;
+  end
+  else If (key = Ord('C')) and (ssCtrl In Shift) Then
+  begin
+    Clipboard.asText := cdsImpCODBAR.AsString;
+    BalloonHint1.Title       := 'Informação';
+    BalloonHint1.Description := 'Código de barras '+cdsImpCODBAR.AsString+' copiado com sucesso!';
+    pt.X := trunc(Screen.Width / 2);
+    pt.Y := trunc(Screen.Height / 2) + 80;
+    gridImp.CustomHint.ShowHint(pt);
   end;
 end;
 

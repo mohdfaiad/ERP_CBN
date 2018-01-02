@@ -17,12 +17,16 @@ inherited frmPedido: TfrmPedido
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         1037
         426)
@@ -3775,6 +3779,10 @@ inherited frmPedido: TfrmPedido
     object TabSheet2: TTabSheet
       Caption = 'F2 - Digita'#231#227'o'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbDadosItem: TGroupBox
         Left = 6
         Top = 11
@@ -3922,24 +3930,6 @@ inherited frmPedido: TfrmPedido
           OnExit = edtPrecoExit
           OnKeyPress = edtPrecoKeyPress
         end
-        object edtEstoque: TEdit
-          Left = 707
-          Top = 40
-          Width = 89
-          Height = 21
-          TabStop = False
-          BiDiMode = bdRightToLeft
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentBiDiMode = False
-          ParentFont = False
-          ReadOnly = True
-          TabOrder = 4
-          Text = '0'
-        end
         object DBGrid2: TDBGrid
           Left = 452
           Top = 75
@@ -3956,7 +3946,7 @@ inherited frmPedido: TfrmPedido
           Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 5
+          TabOrder = 4
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -11
@@ -4098,8 +4088,18 @@ inherited frmPedido: TfrmPedido
           Font.Style = []
           ParentColor = False
           ParentFont = False
-          TabOrder = 6
+          TabOrder = 5
           Transparent = False
+        end
+        object edtEstoque: TCurrencyEdit
+          Left = 707
+          Top = 40
+          Width = 88
+          Height = 21
+          TabStop = False
+          AutoSize = False
+          DisplayFormat = '0'
+          TabOrder = 6
         end
       end
       object gbObsItem: TGroupBox

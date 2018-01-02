@@ -490,6 +490,12 @@ end;
 procedure TfrmCadastroCliente.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+  if (key = vk_return) and (self.ActiveControl = memObs) then
+  begin
+   // memObs.lines.Add('');
+    key := 0;
+  end;
+
   inherited;
   if key = VK_F1 then
     pagClientes.ActivePageIndex := 0

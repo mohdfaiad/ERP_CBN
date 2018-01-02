@@ -1880,7 +1880,7 @@ begin
    GeradorNFe := nil;
 
    try
-     GeradorNFe := TGeradorNFe.Create(FDM.Logo, self.FNotaFiscal.Empresa.ConfiguracoesNF);
+     GeradorNFe := TGeradorNFe.Create(FDM.Logo);
      GeradorNFe.ImprimirComVisualizacao(self.FNotaFiscal);
    finally
      FreeAndNil(GeradorNFe);

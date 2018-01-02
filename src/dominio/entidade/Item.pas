@@ -32,6 +32,7 @@ type
     Fqtd_M: integer;
     Fqtd_4: integer;
     Fqtd_G: integer;
+    Fqtd_PM: integer;
     Fdesconto: Real;
     Fobservacao: String;
     FProduto :TProduto;
@@ -72,7 +73,6 @@ type
     procedure Setobservacao(const Value: String);
 
   private
-    Fqtd_PM: integer;
     function GetCor              :TCor;
     function GetPesoBrutoTotal   :Real;
     function GetPesoLiquidoTotal :Real;
