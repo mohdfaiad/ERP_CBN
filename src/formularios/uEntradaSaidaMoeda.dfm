@@ -5,7 +5,7 @@ inherited frmEntradaSaidaMoeda: TfrmEntradaSaidaMoeda
   ExplicitWidth = 548
   ExplicitHeight = 349
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object rgpOpcao: TRadioGroup
     Left = 15
     Top = 8
@@ -29,7 +29,7 @@ inherited frmEntradaSaidaMoeda: TfrmEntradaSaidaMoeda
     Left = 15
     Top = 71
     Width = 498
-    Height = 164
+    Height = 163
     Caption = 'Dados da movimenta'#231#227'o'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -138,7 +138,6 @@ inherited frmEntradaSaidaMoeda: TfrmEntradaSaidaMoeda
     Height = 52
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 262
     DesignSize = (
       532
       52)

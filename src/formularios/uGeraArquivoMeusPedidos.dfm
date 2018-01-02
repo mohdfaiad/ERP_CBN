@@ -1,0 +1,279 @@
+object frmGeraArquivoMeusPedidos: TfrmGeraArquivoMeusPedidos
+  Left = 0
+  Top = 0
+  Caption = 'Gera Arquivo Meus Pedidos'
+  ClientHeight = 662
+  ClientWidth = 905
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  DesignSize = (
+    905
+    662)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object BitBtn1: TBitBtn
+    Left = 16
+    Top = 8
+    Width = 193
+    Height = 41
+    Caption = 'BeeBee Duck'
+    Glyph.Data = {
+      36080000424D3608000000000000360000002800000020000000100000000100
+      2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00958E8C00958F8C00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00312A2800312B28009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF004859610025F0FF000DBCFB004657
+      6100FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B0000000000008C9B00005897000000
+      00009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00B8B7B6003C484E002ECAF1001D9BCE00323F
+      4400B9B7B700FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B00545352000000000000668D0000376A000000
+      0000555353009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00838B8E00A68E89008A6E680061443D004129
+      2200828A8F00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B001F272A00422A2500260A0400000000000000
+      00001E262B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0064787D005BDAEE0046DDF7002ECAF1001D9B
+      CE00586D7500FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B000014190000768A000079930000668D000037
+      6A00000911009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FEFE
+      FE00DCDCDC00DADAD900FFFFFF00666A6900A68E89008A6E680061443D004129
+      2200484B4E00FFFFFF00E0E0E000E2E2E200FFFFFF00FFFFFF009B9B9B009A9A
+      9A0078787800767675009B9B9B0002060500422A2500260A0400000000000000
+      0000000000009B9B9B007C7C7C007E7E7E009B9B9B009B9B9B00FFFFFF00928F
+      8D00EEEAE800DDD6D5009F979400509CAA006BFFFF0047FFFF0025F0FF000ED0
+      FF003884A400B5ADAB00E4E0DF00F2EEED00B6B4B400FFFFFF009B9B9B002E2B
+      29008A868400797271003B33300000384600079B9B00009B9B00008C9B00006C
+      9B000020400051494700807C7B008E8A8900525050009B9B9B00FFFFFF00A39E
+      9C00FFFDFA00FEF7F300FFF7F300E1CCC500957C7700634B45004A302B006349
+      4200DAC5BC00FFF9F500FDF7F400FFFEFB00C2BEBC00FFFFFF009B9B9B003F3A
+      38009B9996009A938F009B938F007D6861003118130000000000000000000000
+      0000766158009B959100999390009B9A97005E5A58009B9B9B00FFFFFF00DDDD
+      DD00A79F9C00D2C9C300F8ECE500E0E0DF00B9D9DE0045C2DF0039B5DA00A9CE
+      DA00DDDDDD00F8EDE600A8989100B5ADAA00E6E6E600FFFFFF009B9B9B007979
+      7900433B38006E655F00948881007C7C7B0055757A00005E7B0000517600456A
+      7600797979009489820044342D0051494600828282009B9B9B00FFFFFF00ADAB
+      AA00C0BBB900A99B9500A4918900A7938B00C5C7C60086BFCF0072AEC000A9AC
+      AE00A8948C00A4918900B9AEAB00C6C2C000BAB9B800FFFFFF009B9B9B004947
+      46005C57550045373100402D2500432F270061636200225B6B000E4A5C004548
+      4A0044302800402D2500554A4700625E5C00565554009B9B9B00B3B2B100EFE3
+      DD00FFF8F500FFFDFD00FEFBFA00FDF5EF00CEB9AD00817772005A514E00B196
+      8A00FEF4EE00FDF8F600FFFFFF00FFFAF800EFE6E100BCBBB9004F4E4D008B7F
+      79009B9491009B9999009A97960099918B006A5549001D130E00000000004D32
+      26009A908A00999492009B9B9B009B9694008B827D0058575500B0A7A300FFF6
+      F100FBF3F000FFFBF900FFFFFF00D5CDC900726E6E00535051003B3A3A005E5A
+      5A00D3C9C300FFFFFF00FFFEFC00FBF5F100FFF6F100B7AEA9004C433F009B92
+      8D00978F8C009B9795009B9B9B00716965000E0A0A0000000000000000000000
+      00006F655F009B9B9B009B9A980097918D009B928D00534A4500A6A09D00F0E3
+      DD00EFE5DF00DDD6D300ACABAA00E6E6E500928E8E00888483004A4848005D5A
+      5900E5E5E400ABA8A600E1DCD900F0E8E400F1E5E000ADA6A300423C39008C7F
+      79008B817B0079726F0048474600828281002E2A2A0024201F00000000000000
+      000081818000474442007D7875008C8480008D817C0049423F00F7F7F700C2C1
+      C100C5C5C500EEEDED00FFFFFF00FFFFFF00ABA8A5006E6A690045424100A39F
+      9F00FFFFFF00FFFFFF00EEEEEE00C9C8C800C6C6C500F8F7F700939393005E5D
+      5D00616161008A8989009B9B9B009B9B9B00474441000A060500000000003F3B
+      3B009B9B9B009B9B9B008A8A8A00656464006262610094939300FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF006E6A69006E6A6900FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B000A0605000A0605009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF006E6A6900FFFFFF00FFFFFF006E6A
+      6900FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+      9B009B9B9B009B9B9B009B9B9B009B9B9B000A0605009B9B9B009B9B9B000A06
+      05009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+    NumGlyphs = 2
+    TabOrder = 0
+    OnClick = BitBtn1Click
+  end
+  object ProgressBar1: TProgressBar
+    Left = 240
+    Top = 637
+    Width = 417
+    Height = 17
+    TabOrder = 1
+  end
+  object DBGrid1: TDBGrid
+    Left = 16
+    Top = 55
+    Width = 849
+    Height = 559
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    DataSource = DataSource1
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object qry: TFDQuery
+    FetchOptions.AssignedValues = [evRowsetSize]
+    FetchOptions.RowsetSize = 500000
+    SQL.Strings = (
+      
+        'select p. codigo, p.referencia, p.descricao, cor.referencia refc' +
+        'or, cor.descricao COR, tam.descricao TAM,  p.unidade_medida, tp.' +
+        'descricao tipo, gr.descricao grupo, co.descricao colecao'
+      ''
+      ''
+      ' from produtos p'
+      ''
+      'inner join produto_cores        pc  on  pc.codproduto = p.codigo'
+      
+        'inner join cores                cor on  cor.codigo    = pc.codco' +
+        'r'
+      
+        'inner join grades               g   on  g.codigo      = p.cod_gr' +
+        'ade'
+      'inner join grade_tamanhos       gt  on  gt.codgrade   = g.codigo'
+      
+        'inner join tamanhos             tam on  tam.codigo    = gt.codta' +
+        'manho'
+      'inner join produto_tabela_preco pt  on  pt.codproduto = p.codigo'
+      
+        'inner join tipo_produto         tp  on  tp.codigo     = p.cod_ti' +
+        'po'
+      
+        'inner join grupo                gr  on  gr.codigo     = p.cod_gr' +
+        'upo'
+      
+        'inner join colecao              co  on  co.codigo     = p.cod_co' +
+        'lecao'
+      
+        'left join  tabelas_preco        t   on  t.codigo      = pt.codta' +
+        'bela'
+      ''
+      'where t.descricao like '#39'%2017%'#39
+      ''
+      'group by 1,2,3,4,5,6,7,8,9,10'
+      'order by 1, 3, 5')
+    Left = 80
+    Top = 104
+    object qryREFERENCIA: TStringField
+      FieldName = 'REFERENCIA'
+      Origin = 'REFERENCIA'
+      Size = 35
+    end
+    object qryDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 200
+    end
+    object qryUNIDADE_MEDIDA: TStringField
+      FieldName = 'UNIDADE_MEDIDA'
+      Origin = 'UNIDADE_MEDIDA'
+      FixedChar = True
+      Size = 2
+    end
+    object qryTIPO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'TIPO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object qryGRUPO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'GRUPO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qryREFCOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'REFCOR'
+      Origin = 'REFCOR'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryCOLECAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'COLECAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+    object qryCOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'COR'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qryTAM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'TAM'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 15
+    end
+    object qryCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object cds: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 72
+    Top = 200
+    object cdsREFPRO: TStringField
+      FieldName = 'REFPRO'
+      Size = 30
+    end
+    object cdsPRODUTO: TStringField
+      FieldName = 'PRODUTO'
+      Size = 80
+    end
+    object cdsUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+    end
+    object cdsTIPO: TStringField
+      FieldName = 'TIPO'
+    end
+    object cdsGRUPO: TStringField
+      FieldName = 'GRUPO'
+    end
+    object cdsCOLECAO: TStringField
+      FieldName = 'COLECAO'
+    end
+    object cdsCOR: TStringField
+      FieldName = 'COR'
+      Size = 7000
+    end
+    object cdsTAMANHO: TStringField
+      FieldName = 'TAMANHO'
+      Size = 15
+    end
+    object cdsCODPRO: TIntegerField
+      FieldName = 'CODPRO'
+    end
+  end
+  object qryTab: TFDQuery
+    FetchOptions.AssignedValues = [evRowsetSize]
+    FetchOptions.RowsetSize = 500000
+    Left = 152
+    Top = 200
+  end
+  object DataSource1: TDataSource
+    DataSet = qry
+    Left = 128
+    Top = 104
+  end
+end

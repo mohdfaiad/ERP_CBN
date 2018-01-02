@@ -46,7 +46,7 @@ begin
   if verificaObrigatorios then
     if confirma('Confirma '+IfThen(rgpOpcao.ItemIndex = 0, 'ENTRADA', 'SAÍDA')+' de '+
                 FormatFloat('R$ ,0.00; -,0.00', edtValor.Value)+' em '+ cmbMoeda.items[cmbMoeda.ItemIndex]+'?') then
-    lancaMovimentacao;
+      lancaMovimentacao;
 end;
 
 procedure TfrmEntradaSaidaMoeda.btnVoltarClick(Sender: TObject);
