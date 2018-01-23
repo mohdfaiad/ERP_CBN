@@ -541,10 +541,6 @@ inherited frmSincronizaProdutoEcommerce: TfrmSincronizaProdutoEcommerce
     end
     object TabSheet1: TTabSheet
       Caption = 'Produtos pai cadastrados'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gridSKUSPai: TDBGridCBN
         Left = 6
         Top = 9
@@ -646,31 +642,6 @@ inherited frmSincronizaProdutoEcommerce: TfrmSincronizaProdutoEcommerce
           Caption = 'Confirmar selecionado'
           TabOrder = 1
           OnClick = BitBtn3Click
-        end
-        object Edit1: TEdit
-          Left = 4
-          Top = 8
-          Width = 329
-          Height = 23
-          TabOrder = 2
-        end
-        object Button1: TButton
-          Left = 339
-          Top = 8
-          Width = 49
-          Height = 25
-          Caption = 'Button1'
-          TabOrder = 3
-          OnClick = Button1Click
-        end
-        object Button2: TButton
-          Left = 394
-          Top = 8
-          Width = 49
-          Height = 25
-          Caption = 'Button1'
-          TabOrder = 4
-          OnClick = Button2Click
         end
       end
     end

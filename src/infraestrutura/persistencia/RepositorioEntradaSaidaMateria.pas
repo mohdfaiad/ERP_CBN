@@ -48,6 +48,7 @@ begin
    EntradaSaidaMateria.quantidade     := self.FQuery.FieldByName('quantidade').AsFloat;
    EntradaSaidaMateria.data_movimento := self.FQuery.FieldByName('data_movimento').AsDateTime;
    EntradaSaidaMateria.tipo           := self.FQuery.FieldByName('tipo').AsString;
+   EntradaSaidaMateria.observacao     := self.FQuery.FieldByName('observacao').AsString;
 
    result := EntradaSaidaMateria;
 end;
@@ -92,6 +93,8 @@ begin
    if (EntradaSaidaMateriaAntigo.tipo <> EntradaSaidaMateriaNovo.tipo) then
      Auditoria.AdicionaCampoAlterado('tipo', EntradaSaidaMateriaAntigo.tipo, EntradaSaidaMateriaNovo.tipo);
 
+   if (EntradaSaidaMateriaAntigo.observacao <> EntradaSaidaMateriaNovo.observacao) then
+     Auditoria.AdicionaCampoAlterado('observacao', EntradaSaidaMateriaAntigo.observacao, EntradaSaidaMateriaNovo.observacao);
 end;
 
 procedure TRepositorioEntradaSaidaMateria.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -104,6 +107,7 @@ begin
   Auditoria.AdicionaCampoExcluido('quantidade'    , FloatToStr(EntradaSaidaMateria.quantidade));
   Auditoria.AdicionaCampoExcluido('data_movimento', DateTimeToStr(EntradaSaidaMateria.data_movimento));
   Auditoria.AdicionaCampoExcluido('tipo'          , EntradaSaidaMateria.tipo);
+  Auditoria.AdicionaCampoExcluido('observacao'    , EntradaSaidaMateria.observacao);
 end;
 
 procedure TRepositorioEntradaSaidaMateria.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -111,11 +115,12 @@ var
   EntradaSaidaMateria :TEntradaSaidaMateria;
 begin
   EntradaSaidaMateria := (Objeto as TEntradaSaidaMateria);
-  Auditoria.AdicionaCampoIncluido('codigo'        ,    IntToStr(EntradaSaidaMateria.codigo));
-  Auditoria.AdicionaCampoIncluido('codigo_materia',    IntToStr(EntradaSaidaMateria.codigo_materia));
-  Auditoria.AdicionaCampoIncluido('quantidade'    ,    FloatToStr(EntradaSaidaMateria.quantidade));
-  Auditoria.AdicionaCampoIncluido('data_movimento',    DateTimeToStr(EntradaSaidaMateria.data_movimento));
-  Auditoria.AdicionaCampoIncluido('tipo'          ,    EntradaSaidaMateria.tipo);
+  Auditoria.AdicionaCampoIncluido('codigo'        , IntToStr(EntradaSaidaMateria.codigo));
+  Auditoria.AdicionaCampoIncluido('codigo_materia', IntToStr(EntradaSaidaMateria.codigo_materia));
+  Auditoria.AdicionaCampoIncluido('quantidade'    , FloatToStr(EntradaSaidaMateria.quantidade));
+  Auditoria.AdicionaCampoIncluido('data_movimento', DateTimeToStr(EntradaSaidaMateria.data_movimento));
+  Auditoria.AdicionaCampoIncluido('tipo'          , EntradaSaidaMateria.tipo);
+  Auditoria.AdicionaCampoIncluido('observacao'    , EntradaSaidaMateria.observacao);
 end;
 
 procedure TRepositorioEntradaSaidaMateria.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -133,6 +138,7 @@ begin
   self.FQuery.ParamByName('quantidade').AsFloat     := EntradaSaidaMateria.quantidade;
   self.FQuery.ParamByName('data_movimento').AsDateTime := EntradaSaidaMateria.data_movimento;
   self.FQuery.ParamByName('tipo').AsString           := EntradaSaidaMateria.tipo;
+  self.FQuery.ParamByName('observacao').AsString     := EntradaSaidaMateria.observacao;
 end;
 
 function TRepositorioEntradaSaidaMateria.SQLGet: String;
@@ -158,8 +164,8 @@ end;
 
 function TRepositorioEntradaSaidaMateria.SQLSalvar: String;
 begin
-  result := 'update or insert into ENTRADAS_SAIDAS_MATERIA (CODIGO ,CODIGO_MATERIA ,QUANTIDADE ,DATA_MOVIMENTO ,TIPO) '+
-           '                      values ( :CODIGO , :CODIGO_MATERIA , :QUANTIDADE , :DATA_MOVIMENTO , :TIPO) ';
+  result := 'update or insert into ENTRADAS_SAIDAS_MATERIA (CODIGO ,CODIGO_MATERIA ,QUANTIDADE ,DATA_MOVIMENTO ,TIPO, OBSERVACAO) '+
+            '                      values ( :CODIGO , :CODIGO_MATERIA , :QUANTIDADE , :DATA_MOVIMENTO , :TIPO, :OBSERVACAO)        ';
 end;
 
 end.

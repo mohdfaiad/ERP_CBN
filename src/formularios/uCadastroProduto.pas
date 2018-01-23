@@ -368,7 +368,6 @@ type
     procedure btnCancelaAssClick(Sender: TObject);
     procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnClonarClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
     Produto :TProduto;
@@ -1515,14 +1514,6 @@ begin
     cbGenero.Enabled   := true;
     cbGenero.SetFocus;
   end;
-end;
-
-procedure TfrmCadastroProduto.Button1Click(Sender: TObject);
-begin
-  inherited;
-  cdsCodPossiveis.Filtered := false;
-  cdsCodPossiveis.Filter   := 'TAG = ''x'' ';
-  cdsCodPossiveis.Filtered := true;
 end;
 
 procedure TfrmCadastroProduto.Button2Click(Sender: TObject);

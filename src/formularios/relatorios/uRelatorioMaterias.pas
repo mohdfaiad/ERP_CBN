@@ -59,6 +59,7 @@ type
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLDBText11BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     procedure montaSql;
   public
@@ -80,6 +81,12 @@ begin
     avisar('Nenhum registro foi encontrado utilizando os filtros informados')
   else
     RLReport1.PreviewModal;
+end;
+
+procedure TfrmRelatorioMaterias.FormCreate(Sender: TObject);
+begin
+  inherited;
+  BuscaMateria1.ApenasControlaEstoque := true;
 end;
 
 procedure TfrmRelatorioMaterias.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

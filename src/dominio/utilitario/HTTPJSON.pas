@@ -58,8 +58,8 @@ begin
     FIdHTTP.Request.Method := 'GET';
     Result := FIdHTTP.Get(FURLBase+url);
   Except
-   on e:Exception do
-     raise Exception.Create(e.Message);
+   on e:EIdHTTPProtocolException do
+     raise Exception.Create(e.ErrorMessage);
   end;
 end;
 
@@ -71,8 +71,8 @@ begin
     SJson  := TStringStream.Create(json,TEncoding.UTF8);
     result := FIdHTTP.POST(FURLBase+'produtos/', SJson);
   Except
-   on e:Exception do
-     raise Exception.Create(e.Message);
+   on e:EIdHTTPProtocolException do
+     raise Exception.Create(e.ErrorMessage);
   end;
 end;
 

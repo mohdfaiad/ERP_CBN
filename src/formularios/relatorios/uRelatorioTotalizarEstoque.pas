@@ -590,7 +590,7 @@ begin
     cWhere := 'WHERE PRODUTOS.REFERENCIA IS NOT NULL ';
 
   if chkSomenteLoja.Checked then
-    cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or PRODUTOS.referencia like ''%LOJA%'')';
+    cWhere := cWhere + 'AND (PRODUTOS.REFERENCIA LIKE ''%L'' or PRODUTOS.referencia containing ''LOJA'')';
 
   if rgpSetor.ItemIndex < 2 then
     condicaoSetor := IfThen(rgpSetor.ItemIndex = 0, ' and ESTOQUE.SETOR = 1 ',' and ESTOQUE.SETOR = 2 ');

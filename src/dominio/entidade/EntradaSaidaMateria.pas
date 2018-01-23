@@ -13,6 +13,7 @@ type
     Fquantidade :Real;
     Fdata_movimento :TDateTime;
     Ftipo :String;
+    FObservacao: String;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -20,6 +21,7 @@ type
     property quantidade            :Real read Fquantidade            write Fquantidade;
     property data_movimento        :TDateTime read Fdata_movimento        write Fdata_movimento;
     property tipo                  :String read Ftipo                  write Ftipo;
+    property observacao            :String read FObservacao          write FObservacao;
 end;
 
 implementation

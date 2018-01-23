@@ -92,7 +92,7 @@ caminho := ExtractFilePath(Application.ExeName)+'ARQUIVO_MEUS_PEDIDOS.xlsx';
 
    dm.qryGenerica.Close;
    dm.qryGenerica.SQL.Text := 'select * from tabelas_preco tb    '+
-                              'where tb.descricao like ''%2017%''';
+                              'where tb.descricao containing ''2017''';
    dm.qryGenerica.Open;
 
    linha := 1;

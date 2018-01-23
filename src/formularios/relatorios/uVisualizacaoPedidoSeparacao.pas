@@ -118,8 +118,11 @@ type
     RLDBText15: TRLDBText;
     RLDBText18: TRLDBText;
     RLDBText19: TRLDBText;
+    RLDraw15: TRLDraw;
     procedure RLDBText14BeforePrint(Sender: TObject; var Text: String;
       var PrintIt: Boolean);
+    procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLDBText3BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
   private
     { Private declarations }
   public
@@ -162,6 +165,14 @@ begin
   lblrecebimento.Caption   := DateToStr(Pedido.dt_recebimento);
 end;
 
+procedure TfrmVisualizacaoPedidoSeparacao.RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
+begin
+  if RLDraw15.Brush.Color = clwhite then
+    RLDraw15.Brush.Color := $00F5F5F5
+  else
+    RLDraw15.Brush.Color := clWhite;
+end;
+
 procedure TfrmVisualizacaoPedidoSeparacao.RLDBText14BeforePrint(
   Sender: TObject; var Text: String; var PrintIt: Boolean);
 begin
@@ -173,8 +184,16 @@ begin
   else begin
     rldbtext14.Font.Style := [];
     rldbtext14.Font.Size  := 9;
-    lbindica.Visible      := false;    
+    lbindica.Visible      := false;
   end;
+end;
+
+procedure TfrmVisualizacaoPedidoSeparacao.RLDBText3BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+begin
+  if Text = '0' then
+    TRLDBText(Sender).Height := 0
+  else
+    TRLDBText(Sender).Height := 16;
 end;
 
 end.

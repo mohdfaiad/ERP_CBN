@@ -21,6 +21,8 @@ type
     lblAsteriscoCFOP: TLabel;
     rgSuspensaoICMS: TRadioGroup;
     cdsSUSPENSAO_ICMS: TStringField;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
@@ -294,7 +296,7 @@ begin
 
   if filtra_cfop_entrada then begin
     cds.Filtered := false;
-    cds.Filter   := 'not cfop like ''5%'' and not cfop like ''6%'' ';
+    cds.Filter   := 'not cfop starts with ''5'' and not cfop starts with ''6'' ';
     cds.Filtered := true;
   end;
 end;

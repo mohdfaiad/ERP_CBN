@@ -23,18 +23,22 @@ type
     edtQtdEntrada: TCurrencyEdit;
     lbUnidadeMedida: TLabel;
     BuscaMateria1: TBuscaMateria;
+    lbResponsavel: TLabel;
+    edtObs: TEdit;
     procedure BuscaMateria1Exit(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
     procedure edtQtdEntradaChange(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FEntradaZero_SaidaUm :smallint;
   private
     procedure salvaEntradaEstoqueMateria;
     procedure salvaEntradaSaida;
+    procedure SetEntradaZero_SaidaUm(const Value: SmallInt);
   public
-    property EntradaZero_SaidaUm :SmallInt read FEntradaZero_SaidaUm write FEntradaZero_SaidaUm;
+    property EntradaZero_SaidaUm :SmallInt read FEntradaZero_SaidaUm write SetEntradaZero_SaidaUm;
 
   public
     constructor Create(AOwner :TComponent; pEntradaZero_SaidaUm :SmallInt); reintroduce;
@@ -59,8 +63,15 @@ end;
 
 procedure TfrmEntradaManualMateria.btnSalvarClick(Sender: TObject);
 begin
+  if (Length(edtObs.Text) < 3) and (edtObs.Visible) then
+  begin
+    avisar('Favor informar o responsável pela operação');
+    edtObs.SetFocus;
+    exit;
+  end;
   salvaEntradaEstoqueMateria;
   edtQtdEntrada.Clear;
+  edtObs.Clear;
 end;
 
 procedure TfrmEntradaManualMateria.BuscaMateria1Exit(Sender: TObject);
@@ -86,6 +97,12 @@ end;
 procedure TfrmEntradaManualMateria.edtQtdEntradaChange(Sender: TObject);
 begin
   btnSalvar.Enabled := assigned(BuscaMateria1.Materia) and (edtQtdEntrada.Value > 0);
+end;
+
+procedure TfrmEntradaManualMateria.FormCreate(Sender: TObject);
+begin
+  inherited;
+  BuscaMateria1.ApenasControlaEstoque := true;
 end;
 
 procedure TfrmEntradaManualMateria.FormShow(Sender: TObject);
@@ -144,6 +161,7 @@ begin
     entradaSaida.quantidade     := edtQtdEntrada.Value;
     entradaSaida.data_movimento := Now;
     entradaSaida.tipo           := IfThen(FEntradaZero_SaidaUm = 0, 'E', 'S');
+    entradaSaida.observacao     := edtObs.Text;
 
     repositorio.Salvar(entradaSaida);
   Except
@@ -154,6 +172,14 @@ begin
     FreeAndNil(entradaSaida);
     FreeAndNil(repositorio);
   end;
+end;
+
+procedure TfrmEntradaManualMateria.SetEntradaZero_SaidaUm(const Value: SmallInt);
+begin
+  FEntradaZero_SaidaUm := Value;
+
+  lbResponsavel.Visible := FEntradaZero_SaidaUm = 0;
+  edtObs.Visible        := FEntradaZero_SaidaUm = 0;
 end;
 
 end.

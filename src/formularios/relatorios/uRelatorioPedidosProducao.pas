@@ -285,6 +285,8 @@ type
     RLSystemInfo11: TRLSystemInfo;
     RLLabel31: TRLLabel;
     RLLabel32: TRLLabel;
+    GroupBox4: TGroupBox;
+    chkEcommerce: TCheckBox;
     procedure btnAddPedidoClick(Sender: TObject);
     procedure btnAddReferenciaClick(Sender: TObject);
     procedure gridPedidosKeyDown(Sender: TObject; var Key: Word;
@@ -350,10 +352,9 @@ begin
   try
   if not cdsPedidos.Active then  cdsPedidos.CreateDataSet;
 
-  if assigned(BuscaPedido1.Ped) and not (cdsPedidos.Locate('PEDIDO', BuscaPedido1.edtNumPedido.Text, [])) then begin
-
+  if assigned(BuscaPedido1.Ped) and not (cdsPedidos.Locate('PEDIDO', BuscaPedido1.edtNumPedido.Text, [])) then
+  begin
     if not Faturado(BuscaPedido1.codigo) then begin
-
       if (rgReferencias.ItemIndex = 2) and not(cdsReferencias.IsEmpty) and not (contem_referencias) then
         raise Exception.Create('Pedido não contém referência(s) especificada(s)');
 
@@ -361,23 +362,18 @@ begin
         cdsPedidosCODIGO.AsInteger := BuscaPedido1.codigo;
         cdsPedidosPEDIDO.AsString  := BuscaPedido1.edtNumPedido.Text;
         cdsPedidos.Post;
-
     end;
-
   end;
 
   BuscaPedido1.limpa;
   BuscaPedido1.edtNumPedido.Clear;
   BuscaPedido1.SetFocus;
-
   except
     on e : Exception do
       begin
         Avisar(e.Message);
       end;
-
   end;
-
 end;
 
 procedure TfrmRelatorioPedidosProducao.btnAddReferenciaClick(
@@ -416,8 +412,8 @@ end;
 procedure TfrmRelatorioPedidosProducao.gridReferenciasKeyDown(
   Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then begin
-
+  if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then
+  begin
     if key = VK_Delete then
       cdsReferencias.Delete
     else if key = VK_F3 then
@@ -425,7 +421,6 @@ begin
 
     if cdsReferencias.IsEmpty then
       rgReferencias.ItemIndex := 0;
-
   end;
 end;
 
@@ -478,120 +473,131 @@ begin
 end;
 
 procedure TfrmRelatorioPedidosProducao.montaSQL;
-var condicaoPeriodo, condicaoPedidos, condicaoReferencias, condicaoCores, pedidos, E, condicaoFaturado :String;
+var condicaoPeriodo, condicaoPedidos, condicao_ecommerce, condicaoReferencias, condicaoCores, pedidos, E, condicaoFaturado :String;
+    qry :TFDquery;
 begin
-  E := ' and ';
+  try
+    qry := dm.GetConsulta;
 
-  if not cbPeriodo.Checked then
-    condicaoPeriodo := ' (ped.'+dataBase+' between :dti and :dtf) ';
+    E := ' and ';
 
-  if (cdsPedidos.Active) and not (cdsPedidos.IsEmpty) then begin
+    if not cbPeriodo.Checked then
+      condicaoPeriodo := ' (ped.'+dataBase+' between :dti and :dtf) ';
 
-    if rgPedidos.ItemIndex = 0 then
-      condicaoPedidos := IfThen(cbPeriodo.Checked, '', ' or  i.cod_pedido in     ('+pedidosSelecionados+') ')
-    else if rgPedidos.ItemIndex = 1 then
-      condicaoPedidos := ' and i.cod_pedido not in ('+pedidosSelecionados+') '
-    else if rgPedidos.ItemIndex = 2 then
-      condicaoPedidos := ' and i.cod_pedido in     ('+pedidosSelecionados+') ';
+    if chkEcommerce.Checked then
+      condicao_ecommerce := ''
+    else
+      condicao_ecommerce := ' AND ((DR.CODIGO IS NULL) or (DR.REP_ECOMMERCE <> ''S'')) ';
 
-    if condicaoPeriodo = '' then
-      condicaoPedidos := copy(condicaoPedidos,5,length(condicaoPedidos));
+    if (cdsPedidos.Active) and not (cdsPedidos.IsEmpty) then
+    begin
+      if rgPedidos.ItemIndex = 0 then
+        condicaoPedidos := IfThen(cbPeriodo.Checked, '', ' or  i.cod_pedido in     ('+pedidosSelecionados+') ')
+      else if rgPedidos.ItemIndex = 1 then
+        condicaoPedidos := ' and i.cod_pedido not in ('+pedidosSelecionados+') '
+      else if rgPedidos.ItemIndex = 2 then
+        condicaoPedidos := ' and i.cod_pedido in     ('+pedidosSelecionados+') ';
 
+      if condicaoPeriodo = '' then
+        condicaoPedidos := copy(condicaoPedidos,5,length(condicaoPedidos));
+    end;
+
+    condicaoFaturado := ' iif((not (PF.codigo is null) or (Ped.despachado = ''S'')), ''SIM'', ''NÃO'') ';
+
+    rlMemoReferencias.Lines.Clear;
+    if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then
+    begin
+      if rgReferencias.ItemIndex = 0 then
+        condicaoReferencias := IfThen(cbPeriodo.Checked,'',' or  p.codigo in     ('+referenciasSelecionadas+') ')
+      else if rgReferencias.ItemIndex = 1 then
+        condicaoReferencias := ' and p.codigo not in ('+referenciasSelecionadas+') '
+      else if rgReferencias.ItemIndex = 2 then
+        condicaoReferencias := ' and p.codigo in     ('+referenciasSelecionadas+') ';
+
+      if (condicaoPeriodo = '') and (condicaoPedidos = '') then
+        condicaoReferencias := copy(condicaoReferencias,5,length(condicaoReferencias));
+    end;
+
+    if (cdsCores.Active) and not (cdsCores.IsEmpty) then
+    begin
+      if rgCores.ItemIndex = 0 then
+        condicaoCores := IfThen(cbPeriodo.Checked,'',' or  c.codigo in     ('+coresSelecionadas+') ')
+      else if rgCores.ItemIndex = 1 then
+        condicaoCores := ' and c.codigo not in ('+coresSelecionadas+') '
+      else if rgCores.ItemIndex = 2 then
+        condicaoCores := ' and c.codigo in     ('+coresSelecionadas+') ';
+
+      if (condicaoPeriodo = '') and (condicaoPedidos = '') and (condicaoReferencias = '')then
+        condicaoCores := copy(condicaoCores,5,length(condicaoCores));
+    end;
+
+         if BuscaPedido1.rgTipoBusca.ItemIndex = 1 then   condicaofaturado      := condicaofaturado + ' = ''SIM'''
+    else if BuscaPedido1.rgTipoBusca.ItemIndex = 2 then   condicaofaturado      := condicaofaturado + ' = ''NÃO'''
+    else if BuscaPedido1.rgTipoBusca.ItemIndex = 0 then   condicaofaturado      := condicaofaturado + ' in (''SIM'',''NÃO'') ';
+
+    if (condicaoPeriodo = '') and (condicaoPedidos = '') and (condicaoReferencias = '') and (condicaoCores = '') then
+      E := '';
+
+    qryItens.Close;
+    qryItens.SQL.Text := 'select p.referencia Ref_produto,c.referencia Ref_cor, sum(i.qtd_rn) qtd_rn, sum(i.qtd_p) qtd_p, sum(i.qtd_m) qtd_m,            '+
+                         'sum(i.qtd_g) qtd_g, sum(i.qtd_1) qtd_1, sum(i.qtd_2) qtd_2, sum(i.qtd_3) qtd_3, sum(i.qtd_4) qtd_4, sum(i.qtd_6) qtd_6,        '+
+                         'sum(i.qtd_8) qtd_8, sum(i.qtd_10) qtd_10, sum(i.qtd_12) qtd_12, sum(i.qtd_14) qtd_14, sum(i.qtd_unica) qtd_unica,              '+
+                         'sum(i.qtd_total) qtd_total, sum( (p.qtd_pecas * i.qtd_total) ) pecas,                                                          '+
+                         'iif(c.desc_producao <> '''',(c.desc_producao || '' '' || c.cor),max(c.descricao)) cor, max(p.descricao) produto,               '+
+                         'max(ped.numpedido) pedido                                 from itens i                                                         '+
+                         'inner join produtos p           on ( p.codigo   = i.cod_produto )                                                              '+
+                         'inner join cores c              on ( c.codigo   = i.cod_cor     )                                                              '+
+                         'inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )                                                              '+
+                         'left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)                                                              '+
+                         'left join dados_representante dr on dr.codigo_representante = ped.cod_repres                                                   '+
+                         'where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + E + condicaoFaturado + condicao_ecommerce    +
+                         'group by p.referencia, c.desc_producao, c.referencia, c.cor '+IfThen(BuscaPedido1.rgTipoBusca.ItemIndex = 2,', pf.codigo ', '')+
+                         'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'p.referencia, cor', 'cor, p.referencia') ;
+
+    if not cbPeriodo.Checked then begin
+      qryItens.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
+      qryItens.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
+    end;
+
+    qryItens.Open;
+
+    if qryItens.IsEmpty then  exit;
+
+    pedidos := '';
+
+    qry.Close;
+    qry.SQL.Text := 'select (ped.numpedido) pedido  from produtos p                         '+
+                                '  inner join itens i               on ( p.codigo   = i.cod_produto )   '+
+                                '  inner join cores c               on ( c.codigo   = i.cod_cor     )   '+
+                                '  inner join pedidos ped           on ( ped.codigo = i.cod_pedido  )   '+
+                                '  left join pedidos_faturados pf   on (pf.codigo_pedido = ped.codigo)  '+
+                                '  left join dados_representante dr on dr.codigo_representante = ped.cod_repres '+
+                                ' where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores +
+                                E + condicaoFaturado + condicao_ecommerce +
+                                ' group by ped.numpedido';
+
+    if not cbPeriodo.Checked then begin
+      qry.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
+      qry.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
+    end;
+
+    qry.Open;
+
+    if qry.IsEmpty then  exit;
+
+    while not qry.Eof do begin
+        pedidos := pedidos +', '+qry.fieldByName('pedido').AsString;
+
+      qry.Next;
+    end;
+
+    pedidos := copy(pedidos, 2, length(pedidos));
+
+    rlMemoPedidos.Lines.Clear;
+    rlMemoPedidos.Lines.Add( pedidos );
+  finally
+    FreeAndNil(qry);
   end;
-
-  condicaoFaturado := ' iif((not (PF.codigo is null) or (Ped.despachado = ''S'')), ''SIM'', ''NÃO'') ';
-
-  rlMemoReferencias.Lines.Clear;
-  if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then begin
-
-    if rgReferencias.ItemIndex = 0 then
-      condicaoReferencias := IfThen(cbPeriodo.Checked,'',' or  p.codigo in     ('+referenciasSelecionadas+') ')
-    else if rgReferencias.ItemIndex = 1 then
-      condicaoReferencias := ' and p.codigo not in ('+referenciasSelecionadas+') '
-    else if rgReferencias.ItemIndex = 2 then
-      condicaoReferencias := ' and p.codigo in     ('+referenciasSelecionadas+') ';
-
-    if (condicaoPeriodo = '') and (condicaoPedidos = '') then
-      condicaoReferencias := copy(condicaoReferencias,5,length(condicaoReferencias));
-
-  end;
-
-  if (cdsCores.Active) and not (cdsCores.IsEmpty) then begin
-
-    if rgCores.ItemIndex = 0 then
-      condicaoCores := IfThen(cbPeriodo.Checked,'',' or  c.codigo in     ('+coresSelecionadas+') ')
-    else if rgCores.ItemIndex = 1 then
-      condicaoCores := ' and c.codigo not in ('+coresSelecionadas+') '
-    else if rgCores.ItemIndex = 2 then
-      condicaoCores := ' and c.codigo in     ('+coresSelecionadas+') ';
-
-    if (condicaoPeriodo = '') and (condicaoPedidos = '') and (condicaoReferencias = '')then
-      condicaoCores := copy(condicaoCores,5,length(condicaoCores));
-
-  end;
-
-       if BuscaPedido1.rgTipoBusca.ItemIndex = 1 then   condicaofaturado      := condicaofaturado + ' = ''SIM'''
-  else if BuscaPedido1.rgTipoBusca.ItemIndex = 2 then   condicaofaturado      := condicaofaturado + ' = ''NÃO'''
-  else if BuscaPedido1.rgTipoBusca.ItemIndex = 0 then   condicaofaturado      := condicaofaturado + ' in (''SIM'',''NÃO'') ';
-
-  if (condicaoPeriodo = '') and (condicaoPedidos = '') and (condicaoReferencias = '') and (condicaoCores = '') then
-    E := '';
-
-  qryItens.Close;
-  qryItens.SQL.Text := 'select p.referencia Ref_produto,c.referencia Ref_cor, sum(i.qtd_rn) qtd_rn, sum(i.qtd_p) qtd_p, sum(i.qtd_m) qtd_m,            '+
-                       'sum(i.qtd_g) qtd_g, sum(i.qtd_1) qtd_1, sum(i.qtd_2) qtd_2, sum(i.qtd_3) qtd_3, sum(i.qtd_4) qtd_4, sum(i.qtd_6) qtd_6,        '+
-                       'sum(i.qtd_8) qtd_8, sum(i.qtd_10) qtd_10, sum(i.qtd_12) qtd_12, sum(i.qtd_14) qtd_14, sum(i.qtd_unica) qtd_unica,              '+
-                       'sum(i.qtd_total) qtd_total, sum( (p.qtd_pecas * i.qtd_total) ) pecas,                                                          '+
-                       'iif(c.desc_producao <> '''',(c.desc_producao || '' '' || c.cor),max(c.descricao)) cor, max(p.descricao) produto,               '+
-                       'max(ped.numpedido) pedido                                 from itens i                                                         '+
-                       'inner join produtos p           on ( p.codigo   = i.cod_produto )                                                              '+
-                       'inner join cores c              on ( c.codigo   = i.cod_cor     )                                                              '+
-                       'inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )                                                              '+
-                       'left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)                                                              '+
-                       'where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + E + condicaoFaturado                         +
-                       'group by p.referencia, c.desc_producao, c.referencia, c.cor '+IfThen(BuscaPedido1.rgTipoBusca.ItemIndex = 2,', pf.codigo ', '')+
-                       'order by '+ IfThen(rgAgrupamento.ItemIndex = 0, 'p.referencia, cor', 'cor, p.referencia') ;
-
-  if not cbPeriodo.Checked then begin
-    qryItens.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
-    qryItens.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
-  end;
-
-  qryItens.Open;
-
-  if qryItens.IsEmpty then  exit;
-
-  pedidos := '';
-
-  fdm.qryGenerica.Close;
-  fdm.qryGenerica.SQL.Text := 'select (ped.numpedido) pedido  from produtos p                       '+
-                              '  inner join itens i           on ( p.codigo   = i.cod_produto )      '+
-                              '  inner join cores c              on ( c.codigo   = i.cod_cor     )   '+
-                              '  inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )   '+
-                              '  left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)  '+
-                              ' where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores +
-                              E + condicaoFaturado +
-                              ' group by ped.numpedido';
-
-  if not cbPeriodo.Checked then begin
-    fdm.qryGenerica.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
-    fdm.qryGenerica.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
-  end;
-
-  fdm.qryGenerica.Open;
-
-  if fdm.qryGenerica.IsEmpty then  exit;
-
-  while not fdm.qryGenerica.Eof do begin
-      pedidos := pedidos +', '+fdm.qryGenerica.fieldByName('pedido').AsString;
-
-    fdm.qryGenerica.Next;
-  end;
-
-  pedidos := copy(pedidos, 2, length(pedidos));
-
-  rlMemoPedidos.Lines.Clear;
-  rlMemoPedidos.Lines.Add( pedidos );
 end;
 
 function TfrmRelatorioPedidosProducao.dataBase: String;
@@ -768,7 +774,7 @@ end;
 
 // diminui dos itens dos pedidos filtrados, as quantidades conferidas, (quando a conferencia correspondente ainda esta em aberto)
 procedure TfrmRelatorioPedidosProducao.montaSQLparaSaldo;
-var condicaoPeriodo, condicaoPedidos, condicaoReferencias, condicaoCores, pedidos, E, condicaoFaturado :String;
+var condicaoPeriodo, condicaoPedidos, condicao_ecommerce, condicaoReferencias, condicaoCores, pedidos, E, condicaoFaturado :String;
 begin
 
   if not cbPeriodo.Checked then
@@ -784,6 +790,11 @@ begin
       condicaoPedidos := ' and i.cod_pedido in     ('+pedidosSelecionados+') ';
 
   end;
+
+  if chkEcommerce.Checked then
+    condicao_ecommerce := ''
+  else
+    condicao_ecommerce := ' AND ((DR.CODIGO IS NULL) or (DR.REP_ECOMMERCE <> ''S'')) ';
 
   rlMemoReferencias2.Lines.Clear;
   if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then begin
@@ -840,8 +851,9 @@ begin
                         'inner join pedidos            ped on ped.codigo = i.cod_pedido                                  '+
                         'LEFT JOIN pedidos_faturados  PF  ON PF.CODIGO_PEDIDO = Ped.CODIGO                              '+
                         'left join ESTOQUE_POR_REFERENCIA(i.cod_produto, i.cod_cor, cor.cor_pai) ER on (1=1)            '+
+                        'left join dados_representante dr on dr.codigo_representante = ped.cod_repres                   '+
                         'where ((CP.fim is null ) or NOT (CP.fim > ''01.01.2013'')) and not(ped.cancelado = ''S'')      '+
-                         condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + condicaoFaturado +
+                         condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + condicaoFaturado + condicao_ecommerce +
                         'group by pro.referencia, pro.descricao, cor.referencia, cor.descricao,cor.desc_producao,cor.cor '+
                         ' having (  (sum(i.qtd_rn - iif(not ci.qtd_rn is null,ci.qtd_rn,0))- MAX(er.q_rn)) > 0 or        '+
                         '           (sum(i.qtd_p - iif(not ci.qtd_p is null,ci.qtd_p,0))- MAX(er.q_p)) > 0 or            '+
@@ -893,8 +905,9 @@ begin
                               '  inner join cores cor            on ( cor.codigo   = i.cod_cor   )   '+
                               '  inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )   '+
                               '  left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)  '+
-                              ' where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores 
-                              + condicaoFaturado +
+                              '  left join dados_representante dr on dr.codigo_representante = ped.cod_repres '+
+                              ' where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores
+                              + condicaoFaturado + condicao_ecommerce +
                               ' group by ped.numpedido';
 
   if not cbPeriodo.Checked then begin
@@ -1110,7 +1123,7 @@ begin
 end;
 
 procedure TfrmRelatorioPedidosProducao.montaSQLparaNaoConferidos;
-var condicaoPeriodo, condicaoPedidos, condicaoReferencias, condicaoCores, pedidos, E, condicaoFaturado :String;
+var condicaoPeriodo, condicaoPedidos, condicaoReferencias, condicao_ecommerce, condicaoCores, pedidos, E, condicaoFaturado :String;
 begin
 
   if not cbPeriodo.Checked then
@@ -1126,6 +1139,11 @@ begin
       condicaoPedidos := ' and i.cod_pedido in     ('+pedidosSelecionados+') ';
 
   end;
+
+  if chkEcommerce.Checked then
+    condicao_ecommerce := ''
+  else
+    condicao_ecommerce := ' AND ((DR.CODIGO IS NULL) or (DR.REP_ECOMMERCE <> ''S'')) ';
 
   rlMemoReferencias2.Lines.Clear;
   if (cdsReferencias.Active) and not (cdsReferencias.IsEmpty) then begin
@@ -1181,8 +1199,9 @@ begin
                       '  inner join cores              cor on cor.codigo = i.cod_cor                                      '+
                       '  inner join pedidos            ped on ped.codigo = i.cod_pedido                                   '+
                       '  LEFT JOIN pedidos_faturados  PF  ON PF.CODIGO_PEDIDO = Ped.CODIGO                               '+
+                      '  left join dados_representante dr on dr.codigo_representante = ped.cod_repres                    '+
                       '  where ((CP.fim is null ) or NOT (CP.fim > ''01.01.2013'')) and not(ped.cancelado = ''S'')       '+
-                          condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + condicaoFaturado +
+                          condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores + condicaoFaturado + condicao_ecommerce +
                       '  group by pro.referencia, pro.descricao, cor.referencia, cor.descricao,cor.desc_producao,cor.cor '+
                       '   having (  (sum(i.qtd_rn - iif(ci.qtd_rn is not null,ci.qtd_rn,0))) > 0 or                      '+
                       '             (sum(i.qtd_p - iif(ci.qtd_p is not null,ci.qtd_p,0))) > 0 or                         '+
@@ -1234,8 +1253,9 @@ begin
                               '  inner join cores cor            on ( cor.codigo   = i.cod_cor   )   '+
                               '  inner join pedidos ped          on ( ped.codigo = i.cod_pedido  )   '+
                               '  left join pedidos_faturados pf on (pf.codigo_pedido = ped.codigo)  '+
+                              '  left join dados_representante dr on dr.codigo_representante = ped.cod_repres '+
                               ' where '+ condicaoPeriodo + condicaoPedidos + condicaoReferencias + condicaoCores
-                              + condicaoFaturado +
+                              + condicaoFaturado + condicao_ecommerce +
                               ' group by ped.numpedido';
 
   if not cbPeriodo.Checked then begin

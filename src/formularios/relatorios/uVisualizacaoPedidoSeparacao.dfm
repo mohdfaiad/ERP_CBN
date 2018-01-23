@@ -558,6 +558,17 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
         Top = 24
         Width = 754
         Height = 24
+        Color = clWhite
+        ParentColor = False
+        Transparent = False
+        BeforePrint = RLBand5BeforePrint
+        object RLDraw15: TRLDraw
+          Left = -1
+          Top = -3
+          Width = 255
+          Height = 27
+          Pen.Style = psClear
+        end
         object RLDraw14: TRLDraw
           Left = 590
           Top = -7
@@ -588,9 +599,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 72
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_RN_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDraw6: TRLDraw
           Left = 538
@@ -673,9 +686,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 64
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_P_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText5: TRLDBText
           Left = 294
@@ -683,9 +698,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 66
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_M_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText6: TRLDBText
           Left = 326
@@ -693,9 +710,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 64
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_G_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText7: TRLDBText
           Left = 355
@@ -703,9 +722,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_1_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText8: TRLDBText
           Left = 381
@@ -713,9 +734,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_2_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText9: TRLDBText
           Left = 410
@@ -723,9 +746,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_3_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText10: TRLDBText
           Left = 437
@@ -733,9 +758,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_4_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText11: TRLDBText
           Left = 463
@@ -743,9 +770,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_6_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText12: TRLDBText
           Left = 491
@@ -753,9 +782,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 62
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_8_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText13: TRLDBText
           Left = 590
@@ -763,9 +794,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 94
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_UNICA_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText17: TRLDBText
           Left = 51
@@ -792,6 +825,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           DataField = 'C_I'
           DataSource = dsItens
           Text = ''
+          Transparent = False
           BeforePrint = RLDBText14BeforePrint
         end
         object lbindica: TRLLabel
@@ -799,6 +833,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Top = 3
           Width = 33
           Height = 14
+          AutoSize = False
           Caption = '<------------------'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -806,6 +841,7 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Font.Name = 'Britannic Bold'
           Font.Style = []
           ParentFont = False
+          Transparent = False
         end
         object RLDBText15: TRLDBText
           Left = 516
@@ -813,9 +849,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 68
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_10_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText18: TRLDBText
           Left = 544
@@ -823,9 +861,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 68
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_12_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
         object RLDBText19: TRLDBText
           Left = 571
@@ -833,9 +873,11 @@ object frmVisualizacaoPedidoSeparacao: TfrmVisualizacaoPedidoSeparacao
           Width = 68
           Height = 16
           Alignment = taCenter
+          AutoSize = False
           DataField = 'QTD_14_O'
           DataSource = dsItens
           Text = ''
+          BeforePrint = RLDBText3BeforePrint
         end
       end
     end

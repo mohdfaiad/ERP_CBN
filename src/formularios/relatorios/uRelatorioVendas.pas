@@ -438,7 +438,7 @@ begin
                              '                     (select first 1 nat.descricao from itens_notas_fiscais it             '+#13#10+
                              '                       left join naturezas_operacao nat on nat.codigo = it.codigo_natureza '+#13#10+
                              '                       where it.codigo_nota_fiscal = NF.codigo))                           '+#13#10+
-                             '          ) like ''%REMESSA%''                                                             '+#13#10;
+                             '          ) containing ''REMESSA''                                                         '+#13#10;
 
   condicao_exclui_vendas_propria_empresa := ' and not (select pessoas.cpf_cnpj from pessoas where pessoas.codigo = P.cod_cliente)                    '+#13#10+
                                             ' in (select pessoas.cpf_cnpj from empresas left join pessoas on pessoas.codigo = empresas.codigo_pessoa)'+#13#10;
@@ -455,7 +455,7 @@ begin
 
   condicao_item           := ' AND ((itens.devolvido is null) or (itens.devolvido <> ''S'')) ';
 
-  condicao_exclui_bonificacoes := ' and ( ((not nat.cfop in (''5910'',''6910'',''5916'')) and not(nat.cfop like ''1%'' or nat.cfop like ''2%'')) or (nat.cfop is null)) '+#13#10;
+  condicao_exclui_bonificacoes := ' and ( ((not nat.cfop in (''5910'',''6910'',''5916'')) and not(nat.cfop starts with ''1'' or nat.cfop starts with ''2'')) or (nat.cfop is null)) '+#13#10;
 
        if rgTipoData.ItemIndex = 0 then  tipo_data := ' P.DT_CADASTRO '
   else if rgTipoData.ItemIndex = 1 then  tipo_data := ' P.DT_REPRESENTANTE '

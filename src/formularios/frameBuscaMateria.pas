@@ -24,6 +24,7 @@ type
     FcodMateria       :integer;
     FFiltroDescricao   :String;
     FTituloBusca      :String;
+    FApenasControlaEstoque: Boolean;
 
   private
     procedure SetcodMateria      (const Value: integer);
@@ -42,8 +43,9 @@ type
     property codMateria       :integer      read FcodMateria       write SetcodMateria;
 
   public
-    property FiltroDescricao  :String    read FFiltroDescricao  write FFiltroDescricao;
-    property TituloBusca      :String    read FTituloBusca      write FTituloBusca;
+    property FiltroDescricao       :String   read FFiltroDescricao       write FFiltroDescricao;
+    property TituloBusca           :String   read FTituloBusca           write FTituloBusca;
+    property ApenasControlaEstoque :Boolean  read FApenasControlaEstoque write FApenasControlaEstoque;
   end;
 
 implementation
@@ -67,9 +69,9 @@ begin
      Repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
      vMateria     := TMateria(Repositorio.Get(CodigoMateria));
 
-     if not Assigned(vMateria) then begin
+     if not Assigned(vMateria) or (FApenasControlaEstoque and not(vMateria.controla_estoque.Equals('S'))) then
+     begin
        frmCadastroMateria := nil;
-
        try
          frmCadastroMateria := TfrmCadastroMateria.CreateModoBusca(nil);
          if FFiltroDescricao <> '' then
@@ -79,6 +81,8 @@ begin
          end;
          if FTituloBusca <> '' then
            frmCadastroMateria.Caption         := FTituloBusca;
+
+         frmCadastroMateria.ApenasControlaEstoque := FApenasControlaEstoque;
          frmCadastroMateria.ShowModal;
 
          if (frmCadastroMateria.ModalResult = mrOK) then begin

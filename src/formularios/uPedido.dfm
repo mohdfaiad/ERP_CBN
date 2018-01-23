@@ -17,16 +17,12 @@ inherited frmPedido: TfrmPedido
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1037
         426)
@@ -3779,10 +3775,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet2: TTabSheet
       Caption = 'F2 - Digita'#231#227'o'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbDadosItem: TGroupBox
         Left = 6
         Top = 11

@@ -9893,4 +9893,16 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 227
     WordWrap = False
   end
+  object versao227: TMemo
+    Left = 369
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE ENTRADAS_SAIDAS_MATERIA'
+      'ADD OBSERVACAO VARCHAR(100)'
+      '^')
+    TabOrder = 228
+    WordWrap = False
+  end
 end

@@ -30,12 +30,14 @@ type
     ListaUnidade: TListaCampo;
     Label7: TLabel;
     cbxControlaEstoque: TComboBox;
+    cdsCONTROLA_ESTOQUE: TStringField;
     procedure FormShow(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure edtCodNCMKeyPress(Sender: TObject; var Key: Char);
   private
     FProdutoNfe :TProd;
     FFiltroDescricao :String;
+    FApenasControlaEstoque: Boolean;
 
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
 
@@ -66,6 +68,7 @@ type
 
     property produtoNfe :TProd read FprodutoNfe write SetprodutoNfe;
     property filtroDescricao :String read FFiltroDescricao write FFiltroDescricao;
+    property ApenasControlaEstoque :Boolean read FApenasControlaEstoque write FApenasControlaEstoque;
   end;
 
 var
@@ -88,8 +91,9 @@ begin
   Materia := (Registro as TMateria);
 
   self.cds.Edit;
-  self.cdsCODIGO.AsInteger   := Materia.codigo;
-  self.cdsDESCRICAO.AsString := Materia.descricao;
+  self.cdsCODIGO.AsInteger          := Materia.codigo;
+  self.cdsDESCRICAO.AsString        := Materia.descricao;
+  self.cdsCONTROLA_ESTOQUE.AsString := Materia.controla_estoque;
   self.cds.Post;
 end;
 
@@ -190,8 +194,9 @@ begin
   Materia := (Registro as TMateria);
 
   self.cds.Append;
-  self.cdsCODIGO.AsInteger   := Materia.codigo;
-  self.cdsDESCRICAO.AsString := Materia.descricao;
+  self.cdsCODIGO.AsInteger          := Materia.codigo;
+  self.cdsDESCRICAO.AsString        := Materia.descricao;
+  self.cdsCONTROLA_ESTOQUE.AsString := Materia.controla_estoque;
   self.cds.Post;
 end;
 
@@ -280,9 +285,16 @@ begin
     cds.Filtered := true;
   end;
 
+  if FApenasControlaEstoque then
+  begin
+    cds.Filtered := false;
+    cds.Filter   := 'CONTROLA_ESTOQUE = ''S''';
+    cds.Filtered := true;
+  end;
+
   if cds.IsEmpty then
   begin
-    avisar('Não foi encontrada nenhuma matéria, correspondente a "CAIXA", cadastrada.');
+    avisar('Nenhuma matéria foi encontrada.');
     self.Close;
   end;
 

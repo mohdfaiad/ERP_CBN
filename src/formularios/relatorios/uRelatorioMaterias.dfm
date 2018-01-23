@@ -78,6 +78,9 @@ inherited frmRelatorioMaterias: TfrmRelatorioMaterias
       Caption = ' Data do movimento '
       Font.Height = -12
       ExplicitLeft = 2
+      inherited Image1: TImage
+        Visible = False
+      end
       inherited medFinal: TMaskEdit
         OnExit = Periodo1medFinalExit
       end

@@ -12,8 +12,8 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   PixelsPerInch = 96
   TextHeight = 15
   object RLReport1: TRLReport
-    Left = 37
-    Top = 228
+    Left = 46
+    Top = 218
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -2284,8 +2284,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 3
-    ExplicitTop = 551
-    ExplicitWidth = 996
     DesignSize = (
       997
       41)
@@ -3171,7 +3169,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     Left = 512
     Top = 8
     Width = 157
-    Height = 113
+    Height = 59
     Caption = ' Agrupado por: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3185,6 +3183,22 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     ParentFont = False
     TabOrder = 12
     OnClick = rgAgrupamentoClick
+  end
+  object GroupBox4: TGroupBox
+    Left = 512
+    Top = 71
+    Width = 157
+    Height = 50
+    TabOrder = 13
+    object chkEcommerce: TCheckBox
+      Left = 35
+      Top = 17
+      Width = 82
+      Height = 17
+      TabStop = False
+      Caption = 'E-Commerce'
+      TabOrder = 0
+    end
   end
   object cdsPedidos: TClientDataSet
     Aggregates = <>

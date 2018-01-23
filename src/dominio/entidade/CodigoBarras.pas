@@ -107,16 +107,16 @@ begin
     qry.SQL.Text := ' select  (count(cb.codigo) +                         '+
                     '         ( select count(cb.codigo)                   '+
                     '           from codigo_barras cb                     '+
-                    '           where numeracao like :prefixo2||''%'' ) + '+
+                    '           where numeracao starts with :prefixo2 ) + '+
                     '         ( select count(cb.codigo)                   '+
                     '           from codigo_barras cb                     '+
-                    '           where numeracao like :prefixo3||''%'' ) + '+
+                    '           where numeracao starts with :prefixo3 ) + '+
                     '         ( select count(cb.codigo)                   '+
                     '           from codigo_barras cb                     '+
-                    '           where numeracao like :prefixo4||''%'' ))  '+
+                    '           where numeracao starts with :prefixo4 ))  '+
                     '         QTD_CODIGOS                                 '+
                     '     from codigo_barras cb                           '+
-                    ' where numeracao like :prefixo1||''%''               ';
+                    ' where numeracao starts with :prefixo1               ';
 
     qry.ParamByName('prefixo1').AsString := prefixos[1];
     qry.ParamByName('prefixo2').AsString := prefixos[2];

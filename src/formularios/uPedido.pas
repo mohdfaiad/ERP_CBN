@@ -972,7 +972,6 @@ begin
  finally
    FreeAndNil(pedido);
  end;
-
 end;
 
 procedure TfrmPedido.SetPedidoTricae(const Value: Boolean);
@@ -980,7 +979,7 @@ begin
   FPedidoTricae := Value;
 
  // edtPercComissao.Value := IfThen(FPedidoTricae,30,0);
-  edtValorFrete.Enabled := FPedidoTricae or (pos('CRISTIANO COELHO', buscaRepresentante.edtRazao.Text) > 0);
+  edtValorFrete.Enabled := assigned(buscaRepresentante.Representante.DadosRepresentante) and (buscaRepresentante.Representante.DadosRepresentante.rep_ecommerce);
   edtPreco.ReadOnly     := not FPedidoTricae;
 end;
 

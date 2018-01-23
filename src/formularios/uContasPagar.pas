@@ -417,6 +417,8 @@ begin
   Especificacao      := nil;
 
   try
+    self.cds.DisableControls;
+
     status := IfThen(cbxStatusFilter.ItemIndex > 0, cbxStatusFilter.Items[cbxStatusFilter.itemIndex], '');
 
     if dtpFim.Enabled then
@@ -434,14 +436,14 @@ begin
     Especificacao := TEspecificacaoContaPorPeriodoTipo.Create(dti, dtf, status, BuscaFornecedor2.edtCodigo.AsInteger, edtNDoc.AsInteger);
     Contas        := Repositorio.GetListaPorEspecificacao(Especificacao);
 
-    if Assigned(Contas) and (Contas.Count > 0) then begin
-
+    if Assigned(Contas) and (Contas.Count > 0) then
+    begin
        for nX := 0 to (Contas.Count-1) do
          self.IncluirRegistroNoCDS(Contas.Items[nX]);
-
     end;
 
   finally
+    self.cds.EnableControls;
     FreeAndNil(Repositorio);
     FreeAndNil(Contas);
   end;

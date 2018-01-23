@@ -487,7 +487,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 838
     Height = 476
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -641,7 +641,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object gridProdutos: TDBGridCBN
         Left = 5
-        Top = 32
+        Top = 24
         Width = 819
         Height = 415
         Hint = 
@@ -4621,7 +4621,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900C80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

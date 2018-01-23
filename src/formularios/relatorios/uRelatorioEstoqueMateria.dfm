@@ -271,8 +271,6 @@ inherited frmRelatorioEstoqueMateria: TfrmRelatorioEstoqueMateria
     Height = 39
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 152
-    ExplicitWidth = 558
     DesignSize = (
       565
       39)

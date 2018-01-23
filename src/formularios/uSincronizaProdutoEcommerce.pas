@@ -58,9 +58,6 @@ type
     btnCancelarSelecao: TBitBtn;
     BitBtn3: TBitBtn;
     btnSelecionaSKUpai: TBitBtn;
-    Edit1: TEdit;
-    Button1: TButton;
-    Button2: TButton;
     lbQtdeReferencias: TLabel;
     aguardar: TTimer;
     procedure btnSairClick(Sender: TObject);
@@ -83,7 +80,6 @@ type
     procedure btnSelecionaSKUpaiClick(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure btnCancelarSelecaoClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure aguardarTimer(Sender: TObject);
   private
@@ -363,13 +359,6 @@ begin
   finally
     FreeAndNil(vHTTPJSON);
   end;
-end;
-
-procedure TfrmSincronizaProdutoEcommerce.Button1Click(Sender: TObject);
-begin
-  cdsProdutosPai.Filtered := false;
-  cdsProdutosPai.Filter   := edit1.Text;
-  cdsProdutosPai.Filtered := true;
 end;
 
 procedure TfrmSincronizaProdutoEcommerce.Button2Click(Sender: TObject);

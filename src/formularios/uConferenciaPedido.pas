@@ -556,14 +556,14 @@ var especificacao :TEspecificacaoCaixasDaConferencia;
     repositorio   :TRepositorio;
     FListaAux     :TObjectList<TCaixaPedido>;
 begin
-  try
+{  try
     repositorio     := TFabricaRepositorio.GetRepositorio(TcaixaPedido.ClassName);
     especificacao   := TEspecificacaoCaixasDaConferencia.Create(BuscaPedido1.Ped.Conferencia.codigo);
     FCaixasDoPedido := repositorio.GetListaPorEspecificacao(especificacao, intToStr(BuscaPedido1.Ped.Conferencia.codigo));
   finally
     FreeAndNil(especificacao);
     FreeAndNil(repositorio);
-  end;
+  end;    }
 end;
 
 procedure TfrmConferenciaPedido.carrega_dados;
@@ -995,8 +995,12 @@ begin
    //se for pedido de representante E-Commerce e não for pedido da própria plataforma, o estoque é atualizado na mesma
    if pedEcommerce and (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
    begin
-//     getEstoqueAtualProdutos;
-     atualizaEstoquePlataforma(-1);
+     try
+       Aguarda('Salvando estoque na plataforma...');
+       atualizaEstoquePlataforma(-1);
+     finally
+       FimAguarda('');
+     end;
    end;
 
    //se foi 100% conferido
@@ -1061,9 +1065,10 @@ begin
   chkTodos.Enabled := false;
   chkConferidos.Enabled := false;
   chkNaoConferidos.Enabled := false;
+  btnExcluir.Enabled       := true;
   chkTodos.Checked := true;
-  if assigned(FCaixasDoPedido) then
-    FCaixasDoPedido.Clear;
+  {if assigned(FCaixasDoPedido) then
+    FCaixasDoPedido.Clear;   }
 end;
 
 function TfrmConferenciaPedido.Conferencia_finalizada: Boolean;
@@ -1098,8 +1103,8 @@ begin
       abort;
   end;
 
-  if assigned(FCaixasDoPedido) then
-    FreeAndNil(FCaixasDoPedido);
+{  if assigned(FCaixasDoPedido) then
+    FreeAndNil(FCaixasDoPedido);  }
   inherited;
 end;
 
@@ -1309,8 +1314,8 @@ begin
   flecha.Visible           := true;
   cx_aberta.Visible        := true;
 
-  if not adicionarCaixaPedido then
-    btnCancelarCaixa.Click;
+ { if not adicionarCaixaPedido then
+    btnCancelarCaixa.Click;  }
 end;
 
 function TfrmConferenciaPedido.selecionaMateriaCaixa: integer;
@@ -1848,7 +1853,7 @@ var caixaAux, caixa :TCaixaPedido;
     encontrou :Boolean;
     codigoMateria, i :integer;
 begin
-  if not assigned(FCaixasDoPedido) then
+{  if not assigned(FCaixasDoPedido) then
     FCaixasDoPedido := TObjectList.Create;
 
   codigoMateria := selecionaMateriaCaixa;
@@ -1875,7 +1880,7 @@ begin
       FCaixasDoPedido.Add(caixa);
 
     result := true;
-  end;
+  end;      }
 end;
 
 procedure TfrmConferenciaPedido.aguardarUmMinuto;
@@ -2068,7 +2073,7 @@ begin
   repositorio := nil;
  try
  try
-   repositorio        := TFabricaRepositorio.GetRepositorio(TcaixaPedido.ClassName);
+  { repositorio        := TFabricaRepositorio.GetRepositorio(TcaixaPedido.ClassName);
 
    for i := 0 to FCaixasDoPedido.Count-1 do
    begin
@@ -2077,7 +2082,7 @@ begin
      repositorio.Salvar( TCaixaPedido(FCaixasDoPedido.Items[i]) );
    end;
 
-   FreeAndNil(repositorio);
+   FreeAndNil(repositorio);     }
 
    repositorio        := TFabricaRepositorio.GetRepositorio(TCaixas.ClassName);
    codigo_conferencia := self.BuscaPedido1.Ped.Conferencia.codigo;
@@ -2364,9 +2369,11 @@ end;
 procedure TfrmConferenciaPedido.atualizaEstoquePlataforma(multiplicador :integer);
 var sku :String;
     json :String;
+    produtoCadastrado :Boolean;
     Lista : TStringList;
     vHTTPJSON :THTTPJSON;
     quantidadeAtualizada, qtdRequisicoes :integer;
+    produtosAdicionados :integer;
 begin
   try
   try
@@ -2376,6 +2383,7 @@ begin
     Lista.StrictDelimiter := true;
     Lista.QuoteChar       := #0;
     qtdRequisicoes        := 10;
+    produtosAdicionados   := 0;
 
     vHTTPJSON             := nil;
     vHTTPJSON             := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
@@ -2384,12 +2392,21 @@ begin
     while not cdsConferidos.Eof do
     begin
       sku := cdsConferidosSKU.AsString;
+      try
+        produtoCadastrado    := true;
+        quantidadeAtualizada := getQuantidadeAtual( sku );
+      Except
+        on e :Exception do
+          produtoCadastrado := POS('NOT FOUND',UPPERCASE(e.message)) = 0;
+      end;
 
-      quantidadeAtualizada := getQuantidadeAtual( sku );
-      quantidadeAtualizada := quantidadeAtualizada + (cdsConferidosQUANTIDADE.AsInteger * multiplicador);
-      Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+      if produtoCadastrado then
+      begin
+        quantidadeAtualizada := quantidadeAtualizada + (cdsConferidosQUANTIDADE.AsInteger * multiplicador);
+        Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
+        inc(produtosAdicionados);
+      end;
       cdsConferidos.Next;
-
       inc( qtdRequisicoes );
 
       if qtdRequisicoes >= 300 then
@@ -2397,12 +2414,20 @@ begin
         aguardarUmMinuto;
         qtdRequisicoes := 10;
       end;
+
+      if (produtosAdicionados = 50) or cdsConferidos.Eof then
+      begin
+        json := '['+Lista.DelimitedText+']';
+        vHTTPJSON.Post(json);
+
+        produtosAdicionados := 0;
+        Lista.Clear;
+        json := '';
+      end;
     end;
 
-    json := '['+Lista.DelimitedText+']';
-    vHTTPJSON.Post(json);
   Except
-    on e :Exception do
+    on e :EIdHTTPProtocolException do
     begin
       raise Exception.Create('Erro ao atualizar o estoque da plataforma.'+#13#10+'Aguarde 1 min e tente novamente por favor.'+#13#10+e.Message);
     end;
@@ -2418,6 +2443,7 @@ var sku :String;
     i :integer;
     refProduto, refCor, tamanho :String;
 begin
+    cdsConferidos.EmptyDataSet;
     cdsItensConferidos.First;
     while not cdsItensConferidos.Eof do
     begin
@@ -2459,6 +2485,8 @@ begin
     Objeto := TJSONObject.ParseJSONValue(getJsonProduto(sku)) as TJSONObject;
     result := StrToIntDef(Objeto.GetValue('estoque').Value,0);
   except
+    on e :Exception do
+      raise Exception.Create(e.Message);
   end;
 end;
 
@@ -2647,13 +2675,13 @@ end;
 procedure TfrmConferenciaPedido.habilita_desabilita_caixas(
   boleana: Boolean);
 begin
-  btnExcluir.Enabled       := not boleana;
+  //btnExcluir.Enabled       := not boleana;
   btnNovaCaixa.Visible     := boleana;
   btnFecharCaixa.Visible   := boleana;
   btnCancelarCaixa.Visible := boleana;
   cbCaixas.Visible         := boleana;
   staTitulo.Visible        := boleana;
-  btnAlteraCaixas.Visible  := boleana;
+//  btnAlteraCaixas.Visible  := boleana;
   cx_fechada.Visible       := boleana;
 end;
 
@@ -2916,8 +2944,8 @@ begin
  try
    Aguarda('Aguarde, gerando relatório...');
 
-   if not gridItens.columns[31].Visible then
-   begin
+  // if not gridItens.columns[36].Visible then
+ //  begin
     // cdsItens.AfterScroll := nil;
      cdsItens.DisableControls;
      cdsitens.First;
@@ -2929,8 +2957,8 @@ begin
      cdsItens.EnableControls;
    //  cdsItens.AfterScroll := cdsItensAfterScroll;
      
-     gridItens.columns[31].Visible := true;
-   end;
+   //  gridItens.columns[36].Visible := true;
+  // end;
 
    frmVisualizacaoPedidoSeparacao.imprime(cdsItens ,BuscaPedido1.Ped);
 
@@ -3244,9 +3272,14 @@ var
 begin
   repositorio := nil;
 
-  if (BuscaPedido1.pedido_faturado) or (BuscaPedido1.Ped.despachado = 'S') or not assigned(BuscaPedido1.Ped.Conferencia)
-     or not confirma('Deseja realmente EXCLUIR a conferência atual?'+#13#10+
-                     '(ao excluir a conferência, tudo o que foi conferido será zerado)') then
+  if not assigned(BuscaPedido1.Ped.Conferencia) then
+  begin
+    avisar('Ainda não existe uma conferência salva associada a esse pedido');
+    exit;
+  end;
+
+  if not confirma('Deseja realmente EXCLUIR a conferência atual?'+#13#10+
+                  '(ao excluir a conferência, tudo o que foi conferido será zerado)') then
     exit;
   try
   try
@@ -3298,11 +3331,11 @@ var
 begin
   with cdsItens do
   begin
-    for i := 0 to Fields.Count do
+    for i := 0 to Fields.Count -1 do
     begin
       if (pos('QTD_',Fields[i].FieldName) > 0) and (pos('_O',Fields[i].FieldName) = 0) then
       begin
-        tamanho     := copy(Fields[i].AsString, pos('QTD_',Fields[i].FieldName)+4, 5);
+        tamanho     := copy(Fields[i].FieldName, pos('QTD_',Fields[i].FieldName)+4, 5);
         case AnsiIndexStr(tamanho, Tamanhos)  of
           0:  incompleto := edtRN.Value < fields[i].AsInteger;
           1:  incompleto := edtP.Value < fields[i].AsInteger;
@@ -3554,7 +3587,7 @@ end;
 
 procedure TfrmConferenciaPedido.btnAlteraCaixasClick(Sender: TObject);
 begin
-  if (FCaixasDoPedido.Count > 0) then
+{  if (FCaixasDoPedido.Count > 0) then
   begin
     frmAlteraCaixas := TfrmAlteraCaixas.Create(nil);
     frmAlteraCaixas.CaixasDoPedido := self.FCaixasDoPedido;
@@ -3563,7 +3596,7 @@ begin
     frmAlteraCaixas := nil;
   end
   else
-    avisar('Ainda não existem caixas incluídas');
+    avisar('Ainda não existem caixas incluídas');   }
 end;
 
 function TfrmConferenciaPedido.corGenerica(cor: String): Boolean;

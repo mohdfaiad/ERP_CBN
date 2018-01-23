@@ -1,10 +1,10 @@
 inherited frmEntradaManualMateria: TfrmEntradaManualMateria
   Caption = 'Entrada/Sa'#237'da manual de mat'#233'rias ao estoque'
-  ClientHeight = 286
+  ClientHeight = 317
   ClientWidth = 680
   OnShow = FormShow
   ExplicitWidth = 696
-  ExplicitHeight = 324
+  ExplicitHeight = 355
   PixelsPerInch = 96
   TextHeight = 15
   object GroupBox1: TGroupBox
@@ -39,14 +39,14 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 235
+    Top = 266
     Width = 680
     Height = 51
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
     object btnSalvar: TBitBtn
-      Left = 515
+      Left = 514
       Top = 8
       Width = 150
       Height = 33
@@ -203,14 +203,14 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
   end
   object pnlQuantidades: TPanel
     Left = 0
-    Top = 130
+    Top = 112
     Width = 680
-    Height = 105
+    Height = 154
     Align = alBottom
     TabOrder = 1
     DesignSize = (
       680
-      105)
+      154)
     object Shape2: TShape
       Left = -3
       Top = 20
@@ -278,6 +278,20 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       ParentFont = False
       Transparent = True
     end
+    object lbResponsavel: TLabel
+      Left = 32
+      Top = 101
+      Width = 73
+      Height = 17
+      Caption = 'Respons'#225'vel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 5460819
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+    end
     object edtEstoqueAtual: TCurrencyEdit
       Left = 132
       Top = 35
@@ -314,6 +328,20 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       ParentFont = False
       TabOrder = 1
       OnChange = edtQtdEntradaChange
+    end
+    object edtObs: TEdit
+      Left = 120
+      Top = 98
+      Width = 393
+      Height = 23
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      MaxLength = 100
+      ParentFont = False
+      TabOrder = 2
     end
   end
 end

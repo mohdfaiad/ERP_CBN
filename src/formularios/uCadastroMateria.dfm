@@ -265,5 +265,9 @@ inherited frmCadastroMateria: TfrmCadastroMateria
       FieldName = 'DESCRICAO'
       Size = 200
     end
+    object cdsCONTROLA_ESTOQUE: TStringField
+      FieldName = 'CONTROLA_ESTOQUE'
+      Size = 1
+    end
   end
 end

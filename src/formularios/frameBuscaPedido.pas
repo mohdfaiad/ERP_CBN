@@ -83,7 +83,7 @@ begin
     condicao_cancelado := ' and ((p.cancelado is null) or (p.cancelado <> ''S'')) ';
 
   if FPedidosLoja then
-    condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
+    condicao_tipo := ' and (p.numpedido starts with ''L'') and (nfce.codigo is null)';
 
   if FExcluiPedidosNoMapa then
     condicao_mapa := ' and (pm.codigo is null) ';
@@ -179,7 +179,7 @@ begin
                           IfThen(FTipoBusca = tbpFaturados, ' and (not (pf.codigo is null) or (p.despachado = ''S'')) ',
                                                             ' and ( (pf.codigo is null) and ((p.despachado is null) or (p.despachado <> ''S'')) ) '));
   if FPedidosLoja then
-    condicao_tipo := ' and (p.numpedido like ''L%'') and (nfce.codigo is null)';
+    condicao_tipo := ' and (p.numpedido starts with ''L'') and (nfce.codigo is null)';
 
   if not self.FpermiteCancelado then
     condicao_cancelado := ' and ((p.cancelado is null) or (p.cancelado <> ''S'')) ';

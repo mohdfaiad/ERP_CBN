@@ -1,14 +1,27 @@
 inherited frmCadastroNaturezaOperacao: TfrmCadastroNaturezaOperacao
   Left = 368
   Top = 110
-  VertScrollBar.Range = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Naturezas de Opera'#231#227'o'
+  ClientHeight = 458
+  ClientWidth = 714
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
+  inherited pnlBotoes: TPanel
+    Top = 416
+    Width = 714
+    ExplicitTop = 416
+    ExplicitWidth = 714
+  end
   inherited pgGeral: TPageControl
+    Width = 714
+    Height = 416
+    ExplicitWidth = 714
+    ExplicitHeight = 416
     inherited tsConsulta: TTabSheet
+      ExplicitWidth = 706
+      ExplicitHeight = 386
       inherited gridConsulta: TDBGridCBN
         Columns = <
           item
@@ -35,9 +48,39 @@ inherited frmCadastroNaturezaOperacao: TfrmCadastroNaturezaOperacao
             Visible = True
           end>
       end
+      inherited lblAjudaSelecionar: TStaticText
+        Top = 367
+        Width = 706
+        ExplicitTop = 367
+        ExplicitWidth = 706
+      end
+      object BitBtn1: TBitBtn
+        Left = 400
+        Top = 136
+        Width = 49
+        Height = 25
+        Caption = 'BitBtn1'
+        TabOrder = 2
+      end
+      object BitBtn2: TBitBtn
+        Left = 400
+        Top = 167
+        Width = 49
+        Height = 25
+        Caption = 'BitBtn1'
+        TabOrder = 3
+      end
     end
     inherited tsDados: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 26
+      ExplicitWidth = 706
+      ExplicitHeight = 386
       inherited pnlDados: TPanel
+        Width = 706
+        Height = 386
+        ExplicitWidth = 706
+        ExplicitHeight = 386
         inherited lblAsterisco: TLabel
           Font.Color = 9010488
         end
@@ -113,7 +156,7 @@ inherited frmCadastroNaturezaOperacao: TfrmCadastroNaturezaOperacao
           Left = 17
           Top = 33
           Width = 449
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           MaxLength = 50
           TabOrder = 1
@@ -122,9 +165,10 @@ inherited frmCadastroNaturezaOperacao: TfrmCadastroNaturezaOperacao
           Left = 479
           Top = 33
           Width = 53
-          Height = 21
+          Height = 23
           MaxLength = 4
           TabOrder = 2
+          Text = ''
         end
         object rgSuspensaoICMS: TRadioGroup
           Left = 18
