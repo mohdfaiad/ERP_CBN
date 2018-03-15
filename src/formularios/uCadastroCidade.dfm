@@ -5,7 +5,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
   ExplicitWidth = 565
   ExplicitHeight = 385
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited pnlBotoes: TPanel
     Top = 305
     Width = 549
@@ -19,7 +19,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
     ExplicitHeight = 305
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 541
-      ExplicitHeight = 277
+      ExplicitHeight = 275
       inherited gridConsulta: TDBGridCBN
         Top = 7
         Width = 523
@@ -44,20 +44,22 @@ inherited frmCadastroCidade: TfrmCadastroCidade
           end>
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 260
+        Top = 256
         Width = 541
-        ExplicitTop = 260
+        ExplicitTop = 256
         ExplicitWidth = 541
       end
     end
     inherited tsDados: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 26
       ExplicitWidth = 541
-      ExplicitHeight = 277
+      ExplicitHeight = 275
       inherited pnlDados: TPanel
         Width = 541
-        Height = 277
+        Height = 275
         ExplicitWidth = 541
-        ExplicitHeight = 277
+        ExplicitHeight = 275
         object Label1: TLabel
           Left = 71
           Top = 125
@@ -101,7 +103,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
           Left = 71
           Top = 144
           Width = 394
-          Height = 21
+          Height = 23
           CharCase = ecUpperCase
           TabOrder = 3
         end
@@ -109,7 +111,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
           Left = 23
           Top = 13
           Width = 57
-          Height = 21
+          Height = 23
           ReadOnly = True
           TabOrder = 0
           Visible = False
@@ -118,7 +120,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
           Left = 236
           Top = 88
           Width = 93
-          Height = 21
+          Height = 23
           Style = csDropDownList
           ItemIndex = 0
           TabOrder = 2
@@ -157,7 +159,7 @@ inherited frmCadastroCidade: TfrmCadastroCidade
           Left = 71
           Top = 88
           Width = 121
-          Height = 21
+          Height = 23
           DisplayFormat = '0'
           MaxLength = 7
           TabOrder = 1

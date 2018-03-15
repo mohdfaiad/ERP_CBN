@@ -32,6 +32,7 @@ type
     FTipo       :String;
     FKit        :Boolean;
     FProdutosLoja :Boolean;
+    FpassandoChangeReferencia :boolean;
 
     procedure buscaProduto;
     function selecionaProduto :String;
@@ -64,7 +65,7 @@ uses uPesquisaSimples, repositorio, fabricaRepositorio;
 
 procedure TBuscaProduto.buscaProduto;
 begin
-  setaProduto(true);
+  setaProduto(false);
   if ( Fcodproduto = '0' ) then  selecionaProduto;
 end;
 
@@ -83,7 +84,12 @@ end;
 procedure TBuscaProduto.limpa;
 begin
   edtDescricao.Text  := '';
-  edtReferencia.Text := '';
+  if not FPassandoChangeReferencia then
+  begin
+    edtReferencia.OnChange := nil;
+    edtReferencia.Text := '';
+    edtReferencia.OnChange := edtReferenciaChange;
+  end;
   Fcodproduto        := '0';
   FCodGrade          := 0;
   FPreco             := 0;
@@ -189,26 +195,24 @@ procedure TBuscaProduto.edtReferenciaExit(Sender: TObject);
 begin
 {  if (edtReferencia.Text = '0') or (edtReferencia.Text = '')then
     btnBusca.Click
-  else
-  if trim(edtReferencia.Text) <> '' then
-    buscaProduto;}
-
-
+  else  }
+  if (trim(edtReferencia.Text) <> '') and not assigned(FProd) then
+    buscaProduto;
 end;
 
 procedure TBuscaProduto.edtReferenciaChange(Sender: TObject);
 begin
-  if TRIM(edtDescricao.Text) <> '' then
-    edtDescricao.Clear;
-  edtGrade.Clear;
-  self.Fcodproduto := '0';
+  FPassandoChangeReferencia := true;
+  if assigned(FProd) then
+    limpa;
+  FPassandoChangeReferencia := false;
 end;
 
 procedure TBuscaProduto.edtReferenciaKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-  if key = vk_return then
-     buscaProduto;
+  if (key = vk_return) and (edtReferencia.Text = '') then
+    selecionaProduto;
 end;
 
 procedure TBuscaProduto.FrameExit(Sender: TObject);

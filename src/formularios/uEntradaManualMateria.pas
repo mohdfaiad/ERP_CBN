@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, System.StrUtils,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, frameBuscaMateria, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.Buttons;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, frameBuscaMateria, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, RxToolEdit, RxCurrEdit, Vcl.Buttons,
+  Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids, DBGridCBN, Materia;
 
 type
   TEntradaSaida = (tmEntrada, tmSaida);
@@ -21,22 +22,33 @@ type
     lbEntSai: TLabel;
     edtEstoqueAtual: TCurrencyEdit;
     edtQtdEntrada: TCurrencyEdit;
-    lbUnidadeMedida: TLabel;
     BuscaMateria1: TBuscaMateria;
     lbResponsavel: TLabel;
     edtObs: TEdit;
+    Label1: TLabel;
+    DBGridCBN1: TDBGridCBN;
+    Label2: TLabel;
+    cds: TClientDataSet;
+    ds: TDataSource;
+    cdsUND_SISTEMA: TStringField;
+    cdsQUANTIDADE: TFloatField;
+    lbUnidadeMedida: TLabel;
+    cdsUND_MOVIMENTO: TStringField;
     procedure BuscaMateria1Exit(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
     procedure edtQtdEntradaChange(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure cdsAfterScroll(DataSet: TDataSet);
+    procedure DBGridCBN1Enter(Sender: TObject);
   private
     FEntradaZero_SaidaUm :smallint;
   private
     procedure salvaEntradaEstoqueMateria;
     procedure salvaEntradaSaida;
     procedure SetEntradaZero_SaidaUm(const Value: SmallInt);
+    procedure carregaUnidades(materia :TMateria);
   public
     property EntradaZero_SaidaUm :SmallInt read FEntradaZero_SaidaUm write SetEntradaZero_SaidaUm;
 
@@ -49,7 +61,7 @@ var
 
 implementation
 
-uses repositorio, materia, fabricaRepositorio, Math, EntradaSaidaMateria;
+uses repositorio, fabricaRepositorio, Math, EntradaSaidaMateria, UnidadeEntSai;
 
 {$R *.dfm}
 
@@ -59,6 +71,7 @@ begin
   edtEstoqueAtual.Clear;
   edtQtdEntrada.Clear;
   BuscaMateria1.edtCodigo.SetFocus;
+  cds.EmptyDataSet;
 end;
 
 procedure TfrmEntradaManualMateria.btnSalvarClick(Sender: TObject);
@@ -78,20 +91,52 @@ procedure TfrmEntradaManualMateria.BuscaMateria1Exit(Sender: TObject);
 begin
   if assigned(BuscaMateria1.Materia) then
   begin
+    cds.EmptyDataSet;
     edtEstoqueAtual.Value := BuscaMateria1.Materia.estoque_fisico;
-    lbUnidadeMedida.Caption := '('+BuscaMateria1.Materia.unidade+')';
+    carregaUnidades(BuscaMateria1.Materia);
+    if cds.IsEmpty then
+      avisar('Matéria não possui nenhuma unidade de '+ifThen(self.FEntradaZero_SaidaUm=0,'entrada','saída')+' cadastrada, favor cadastrar.');
   end
   else
   begin
     edtEstoqueAtual.Clear;
     lbUnidadeMedida.Caption := '(  )';
+    cds.EmptyDataSet;
   end;
+end;
+
+procedure TfrmEntradaManualMateria.carregaUnidades(materia: TMateria);
+var i :integer;
+begin
+  if assigned(materia.UnidadesEntSai) then
+    for i := 0 to materia.UnidadesEntSai.Count-1 do
+    begin
+      if TUnidadeEntSai(materia.UnidadesEntSai.items[i]).tipo = IfThen(self.FEntradaZero_SaidaUm = 0,'E','S') then
+      begin
+        cds.Append;
+        cdsUND_SISTEMA.AsString   := TUnidadeEntSai(materia.UnidadesEntSai.items[i]).unidade_sistema;
+        cdsUND_MOVIMENTO.AsString := TUnidadeEntSai(materia.UnidadesEntSai.items[i]).unidade_movimento;
+        cdsQUANTIDADE.AsFloat     := TUnidadeEntSai(materia.UnidadesEntSai.items[i]).quantidade;
+        cds.Post;
+      end;
+    end;
+end;
+
+procedure TfrmEntradaManualMateria.cdsAfterScroll(DataSet: TDataSet);
+begin
+   lbUnidadeMedida.Caption := '('+cdsUND_MOVIMENTO.AsString+')';
 end;
 
 constructor TfrmEntradaManualMateria.Create(AOwner: TComponent; pEntradaZero_SaidaUm: SmallInt);
 begin
   inherited Create(AOwner);
   self.FEntradaZero_SaidaUm := pEntradaZero_SaidaUm;
+end;
+
+procedure TfrmEntradaManualMateria.DBGridCBN1Enter(Sender: TObject);
+begin
+  inherited;
+  cdsAfterScroll(nil);
 end;
 
 procedure TfrmEntradaManualMateria.edtQtdEntradaChange(Sender: TObject);
@@ -113,6 +158,7 @@ begin
   lbEntSai.Caption     := IfThen(self.FEntradaZero_SaidaUm = 0,'Quantidade a dar entrada >', 'Quantidade a dar saída >');
   lbEntSai.Font.Color  := IfThen(self.FEntradaZero_SaidaUm = 0, $0000A400, $00076DF8);
   lbUnidadeMedida.Font.Color  := IfThen(self.FEntradaZero_SaidaUm = 0, $0000A400, $00076DF8);
+  cds.CreateDataSet;
 end;
 
 procedure TfrmEntradaManualMateria.salvaEntradaEstoqueMateria;
@@ -124,9 +170,9 @@ begin
     repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
 
     if EntradaZero_SaidaUm = 0 then
-      BuscaMateria1.Materia.incrementaEstoque(edtQtdEntrada.Value)
+      BuscaMateria1.Materia.incrementaEstoque(edtQtdEntrada.Value * cdsQUANTIDADE.AsFloat)
     else
-      BuscaMateria1.Materia.decrementaEstoque(edtQtdEntrada.Value);
+      BuscaMateria1.Materia.decrementaEstoque(edtQtdEntrada.Value * cdsQUANTIDADE.AsFloat);
 
     repositorio.Salvar(BuscaMateria1.Materia);
     edtEstoqueAtual.Value := BuscaMateria1.Materia.estoque_fisico;

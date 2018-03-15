@@ -20,6 +20,8 @@ type
     procedure edtReferenciaKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FrameExit(Sender: TObject);
+    procedure edtReferenciaExit(Sender: TObject);
+    procedure edtReferenciaChange(Sender: TObject);
   private
     cor         :TObjetoGenerico;
     FcodCor     :String;
@@ -118,33 +120,38 @@ begin
     condicao := condicao + ' and c.kit = ''S'' '
   else if FApareceKits = 'N' then
     condicao := condicao + ' and ((c.kit = ''N'') or (c.kit is null))  ';
-    
-  if cor = nil then
-    cor := TObjetoGenerico.Create;
 
-  cor.SQL := ' Select first 1 c.referencia, c.descricao, c.codigo, c.tipo from cores c '+
-             ' left join produto_cores pc  on pc.codcor = c.codigo                     '+
-             ' where '+campoRetorno+'='''+ codigo + ''''+condicao+// and cb.codproduto = '+IntToStr(self.FCodProduto);
-             ' group by c.referencia, c.descricao, c.codigo, c.tipo';
+  try
+    edtReferencia.OnChange := nil;
+    if cor = nil then
+      cor := TObjetoGenerico.Create;
 
-  if not cor.BuscaVazia then begin
-    edtCodigo.Text     := cor.getCampo('codigo').AsString;
-    self.FcodCor       := edtCodigo.Text;
+    cor.SQL := ' Select first 1 c.referencia, c.descricao, c.codigo, c.tipo from cores c '+
+               ' left join produto_cores pc  on pc.codcor = c.codigo                     '+
+               ' where '+campoRetorno+'='''+ codigo + ''''+condicao+// and cb.codproduto = '+IntToStr(self.FCodProduto);
+               ' group by c.referencia, c.descricao, c.codigo, c.tipo';
 
-    edtReferencia.Text := cor.getCampo('referencia').AsString;
-    edtDescricao.Text  := cor.getCampo('descricao').AsString;
-    self.Ftipo         := cor.getCampo('tipo').AsString;
+    if not cor.BuscaVazia then begin
+      edtCodigo.Text     := cor.getCampo('codigo').AsString;
+      self.FcodCor       := edtCodigo.Text;
 
-    repositorio := TFabricaRepositorio.GetRepositorio(TCor.ClassName);
-    FObjCor     := TCor(repositorio.get(cor.getCampo('codigo').AsInteger));
+      edtReferencia.Text := cor.getCampo('referencia').AsString;
+      edtDescricao.Text  := cor.getCampo('descricao').AsString;
+      self.Ftipo         := cor.getCampo('tipo').AsString;
 
-  end
-  else begin
-    limpa;
-    btnBusca.Click;
+      repositorio := TFabricaRepositorio.GetRepositorio(TCor.ClassName);
+      FObjCor     := TCor(repositorio.get(cor.getCampo('codigo').AsInteger));
+
+    end
+    else begin
+      limpa;
+      btnBusca.Click;
+    end;
+
+  finally
+    edtReferencia.OnChange := edtReferenciaChange;
+    FreeAndNil(cor);
   end;
-
-  FreeAndNil(cor);
 end;
 
 procedure TBuscaCor.edtDescricaoEnter(Sender: TObject);
@@ -161,8 +168,11 @@ procedure TBuscaCor.limpa;
 begin
   edtCodigo.Text     := '';
   edtDescricao.Text  := '';
-  edtReferencia.Text := '';
+  if not (Screen.ActiveControl = edtReferencia) then
+    edtReferencia.Text := '';
   self.Ftipo         := '';
+  if assigned(FObjCor) then
+    FreeAndNil(FObjCor);
 end;
 
 function TBuscaCor.GetCodigoCor: Integer;
@@ -192,11 +202,23 @@ begin
   Ftipo := Value;
 end;
 
+procedure TBuscaCor.edtReferenciaChange(Sender: TObject);
+begin
+  if assigned(FObjCor) then
+    limpa;
+end;
+
+procedure TBuscaCor.edtReferenciaExit(Sender: TObject);
+begin
+  if (trim(edtReferencia.Text) <> '') and not assigned(FObjCor) then
+    buscaCor(edtReferencia.Text);
+end;
+
 procedure TBuscaCor.edtReferenciaKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if key = vk_return then
-     buscaCor(edtReferencia.Text);
+  if (key = vk_return) and (edtReferencia.Text = '') then
+    buscaCor(edtReferencia.Text);
 end;
 
 procedure TBuscaCor.FrameExit(Sender: TObject);

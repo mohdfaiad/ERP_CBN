@@ -96,6 +96,7 @@ inherited frmContasPagar: TfrmContasPagar
   inherited pgGeral: TPageControl
     Width = 998
     Height = 562
+    ActivePage = tsDados
     ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
@@ -208,7 +209,6 @@ inherited frmContasPagar: TfrmContasPagar
         Top = 513
         Width = 990
         ExplicitTop = 513
-        ExplicitWidth = 990
       end
       object gpbPeriodo: TGroupBox
         Left = 184

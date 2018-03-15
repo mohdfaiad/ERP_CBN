@@ -270,7 +270,8 @@ begin
   pagRepresentantes.ActivePageIndex := 0;
   self.Tag := 0;
   habilita(false);
-  cds.RecNo := registroFocado;
+  if registroFocado > 0 then
+    cds.RecNo := registroFocado;
   gridRepresentantes.SetFocus;
 end;
 

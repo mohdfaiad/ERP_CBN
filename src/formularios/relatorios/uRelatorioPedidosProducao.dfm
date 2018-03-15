@@ -2258,10 +2258,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   object rgData: TRadioGroup
     Left = 16
     Top = 8
-    Width = 322
+    Width = 153
     Height = 113
     Caption = ' Filtrar por data de: '
-    Columns = 2
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -2684,7 +2683,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     end
   end
   object rgTipo: TRadioGroup
-    Left = 347
+    Left = 181
     Top = 8
     Width = 157
     Height = 113
@@ -3066,6 +3065,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Width = 43
         Caption = 'Ref. Cor'
         Font.Style = []
+        Transparent = True
         ExplicitTop = 27
         ExplicitWidth = 43
       end
@@ -3166,10 +3166,10 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     end
   end
   object rgAgrupamento: TRadioGroup
-    Left = 512
+    Left = 347
     Top = 8
     Width = 157
-    Height = 59
+    Height = 113
     Caption = ' Agrupado por: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3184,21 +3184,25 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     TabOrder = 12
     OnClick = rgAgrupamentoClick
   end
-  object GroupBox4: TGroupBox
+  object rgSetor: TRadioGroup
     Left = 512
-    Top = 71
+    Top = 8
     Width = 157
-    Height = 50
+    Height = 113
+    Caption = ' Filtrar por:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ItemIndex = 0
+    Items.Strings = (
+      'F'#225'brica'
+      'E-Commerce'
+      'Ambos')
+    ParentFont = False
     TabOrder = 13
-    object chkEcommerce: TCheckBox
-      Left = 35
-      Top = 17
-      Width = 82
-      Height = 17
-      TabStop = False
-      Caption = 'E-Commerce'
-      TabOrder = 0
-    end
+    OnClick = rgAgrupamentoClick
   end
   object cdsPedidos: TClientDataSet
     Aggregates = <>

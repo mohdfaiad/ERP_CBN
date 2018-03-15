@@ -5,16 +5,16 @@ inherited frmEntradaNota: TfrmEntradaNota
   BorderStyle = bsSingle
   Caption = 'Importador de Notas Fiscais de entrada por XML'
   ClientHeight = 537
-  ClientWidth = 691
+  ClientWidth = 839
   OldCreateOrder = True
-  ExplicitWidth = 697
+  ExplicitWidth = 845
   ExplicitHeight = 565
   PixelsPerInch = 96
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 496
-    Width = 691
+    Width = 839
     Height = 41
     Align = alBottom
     TabOrder = 0
@@ -142,9 +142,9 @@ inherited frmEntradaNota: TfrmEntradaNota
       OnClick = btnLimpaClick
     end
     object btnImportarNota: TBitBtn
-      Left = 537
+      Left = 639
       Top = 5
-      Width = 145
+      Width = 179
       Height = 30
       Caption = ' Importar Nota'
       Glyph.Data = {
@@ -181,7 +181,7 @@ inherited frmEntradaNota: TfrmEntradaNota
   object GroupBox1: TGroupBox
     Left = 10
     Top = 16
-    Width = 672
+    Width = 815
     Height = 73
     Caption = ' Selecione o arquivo ".XML" para efetuar importa'#231#227'o da Nota '
     Font.Charset = DEFAULT_CHARSET
@@ -194,7 +194,7 @@ inherited frmEntradaNota: TfrmEntradaNota
     object edtCaminhoXml: TEdit
       Left = 16
       Top = 29
-      Width = 561
+      Width = 682
       Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -206,7 +206,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       TabOrder = 0
     end
     object BitBtn1: TBitBtn
-      Left = 589
+      Left = 725
       Top = 26
       Width = 33
       Height = 25
@@ -282,7 +282,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       OnClick = BitBtn1Click
     end
     object btnAtuliza: TBitBtn
-      Left = 628
+      Left = 764
       Top = 26
       Width = 33
       Height = 25
@@ -320,7 +320,7 @@ inherited frmEntradaNota: TfrmEntradaNota
   object GroupBox2: TGroupBox
     Left = 10
     Top = 94
-    Width = 671
+    Width = 815
     Height = 397
     Caption = ' Valida'#231#245'es '
     Font.Charset = DEFAULT_CHARSET
@@ -331,14 +331,14 @@ inherited frmEntradaNota: TfrmEntradaNota
     ParentFont = False
     TabOrder = 2
     object Shape1: TShape
-      Left = 490
+      Left = 634
       Top = 7
       Width = 112
       Height = 81
       Pen.Color = 13948116
     end
     object lbInfoFornecedor: TLabel
-      Left = 542
+      Left = 686
       Top = 24
       Width = 12
       Height = 17
@@ -346,7 +346,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       Visible = False
     end
     object lbInfoNota: TLabel
-      Left = 542
+      Left = 686
       Top = 60
       Width = 12
       Height = 17
@@ -356,11 +356,12 @@ inherited frmEntradaNota: TfrmEntradaNota
     object Label3: TLabel
       Left = 1
       Top = 36
-      Width = 672
+      Width = 816
       Height = 14
       Caption = 
         '________________________________________________________________' +
-        '________________________________________________'
+        '________________________________________________________________' +
+        '________'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 13816530
       Font.Height = -11
@@ -370,7 +371,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       Transparent = True
     end
     object fornecedor_no: TImage
-      Left = 538
+      Left = 682
       Top = 22
       Width = 18
       Height = 18
@@ -404,7 +405,7 @@ inherited frmEntradaNota: TfrmEntradaNota
         FFFF}
     end
     object fornecedor_yes: TImage
-      Left = 538
+      Left = 682
       Top = 22
       Width = 18
       Height = 18
@@ -438,7 +439,7 @@ inherited frmEntradaNota: TfrmEntradaNota
         FFFF}
     end
     object Nota_no: TImage
-      Left = 538
+      Left = 682
       Top = 59
       Width = 18
       Height = 18
@@ -472,7 +473,7 @@ inherited frmEntradaNota: TfrmEntradaNota
         FFFF}
     end
     object Nota_yes: TImage
-      Left = 538
+      Left = 682
       Top = 59
       Width = 18
       Height = 18
@@ -532,7 +533,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       ParentFont = False
     end
     object btnInfoFornecedor: TSpeedButton
-      Left = 624
+      Left = 768
       Top = 16
       Width = 23
       Height = 22
@@ -567,7 +568,7 @@ inherited frmEntradaNota: TfrmEntradaNota
       OnClick = btnInfoFornecedorClick
     end
     object btnInfoNota: TSpeedButton
-      Left = 624
+      Left = 768
       Top = 58
       Width = 23
       Height = 22
@@ -604,11 +605,12 @@ inherited frmEntradaNota: TfrmEntradaNota
     object Label1: TLabel
       Left = 1
       Top = 75
-      Width = 672
+      Width = 816
       Height = 14
       Caption = 
         '________________________________________________________________' +
-        '________________________________________________'
+        '________________________________________________________________' +
+        '________'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 13816530
       Font.Height = -11
@@ -676,7 +678,7 @@ inherited frmEntradaNota: TfrmEntradaNota
   object GridMaterias: TDBGrid
     Left = 17
     Top = 230
-    Width = 656
+    Width = 800
     Height = 235
     DataSource = dsMaterias
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -697,13 +699,14 @@ inherited frmEntradaNota: TfrmEntradaNota
         Expanded = False
         FieldName = 'CODMAT_FORNECEDOR'
         Title.Caption = 'C'#211'D. FORN.'
-        Width = 78
+        Width = 72
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'CODMAT_ERP'
         Title.Caption = 'C'#211'D. ERP'
+        Width = 65
         Visible = True
       end
       item
@@ -711,6 +714,7 @@ inherited frmEntradaNota: TfrmEntradaNota
         Expanded = False
         FieldName = 'CFOP'
         Title.Alignment = taCenter
+        Width = 53
         Visible = True
       end
       item
@@ -718,6 +722,20 @@ inherited frmEntradaNota: TfrmEntradaNota
         FieldName = 'DESCRICAO'
         Title.Caption = '  DESCRICAO'
         Width = 351
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'UNID_NOTA'
+        Title.Caption = 'Unid Nota'
+        Width = 80
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'UNID_ENTRADA'
+        Title.Caption = 'Unid Sistema'
+        Width = 81
         Visible = True
       end
       item
@@ -753,6 +771,17 @@ inherited frmEntradaNota: TfrmEntradaNota
       FieldName = 'VALIDADO'
       Size = 1
     end
+    object cdsMateriasUNID_NOTA: TStringField
+      FieldName = 'UNID_NOTA'
+      Size = 25
+    end
+    object cdsMateriasUNID_ENTRADA: TStringField
+      FieldName = 'UNID_ENTRADA'
+      Size = 25
+    end
+    object cdsMateriasCOD_UNID_ENT_SAI: TIntegerField
+      FieldName = 'COD_UNID_ENT_SAI'
+    end
   end
   object dsMaterias: TDataSource
     DataSet = cdsMaterias
@@ -778,7 +807,7 @@ inherited frmEntradaNota: TfrmEntradaNota
     Left = 488
     Top = 8
     Bitmap = {
-      494C010104000900440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1072,6 +1101,10 @@ inherited frmEntradaNota: TfrmEntradaNota
       Caption = 'Cadastrar CFOP correspondente'
       ImageIndex = 2
       OnClick = CadastrarCFOPcorrespondente1Click
+    end
+    object CadastrarUnidadeCorrespondente1: TMenuItem
+      Caption = 'Cadastrar Unidade Correspondente'
+      OnClick = CadastrarUnidadeCorrespondente1Click
     end
   end
   object ppmalteraCFOP: TPopupMenu

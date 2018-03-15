@@ -4,7 +4,7 @@ interface
 
 uses ACBrSpedFiscal, ACBrEFDBlocos, Empresa, Contador, NotaFiscal, ItemNotaFiscal, Pessoa, ContNrs, DBClient,
      ACBrEFDBloco_0, EFDPisCofinsFuncoes, Math, Forms, Variants, TipoStatusNotaFiscal, StringUtilitario,
-     ACBrEFDBloco_C, ItemNFMateria, Funcoes,
+     ACBrEFDBloco_C, ItemNFMateria, Funcoes, PlanoContasContabeis,
      ACBrEFDBloco_E,
      ACBrEFDBloco_D;
 
@@ -25,6 +25,7 @@ type TGeradorEFDFiscal = class
     FTotal_Debitos        :Real;
     FTotal_Creditos       :Real;
     ListaNotas            :TObjectList;
+    Conta                 :TPlanoContasContabeis;
 
     FCDSParticipantes     :TClientDataSet;
     FCDSProdutos          :TClientDataSet;
@@ -71,12 +72,13 @@ type TGeradorEFDFiscal = class
         procedure addReg0190{(registro0190 :TRegistro0190)}; { Cadastro de medidas }
         procedure addReg0200{(codigo_produto :integer)}; { Cadastro de itens/produtos }
         procedure addReg0400{(codigo_natureza :integer)}; { Cadastro de natureza de operação/prestação }
+        procedure addReg0500;
 
     { Bloco C }
     procedure addRegC001(registroC001: TRegistroC001);
        procedure addRegC100(registroC001: TRegistroC001); { Documento de nota fiscal }
           procedure addRegC190(registroC100 :TRegistroC100; Itensnota :TObjectList); { itens emissão própria }
-          procedure addRegC170(registroC100 :TRegistroC100; ItensNota :TObjectList); { itens emissão terceiros }
+          procedure addRegC170(registroC100 :TRegistroC100; NotaFiscal: TNotaFiscal); { itens emissão terceiros }
           procedure addRegC170Materia(registroC100 :TRegistroC100; ItensNota :TObjectList); { itens emissão terceiros }
 
     { Bloco C }
@@ -163,7 +165,7 @@ begin
 
    if not Assigned(registro0000) then exit;
 
-   registro0000.COD_VER     := vlVersao110;
+   registro0000.COD_VER     := vlVersao111;
    registro0000.COD_FIN     := raOriginal;
    registro0000.DT_INI      := self.FDataInicial;
    registro0000.DT_FIN      := self.FDataFinal;
@@ -200,6 +202,8 @@ begin
      self.addReg0150;
 
      self.addReg0400;
+
+  //   self.addReg0500;
 end;
 
 procedure TGeradorEFDFiscal.addReg0005(registro0005: TRegistro0005);
@@ -429,6 +433,29 @@ begin
 
 end;
 
+procedure TGeradorEFDFiscal.addReg0500;
+var repositorio :TRepositorio;
+begin
+  if not Assigned(self.FRegistro0001) then exit;
+
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TPlanoContasContabeis.ClassName);
+    Conta       := TPlanoContasContabeis(repositorio.Get(1)); //VLJ usa apenas uma conta, por enquanto fica assim
+
+    with self.FRegistro0001.Registro0500.New(self.FRegistro0001) do
+    begin
+       DT_ALT     := Conta.dt_alt;
+       COD_NAT_CC := Conta.cod_nat_cc;
+       IND_CTA    := Conta.ind_cta;
+       NIVEL      := intToStr(Conta.nivel);
+       COD_CTA    := Conta.cod_cta;
+       NOME_CTA   := Conta.nome_cta;
+    end;
+  finally
+    FreeAndNil(repositorio);
+  end;
+end;
+
 procedure TGeradorEFDFiscal.addRegC001(registroC001: TRegistroC001);
 begin
    if not Assigned(registroC001) then exit;
@@ -550,7 +577,7 @@ begin
                   if Nota_Fiscal.NotaDeMaterias then
                     self.addRegC170Materia( registroC100.Items[i], Nota_Fiscal.Itens )
                   else
-                    self.addRegC170( registroC100.Items[i], Nota_Fiscal.Itens );
+                    self.addRegC170( registroC100.Items[i], Nota_Fiscal );
 
                     self.addRegC190( RegistroC100.Items[i], Nota_Fiscal.Itens );
 
@@ -570,7 +597,7 @@ begin
   end;
 end;
 
-procedure TGeradorEFDFiscal.addRegC170(registroC100: TRegistroC100; ItensNota: TObjectList);
+procedure TGeradorEFDFiscal.addRegC170(registroC100: TRegistroC100; NotaFiscal: TNotaFiscal);
 var i :integer;
     ItemFiscal : TItemNotaFiscal;
 begin
@@ -578,11 +605,11 @@ begin
 
    ItemFiscal := nil;
 
-   for i := 0 to ItensNota.Count - 1 do
+   for i := 0 to NotaFiscal.Itens.Count - 1 do
    begin
       Application.ProcessMessages;
 
-      ItemFiscal := (ItensNota[i] as TItemNotaFiscal );
+      ItemFiscal := (NotaFiscal.Itens[i] as TItemNotaFiscal );
 
       with registroC100.RegistroC170.New do
       begin
@@ -593,7 +620,8 @@ begin
          IND_MOV            := mfSim;
          CFOP               := ItemFiscal.NaturezaOperacao.CFOP;
          COD_NAT            := intToStr(ItemFiscal.NaturezaOperacao.Codigo);
-         COD_CTA            := '';
+                               { atualmente somente as notas de saída da vlj exigem plano de contas }
+         COD_CTA            := '';//IfThen((NotaFiscal.Entrada_saida = 'S') and (NotaFiscal.Emitente.CPF_CNPJ = '11286129000124'), Conta.cod_cta, '');
 
          { Valores do item }
          QTD                := ItemFiscal.Quantidade;
@@ -1030,6 +1058,7 @@ constructor TGeradorEFDFiscal.Destroy;
 begin
   FreeAndNil( FEmpresa );
   FreeAndNil( FContador );
+  FreeAndNil( Conta );
 end;
 
 procedure TGeradorEFDFiscal.GeraBloco0;

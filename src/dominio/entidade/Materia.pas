@@ -5,7 +5,7 @@ interface
 uses
   SysUtils,
   Perfil,
-  Contnrs;
+  Contnrs, UnidadeEntSai;
 
 type
   TMateria = class
@@ -19,7 +19,8 @@ type
     Fcod_ncm: String;
     Fdescricao: String;
     Funidade: String;
-    FControla_estoque: String;
+    FControla_estoque: Boolean;
+    FUnidadesEntSai: TObjectList;
     
     procedure Setcod_ncm(const Value: String);
     procedure Setcodigo(const Value: integer);
@@ -29,6 +30,7 @@ type
     procedure Setpreco_custo(const Value: Real);
     procedure Setpreco_venda(const Value: Real);
     procedure Setunidade(const Value: String);
+    function GetUnidadesEntSai: TObjectList;
 
   public
     procedure incrementaEstoque(value :Real);
@@ -43,11 +45,16 @@ type
     property estoque_fisico  :Real    read Festoque_fisico write Setestoque_fisico;
     property estoque_minimo  :Real    read Festoque_minimo write Setestoque_minimo;
     property unidade         :String  read Funidade        write Setunidade;
-    property controla_estoque:String  read FControla_estoque write FControla_estoque;
+    property controla_estoque:Boolean  read FControla_estoque write FControla_estoque;
+
+  public
+    property UnidadesEntSai   :TObjectList read GetUnidadesEntSai write FUnidadesEntSai;
 
 end;
 
 implementation
+
+uses Repositorio, FabricaRepositorio, EspecificacaoUnidadesSaidaPorCodigoProduto;
 
 { TMateria }
 
@@ -59,6 +66,19 @@ end;
 procedure TMateria.decrementaEstoque(value: Real);
 begin
   self.Festoque_fisico := self.Festoque_fisico - value;
+end;
+
+function TMateria.GetUnidadesEntSai: TObjectList;
+var repositorio :TRepositorio;
+    especificacao :TEspecificacaoUnidadesSaidaPorCodigoProduto;
+begin
+  if not assigned(FUnidadesEntSai) then
+  begin
+    repositorio    := TFabricaRepositorio.GetRepositorio(TUnidadeEntSai.ClassName);
+    especificacao  := TEspecificacaoUnidadesSaidaPorCodigoProduto.Create(self);
+    FUnidadesEntSai := repositorio.GetListaPorEspecificacao(especificacao);
+  end;
+  Result := FUnidadesEntSai;
 end;
 
 procedure TMateria.incrementaEstoque(value: Real);

@@ -487,7 +487,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 838
     Height = 476
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
@@ -1401,6 +1401,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     object TabSheet3: TTabSheet
       Caption = 'Cores do Produto'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -1759,6 +1763,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Tabela de Pre'#231'o'
       ImageIndex = 3
       OnExit = TabSheet4Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -1941,6 +1949,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 4
       OnEnter = TabSheet5Enter
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -1954,6 +1966,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         TabOrder = 0
         object TabSheet7: TTabSheet
           Caption = 'C'#243'digos de Barra'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           DesignSize = (
             822
             415)
@@ -2208,6 +2224,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         object TabSheet8: TTabSheet
           Caption = 'Refer'#234'ncias do produto'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           DesignSize = (
             822
             415)
@@ -2717,6 +2737,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Estoque'
       ImageIndex = 5
       OnEnter = TabSheet6Enter
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -3446,6 +3470,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'Configura Kit'
       Enabled = False
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label30: TLabel
         Left = 6
         Top = 225
@@ -4621,7 +4649,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900D00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632

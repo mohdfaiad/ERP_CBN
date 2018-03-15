@@ -283,7 +283,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         Top = 56
         Width = 814
         Height = 417
-        ActivePage = TabSheet6
+        ActivePage = TabSheet3
         TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'Permiss'#245'es B'#225'sicas'
@@ -495,6 +495,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Cadastrar configura'#231#245'es E-commerce'
             TabOrder = 25
+          end
+          object chk86: TCheckBox
+            Left = 272
+            Top = 248
+            Width = 226
+            Height = 17
+            Caption = 'Cadastrar plano de contas cont'#225'beis'
+            TabOrder = 26
           end
         end
         object TabSheet7: TTabSheet

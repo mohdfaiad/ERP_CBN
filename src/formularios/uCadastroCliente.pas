@@ -407,7 +407,8 @@ begin
     btnCancelar.Click;
     cds.Close;
     cds.Open;
-    cds.RecNo := registroFocado;
+    if registroFocado > 0 then
+      cds.RecNo := registroFocado;
 
     avisar('Operação realizada com sucesso!');
  Finally

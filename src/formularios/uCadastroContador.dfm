@@ -5,29 +5,32 @@ inherited frmCadastroContador: TfrmCadastroContador
   ClientWidth = 523
   Position = poMainFormCenter
   ExplicitWidth = 539
+  ExplicitHeight = 240
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited pnlBotoes: TPanel
     Width = 523
     ExplicitWidth = 523
   end
   inherited pgGeral: TPageControl
     Width = 523
+    ActivePage = tsDados
     ExplicitWidth = 523
     inherited tsConsulta: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 515
+      ExplicitHeight = 0
       inherited gridConsulta: TDBGridCBN
         Width = 497
       end
       inherited lblAjudaSelecionar: TStaticText
-        Width = 515
+        Width = 240
+        ExplicitWidth = 240
       end
     end
     inherited tsDados: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 515
-      ExplicitHeight = 378
       inherited pnlDados: TPanel
         Width = 515
         ExplicitWidth = 515

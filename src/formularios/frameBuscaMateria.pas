@@ -69,7 +69,7 @@ begin
      Repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
      vMateria     := TMateria(Repositorio.Get(CodigoMateria));
 
-     if not Assigned(vMateria) or (FApenasControlaEstoque and not(vMateria.controla_estoque.Equals('S'))) then
+     if not Assigned(vMateria) or (FApenasControlaEstoque and not(vMateria.controla_estoque)) then
      begin
        frmCadastroMateria := nil;
        try

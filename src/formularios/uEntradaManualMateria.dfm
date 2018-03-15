@@ -1,17 +1,17 @@
 inherited frmEntradaManualMateria: TfrmEntradaManualMateria
   Caption = 'Entrada/Sa'#237'da manual de mat'#233'rias ao estoque'
-  ClientHeight = 317
+  ClientHeight = 435
   ClientWidth = 680
   OnShow = FormShow
   ExplicitWidth = 696
-  ExplicitHeight = 355
+  ExplicitHeight = 473
   PixelsPerInch = 96
   TextHeight = 15
   object GroupBox1: TGroupBox
     Left = 16
     Top = 8
     Width = 649
-    Height = 78
+    Height = 201
     Caption = ' Mat'#233'ria '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -20,6 +20,36 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
+    object Label1: TLabel
+      Left = 0
+      Top = 61
+      Width = 650
+      Height = 17
+      Caption = 
+        '________________________________________________________________' +
+        '________________________________________________________________' +
+        '__'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 14671839
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+    end
+    object Label2: TLabel
+      Left = 32
+      Top = 91
+      Width = 178
+      Height = 17
+      Caption = 'Selecione a unidade de sa'#237'da'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 7105644
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     inline BuscaMateria1: TBuscaMateria
       Left = 32
       Top = 24
@@ -36,15 +66,102 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
         ExplicitWidth = 450
       end
     end
+    object DBGridCBN1: TDBGridCBN
+      Left = 33
+      Top = 112
+      Width = 564
+      Height = 78
+      Color = 14803425
+      DataSource = ds
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      OnEnter = DBGridCBN1Enter
+      BuscaHabilitada = True
+      ConfCores.Normal.CorFonte = clWindowText
+      ConfCores.Normal.CorFundo = 14803425
+      ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Normal.Tipo.Color = clWindowText
+      ConfCores.Normal.Tipo.Height = -11
+      ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Normal.Tipo.Style = []
+      ConfCores.Zebrada.CorFonte = clWindowText
+      ConfCores.Zebrada.CorFundo = clWhite
+      ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Zebrada.Tipo.Color = clWindowText
+      ConfCores.Zebrada.Tipo.Height = -11
+      ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Zebrada.Tipo.Style = []
+      ConfCores.Selecao.CorFonte = clWindowText
+      ConfCores.Selecao.CorFundo = 16037533
+      ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Selecao.Tipo.Color = clWindowText
+      ConfCores.Selecao.Tipo.Height = -11
+      ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Selecao.Tipo.Style = []
+      ConfCores.Destacado.CorFonte = 8650884
+      ConfCores.Destacado.CorFundo = clWhite
+      ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Destacado.Tipo.Color = 8650884
+      ConfCores.Destacado.Tipo.Height = -11
+      ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+      ConfCores.Destacado.Tipo.Style = [fsBold]
+      ConfCores.Titulo.CorFonte = clWindowText
+      ConfCores.Titulo.CorFundo = clBtnFace
+      ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+      ConfCores.Titulo.Tipo.Color = clWindowText
+      ConfCores.Titulo.Tipo.Height = -11
+      ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+      ConfCores.Titulo.Tipo.Style = []
+      Ordenavel = True
+      TipoBusca.ListarApenasEncontrados = False
+      TipoBusca.QualquerParte = False
+      SalvaConfiguracoes = False
+      Columns = <
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'UND_SISTEMA'
+          Title.Caption = 'Unidade Sistema'
+          Width = 101
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'QUANTIDADE'
+          Title.Caption = 'Qtd Equivalente'
+          Width = 110
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'UND_MOVIMENTO'
+          Title.Caption = 'Unidade Movimento'
+          Width = 110
+          Visible = True
+        end>
+    end
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 266
+    Top = 384
     Width = 680
     Height = 51
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitTop = 266
     object btnSalvar: TBitBtn
       Left = 514
       Top = 8
@@ -203,11 +320,12 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
   end
   object pnlQuantidades: TPanel
     Left = 0
-    Top = 112
+    Top = 230
     Width = 680
     Height = 154
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 112
     DesignSize = (
       680
       154)
@@ -251,28 +369,14 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       Transparent = True
     end
     object lbEntSai: TLabel
-      Left = 304
-      Top = 35
-      Width = 193
-      Height = 20
+      Left = 272
+      Top = 38
+      Width = 171
+      Height = 17
       Caption = 'Quantidade a dar entrada >'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 41984
-      Font.Height = -15
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Transparent = True
-    end
-    object lbUnidadeMedida: TLabel
-      Left = 624
-      Top = 39
-      Width = 20
-      Height = 20
-      Caption = '(  )'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = 41984
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
@@ -292,10 +396,24 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       ParentFont = False
       Transparent = True
     end
+    object lbUnidadeMedida: TLabel
+      Left = 568
+      Top = 36
+      Width = 12
+      Height = 21
+      Caption = '()'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 41984
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
     object edtEstoqueAtual: TCurrencyEdit
       Left = 132
       Top = 35
-      Width = 97
+      Width = 101
       Height = 26
       AutoSize = False
       Ctl3D = False
@@ -312,7 +430,7 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       TabOrder = 0
     end
     object edtQtdEntrada: TCurrencyEdit
-      Left = 511
+      Left = 455
       Top = 35
       Width = 109
       Height = 26
@@ -343,5 +461,28 @@ inherited frmEntradaManualMateria: TfrmEntradaManualMateria
       ParentFont = False
       TabOrder = 2
     end
+  end
+  object cds: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    AfterScroll = cdsAfterScroll
+    Left = 120
+    Top = 152
+    object cdsUND_SISTEMA: TStringField
+      FieldName = 'UND_SISTEMA'
+      Size = 10
+    end
+    object cdsQUANTIDADE: TFloatField
+      FieldName = 'QUANTIDADE'
+    end
+    object cdsUND_MOVIMENTO: TStringField
+      FieldName = 'UND_MOVIMENTO'
+      Size = 10
+    end
+  end
+  object ds: TDataSource
+    DataSet = cds
+    Left = 177
+    Top = 152
   end
 end

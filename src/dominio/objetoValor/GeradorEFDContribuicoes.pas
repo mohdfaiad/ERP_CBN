@@ -9,7 +9,7 @@ uses ACBrSpedPisCofins,
      ACBrEPCBloco_D,
      EFDPisCofinsFuncoes,
      Empresa, Contador, NotaFiscal, ItemNotaFiscal, 
-     contnrs, DBClient, DB;
+     contnrs, DBClient, DB, PlanoContasContabeis;
    //  EFDPisCofinsTipos;
 
 type TGeradorEFDContribuicoes = class
@@ -40,6 +40,7 @@ type TGeradorEFDContribuicoes = class
     FCDSNaturezasOperacao :TClientDataSet;
     FCfops            :TClientDataSet;
     FConsidera_desconsidera   :Boolean;
+    Conta                 :TPlanoContasContabeis;
 
   private
 
@@ -67,13 +68,14 @@ type TGeradorEFDContribuicoes = class
         procedure addReg0190(registro0140 :TRegistro0140); { Cadastro de medidas }
         procedure addReg0200(registro0140 :TRegistro0140; codigo_produto :integer); { Cadastro de itens/produtos }
         procedure addReg0400(registro0140 :TRegistro0140; codigo_natureza :integer); { Cadastro de natureza de operação/prestação }
+      procedure addReg0500(registro0001 :TRegistro0001); { Cadastro de plano de contas contábeis }
 
     { Bloco C }
     procedure addRegC001(registroC001 :TRegistroC001); { Abertura do bloco C }
       procedure addRegC010(registroC001 :TRegistroC001); { Identificação do estabelecimento }
         procedure addRegC100(registroC100 :TRegistroC100; Nota_Fiscal :TNotaFiscal); { Documento de nota fiscal }
           procedure addRegC120(registroC100 :TRegistroC100; nCodNota :Real); { Complemento do Documento - Dados de Importação}
-          procedure addRegC170(registroC100 :TRegistroC100; ItensNota :TObjectList); { Complemento do Documento - Itens }
+          procedure addRegC170(registroC100 :TRegistroC100; NotaFiscal: TNotaFiscal); { Complemento do Documento - Itens }
         procedure addRegC500; { nota discal /contade energia eletrica  /agua /gas}
 
     { Bloco D }
@@ -192,6 +194,7 @@ begin
    self.addReg0100(registro0001.Registro0100.New(registro0001));
    self.addReg0110(registro0001.Registro0110);
    self.addReg0140;
+   self.addReg0500(registro0001);
 end;
 
 procedure TGeradorEFDContribuicoes.addReg0100(registro0100: TRegistro0100);
@@ -364,6 +367,31 @@ begin
 
 end;
 
+procedure TGeradorEFDContribuicoes.addReg0500(registro0001 :TRegistro0001);
+var repositorio :TRepositorio;
+begin
+  if not Assigned(registro0001) then exit;
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TPlanoContasContabeis.ClassName);
+    Conta       := TPlanoContasContabeis(repositorio.Get(1)); //VLJ usa apenas uma conta, por enquanto fica assim
+
+    if not assigned(Conta) then
+      exit;
+
+   with registro0001.Registro0500.New(registro0001) do
+    begin
+       DT_ALT     := Conta.dt_alt;
+       COD_NAT_CC := TACBrNaturezaConta(strToInt(copy(Conta.cod_nat_cc,1,2)));
+       IND_CTA    := TACBrIndCTA( IfThen(copy(Conta.ind_cta,1,1) = 'S',0,1) );
+       NIVEL      := intToStr(Conta.nivel);
+       COD_CTA    := Conta.cod_cta;
+       NOME_CTA   := Conta.nome_cta;
+    end;
+  finally
+    FreeAndNil(repositorio);
+  end;
+end;
+
 procedure TGeradorEFDContribuicoes.addRegC001(registroC001: TRegistroC001);
 begin
    if not Assigned(registroC001) then exit;
@@ -506,7 +534,7 @@ begin
 
       //self.addRegC120(registroC100, self.CDSC100.FieldByName(TRegistrosC100.COD_NOTA).AsFloat);
       if Nota_Fiscal.Status = snfAutorizada then
-         self.addRegC170(registroC100, Nota_Fiscal.Itens );
+         self.addRegC170(registroC100, Nota_Fiscal );
 
    end;
 end;
@@ -517,8 +545,7 @@ begin
   //registro de declaração de importação
 end;
 
-procedure TGeradorEFDContribuicoes.addRegC170(registroC100: TRegistroC100;
-  ItensNota :TObjectList);
+procedure TGeradorEFDContribuicoes.addRegC170(registroC100: TRegistroC100; NotaFiscal: TNotaFiscal);
 var i :integer;
     ItemFiscal : TItemNotaFiscal;
 begin
@@ -527,11 +554,11 @@ begin
 
    ItemFiscal := nil;
 
-   for i := 0 to ItensNota.Count - 1 do
+   for i := 0 to NotaFiscal.Itens.Count - 1 do
    begin
       Application.ProcessMessages;
 
-      ItemFiscal := (ItensNota[i] as TItemNotaFiscal );
+      ItemFiscal := (NotaFiscal.Itens[i] as TItemNotaFiscal );
 
       with registroC100.RegistroC170.New do
       begin
@@ -542,7 +569,7 @@ begin
          IND_MOV            := TRegistroC170.GetIndMov('0');
          CFOP               := ItemFiscal.NaturezaOperacao.CFOP;
          COD_NAT            := intToStr(ItemFiscal.NaturezaOperacao.Codigo);
-         COD_CTA            := '';
+         COD_CTA            := IfThen((NotaFiscal.Entrada_saida = 'S') and (NotaFiscal.Emitente.CPF_CNPJ = '11286129000124'), Conta.cod_cta, '');;
 
          { Valores do item }
          QTD                := ItemFiscal.Quantidade;
@@ -843,6 +870,8 @@ constructor TGeradorEFDContribuicoes.Destroy;
 begin
   FreeAndNil( FEmpresa );
   FreeAndNil( FContador );
+  if assigned( Conta ) then
+    FreeAndNil( Conta );
   Self.SpedPISCOFINS.Free;
   Self.SpedPISCOFINS := nil;
 end;

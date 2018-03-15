@@ -3233,7 +3233,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C0101060009008C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3695,6 +3695,20 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       ReadOnly = True
       Size = 100
     end
+    object ClientDataSet1QTD_TOTAL: TBCDField
+      FieldName = 'QTD_TOTAL'
+      ReadOnly = True
+      DisplayFormat = '0'
+      Precision = 18
+      Size = 2
+    end
+    object ClientDataSet1QTD_PECAS: TBCDField
+      FieldName = 'QTD_PECAS'
+      ReadOnly = True
+      DisplayFormat = '0'
+      Precision = 18
+      Size = 2
+    end
     object ClientDataSet1QTD_RN: TLargeintField
       FieldName = 'QTD_RN'
       ReadOnly = True
@@ -3759,20 +3773,6 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     end
     object ClientDataSet1QTD_UNICA: TBCDField
       FieldName = 'QTD_UNICA'
-      ReadOnly = True
-      DisplayFormat = '0'
-      Precision = 18
-      Size = 2
-    end
-    object ClientDataSet1QTD_TOTAL: TBCDField
-      FieldName = 'QTD_TOTAL'
-      ReadOnly = True
-      DisplayFormat = '0'
-      Precision = 18
-      Size = 2
-    end
-    object ClientDataSet1QTD_PECAS: TBCDField
-      FieldName = 'QTD_PECAS'
       ReadOnly = True
       DisplayFormat = '0'
       Precision = 18

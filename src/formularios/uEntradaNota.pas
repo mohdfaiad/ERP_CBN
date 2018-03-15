@@ -7,7 +7,7 @@ uses
   Dialogs, uPadrao, StdCtrls, Buttons, ACBrNFe, ACBrNFeNotasFiscais, Repositorio,
   FabricaRepositorio, NotaFiscal, NaturezaOperacao, TipoSerie, Pessoa, ItemNotaFiscal,
   TotaisNotaFiscal, Empresa, TipoRegimeTributario, ExtCtrls, DB, DBClient, pcnNFe,
-  Grids, DBGrids, DBGridCBN, ImgList, Menus, ACBrBase, ACBrDFe, System.ImageList;
+  Grids, DBGrids, DBGridCBN, ImgList, Menus, ACBrBase, ACBrDFe, System.ImageList, contnrs;
 
 type
 
@@ -66,13 +66,16 @@ type
     ppmalteraCFOP: TPopupMenu;
     AlterarCFOP1: TMenuItem;
     Label5: TLabel;
+    cdsMateriasUNID_NOTA: TStringField;
+    cdsMateriasUNID_ENTRADA: TStringField;
+    cdsMateriasCOD_UNID_ENT_SAI: TIntegerField;
+    CadastrarUnidadeCorrespondente1: TMenuItem;
     procedure BitBtn1Click(Sender: TObject);
     procedure btnImportarNotaClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnInfoFornecedorClick(Sender: TObject);
     procedure btnInfoNotaClick(Sender: TObject);
-    procedure DBGridCBN1CellClick(Column: TColumn);
     procedure cdsMateriasAfterScroll(DataSet: TDataSet);
     procedure Associarumamatria1Click(Sender: TObject);
     procedure Cadastrarmatria1Click(Sender: TObject);
@@ -89,6 +92,7 @@ type
     procedure GridMateriasKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure AlterarCFOP1Click(Sender: TObject);
+    procedure CadastrarUnidadeCorrespondente1Click(Sender: TObject);
 
   private
     function MateriaCadastrada(produtoNfe :TProd) :Integer;
@@ -98,6 +102,7 @@ type
     function  cadastrar_produto(produtoNfe :TProd)   :Boolean;
     function  associar_cfop(codigo_natureza :integer) :Boolean;
     function  cadastrar_cfop(codigo_natureza :integer) :Boolean;
+    procedure cadastrar_unidade_na_materia;
 
     procedure salvaAssociacaoProduto(codigo_materia :integer; codigo_produto_fornecedor :String);
     procedure salvaAssociacaoCFOP(codigo_cfop, codigo_cfop_correspondente :Integer);
@@ -105,6 +110,7 @@ type
     procedure carrega_nota;
     procedure altera_cfop;
     function gerarContasAPagar :Boolean;
+    procedure setaUnidadeEntrada(unidadeNota :String);
 
     procedure mouseToCell(X, Y: integer; var ACol, ARow: longint);
   private
@@ -126,7 +132,7 @@ implementation
 
 uses importadorNotaXML, uCadastroFornecedor, PermissoesAcesso, Funcoes,
   Math, uModulo, StrUtils, uCadastroMateria, MateriaFornecedor, CFOPCorrespondente,
-  uCadastroNaturezaOperacao, uContasPagar, uCadastroPadrao;
+  uCadastroNaturezaOperacao, uContasPagar, uCadastroPadrao, EspecificacaoUnidadesEntSaiPorCodigoProduto, Materia, UnidadeEntSai;
 
 {$R *.dfm}
 
@@ -178,7 +184,6 @@ begin
     btnLimpa.Click;
 
     Fdm.conexao.Commit;
-
   except
     on e : Exception do
       begin
@@ -237,12 +242,21 @@ begin
     codigo_natureza := buscaCFOPCorrespondente( AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[nX].Prod.CFOP );
 
     cdsMateriasCFOP.AsInteger             := StrToIntDef( IfThen(codigo_natureza = '', '', CFOP_por_codigo_natureza(StrToInt(codigo_natureza))) ,0);
-    cdsMateriasVALIDADO.asString          := IfThen((cdsMateriasCODMAT_ERP.AsInteger > 0)and(cdsMateriasCFOP.AsInteger > 0), 'S', 'N');    
+
+    cdsMateriasUNID_NOTA.AsString         := FloatToStr(AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[nX].Prod.qCom) +' '+ AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[nX].Prod.uCom;
+
+    if cdsMateriasCODMAT_ERP.asInteger > 0 then
+      setaUnidadeEntrada(AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[nX].Prod.uCom);
+
+    cdsMateriasVALIDADO.asString          := IfThen((cdsMateriasCODMAT_ERP.AsInteger > 0)and(cdsMateriasCFOP.AsInteger > 0)and(cdsMateriasUNID_ENTRADA.AsString <> ''), 'S', 'N');
 
     if cdsMateriasCODMAT_ERP.AsInteger = 0 then
       inc(Validacoes);
 
     if cdsMateriasCFOP.AsInteger = 0 then
+      inc(Validacoes);
+
+    if cdsMateriasUNID_ENTRADA.AsString = '' then
       inc(Validacoes);
 
     cdsMaterias.Post;
@@ -353,7 +367,7 @@ begin
   frmCadastroMateria.ShowModal;
 
   if frmCadastroMateria.ModalResult = MrOk then begin
-    Result := true;
+    Result         := true;
     codigo_produto := strToInt( Maior_Valor_Cadastrado('MATERIAS','CODIGO'));
 
     salvaAssociacaoProduto( codigo_produto ,produtoNfe.cProd);
@@ -367,6 +381,17 @@ begin
   end
   else
     result := false;
+
+  frmCadastroMateria.Release;
+end;
+
+procedure TfrmEntradaNota.cadastrar_unidade_na_materia;
+begin
+  frmCadastroMateria := TFrmCadastroMateria.Create(nil,cdsMateriasCODMAT_ERP.AsInteger, AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[ cdsMaterias.recno -1 ].Prod.uCom);
+  frmCadastroMateria.ShowModal;
+
+  if frmCadastroMateria.ModalResult = MrOk then
+    btnAtuliza.Click;
 
   frmCadastroMateria.Release;
 end;
@@ -397,18 +422,49 @@ begin
   end;
 end;
 
-procedure TfrmEntradaNota.DBGridCBN1CellClick(Column: TColumn);
+procedure TfrmEntradaNota.setaUnidadeEntrada(unidadeNota: String);
+var repositorio :TRepositorio;
+    materia :TMateria;
+    i :integer;
+    qtdEntrada :Real;
 begin
-  if (Column.Index = 2) and ((cdsMateriasCODMAT_ERP.AsInteger = 0) or (cdsMateriasCFOP.AsInteger = 0)) then
-    PopupCorrecoes.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
+  repositorio   := nil;
+  materia       := nil;
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
+    materia     := TMateria(repositorio.Get(cdsMateriasCODMAT_ERP.AsInteger));
+
+    qtdEntrada  := StrToFloat(copy(cdsMateriasUNID_NOTA.AsString,1,pos(' ',cdsMateriasUNID_NOTA.AsString)-1));
+    if not materia.controla_estoque then
+    begin
+       cdsMateriasUNID_ENTRADA.AsString := floatToStr(qtdEntrada)+' '+unidadeNota;
+    end
+    else
+    begin
+      for i := 0 to materia.UnidadesEntSai.Count-1 do
+      begin
+        if (UpperCase(TUnidadeEntSai(materia.UnidadesEntSai.Items[i]).unidade_movimento) = UpperCase(unidadeNota)) and
+           (TUnidadeEntSai(materia.UnidadesEntSai.Items[i]).tipo = 'E') then
+        begin
+          cdsMateriasUNID_ENTRADA.AsString := floatToStr(qtdEntrada * TUnidadeEntSai(materia.UnidadesEntSai.Items[i]).quantidade)+' '+ TUnidadeEntSai(materia.UnidadesEntSai.Items[i]).unidade_sistema;
+          cdsMateriasCOD_UNID_ENT_SAI.AsInteger := TUnidadeEntSai(materia.UnidadesEntSai.Items[i]).codigo;
+        end;
+      end;
+    end;
+
+  finally
+    FreeAndNil(repositorio);
+    FreeAndNil(materia);
+  end;
 end;
 
 procedure TfrmEntradaNota.cdsMateriasAfterScroll(DataSet: TDataSet);
 begin
-  Associarumamatria1.Visible           := (cdsMateriasCODMAT_ERP.AsInteger = 0);
-  Cadastrarmatria1.Visible             := (cdsMateriasCODMAT_ERP.AsInteger = 0);
-  AssociarumCFOP1.Visible              := (cdsMateriasCFOP.AsInteger = 0);
-  CadastrarCFOPcorrespondente1.Visible := (cdsMateriasCFOP.AsInteger = 0);
+  Associarumamatria1.Visible              := (cdsMateriasCODMAT_ERP.AsInteger = 0);
+  Cadastrarmatria1.Visible                := (cdsMateriasCODMAT_ERP.AsInteger = 0);
+  AssociarumCFOP1.Visible                 := (cdsMateriasCFOP.AsInteger = 0);
+  CadastrarCFOPcorrespondente1.Visible    := (cdsMateriasCFOP.AsInteger = 0);
+  CadastrarUnidadeCorrespondente1.Visible := (cdsMateriasUNID_ENTRADA.AsString = '');
 end;
 
 procedure TfrmEntradaNota.Associarumamatria1Click(Sender: TObject);
@@ -421,6 +477,11 @@ procedure TfrmEntradaNota.Cadastrarmatria1Click(Sender: TObject);
 begin
  if self.cadastrar_produto( AcbrNfe.NotasFiscais.Items[0].NFe.Det.Items[ cdsMaterias.recno -1 ].Prod ) then
   // dec(Validacoes);
+end;
+
+procedure TfrmEntradaNota.CadastrarUnidadeCorrespondente1Click(Sender: TObject);
+begin
+  cadastrar_unidade_na_materia;
 end;
 
 procedure TfrmEntradaNota.btnLimpaClick(Sender: TObject);
@@ -544,7 +605,7 @@ end;
 
 procedure TfrmEntradaNota.GridMateriasCellClick(Column: TColumn);
 begin
-  if (cdsMateriasCODMAT_ERP.AsInteger = 0) or (cdsMateriasCFOP.AsInteger = 0) then
+  if (cdsMateriasCODMAT_ERP.AsInteger = 0) or (cdsMateriasCFOP.AsInteger = 0) or (cdsMateriasUNID_ENTRADA.AsString = '')then
     PopupCorrecoes.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 

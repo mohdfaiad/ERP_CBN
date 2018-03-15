@@ -9905,4 +9905,98 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 228
     WordWrap = False
   end
+  object versao228: TMemo
+    Left = 393
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_UNIDADES_ENT_SAI_ID'
+      '^'
+      'CREATE TABLE UNIDADES_ENT_SAI ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    CODIGO_MATERIA INTEGER,'
+      '    UNIDADE_MOVIMENTO VARCHAR(10),'
+      '    UNIDADE_SISTEMA VARCHAR(10),'
+      '    QUANTIDADE NUMERIC(15,4),'
+      '    TIPO CHAR(1))'
+      '^'
+      'alter table UNIDADES_ENT_SAI'
+      'add constraint PK_UNIDADES_ENT_SAI'
+      'primary key (CODIGO)'
+      '^'
+      'alter table UNIDADES_ENT_SAI'
+      'add constraint FK_UNIDADES_ENT_SAI_1'
+      'foreign key (CODIGO_MATERIA)'
+      'references MATERIAS(CODIGO)'
+      '^'
+      'CREATE TRIGGER UNIDADES_ENT_SAI_BI FOR UNIDADES_ENT_SAI'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_UNIDADES_ENT_SAI_ID,1);'
+      'END'
+      '^')
+    TabOrder = 229
+    WordWrap = False
+  end
+  object versao229: TMemo
+    Left = 417
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_PLANO_CONTAS_CONTABEIS_ID'
+      '^'
+      'CREATE TABLE PLANO_CONTAS_CONTABEIS ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    DT_ALT DATE,'
+      '    COD_NAT_CC VARCHAR(40),'
+      '    IND_CTA VARCHAR(40),'
+      '    NIVEL INTEGER,'
+      '    COD_CTA VARCHAR(60),'
+      '    NOME_CTA VARCHAR(60))'
+      '^'
+      'alter table PLANO_CONTAS_CONTABEIS'
+      'add constraint PK_PLANO_CONTAS_CONTABEIS'
+      'primary key (CODIGO)'
+      '^'
+      
+        'CREATE TRIGGER PLANO_CONTAS_CONTABEIS_BI FOR PLANO_CONTAS_CONTAB' +
+        'EIS'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_PLANO_CONTAS_CONTABEIS_ID,1);'
+      'END'
+      '^')
+    TabOrder = 230
+    WordWrap = False
+  end
+  object versao230: TMemo
+    Left = 441
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE LANCAMENTOS ALTER TIPO TYPE CHAR(2)'
+      '^')
+    TabOrder = 231
+    WordWrap = False
+  end
+  object versao231: TMemo
+    Left = 465
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      
+        'ALTER TABLE CONTAS_PAGAR ALTER COLUMN COD_FORNECEDOR TYPE INTEGE' +
+        'R'
+      '^')
+    TabOrder = 232
+    WordWrap = False
+  end
 end

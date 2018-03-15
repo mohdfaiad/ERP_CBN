@@ -8,7 +8,9 @@ uses
   frameBotaoImg, ImgList, pngimage, frameBuscaCidade, math, Firedac.Comp.Client,
   ServicoVerificadorSistemaEmManutencao, uImpressaoEtiquetasCoppel, uEntradaNota,
   IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient, ShellAPI, AppEvnts, contnrs,
-  RLReport, System.ImageList, System.StrUtils, DBGridCBN, RLPreviewForm, RLFilters, RLPDFFilter;
+  RLReport, System.ImageList, System.StrUtils, DBGridCBN, RLPreviewForm, RLFilters, RLPDFFilter, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, Vcl.Grids, Vcl.DBGrids;
 
 type
   TfrmInicial = class(TfrmPadrao)
@@ -151,6 +153,7 @@ type
     lbErros: TLabel;
     EmAberto1: TMenuItem;
     tmrVerificaPedidosEmAberto: TTimer;
+    PlanodeContasContbeis1: TMenuItem;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -248,6 +251,7 @@ type
     procedure btnVerificarClick(Sender: TObject);
     procedure EmAberto1Click(Sender: TObject);
     procedure tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
+    procedure PlanodeContasContbeis1Click(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -324,7 +328,7 @@ uses
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao,
-  uGeraArquivoMeusPedidos;
+  uGeraArquivoMeusPedidos, uCadastroPlanoContasContabeis;
 
 {$R *.dfm}
 
@@ -838,42 +842,8 @@ begin
 end;
 
 procedure TfrmInicial.btnTesteClick(Sender: TObject);
-//var
-//  Repositorio :TRepositorio;
-//  NotaFiscal  :TNotaFiscal;
-//  Fatura      :TFatura;
-//  GerFin      :TGeradorFinanceiro;
-//  nx          :Integer;
-//  TotalDup    :Real;
 begin
-  inherited;
-
-//  Repositorio := nil;
-//  NotaFiscal  := nil;
-//  Fatura      := nil;
-//  GerFin      := nil;
-//  TotalDup    := 0;
-//
-//
-//  try
-//    Repositorio := TFabricaRepositorio.GetRepositorio(TN otaFiscal.ClassName);
-//    NotaFiscal  := (Repositorio.Get(3) as TNotaFiscal);
-//    GerFin      := TGeradorFinanceiro.Create;
-//    Fatura      := GerFin.GerarFatura(NotaFiscal);
-//
-//    for nX := 0 to (Fatura.Duplicatas.Count-1) do  begin
-//       TotalDup := (TotalDup + (TDuplicata(Fatura.Duplicatas[nX]).ValorDuplicata));
-//    end;
-//
-//    if (TotalDup = NotaFiscal.Totais.TotalNF) then
-//      inherited Avisar('DEU CERTO!');
-//
-//  finally
-//    FreeAndNil(Repositorio);
-//    FreeAndNil(Fatura);
-//    FreeAndNil(NotaFiscal);
-//    FreeAndNil(GerFin);
-//  end;
+//testes
 end;
 
 procedure TfrmInicial.ImpressoEtiquetasCaixa1Click(Sender: TObject);
@@ -923,6 +893,12 @@ begin
   frmRelatorioVendas.RelatorioSemValores:= False;
   frmRelatorioVendas.ShowModal;
   frmRelatorioVendas.Release;
+end;
+
+procedure TfrmInicial.PlanodeContasContbeis1Click(Sender: TObject);
+begin
+  inherited;
+    self.AbreForm(TfrmCadastroPlanoContasContabeis, paCadastroPlanoContasContabeis);
 end;
 
 procedure TfrmInicial.Caixa2Click(Sender: TObject);

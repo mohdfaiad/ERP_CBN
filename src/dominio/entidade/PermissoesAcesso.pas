@@ -100,6 +100,7 @@ const
   paSincronizaProdutosShoppub     = 83;
   paVerificaErrosImportacaoPedido = 84;
   paRelatorioPedidosEmAberto      = 85;
+  paCadastroPlanoContasContabeis  = 86;
 
 implementation
 

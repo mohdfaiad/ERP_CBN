@@ -142,6 +142,8 @@ object BuscaCor: TBuscaCor
     Width = 80
     Height = 21
     TabOrder = 1
+    OnChange = edtReferenciaChange
+    OnExit = edtReferenciaExit
     OnKeyDown = edtReferenciaKeyDown
   end
 end

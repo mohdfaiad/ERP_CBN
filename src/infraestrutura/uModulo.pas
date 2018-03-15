@@ -193,9 +193,12 @@ begin
    try
      try
 
-       self.FConexaoBancoDeDados.TxOptions.Isolation := xiReadCommitted;
+       self.FConexaoBancoDeDados.TxOptions.Isolation    := xiReadCommitted;
+     //  self.FConexaoBancoDeDados.UpdateOptions.LockWait := true;
+     //  self.FConexaoBancoDeDados.UpdateOptions.LockMode := lmPessimistic;
 
-       self.FConexaoBancoDeDados.TxOptions.AutoCommit             := true;
+//       self.FConexaoBancoDeDados.UpdateTransaction      := FDTransaction1;
+       self.FConexaoBancoDeDados.TxOptions.AutoCommit   := true;
        self.FConexaoBancoDeDados.Connected              := true;
 
        FDConnection.Connected  := true;

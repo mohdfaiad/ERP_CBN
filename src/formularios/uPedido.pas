@@ -701,7 +701,7 @@ end;
 
 procedure TfrmPedido.alterarItem;
 begin
-    iniciaGridTamanhos;
+  iniciaGridTamanhos;
 
   if TabelaProdutoSelecionada then begin
     BuscaProduto1.codproduto := cdsItensProduto.AsString;
@@ -1266,7 +1266,11 @@ begin
   rbNao.Checked              := true;
   cbTipoFrete.ItemIndex      := 0;
   memObs.Clear;
+
+  BuscaProduto1.edtReferencia.OnChange := nil;
   BuscaProduto1.limpa;
+  BuscaProduto1.edtReferencia.OnChange := BuscaProduto1edtReferenciaChange;
+  BuscaCor1.limpa;
   if cdsItens.active then cdsItens.EmptyDataSet;
   limpaItem;
 

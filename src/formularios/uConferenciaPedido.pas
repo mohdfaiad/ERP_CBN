@@ -360,7 +360,8 @@ type
     cdsConferidosSKU: TStringField;
     cdsItensConferidosREFCOR: TStringField;
     cdsConferidosESTOQUE_ATUAL: TFloatField;
-    Button1: TButton;
+    BitBtn1: TBitBtn;
+    SpeedButton1: TSpeedButton;
     procedure BuscaPedido1Exit(Sender: TObject);
     procedure edtCodigoBarrasEnter(Sender: TObject);
     procedure edtCodigoBarrasChange(Sender: TObject);
@@ -409,7 +410,8 @@ type
     procedure btnDesmembrarClick(Sender: TObject);
     procedure frameMateriaExit(Sender: TObject);
     procedure btnAlteraCaixasClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
 
   private
     FCaixasDoPedido         :TObjectList;
@@ -455,6 +457,7 @@ type
     function generoValido(corItemComparado, corItemConferindo :String) :Boolean;
     procedure deleta_itens(codigos_itens :String);
     procedure deleta_conferencia_itens(codigos_conferencia_itens :String);
+    procedure extornaConferenciaItem;
 
     { cria um novo item apenas com as quantidades conferidas, recalcula os seus valores e insere ao pedido }
     function  atualiza_item(Pedido :TPedido; codigo_item: Integer; var total :Real; var desconto_itens :Real) :Boolean;
@@ -488,6 +491,7 @@ type
     procedure atualizaEstoqueLocal(pedidoEcommerce :Boolean);
     procedure atualizaEstoquePedidoTotal(Pedido :TPedido; multiplicador :integer);
     procedure atualizaEstoquePlataforma(multiplicador :integer);
+    function atualiza(sku :String; quantidade :Real; multiplicador :integer):String;
     procedure atualizaEstoquePlataformaPeloPedido(multiplicador :integer);
 
     procedure Busca_tamanhos(var cds :TClientDataSet);
@@ -502,6 +506,8 @@ type
 
     { Salva a associaçao (ITEM <-> CAIXA) criada }
     procedure SalvarAtualizar_caixas;
+
+    function pedEcommerce :Boolean;
 
   private
 
@@ -702,6 +708,84 @@ begin
     BuscaPedido1.edtNumPedido.SetFocus;
 end;
 
+procedure TfrmConferenciaPedido.extornaConferenciaItem;
+var repositorio :TRepositorio;
+    i :integer;
+    refProduto, refCor, tamProd, sku, json :String;
+    vHTTPJSON :THTTPJSON;
+    qry :TFDQuery;    
+begin
+  if cdsItensConferidosCODIGO.AsInteger > 0 then
+  begin
+    try
+      //se for pedido de representante E-Commerce e não for pedido da própria plataforma, o estoque é atualizado na mesma
+      if pedEcommerce and (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+      begin
+        try
+          vHTTPJSON             := nil;
+          vHTTPJSON             := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+          
+          for i := 0 to cdsItensConferidos.Fields.Count - 1 do
+          begin
+            //se for um campo quantidade e não for referente a quantidade total mas sim a conferida
+            if (pos('QTD',cdsItensConferidos.Fields[i].FieldName) > 0) and not (pos('_O',cdsItensConferidos.Fields[i].FieldName) > 0) then
+            begin
+              cdsItens.Locate('CODIGO', cdsItensConferidosCODIGO_ITEM.AsInteger, []);
+              cdsItens.Edit;
+              cdsItens.FieldByName(cdsItensConferidos.Fields[i].FieldName).AsInteger := cdsItens.FieldByName(cdsItensConferidos.Fields[i].FieldName).AsInteger + cdsItensConferidos.Fields[i].AsInteger;
+              cdsItens.Post;
+               
+              //se quantidade maior que zero
+              if cdsItensConferidos.Fields[i].Value > 0 then
+              begin
+                refProduto := cdsItensConferidosREFPRO.AsString;
+                refCor     := cdsItensConferidosREFCOR.AsString;
+                tamProd    := trim(copy(cdsItensConferidos.Fields[i].FieldName, pos('QTD_',cdsItensConferidos.Fields[i].FieldName)+4, 10));
+                tamProd    := IfThen(tamProd = 'UNICA', 'UN', tamProd);
+                sku        := refProduto + tamProd + refCor;
+                sku        := TStringUtilitario.RemoveCaracteresEspeciais( sku );
+
+                json := atualiza(sku, cdsItensConferidos.Fields[i].AsInteger, +1);
+                vHTTPJSON.Post(json);                   
+              end;
+            end;
+          end;          
+
+        finally
+          FreeAndNil(vHTTPJSON);
+        end;
+      end;
+
+      qry          := dm.GetConsulta;
+      qry.SQL.Text := 'DELETE FROM CONFERENCIA_ITENS WHERE CODIGO = :codigo';
+      qry.ParamByName('codigo').AsInteger := cdsItensConferidosCODIGO.AsInteger;
+      qry.ExecSQL;
+      FreeAndNil(qry);
+  
+    Except
+    on e :EIdHTTPProtocolException do
+      begin
+        raise Exception.Create('Erro ao atualizar o estoque da plataforma.'+#13#10+'Aguarde 1 min e tente novamente por favor.'+#13#10+e.Message);
+      end;
+    end;
+  end;
+
+  for i := 0 to cdsItensConferidos.Fields.Count - 1 do
+  begin
+    //se for um campo quantidade e não for referente a quantidade total mas sim a conferida
+    if (pos('QTD',cdsItensConferidos.Fields[i].FieldName) > 0) and not (pos('_O',cdsItensConferidos.Fields[i].FieldName) > 0) then
+    begin
+      cdsItens.Locate('CODIGO', cdsItensConferidosCODIGO_ITEM.AsInteger, []);
+      cdsItens.Edit;
+      cdsItens.FieldByName(cdsItensConferidos.Fields[i].FieldName).AsInteger := cdsItens.FieldByName(cdsItensConferidos.Fields[i].FieldName).AsInteger + cdsItensConferidos.Fields[i].AsInteger;
+      cdsItens.Post;      
+    end;
+  end;
+  cdsItensConferidos.Delete;
+
+  calcula_percentagem_conferida;
+end;
+
 procedure TfrmConferenciaPedido.filtraItens(checkBox: TCheckBox);
 var filtro :String;
 begin
@@ -894,7 +978,10 @@ begin
      on e :Exception do
      begin
        dm.conexao.Rollback;
-       avisar(e.message);
+       if pos('deadlock', e.Message) > 0 then
+         avisar('Por favor, aguarde alguns instantes, pois existe outro pedido sendo salvo contendo o(s) mesmo(s) produto(s) desta conferência')
+       else
+         avisar(e.message);
      end;
    end;
 
@@ -913,10 +1000,11 @@ var repositorio        :TRepositorio;
     ConferenciaPedido  :TConferenciaPedido;
     ConferenciaItem    :TConferenciaItem;
     cdsTemp            :TClientDataSet;
-    pedEcommerce       :Boolean;
+    codConferencia     :integer;
 begin
   repositorio        := nil;
   ConferenciaPedido  := nil;
+  ConferenciaItem    := nil;
   result             := false;
 
   if (labelQtdePecasConferidos.Caption = '0') and not(FVisualizarConferencia) then begin
@@ -927,7 +1015,12 @@ begin
  try
    repositorio       := TFabricaRepositorio.GetRepositorio(TConferenciaPedido.ClassName);
 
-   ConferenciaPedido := BuscaPedido1.Ped.Conferencia;
+   if assigned(BuscaPedido1.Ped.Conferencia) then
+     codConferencia := BuscaPedido1.Ped.Conferencia.codigo
+   else
+     codConferencia := 0;
+
+   ConferenciaPedido := TConferenciaPedido(repositorio.Get(codConferencia));
 
    if not Assigned( ConferenciaPedido ) then
      ConferenciaPedido := TConferenciaPedido.Create;
@@ -975,12 +1068,9 @@ begin
      ConferenciaItem.QTD_14             := cdsItensConferidosQTD_14.AsInteger;
      ConferenciaItem.QTD_UNICA          := cdsItensConferidosQTD_UNICA.AsInteger;
 
-
      ConferenciaPedido.Itens.Add( ConferenciaItem );
-
      cdsItensConferidos.next;
    end;
-
 
    repositorio.Salvar( ConferenciaPedido );
 
@@ -989,8 +1079,10 @@ begin
 
    atualizaTabelaDirecionamento;
 
-   pedEcommerce := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce;
    atualizaEstoqueLocal(pedEcommerce);
+
+ //  avisar('espere');
+ //  raise Exception.Create('Error Message');
 
    //se for pedido de representante E-Commerce e não for pedido da própria plataforma, o estoque é atualizado na mesma
    if pedEcommerce and (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
@@ -1011,6 +1103,10 @@ begin
  finally
    freeAndNil( repositorio );
    FreeAndNil( repositorioItem );
+   if assigned(ConferenciaPedido) then
+     FreeAndNil(ConferenciaPedido);
+   if assigned(ConferenciaPedido) then
+     FreeAndNil(ConferenciaItem);
  end;
 end;
 
@@ -2157,6 +2253,13 @@ begin
   end;
 end;
 
+procedure TfrmConferenciaPedido.SpeedButton1Click(Sender: TObject);
+begin
+  if not cdsItensConferidos.IsEmpty then
+    if confirma('Confirma extorno da conferência da referência selecionada?') then
+      extornaConferenciaItem;
+end;
+
 procedure TfrmConferenciaPedido.SubstituirProduto1Click(Sender: TObject);
 begin
   if (cdsItens.Active) and not(cdsItens.IsEmpty) then begin
@@ -2329,6 +2432,26 @@ begin
   TPanel( TBuscaMateria(Sender).Parent).Destroy;
 end;
 
+function TfrmConferenciaPedido.atualiza(sku: String; quantidade: Real; multiplicador: integer):String;
+var produtoCadastrado :Boolean;
+    quantidadeAtualizada :integer;
+begin
+  result := '';
+  try
+    produtoCadastrado    := true;
+    quantidadeAtualizada := getQuantidadeAtual( sku );
+  Except
+    on e :Exception do
+      produtoCadastrado := POS('NOT FOUND',UPPERCASE(e.message)) = 0;
+  end;
+
+  if produtoCadastrado then
+  begin
+    quantidadeAtualizada := quantidadeAtualizada + (cdsConferidosQUANTIDADE.AsInteger * multiplicador);
+    result := '{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}';
+  end;
+end;
+
 procedure TfrmConferenciaPedido.atualizaEstoqueLocal(pedidoEcommerce :Boolean);
 var qry :TFDquery;
 begin
@@ -2368,15 +2491,15 @@ end;
 
 procedure TfrmConferenciaPedido.atualizaEstoquePlataforma(multiplicador :integer);
 var sku :String;
-    json :String;
-    produtoCadastrado :Boolean;
+    json, retorno :String;
     Lista : TStringList;
     vHTTPJSON :THTTPJSON;
-    quantidadeAtualizada, qtdRequisicoes :integer;
+    qtdRequisicoes :integer;
     produtosAdicionados :integer;
 begin
   try
   try
+    retorno := '';
     Lista                 := nil;
     Lista                 := TStringList.Create;
     Lista.Delimiter       := ',';
@@ -2392,20 +2515,14 @@ begin
     while not cdsConferidos.Eof do
     begin
       sku := cdsConferidosSKU.AsString;
-      try
-        produtoCadastrado    := true;
-        quantidadeAtualizada := getQuantidadeAtual( sku );
-      Except
-        on e :Exception do
-          produtoCadastrado := POS('NOT FOUND',UPPERCASE(e.message)) = 0;
+
+      retorno := atualiza(sku, cdsConferidosQUANTIDADE.AsFloat, multiplicador);
+      if not retorno.IsEmpty then
+      begin
+         Lista.Add(retorno);
+         inc(produtosAdicionados);
       end;
 
-      if produtoCadastrado then
-      begin
-        quantidadeAtualizada := quantidadeAtualizada + (cdsConferidosQUANTIDADE.AsInteger * multiplicador);
-        Lista.Add('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
-        inc(produtosAdicionados);
-      end;
       cdsConferidos.Next;
       inc( qtdRequisicoes );
 
@@ -2590,11 +2707,6 @@ begin
    lista.Free;
  end;
 
-end;
-
-procedure TfrmConferenciaPedido.Button1Click(Sender: TObject);
-begin
-//  atualizaEstoquePlataformaPeloPedido(-1);
 end;
 
 procedure TfrmConferenciaPedido.Salva_estoque(cod_produto, cod_cor : integer; descricao_tamanho :String;
@@ -2889,6 +3001,11 @@ begin
    FreeAndNil(qryEstoque);
    FreeAndNil(qryEstoqueReservado);   
  end;
+end;
+
+function TfrmConferenciaPedido.pedEcommerce: Boolean;
+begin
+  result := assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce;
 end;
 
 function TfrmConferenciaPedido.possuiKit: Boolean;
@@ -3583,6 +3700,15 @@ begin
   Finally
     FreeAndNil(repositorio);
   end;
+end;
+
+procedure TfrmConferenciaPedido.BitBtn1Click(Sender: TObject);
+begin
+  if dm.conexao.InTransaction then
+    dm.conexao.RollbackRetaining;
+
+  dm.conexao.Connected := false;
+  dm.conexao.Connected := true;
 end;
 
 procedure TfrmConferenciaPedido.btnAlteraCaixasClick(Sender: TObject);

@@ -478,7 +478,14 @@ uses
   uPedidosEmAberto in 'src\formularios\uPedidosEmAberto.pas' {frmPedidosEmAberto},
   uGeraArquivoMeusPedidos in 'src\formularios\uGeraArquivoMeusPedidos.pas' {frmGeraArquivoMeusPedidos},
   TipoSetorEstoque in 'src\dominio\tipo\TipoSetorEstoque.pas',
-  TipoProduto in 'src\dominio\tipo\TipoProduto.pas';
+  TipoProduto in 'src\dominio\tipo\TipoProduto.pas',
+  UnidadeEntSai in 'src\dominio\entidade\UnidadeEntSai.pas',
+  RepositorioUnidadeEntSai in 'src\infraestrutura\persistencia\RepositorioUnidadeEntSai.pas',
+  EspecificacaoUnidadesSaidaPorCodigoProduto in 'src\dominio\objetoValor\especificacao\EspecificacaoUnidadesSaidaPorCodigoProduto.pas',
+  EspecificacaoUnidadesEntSaiPorCodigoProduto in 'src\dominio\objetoValor\especificacao\EspecificacaoUnidadesEntSaiPorCodigoProduto.pas',
+  uCadastroPlanoContasContabeis in 'src\formularios\uCadastroPlanoContasContabeis.pas' {frmCadastroPlanoContasContabeis},
+  PlanoContasContabeis in 'src\dominio\entidade\PlanoContasContabeis.pas',
+  RepositorioPlanoContasContabeis in 'src\infraestrutura\persistencia\RepositorioPlanoContasContabeis.pas';
 
 {$R *.res}
 {$R win7810.res}
@@ -494,8 +501,7 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-  Application.CreateForm(TfrmPedidosEmAberto, frmPedidosEmAberto);
-  Application.CreateForm(TfrmGeraArquivoMeusPedidos, frmGeraArquivoMeusPedidos);
+
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

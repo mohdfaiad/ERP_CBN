@@ -59,6 +59,7 @@ begin
    Lancamento.DATA_CADASTRO   := self.FQuery.FieldByName('DATA_CADASTRO'  ).AsDateTime;
    Lancamento.DESCRICAO       := self.FQuery.FieldByName('DESCRICAO'  ).AsString;
    Lancamento.tipo            := TTipoLancamentoUtilitario.DeStringParaEnumerado(Dataset.FieldByName('tipo').AsString);
+   Lancamento.tipoStr         := Dataset.FieldByName('tipo').AsString;
    Lancamento.observacao      := self.FQuery.FieldByName('OBSERVACAO'  ).AsString;
 
    result := Lancamento;
@@ -171,7 +172,7 @@ begin
    self.FQuery.ParamByName('DATA_CADASTRO').AsDateTime   := Lancamento.DATA_CADASTRO;
    self.FQuery.ParamByName('DESCRICAO').AsString        := Lancamento.DESCRICAO;
 
-   inherited SetParametro('tipo', TTipoLancamentoUtilitario.DeEnumeradoParaString(Lancamento.tipo));
+   inherited SetParametro('tipo', Lancamento.tipoStr);
    self.FQuery.ParamByName('OBSERVACAO').AsString        := Lancamento.observacao;
 
 end;                                                                                               

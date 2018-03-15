@@ -234,7 +234,11 @@ inherited frmPedidosEmAberto: TfrmPedidosEmAberto
         end
         inherited Image1: TImage
           Left = 16
+          Width = 47
+          Height = 47
           ExplicitLeft = 16
+          ExplicitWidth = 47
+          ExplicitHeight = 47
         end
         inherited medInicial: TMaskEdit
           Left = 77
@@ -4668,6 +4672,9 @@ inherited frmPedidosEmAberto: TfrmPedidosEmAberto
         Font.Height = -13
         Font.Name = 'Arial'
         Font.Style = []
+        PageSetup.PaperSize = fpCustom
+        PageSetup.PaperWidth = 210.000000000000000000
+        PageSetup.PaperHeight = 297.000000000000000000
         Visible = False
         BeforePrint = RLReport3BeforePrint
         object RLBand9: TRLBand
@@ -5234,7 +5241,7 @@ inherited frmPedidosEmAberto: TfrmPedidosEmAberto
   end
   object ds: TDataSource
     DataSet = qry
-    Left = 120
+    Left = 96
     Top = 264
   end
   object qryPedidos: TFDQuery

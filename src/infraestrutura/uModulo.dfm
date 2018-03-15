@@ -12,7 +12,7 @@ object dm: Tdm
       'Server=localhost'
       'User_Name=sysdba')
     FetchOptions.AssignedValues = [evCache]
-    UpdateOptions.AssignedValues = [uvEDelete, uvEUpdate, uvUpdateChngFields, uvCountUpdatedRecords, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable]
+    UpdateOptions.AssignedValues = [uvEDelete, uvEUpdate, uvUpdateChngFields, uvLockWait, uvCountUpdatedRecords, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable]
     UpdateOptions.CheckRequired = False
     LoginPrompt = False
     Transaction = FDTransaction1

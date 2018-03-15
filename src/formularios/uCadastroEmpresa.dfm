@@ -33,11 +33,10 @@ inherited frmCadastroEmpresa: TfrmCadastroEmpresa
         Top = 471
         Width = 1160
         ExplicitTop = 471
+        ExplicitWidth = 1160
       end
     end
     inherited tsDados: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 26
       ExplicitWidth = 1160
       ExplicitHeight = 490
       inherited pnlDados: TPanel

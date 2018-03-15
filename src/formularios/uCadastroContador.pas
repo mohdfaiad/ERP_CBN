@@ -237,13 +237,10 @@ end;
 
 function TfrmCadastroContador.VerificaDados: Boolean;
 begin
-  result := true;
-
-  if verificar(trim(edtNome.Text) = '', 'Favor informar o Nome / Razão social do contador', edtNome) or
-     verificar(trim(edtCpf.Text) = '', 'Favor informar o CPF ou CNPJ do contador', edtCpf) or
-     verificar(trim(edtCRC.Text) = '', 'Favor informar o CRC do contador', edtCRC) or
-     verificar(trim(BuscaCidade1.edtCidade.Text) = '', 'Favor informar a cidade', BuscaCidade1.edtCodCid) then
-    result := false;
+  result := verificar(trim(edtNome.Text) = '', 'Favor informar o Nome / Razão social do contador', edtNome) or
+            verificar(trim(edtCpf.Text) = '', 'Favor informar o CPF ou CNPJ do contador', edtCpf) or
+            verificar(trim(edtCRC.Text) = '', 'Favor informar o CRC do contador', edtCRC) or
+            verificar(trim(BuscaCidade1.edtCidade.Text) = '', 'Favor informar a cidade', BuscaCidade1.edtCodCid);
 end;
 
 end.

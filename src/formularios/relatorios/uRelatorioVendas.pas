@@ -502,8 +502,9 @@ begin
             ' iif((not (PF.codigo is null) or (P.despachado = ''S'')), ''SIM'', ''NÃO'') FATURADO, '+#13#10+
             '       iif(P.DESPACHADO = ''S'', ''DESPACHADO'',                                                                                 '+#13#10+
             '           iif(P.aprovacao = ''A'',''APROVADO'',iif(P.aprovacao = ''E'', ''EM ESTUDO'', ''REPROVADO''))) STATUS,                 '+#13#10+
-            ' sum(itens.QTD_TOTAL * pro.qtd_pecas) as qtd_pecas, '+IfThen(self.RelatorioSemValores, condicao_percent_estoque,' cast(''0.10'' as numeric(15,2)) perc_estoque, ')+'sum(itens.QTD_TOTAL) as qtd_itens   '+#13#10+'',
-            campos_analitico) + ', PF.codigo, PF.codigo_nota_fiscal, sum(iif(pt.preco is null, 0, pt.preco)) preco_custo  '+
+            ' sum(itens.QTD_TOTAL * pro.qtd_pecas) as qtd_pecas, '+IfThen(self.RelatorioSemValores, condicao_percent_estoque,' cast(''0.10'' as numeric(15,2)) perc_estoque, ')+
+            ' sum(itens.QTD_TOTAL) as qtd_itens, PF.codigo, PF.codigo_nota_fiscal                                                             '+#13#10+'',
+            campos_analitico) + ', sum(iif(pt.preco is null, 0, pt.preco)) preco_custo  '+
             '       from pedidos P                                                                                                            '+#13#10+
             ' LEFT JOIN pedidos_faturados      PF  ON PF.CODIGO_PEDIDO = P.CODIGO                                                             '+#13#10+
             ' LEFT JOIN PESSOAS                C   ON C.CODIGO = P.COD_CLIENTE                                                                '+#13#10+
@@ -531,7 +532,7 @@ begin
   result := result + condicao_produto;
   result := result + condicao_cor;
   result := result + condicao_item;
-  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,20'+ IfThen(self.RelatorioSemValores,',17',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao, pf.codigo, pf.codigo_nota_fiscal ');
+  result := result + IfThen(rgLeiaute.ItemIndex = 0, ' GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,20'+ IfThen(self.RelatorioSemValores,',17',''), ' group by pro.referencia, pro.descricao, cor.referencia, cor.descricao ');
   result := result + IfThen(rgLeiaute.ItemIndex = 0, IfThen(self.RelatorioSemValores,' ORDER BY per.percent_disponivel DESC','') ,' order by 1, 3 ');
 end;
 
@@ -1076,8 +1077,8 @@ begin
    gridPedidos.Columns[1].Width   := 280;
    gridPedidos.Columns[2].Width   := 60;
    gridPedidos.Columns[3].Width   := 250;
-   gridPedidos.Columns[4].Width   := 40;
-   gridPedidos.Columns[5].Width   := 40;
+   gridPedidos.Columns[4].Width   := 50;
+   gridPedidos.Columns[5].Width   := 53;
    gridPedidos.Columns[6].Width   := 40;
    gridPedidos.Columns[7].Width   := 40;
    gridPedidos.Columns[8].Width   := 40;
@@ -1090,29 +1091,29 @@ begin
    gridPedidos.Columns[15].Width  := 40;
    gridPedidos.Columns[16].Width  := 40;
    gridPedidos.Columns[17].Width  := 40;
-   gridPedidos.Columns[18].Width  := 50;
-   gridPedidos.Columns[19].Width  := 50;
+   gridPedidos.Columns[18].Width  := 40;
+   gridPedidos.Columns[19].Width  := 40;
 
-   gridPedidos.Columns[0].Title.Caption := 'Ref.Pro.';
-   gridPedidos.Columns[1].Title.Caption := 'Produto';
-   gridPedidos.Columns[2].Title.Caption := 'Ref.Cor.';
-   gridPedidos.Columns[3].Title.Caption := 'Cor';
-   gridPedidos.Columns[4].Title.Caption := 'RN';
-   gridPedidos.Columns[5].Title.Caption := 'P';
-   gridPedidos.Columns[6].Title.Caption := 'M';
-   gridPedidos.Columns[7].Title.Caption := 'G';
-   gridPedidos.Columns[8].Title.Caption := '1';
-   gridPedidos.Columns[9].Title.Caption := '2';
-   gridPedidos.Columns[10].Title.Caption := '3';
-   gridPedidos.Columns[11].Title.Caption := '4';
-   gridPedidos.Columns[12].Title.Caption := '6';
-   gridPedidos.Columns[13].Title.Caption := '8';
-   gridPedidos.Columns[14].Title.Caption := '10';
-   gridPedidos.Columns[15].Title.Caption := '12';
-   gridPedidos.Columns[16].Title.Caption := '14';
-   gridPedidos.Columns[17].Title.Caption := 'UNICA';
-   gridPedidos.Columns[18].Title.Caption := 'Qtd.Itens';
-   gridPedidos.Columns[19].Title.Caption := 'Qtd.Peças';
+   gridPedidos.Columns[0].Title.Caption  := 'Ref.Pro.';
+   gridPedidos.Columns[1].Title.Caption  := 'Produto';
+   gridPedidos.Columns[2].Title.Caption  := 'Ref.Cor.';
+   gridPedidos.Columns[3].Title.Caption  := 'Cor';
+   gridPedidos.Columns[4].Title.Caption  := 'Qtd.Itens';
+   gridPedidos.Columns[5].Title.Caption  := 'Qtd.Peças';
+   gridPedidos.Columns[6].Title.Caption  := 'RN';
+   gridPedidos.Columns[7].Title.Caption  := 'P';
+   gridPedidos.Columns[8].Title.Caption  := 'M';
+   gridPedidos.Columns[9].Title.Caption  := 'G';
+   gridPedidos.Columns[10].Title.Caption := '1';
+   gridPedidos.Columns[11].Title.Caption := '2';
+   gridPedidos.Columns[12].Title.Caption := '3';
+   gridPedidos.Columns[13].Title.Caption := '4';
+   gridPedidos.Columns[14].Title.Caption := '6';
+   gridPedidos.Columns[15].Title.Caption := '8';
+   gridPedidos.Columns[16].Title.Caption := '10';
+   gridPedidos.Columns[17].Title.Caption := '12';
+   gridPedidos.Columns[18].Title.Caption := '14';
+   gridPedidos.Columns[19].Title.Caption := 'UNICA';
    gridPedidos.Columns[20].Title.Caption := 'Vlr.Total';
 
    DBEdit3.Text := FormatFloat('##,###,##0.00',total_valor);

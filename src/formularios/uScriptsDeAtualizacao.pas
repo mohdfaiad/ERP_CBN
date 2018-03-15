@@ -237,6 +237,10 @@ type
     versao225: TMemo;
     versao226: TMemo;
     versao227: TMemo;
+    versao228: TMemo;
+    versao229: TMemo;
+    versao230: TMemo;
+    versao231: TMemo;
 
   private
 

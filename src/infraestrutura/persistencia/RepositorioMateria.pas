@@ -30,6 +30,9 @@ type
     procedure SetParametros   (Objeto :TObject                        ); override;
     procedure SetIdentificador(Objeto :TObject; Identificador :Variant); override;
 
+  protected
+    procedure ExecutaDepoisDeSalvar (Objeto :TObject); override;
+
   //==============================================================================
   // Auditoria
   //==============================================================================
@@ -43,8 +46,8 @@ end;
 implementation
 
 uses
-  SysUtils,
-  Materia;
+  SysUtils, System.StrUtils,
+  Materia, FabricaRepositorio, UnidadeEntSai;
 
 { TRepositorioMateria }
 
@@ -61,9 +64,31 @@ begin
    Materia.estoque_fisico := self.FQuery.FieldByName('estoque_fisico').AsFloat;
    Materia.estoque_minimo := self.FQuery.FieldByName('estoque_minimo').AsFloat;
    Materia.unidade        := self.FQuery.FieldByName('unidade'       ).AsString;
-   Materia.controla_estoque := self.FQuery.FieldByName('controla_estoque').AsString;
+   Materia.controla_estoque := self.FQuery.FieldByName('controla_estoque').AsString = 'S';
 
    result := Materia;
+end;
+
+procedure TRepositorioMateria.ExecutaDepoisDeSalvar(
+  Objeto: TObject);
+var repositorio :TRepositorio;
+    Materia :TMateria;
+    i :integer;
+begin
+  Materia := (Objeto as TMateria);
+  repositorio       := nil;
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio( TUnidadeEntSai.ClassName );
+    if not assigned(Materia.UnidadesEntSai) or (Materia.UnidadesEntSai.Count = 0) then  EXIT;
+
+    for i := 0 to Materia.UnidadesEntSai.Count - 1 do begin
+      TUnidadeEntSai(Materia.UnidadesEntSai[i]).codigo_materia := Materia.codigo;
+      repositorio.Salvar( TUnidadeEntSai(Materia.UnidadesEntSai[i]) );
+    end;
+
+  finally
+    FreeAndNil( repositorio );
+  end;
 end;
 
 function TRepositorioMateria.GetIdentificador(Objeto: TObject): Variant;
@@ -115,9 +140,6 @@ begin
 
    if (MateriaAntigo.unidade <> MateriaNovo.unidade) then
     Auditoria.AdicionaCampoAlterado('unidade', MateriaAntigo.unidade, MateriaNovo.unidade);
-
-   if (MateriaAntigo.controla_estoque <> MateriaNovo.controla_estoque) then
-    Auditoria.AdicionaCampoAlterado('controla_estoque', MateriaAntigo.controla_estoque, MateriaNovo.controla_estoque);
 end;
 
 procedure TRepositorioMateria.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -135,7 +157,7 @@ begin
    Auditoria.AdicionaCampoExcluido('ESTOQUE_FISICO', floatToStr(Materia.estoque_fisico));
    Auditoria.AdicionaCampoExcluido('ESTOQUE_MINIMO', floatToStr(Materia.estoque_minimo));
    Auditoria.AdicionaCampoExcluido('UNIDADE'       , Materia.unidade);
-   Auditoria.AdicionaCampoExcluido('controla_estoque', Materia.controla_estoque);
+   Auditoria.AdicionaCampoExcluido('controla_estoque', IfThen(Materia.controla_estoque,'S','N'));
 end;
 
 procedure TRepositorioMateria.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -153,7 +175,7 @@ begin
    Auditoria.AdicionaCampoIncluido('ESTOQUE_FISICO', floatToStr(Materia.estoque_fisico));
    Auditoria.AdicionaCampoIncluido('ESTOQUE_MINIMO', floatToStr(Materia.estoque_minimo));
    Auditoria.AdicionaCampoIncluido('UNIDADE'       , Materia.unidade);
-   Auditoria.AdicionaCampoIncluido('controla_estoque', Materia.controla_estoque);
+   Auditoria.AdicionaCampoIncluido('controla_estoque', IfThen(Materia.controla_estoque,'S','N'));
 end;
 
 procedure TRepositorioMateria.SetIdentificador(Objeto: TObject;
@@ -178,7 +200,7 @@ begin
    self.FQuery.ParamByName('ESTOQUE_FISICO').AsFloat  := Materia.estoque_fisico;
    self.FQuery.ParamByName('ESTOQUE_MINIMO').AsFloat  := Materia.estoque_minimo;
    self.FQuery.ParamByName('UNIDADE').AsString        := Materia.unidade;
-   self.FQuery.ParamByName('controla_estoque').AsString := Materia.controla_estoque;
+   self.FQuery.ParamByName('controla_estoque').AsString := IfThen(Materia.controla_estoque,'S','N');
 end;
 
 function TRepositorioMateria.SQLGet: String;

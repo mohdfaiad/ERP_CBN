@@ -19,6 +19,7 @@ type
     Fdata_cadastro: TDateTime;
     Ftipo: TTipoLancamento;
     Fobservacao: String;
+    FTipoStr: String;
     procedure Setcodigo(const Value: Integer);
     procedure Setdata_cadastro(const Value: TDateTime);
     procedure Setdata_vencimento(const Value: TDateTime);
@@ -36,6 +37,7 @@ type
     property data_cadastro   :TDateTime read Fdata_cadastro write Setdata_cadastro;
     property descricao       :String read Fdescricao write Setdescricao;
     property tipo            :TTipoLancamento read Ftipo write Settipo;
+    property tipoStr         :String read FTipoStr    write FTipoStr;
     property observacao      :String read Fobservacao write Setobservacao;
 
 end;

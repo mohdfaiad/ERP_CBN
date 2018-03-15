@@ -50,7 +50,7 @@ implementation
 
 uses Materia, MateriaFornecedor, ItemNfMateria, Math, uConfirmacaoUsuario, uCadastroMateria, Funcoes,
      uCadastroCfopCorrespondente, CFOPCorrespondente, uCadastroNaturezaOperacao,
-     StrUtils, Produto, TipoOrigemMercadoria, Nfe, DB;
+     StrUtils, Produto, TipoOrigemMercadoria, Nfe, DB, UnidadeEntSai;
 
 { TImportadorNotaXML }
 
@@ -116,8 +116,8 @@ begin
   try
 
     { Verifica se itens da nota ja estão associados ao devido representante, e consequentemente se já estao cadastrados}
-    for nX := 0 to nfe.NFe.Det.Count - 1 do
-      codigo_materia := MateriaCadastrada(nfe.NFe.Det.Items[nX].Prod);
+ //   for nX := 0 to nfe.NFe.Det.Count - 1 do
+    //  codigo_materia := MateriaCadastrada(nfe.NFe.Det.Items[nX].Prod);
 
     { Atualiza o estoque dos respectivos itens de entrada }
     for nX := 0 to nfe.NFe.Det.Count - 1 do begin
@@ -156,12 +156,28 @@ end;
 procedure TImportadorNotaXML.atualizaMateria(codigo_materia: integer; produtoNfe: TProd);
 var  Materia     :TMateria;
      repositorio :TRepositorio;
+     multiplicador :Real;
+     i :integer;
 begin
   try
+    multiplicador := 1;
     repositorio := TFabricaRepositorio.GetRepositorio(TMateria.ClassName);
     Materia     := TMateria(repositorio.Get(codigo_materia));
 
-    Materia.estoque_fisico := Materia.estoque_fisico + produtoNfe.qCom;
+    if not Materia.controla_estoque then
+      exit;
+
+    { * * busca o multiplicador da unidade do sistema vinculada a unidade da nota, na tela "uEntradaNota" * * }
+    self.FCDS.Locate('CODMAT_ERP', Materia.codigo, []);
+    if Materia.controla_estoque then
+    begin
+      if assigned(Materia.UnidadesEntSai) then
+         for i := 0 to Materia.UnidadesEntSai.Count-1 do
+           if TUnidadeEntSai(Materia.UnidadesEntSai.Items[i]).codigo = self.FCDS.FieldByName('COD_UNID_ENT_SAI').AsInteger then
+             multiplicador := TUnidadeEntSai(Materia.UnidadesEntSai.Items[i]).quantidade;
+    end;
+
+    Materia.estoque_fisico := Materia.estoque_fisico + (produtoNfe.qCom * multiplicador);
 
     repositorio.Salvar(Materia);
   Finally
@@ -175,7 +191,6 @@ var retorno :integer; //1-Associar 2-Cancelar 3-Cadastrar
 begin
   try
     Result  := true;
-
     retorno := retorna_escolha('Matéria '+produtoNfe.cProd+' - '+produtoNfe.xProd+' não cadastrada.'+#13#10+
                                'Deseja Cadastra-la, associar a matéria ja cadastrada ou cancelar entrada?');
 
