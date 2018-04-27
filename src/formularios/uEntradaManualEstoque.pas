@@ -218,12 +218,12 @@ begin
   quantidadeAtualizada := getQuantidadeAtual(sku);
   quantidadeAtualizada := quantidadeAtualizada + quantidade;
   try
-    vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+    vHTTPJSON := THTTPJSON.CreateEcommerce(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
   try
     lJSO := ('{"sku": "'+sku+'", "estoque": '+intToStr(quantidadeAtualizada)+'}');
     jsonToSend := TStringStream.Create(lJSO,TEncoding.UTF8);
 
-    Retorno := vHTTPJSON.Post(lJSO);
+    Retorno := vHTTPJSON.Post('produtos/',lJSO);
   Except
    on e:Exception do
      raise Exception.Create('Erro ao atualizar estoque na plataforma: '+e.Message);
@@ -279,7 +279,7 @@ var
 begin
  try
  try
-   vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+   vHTTPJSON := THTTPJSON.CreateEcommerce(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
 
    Retorno := vHTTPJSON.Get('produto/'+sku);
    result  := Retorno;

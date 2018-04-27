@@ -487,13 +487,17 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Top = 0
     Width = 838
     Height = 476
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     Align = alClient
     TabOrder = 1
     OnChange = pagProdutosChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Produtos'
       OnExit = TabSheet1Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -840,9 +844,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       object Label4: TLabel
         Left = 238
         Top = 14
-        Width = 49
+        Width = 103
         Height = 13
-        Caption = 'Descri'#231#227'o'
+        Caption = 'Descri'#231#227'o abreviada'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 3355443
         Font.Height = -11
@@ -852,7 +856,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label5: TLabel
         Left = 169
-        Top = 169
+        Top = 225
         Width = 29
         Height = 13
         Caption = 'Linha'
@@ -906,7 +910,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label9: TLabel
         Left = 65
-        Top = 225
+        Top = 281
         Width = 68
         Height = 13
         Caption = 'Peso L'#237'quido'
@@ -933,7 +937,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label15: TLabel
         Left = 63
-        Top = 169
+        Top = 225
         Width = 90
         Height = 13
         Caption = 'Pe'#231'as p/ produto'
@@ -1015,7 +1019,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label21: TLabel
         Left = 266
-        Top = 58
+        Top = 114
         Width = 11
         Height = 32
         Caption = '*'
@@ -1028,7 +1032,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label22: TLabel
         Left = 53
-        Top = 106
+        Top = 162
         Width = 11
         Height = 32
         Caption = '*'
@@ -1041,7 +1045,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label23: TLabel
         Left = 265
-        Top = 106
+        Top = 162
         Width = 11
         Height = 32
         Caption = '*'
@@ -1068,7 +1072,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label27: TLabel
         Left = 278
-        Top = 170
+        Top = 226
         Width = 103
         Height = 13
         Caption = 'Unidade de Medida'
@@ -1081,7 +1085,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label14: TLabel
         Left = 169
-        Top = 225
+        Top = 281
         Width = 73
         Height = 13
         Caption = 'Produto '#233' kit?'
@@ -1094,7 +1098,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object Label29: TLabel
         Left = 401
-        Top = 223
+        Top = 279
         Width = 92
         Height = 13
         Caption = 'Descri'#231#227'o tipo cor'
@@ -1104,6 +1108,97 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+      end
+      object Label32: TLabel
+        Left = 65
+        Top = 62
+        Width = 100
+        Height = 13
+        Caption = 'Descri'#231#227'o completa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 3355443
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object btnReaproveitar: TSpeedButton
+        Left = 237
+        Top = 56
+        Width = 28
+        Height = 22
+        Hint = 'Reaproveitar descri'#231#227'o abreviada'
+        Glyph.Data = {
+          36080000424D3608000000000000360000002800000020000000100000000100
+          2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00C5600D00C9651100FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0061000000650100009B9B
+          9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00C45D0B00DD963B00EDBD6500C763
+          1200FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B009B9B9B009B9B9B006000000079320000895901006300
+          00009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00C45D0D00DE922C00F5D67500F6BF2900D27C
+          1600C9681700FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B009B9B9B00600000007A2E000091721100925B00006E18
+          0000650400009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00C2580900E3931F00FCDC6E00F2B62B00E68A0000EF9B
+          0000CE720C00C9681800FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B005E0000007F2F000098780A008E520000822600008B37
+          00006A0E0000650400009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00C1570700E59F2E00FEE68C00F2BD3800EFA71B00EDA41800E68F
+          0200ED9E0200D0730A00C9681900FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B005D000000813B00009A8228008E5900008B43000089400000822B
+          0000893A00006C0F0000650400009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00C1560500E5A54000FFF3B100F7D47400F5BD3600F3B53400EFA92100EC9C
+          0E00E48C0000F0A90E00D4760800C9681A00FFFFFF00FFFFFF009B9B9B009B9B
+          9B005D000000814100009B8F4D0093701000915900008F5100008B4500008838
+          0000802800008C45000070120000650400009B9B9B009B9B9B00FFFFFF00C155
+          0500E5A63F00FFFCCC00FDE9A200F8C94700F6C95100F4BD3C00F1B02C00EEA4
+          1A00E9950500E18B0000F0AD1500D5770800C0550000FFFFFF009B9B9B005D00
+          0000814200009B98680099853E009465000092650000905900008D4C00008A40
+          0000853100007D2700008C490000711300005C0000009B9B9B00C1570800E4A5
+          4100FFFEC800FFFBC800FDDE6700FBD46300F7CD5500F5C54700F3B63500EFA8
+          2400ED9F1200E9930000E6910100F4BA2300D47A0B00C05500005D0000008041
+          00009B9A64009B976400997A03009770000093690000916100008F5200008B44
+          0000893B0000852F0000822D000090560000701600005C000000DA8A2600F8BE
+          3300F3B83B00ECA01A00E7A33B00FFF7C700FAD26100F7C84E00F5BF4000F2B3
+          2F00F3AB1C00CA670900BE510000BE510000BF540000C055000076260000945A
+          00008F540000883C0000833F00009B936300966E000093640000915B00008E4F
+          00008F470000660300005A0000005A0000005B0000005C000000FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00E8A03700FFFDD900FBD76900F8CB5500F6C74900F4BD
+          3900F5B42700C5610B00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B00843C00009B9975009773050094670000926300009059
+          000091500000610000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00EAA83D00FFFCD800FBDC7100F9D26000F7C95200F6C4
+          4300F8BC3300C5600A00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B00864400009B98740097780D00956E0000936500009260
+          000094580000610000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00EBA83C00FFFEDD00FDE07A00FBD76900F9CF5C00F7CA
+          4D00FCC63E00C5600900FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B00874400009B9A7900997C160097730500956B00009366
+          000098620000610000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00ECAA3D00FFFFE000FEE38000FCDC7200F9D36500F8CD
+          5600FDCD4700C55F0800FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B00884600009B9B7C009A7F1C0098780E00956F01009469
+          000099690000610000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00EDAB3E00FFFFE300FEE78900FDE17A00FBDA6F00FAD0
+          6300FFD55500C45E0700FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B00894700009B9B7F009A832500997D160097760B00966C
+          00009B710000600000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00EEB14400FFFFFA00FFF49D00FFF08E00FFEB8300FFE6
+          7600FFE76700C45E0600FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B008A4D00009B9B96009B9039009B8C2A009B871F009B82
+          12009B830300600000009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00EEA42A00F1BC5A00EDAC3800E9A23100E3982E00DE91
+          2800DC8C2500CA671300FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+          9B009B9B9B009B9B9B008A4000008D58000089480000853E00007F3400007A2D
+          000078280000660300009B9B9B009B9B9B009B9B9B009B9B9B00}
+        NumGlyphs = 2
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = btnReaproveitarClick
       end
       object edtCodigo: TCurrencyEdit
         Left = 8
@@ -1155,7 +1250,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object edtLinha: TEdit
         Left = 169
-        Top = 187
+        Top = 243
         Width = 88
         Height = 23
         TabOrder = 13
@@ -1197,7 +1292,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object edtPesoLiq: TCurrencyEdit
         Left = 64
-        Top = 243
+        Top = 299
         Width = 94
         Height = 21
         AutoSize = False
@@ -1216,12 +1311,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       inline ListaGrade: TListaCampo
         Left = 64
-        Top = 112
+        Top = 168
         Width = 197
         Height = 42
         TabOrder = 7
         ExplicitLeft = 64
-        ExplicitTop = 112
+        ExplicitTop = 168
         ExplicitWidth = 197
         ExplicitHeight = 42
         inherited staTitulo: TLabel
@@ -1237,12 +1332,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       inline ListaGrupo: TListaCampo
         Left = 277
-        Top = 64
+        Top = 120
         Width = 215
         Height = 43
         TabOrder = 5
         ExplicitLeft = 277
-        ExplicitTop = 64
+        ExplicitTop = 120
         ExplicitHeight = 43
         inherited staTitulo: TLabel
           Left = 2
@@ -1257,12 +1352,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       inline ListaColecao: TListaCampo
         Left = 488
-        Top = 64
+        Top = 120
         Width = 215
         Height = 43
         TabOrder = 6
         ExplicitLeft = 488
-        ExplicitTop = 64
+        ExplicitTop = 120
         ExplicitHeight = 43
         inherited comListaCampo: TComboBox
           Height = 23
@@ -1271,12 +1366,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       inline ListaTipo: TListaCampo
         Left = 58
-        Top = 64
+        Top = 120
         Width = 207
         Height = 46
         TabOrder = 4
         ExplicitLeft = 58
-        ExplicitTop = 64
+        ExplicitTop = 120
         ExplicitWidth = 207
         ExplicitHeight = 46
         inherited comListaCampo: TComboBox
@@ -1286,12 +1381,12 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       inline BuscaNcm1: TBuscaNcm
         Left = 278
-        Top = 107
+        Top = 163
         Width = 447
         Height = 56
         TabOrder = 8
         ExplicitLeft = 278
-        ExplicitTop = 107
+        ExplicitTop = 163
         inherited StaticText2: TStaticText
           Left = 114
           Font.Color = 3355443
@@ -1324,7 +1419,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object edtPecas: TCurrencyEdit
         Left = 64
-        Top = 187
+        Top = 243
         Width = 93
         Height = 21
         AutoSize = False
@@ -1353,7 +1448,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object rgTipoProduto: TRadioGroup
         Left = 400
-        Top = 167
+        Top = 223
         Width = 287
         Height = 41
         Caption = 'Tipo Cor do produto '
@@ -1366,7 +1461,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object cbUnidadeMedida: TComboBox
         Left = 278
-        Top = 187
+        Top = 243
         Width = 108
         Height = 23
         TabOrder = 14
@@ -1376,7 +1471,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object comKit: TComboBox
         Left = 169
-        Top = 243
+        Top = 299
         Width = 89
         Height = 23
         Style = csDropDownList
@@ -1390,12 +1485,21 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       end
       object edtDescricaoTipoCor: TEdit
         Left = 400
-        Top = 238
+        Top = 294
         Width = 287
         Height = 23
         CharCase = ecUpperCase
         MaxLength = 30
         TabOrder = 22
+      end
+      object edtDescricaoCompleta: TEdit
+        Left = 64
+        Top = 80
+        Width = 622
+        Height = 23
+        CharCase = ecUpperCase
+        TabOrder = 23
+        OnChange = edtDescricaoCompletaChange
       end
     end
     object TabSheet3: TTabSheet
@@ -1949,10 +2053,6 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 4
       OnEnter = TabSheet5Enter
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         830
         446)
@@ -2224,10 +2324,6 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         object TabSheet8: TTabSheet
           Caption = 'Refer'#234'ncias do produto'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           DesignSize = (
             822
             415)
@@ -4429,6 +4525,10 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       FieldName = 'DESC_TIPO_COR'
       Size = 30
     end
+    object cdsDESCRICAO_COMPLETA: TStringField
+      FieldName = 'DESCRICAO_COMPLETA'
+      Size = 250
+    end
   end
   object dsp: TDataSetProvider
     Left = 668
@@ -4586,7 +4686,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     Aggregates = <>
     Params = <>
     ProviderName = 'dspCodPossiveis'
-    Left = 508
+    Left = 436
     Top = 80
     object cdsCodPossiveisSTATUS: TStringField
       Alignment = taCenter
@@ -4637,19 +4737,19 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   end
   object dsCodPossiveis: TDataSource
     DataSet = cdsCodPossiveis
-    Left = 468
+    Left = 396
     Top = 80
   end
   object dspCodPossiveis: TDataSetProvider
     DataSet = qry
-    Left = 542
+    Left = 470
     Top = 80
   end
   object ImageList1: TImageList
     Left = 671
     Top = 201
     Bitmap = {
-      494C010106000900D00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900E00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000D1D1ED006664
       C8002D2ABC000E0BB5001311B5001712C5001612C8001410B7001410B9003632
@@ -5080,7 +5180,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       
         'where p.codigo = :codpro and c.descricao not in('#39'MASCULINO'#39','#39'FEM' +
         'ININO'#39')                                                   ')
-    Left = 416
+    Left = 344
     Top = 80
     ParamData = <
       item

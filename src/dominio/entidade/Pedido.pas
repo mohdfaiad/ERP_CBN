@@ -117,6 +117,7 @@ type
     repPedido, repItem :TRepositorio;
     FPeso: Real;
     FVolumes: Integer;
+    FTipo: String;
 
     procedure commit;
     procedure rollBack;
@@ -163,6 +164,7 @@ type
     property cancelado         :String       read Fcancelado write Setcancelado;
     property volumes           :Integer      read FVolumes           write FVolumes;
     property pontos            :Real         read FPontos            write FPontos;
+    property tipo              :String       read FTipo              write FTipo;
 
   public
     property FormaPagamento   :TFormaPagamento    read GetFormaPagamento;

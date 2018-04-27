@@ -244,19 +244,14 @@ end;
 
 procedure TfrmSincronizaProdutoEcommerce.sincronizaProdutos;
 var
-    Retorno, lJSO :String;
-    Parametros :TStrings;
+    Retorno :String;
     vHTTPJSON: THTTPJSON;
-    vEstoque, vPreco :String;
-    vNomeProduto :String;
-    vSKU, vCodigoPlat :String;
-    IdSSL: TIdSSLIOHandlerSocketOpenSSL;
 begin
   try
    vHTTPJSON := nil;
-   vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+   vHTTPJSON := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
   try
-    Retorno := vHTTPJSON.Post(getJsonToSend);
+    Retorno := vHTTPJSON.Post('produtos/',getJsonToSend);
 
     if pos('"success":true', Retorno) = 0 then
       raise Exception.Create('Falha na sincronização');
@@ -353,7 +348,7 @@ var
     vHTTPJSON: THTTPJSON;
 begin
   try
-    vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+    vHTTPJSON := THTTPJSON.CreateEcommerce(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
 
     result := vHTTPJSON.Get('produtos/?page='+intToStr(page));
   finally
@@ -503,7 +498,7 @@ begin
     end;
     //no começo da string sku pai
     cdsProdutosPai.Filtered := false;
-    cdsProdutosPai.Filter   := 'SKU like '''+skuVariacao+' %''';
+    cdsProdutosPai.Filter   := 'SKU like '''+skuVariacao+'_%''';
     cdsProdutosPai.Filtered := true;
     if not cdsProdutosPai.IsEmpty then
     begin
@@ -513,7 +508,7 @@ begin
     end;
     //no meio da string sku pai
     cdsProdutosPai.Filtered := false;
-    cdsProdutosPai.Filter   := 'SKU like ''% '+skuVariacao+' %''';
+    cdsProdutosPai.Filter   := 'SKU like ''%_'+skuVariacao+'_%''';
     cdsProdutosPai.Filtered := true;
     if not cdsProdutosPai.IsEmpty then
     begin
@@ -523,7 +518,7 @@ begin
     end;
     //no fim da string sku pai
     cdsProdutosPai.Filtered := false;
-    cdsProdutosPai.Filter   := 'SKU like ''% '+skuVariacao+'''';
+    cdsProdutosPai.Filter   := 'SKU like ''%_'+skuVariacao+'''';
     cdsProdutosPai.Filtered := true;
     if not cdsProdutosPai.IsEmpty then
     begin
@@ -652,7 +647,7 @@ var
 begin
   try
   try
-    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+    vHTTPJSON := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
     retorno := vHTTPJSON.Get('produto/'+pSku);
 
     result := Pos('Não encontrado',retorno) > 0;

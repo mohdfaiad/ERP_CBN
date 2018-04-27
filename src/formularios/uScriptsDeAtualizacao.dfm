@@ -2,7 +2,7 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
   Left = 351
   Top = 216
   Caption = 'frmScriptsDeAtualizacao'
-  ClientHeight = 351
+  ClientHeight = 377
   ClientWidth = 605
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -9997,6 +9997,169 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
         'R'
       '^')
     TabOrder = 232
+    WordWrap = False
+  end
+  object versao232: TMemo
+    Left = 489
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE CONFIG_INTEGRACAO ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    URL_BASE VARCHAR(100),'
+      '    COMPANY_TOKEN VARCHAR(100),'
+      '    APPLICATION_TOKEN VARCHAR(100))'
+      '^'
+      'alter table CONFIG_INTEGRACAO'
+      'add constraint PK_CONFIG_INTEGRACAO'
+      'primary key (CODIGO)'
+      '^'
+      '')
+    TabOrder = 233
+    WordWrap = False
+  end
+  object versao233: TMemo
+    Left = 513
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE COMISSAO_REPRESENTANTE'
+      'ADD APENAS_UMA_PARCELA CHAR(1)'
+      '^')
+    TabOrder = 234
+    WordWrap = False
+  end
+  object versao234: TMemo
+    Left = 537
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE GENERATOR GEN_CONFIG_INTEGRACAO_ID'
+      '^'
+      'CREATE TRIGGER CONFIG_INTEGRACAO_BI FOR CONFIG_INTEGRACAO'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (new.codigo = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_CONFIG_INTEGRACAO_ID,1);'
+      'END'
+      '^'
+      'ALTER TABLE PRODUTOS'
+      'ADD DESCRICAO_COMPLETA VARCHAR(250)'
+      '^'
+      'CREATE GENERATOR GEN_RELACAO_TAB_IMPORTACAO_ID'
+      '^'
+      
+        'CREATE TRIGGER RELACAO_TAB_IMPORTACAO_BI FOR RELACAO_TAB_IMPORTA' +
+        'CAO'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0)) THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_RELACAO_TAB_IMPORTACAO_ID,1);'
+      'END'
+      '^')
+    TabOrder = 235
+    WordWrap = False
+  end
+  object versao235: TMemo
+    Left = 561
+    Top = 292
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE CORES'
+      'ADD DESCRICAO_COMPLETA VARCHAR(150)'
+      '^'
+      'ALTER TABLE TABELAS_PRECO'
+      'ADD ATIVA VARCHAR(1)'
+      '^')
+    TabOrder = 236
+    WordWrap = False
+  end
+  object versao236: TMemo
+    Left = 9
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'UPDATE tabelas_preco SET ATIVA = '#39'S'#39
+      '^')
+    TabOrder = 237
+    WordWrap = False
+  end
+  object versao237: TMemo
+    Left = 33
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'DROP TABLE RELACAO_TABELAS_IMPORTACAO'
+      '^')
+    TabOrder = 238
+    WordWrap = False
+  end
+  object versao238: TMemo
+    Left = 57
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'CREATE TABLE RELACAO_TAB_IMPORTACAO ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    URL VARCHAR(50),'
+      '    ID_EXTERNO VARCHAR(12),'
+      '    TABELA_ERP VARCHAR(50),'
+      '    ID_ERP VARCHAR(12))'
+      '^'
+      'alter table RELACAO_TAB_IMPORTACAO'
+      'add constraint PK_RELACAO_TAB_IMPORTACAO'
+      'primary key (CODIGO)'
+      '^')
+    TabOrder = 239
+    WordWrap = False
+  end
+  object versao239: TMemo
+    Left = 81
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE LOG_ERROS_IMPORT_PEDIDOS'
+      'ADD IMPORTADOR VARCHAR(50)'
+      '^')
+    TabOrder = 240
+    WordWrap = False
+  end
+  object versao240: TMemo
+    Left = 105
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE RELACAO_TAB_IMPORTACAO'
+      'ADD DATA_ALTERACAO TIMESTAMP'
+      '^'
+      'ALTER TABLE PEDIDOS'
+      'ADD TIPO CHAR(1)'
+      '^')
+    TabOrder = 241
+    WordWrap = False
+  end
+  object versao241: TMemo
+    Left = 129
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'update pedidos set tipo = '#39'P'#39
+      '^'
+      'update log_erros_import_pedidos SET IMPORTADOR = '#39'SHOPPUB'#39
+      '^')
+    TabOrder = 242
     WordWrap = False
   end
 end

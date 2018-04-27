@@ -305,6 +305,10 @@ type
     btnClonar: TSpeedButton;
     cdsEstoqueSETOR: TStringField;
     lbQtdCodigosDisponiveis: TLabel;
+    Label32: TLabel;
+    edtDescricaoCompleta: TEdit;
+    cdsDESCRICAO_COMPLETA: TStringField;
+    btnReaproveitar: TSpeedButton;
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure TabSheet1Exit(Sender: TObject);
@@ -369,6 +373,8 @@ type
     procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnClonarClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure btnReaproveitarClick(Sender: TObject);
+    procedure edtDescricaoCompletaChange(Sender: TObject);
   private
     Produto :TProduto;
     ProdutoCores :TProdutoCores;
@@ -516,6 +522,7 @@ end;
 procedure TfrmCadastroProduto.limpaCampos;
 begin
   edtDescricao.Clear;
+  edtDescricaoCompleta.Clear;
   edtLinha.clear;
   BuscaNcm1.edtDescricao.Clear;
   edtReferencia.Clear;
@@ -558,6 +565,7 @@ procedure TfrmCadastroProduto.mostraDados;
 begin                      
   edtReferencia.Text        := IfThen(FClonando, '', cdsREFERENCIA.AsString);
   edtDescricao.text         := cdsDESCRICAO.AsString;
+  edtDescricaoCompleta.Text := cdsDESCRICAO_COMPLETA.AsString;
   edtLinha.text             := cdsLINHA_ANO.AsString;
   comAtivo.ItemIndex        := IfThen((cdsATIVO.AsString = 'N'),1,0);
   ListaTipo.CodCampo        := cdsCOD_TIPO.AsInteger;
@@ -714,6 +722,7 @@ begin
 
   Produto.Referencia    := edtReferencia.Text;  
   Produto.Descricao     := trim(edtDescricao.Text);
+  Produto.DescricaoCompleta := trim(edtDescricaoCompleta.Text);
   Produto.Cod_Ncm       := BuscaNcm1.edtCodigo.AsInteger;
   Produto.Cod_tipo      := ListaTipo.CodCampo;
   Produto.Cod_Grupo     := ListaGrupo.CodCampo;
@@ -935,6 +944,11 @@ begin
     BuscaTabelaPreco1.limpa;
 
   end;
+end;
+
+procedure TfrmCadastroProduto.btnReaproveitarClick(Sender: TObject);
+begin
+  edtDescricaoCompleta.Text := edtDescricao.Text;
 end;
 
 procedure TfrmCadastroProduto.salvaTabela;
@@ -1222,6 +1236,11 @@ begin
 
   avisar('Código de barras gerado com sucesso!');
   TabSheet5Enter(nil);
+end;
+
+procedure TfrmCadastroProduto.edtDescricaoCompletaChange(Sender: TObject);
+begin
+  btnReaproveitar.Enabled := (trim(edtDescricaoCompleta.Text) = '');
 end;
 
 procedure TfrmCadastroProduto.edtLinhaEnter(Sender: TObject);

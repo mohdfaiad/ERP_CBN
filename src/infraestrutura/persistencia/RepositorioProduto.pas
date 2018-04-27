@@ -55,6 +55,7 @@ begin
    Produto               := TProduto.Create;
    Produto.Codigo        := self.FQuery.FieldByName('codigo').AsInteger;
    Produto.Descricao     := self.FQuery.FieldByName('descricao').AsString;
+   Produto.DescricaoCompleta := self.FQuery.FieldByName('Descricao_Completa').AsString;
    Produto.Cod_Ncm       := self.FQuery.FieldByName('cod_ncm').AsInteger;
    Produto.Cod_tipo      := self.FQuery.FieldByName('COD_TIPO').AsInteger;
    Produto.Cod_Grupo     := self.FQuery.FieldByName('COD_GRUPO').AsInteger;
@@ -110,6 +111,9 @@ begin
 
    if (UAntigo.Descricao <> UNovo.Descricao) then
     Auditoria.AdicionaCampoAlterado('descricao', UAntigo.Descricao, UNovo.Descricao);
+
+   if (UAntigo.DescricaoCompleta <> UNovo.DescricaoCompleta) then
+    Auditoria.AdicionaCampoAlterado('Descricao_Completa', UAntigo.DescricaoCompleta, UNovo.DescricaoCompleta);
 
    if (UAntigo.Cod_Ncm <> UNovo.Cod_Ncm) then
     Auditoria.AdicionaCampoAlterado('cod_ncm', IntToStr(UAntigo.Cod_Ncm), IntToStr(UNovo.Cod_Ncm));
@@ -182,6 +186,7 @@ begin
 
    Auditoria.AdicionaCampoExcluido('codigo',         intToStr(Produto.Codigo));
    Auditoria.AdicionaCampoExcluido('descricao',      Produto.Descricao);
+   Auditoria.AdicionaCampoExcluido('Descricao_Completa', Produto.DescricaoCompleta);
    Auditoria.AdicionaCampoExcluido('cod_ncm',        intToStr(Produto.Cod_Ncm));
    Auditoria.AdicionaCampoExcluido('COD_TIPO',       intToStr(Produto.Cod_tipo));
    Auditoria.AdicionaCampoExcluido('COD_GRUPO',      intToStr(Produto.Cod_Grupo));
@@ -214,6 +219,7 @@ begin
 
    Auditoria.AdicionaCampoIncluido('codigo',         intToStr(Produto.Codigo));
    Auditoria.AdicionaCampoIncluido('descricao',      Produto.Descricao);
+   Auditoria.AdicionaCampoIncluido('Descricao_Completa',      Produto.DescricaoCompleta);
    Auditoria.AdicionaCampoIncluido('cod_ncm',        intToStr(Produto.Cod_Ncm));
    Auditoria.AdicionaCampoIncluido('COD_TIPO',       intToStr(Produto.Cod_tipo));
    Auditoria.AdicionaCampoIncluido('COD_GRUPO',      intToStr(Produto.Cod_Grupo));
@@ -255,6 +261,7 @@ begin
    else                         inherited LimpaParametro('codigo');
 
    inherited SetParametro('descricao',     Produto.Descricao);
+   inherited SetParametro('Descricao_Completa',     Produto.DescricaoCompleta);
 
    if Produto.Cod_Ncm > 0 then
      inherited SetParametro('cod_ncm',       Produto.Cod_Ncm);
@@ -315,11 +322,11 @@ begin
    result := 'update or INSERT INTO PRODUTOS (CODIGO, DESCRICAO, COD_NCM, COD_TIPO, COD_GRUPO, COD_COLECAO, COD_GRADE,        '+
              '                                LINHA_ANO, ATIVO, PRECO_CUSTO, PRECO_VENDA, PRECO_ATACADO, PRECO_MEDIO,         '+
              '                                ESTOQUE_FIS, ESTOQUE_MIN, PESO_LIQ, PESO_BRU, QTD_PECAS, REFERENCIA,            '+
-             '                                TIPO, UNIDADE_MEDIDA, KIT, CODIGO_IBPT, DESC_TIPO_COR)                          '+
+             '                                TIPO, UNIDADE_MEDIDA, KIT, CODIGO_IBPT, DESC_TIPO_COR, DESCRICAO_COMPLETA)      '+
              '                        values (:CODIGO, :DESCRICAO, :COD_NCM, :COD_TIPO, :COD_GRUPO, :COD_COLECAO, :COD_GRADE, '+
              '                                :LINHA_ANO, :ATIVO, :PRECO_CUSTO, :PRECO_VENDA, :PRECO_ATACADO, :PRECO_MEDIO,   '+
              '                                :ESTOQUE_FIS, :ESTOQUE_MIN, :PESO_LIQ, :PESO_BRU, :QTD_PECAS, :REFERENCIA,      '+
-             '                                :TIPO, :UNIDADE_MEDIDA, :KIT, :CODIGO_IBPT, :DESC_TIPO_COR)                     ';
+             '                                :TIPO, :UNIDADE_MEDIDA, :KIT, :CODIGO_IBPT, :DESC_TIPO_COR, :DESCRICAO_COMPLETA) ';
 
 end;
 

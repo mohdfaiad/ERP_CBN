@@ -12,6 +12,7 @@ type
   private
     FCodigo     :Integer;
     FDescricao  :String;
+    FAtiva: Boolean;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetDescricao  (const value :String);
@@ -20,6 +21,7 @@ type
 
     property Codigo     :Integer   read FCodigo     write SetCodigo;
     property Descricao  :String    read FDescricao  write SetDescricao;
+    property Ativa      :Boolean   read FAtiva      write FAtiva;
   end;
 
 implementation

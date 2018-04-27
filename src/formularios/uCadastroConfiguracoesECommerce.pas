@@ -103,7 +103,7 @@ var
   vHTTPJSON :THTTPJSON;
 begin
   try
-    vHTTPJSON := THTTPJSON.Create(trim(edtToken.Text), trim(edtUrlBase.Text));
+    vHTTPJSON := THTTPJSON.CreateEcommerce(trim(edtToken.Text), trim(edtUrlBase.Text));
     result    := vHTTPJSON.Get('produtos/?page=1');
   finally
     FreeAndNil(vHTTPJSON);

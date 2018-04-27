@@ -18,17 +18,19 @@ type
 
   private
     FMotivo: String;
+    FCodigo: integer;
     function GetCodigoNotaFiscal: Integer;
     function GetPedido :TPedido;
 
   public
-    constructor Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String = ''); overload;
-    constructor Create(CodigoPedido :Integer); overload;
+    constructor Create(Codigo, CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String = ''); overload;
+    constructor Create(Codigo, CodigoPedido :Integer); overload;
 
   public
     procedure AdicionarBuscadorDeCodigoNotaFiscal(Buscador :TMetodoDelegadoObtemCampoInteger);
 
   public
+    property Codigo           :integer  read FCodigo   write FCodigo;
     property CodigoNotaFiscal :Integer  read GetCodigoNotaFiscal;
     property CodigoPedido     :Integer  read FCodigoPedido;
     property Motivo           :String   read FMotivo   write FMotivo;
@@ -48,7 +50,7 @@ begin
    self.FBuscadorCodigoNotaFiscal := Buscador;
 end;
 
-constructor TPedidoFaturado.Create(CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String);
+constructor TPedidoFaturado.Create(Codigo, CodigoNotaFiscal :Integer; CodigoPedido :Integer; const motivo :String);
 const
   NOME_DA_CLASSE = 'TPedidoFaturado';
   NOME_DO_METODO = 'Create(CodigoNotaFiscal :TCodigoNotaFiscal; CodigoPedido :Integer)';
@@ -59,13 +61,14 @@ begin
    if (CodigoPedido <= 0) then
     raise TExcecaoParametroInvalido.Create(NOME_DA_CLASSE, NOME_DO_METODO, 'CodigoPedido');
 
+   self.FCodigo           := Codigo;
    self.FCodigoNotaFiscal := CodigoNotaFiscal;
    self.FCodigoPedido     := CodigoPedido;
 end;
 
-constructor TPedidoFaturado.Create(CodigoPedido: Integer);
+constructor TPedidoFaturado.Create(Codigo, CodigoPedido: Integer);
 begin
-   self.Create(0, CodigoPedido);
+   self.Create(Codigo, 0, CodigoPedido);
 end;
 
 function TPedidoFaturado.GetCodigoNotaFiscal: Integer;

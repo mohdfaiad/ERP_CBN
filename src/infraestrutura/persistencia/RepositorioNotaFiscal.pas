@@ -45,6 +45,9 @@ type
   private
     procedure salva_itens_produtos(notaFiscal :TNotaFiscal);
     procedure salva_itens_materias(notaFiscal :TNotaFiscal);
+  private
+    function pedidoSincronizado(codPedido :integer) :integer;
+    procedure marcaComoFaturado(id_externo :integer; total :Real; data :TDate; numeroNF :integer);
 end;
 
 
@@ -52,7 +55,7 @@ implementation
 
 uses
   TipoSerie,
-  TipoFrete,
+  TipoFrete, ClienteHttpMeusPedidos,
   SysUtils, FabricaRepositorio, ItemNotaFiscal, PedidoFaturado,
   LocalEntregaNotaFiscal, VolumesNotaFiscal, ObservacaoNotaFiscal, Funcoes,
   TotaisNotaFiscal, LoteNFe, NFe, RepositorioItemAvulso, ItemAvulso, ItemNfMateria, Math,
@@ -113,6 +116,46 @@ begin
    result := (TNotaFiscal(Objeto).CodigoNotaFiscal <= 0);
 end;
 
+procedure TRepositorioNotaFiscal.marcaComoFaturado(id_externo: integer; total :Real; data :TDate; numeroNF :integer);
+var
+  Client :TClienteHttpMeusPedidos;
+  json   :String;
+  result :String;
+  dataFat, valor :String;
+begin
+  try
+  try
+    dataFat := FormatDateTime('yyyy-mm-dd', data);
+    valor   := StringReplace(FloatToStr(total),',','.',[rfReplaceAll,rfIgnoreCase]);
+
+    json   := '{ "pedido_id": '+intToStr(id_externo)+','+
+              '  "valor_faturado":  '+valor+', '+
+              '  "data_faturamento": "'+dataFat+'", '+
+              '  "numero_nf": "'+intToStr(numeroNF)+'"       }';
+
+    Client := nil;
+    Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
+                                             fdm.configuracoesIntegracao.company_token,
+                                             fdm.configuracoesIntegracao.url_base);
+
+    Client.Post('faturamento',json);
+
+    if Client.IdResponse <> '201' then
+      raise Exception.Create('Erro ao marcar pedido '+IntToStr(id_externo)+' como faturado na plataforma Meus Pedidos.');
+  Except
+    on e :Exception do
+      raise Exception.Create(e.Message);
+  end;
+  finally
+    FreeAndNil(Client);
+  end;
+end;
+
+function TRepositorioNotaFiscal.pedidoSincronizado(codPedido :integer): integer;
+begin
+  result := StrToIntDef( Campo_por_campo('RELACAO_TAB_IMPORTACAO','ID_EXTERNO','ID_ERP',intToStr(codPedido),'URL','pedidos') ,0);
+end;
+
 procedure TRepositorioNotaFiscal.salva_itens_materias(notaFiscal: TNotaFiscal);
 var
   RepItens          :TRepositorio;
@@ -154,6 +197,8 @@ var
   RepNFe            :TRepositorio;
   nX                :Integer;
   codigo_item       :Integer;
+  id_externo :integer;
+  inserindo         :boolean;
 begin
    RepItens           := nil;
    RepPedFat          := nil;
@@ -250,10 +295,16 @@ begin
 
      if Assigned(NotaFiscal.PedidosFaturados) then begin
        for nX := 0 to (NotaFiscal.PedidosFaturados.Count-1) do begin
-        if Assigned(self.FAtualizarTela) then
-          self.FAtualizarTela;
+         if Assigned(self.FAtualizarTela) then
+           self.FAtualizarTela;
+         inserindo := TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).Codigo = 0;
+         RepPedFat.Salvar(NotaFiscal.PedidosFaturados[nX]);
 
-        RepPedFat.Salvar(NotaFiscal.PedidosFaturados[nX]);
+         id_externo := pedidoSincronizado(TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).CodigoPedido);
+         if inserindo and (id_externo > 0) then
+           marcaComoFaturado(id_externo, TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).Pedido.valor_total,
+                                         NotaFiscal.DataEmissao,
+                                         NotaFiscal.NumeroNotaFiscal);
        end;
      end;
 

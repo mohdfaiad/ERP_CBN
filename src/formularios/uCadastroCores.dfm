@@ -4,17 +4,18 @@ inherited frmCadastroCores: TfrmCadastroCores
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Cores'
-  ClientHeight = 626
+  ClientHeight = 660
   ClientWidth = 511
   OldCreateOrder = True
+  OnDestroy = FormDestroy
   OnShow = FormShow
   ExplicitWidth = 517
-  ExplicitHeight = 654
+  ExplicitHeight = 688
   PixelsPerInch = 96
   TextHeight = 15
   object panBotoes: TPanel
     Left = 0
-    Top = 583
+    Top = 617
     Width = 511
     Height = 43
     Align = alBottom
@@ -332,7 +333,7 @@ inherited frmCadastroCores: TfrmCadastroCores
     Left = 0
     Top = 0
     Width = 511
-    Height = 583
+    Height = 617
     ActivePage = tsDados
     Align = alClient
     TabOrder = 1
@@ -340,7 +341,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       Caption = 'Cores'
       DesignSize = (
         503
-        553)
+        587)
       object Label1: TLabel
         Left = 136
         Top = 3
@@ -369,7 +370,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       end
       object lblCamposObrigatorios: TLabel
         Left = 5
-        Top = 537
+        Top = 571
         Width = 207
         Height = 17
         Anchors = [akLeft, akBottom]
@@ -382,20 +383,34 @@ inherited frmCadastroCores: TfrmCadastroCores
         ParentFont = False
         ExplicitTop = 473
       end
+      object Label13: TLabel
+        Left = 8
+        Top = 220
+        Width = 100
+        Height = 13
+        Caption = 'Descri'#231#227'o completa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtDescricao: TEdit
         Left = 136
         Top = 19
         Width = 340
         Height = 23
         CharCase = ecUpperCase
+        Enabled = False
         ReadOnly = True
         TabOrder = 1
       end
       object gridCores: TDBGridCBN
         Left = 8
-        Top = 223
+        Top = 269
         Width = 486
-        Height = 311
+        Height = 302
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -593,6 +608,7 @@ inherited frmCadastroCores: TfrmCadastroCores
           Top = 5
           Width = 215
           Height = 64
+          Enabled = False
           TabOrder = 0
           ExplicitLeft = 8
           ExplicitTop = 5
@@ -954,6 +970,15 @@ inherited frmCadastroCores: TfrmCadastroCores
           end
         end
       end
+      object edtDescricaoCompleta: TEdit
+        Left = 8
+        Top = 236
+        Width = 468
+        Height = 23
+        CharCase = ecUpperCase
+        Enabled = False
+        TabOrder = 10
+      end
     end
     object tsCoresFilhas: TTabSheet
       Caption = 'Cores filhas'
@@ -961,7 +986,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       ImageIndex = 1
       DesignSize = (
         503
-        553)
+        587)
       object Label5: TLabel
         Left = 14
         Top = 32
@@ -1031,7 +1056,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Left = 12
         Top = 139
         Width = 477
-        Height = 382
+        Height = 416
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -1206,7 +1231,7 @@ inherited frmCadastroCores: TfrmCadastroCores
       ImageIndex = 2
       DesignSize = (
         503
-        553)
+        587)
       object Label9: TLabel
         Left = 14
         Top = 32
@@ -1263,7 +1288,7 @@ inherited frmCadastroCores: TfrmCadastroCores
         Left = 12
         Top = 139
         Width = 478
-        Height = 382
+        Height = 416
         Hint = 
           'Pressione Ctrl + Alt + F2 para configurar as colunas'#13'Pressione C' +
           'trl + Alt + F3 para configurar as cores'#13'Pressione Ctrl + Alt + F' +
@@ -1487,6 +1512,10 @@ inherited frmCadastroCores: TfrmCadastroCores
     object cdsKIT: TStringField
       FieldName = 'KIT'
       Size = 1
+    end
+    object cdsDESCRICAO_COMPLETA: TStringField
+      FieldName = 'DESCRICAO_COMPLETA'
+      Size = 150
     end
   end
   object dsp: TDataSetProvider

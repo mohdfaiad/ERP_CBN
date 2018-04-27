@@ -115,7 +115,8 @@ uses
   RepositorioConfiguracoesECommerce,
   RepositorioLogErroImportPedido,
   RepositorioUnidadeEntSai,
-  RepositorioPlanoContasContabeis;
+  RepositorioPlanoContasContabeis,
+  RepositorioConfigIntegracao;
 
 
 { TFabricaRepositorio }
@@ -223,6 +224,7 @@ begin
    else if (NomeDaEntidade  = 'TLogErroImportPedido')       then result := TRepositorioLogErroImportPedido.Create
    else if (NomeDaEntidade  = 'TUnidadeEntSai')             then result := TRepositorioUnidadeEntSai.Create
    else if (NomeDaEntidade  = 'TPlanoContasContabeis')      then result := TRepositorioPlanoContasContabeis.Create
+   else if (NomeDaEntidade  = 'TConfigIntegracao')          then result := TRepositorioConfigIntegracao.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

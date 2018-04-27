@@ -21,6 +21,7 @@ type
     FCoresFilhas :TObjectList;
     FCoresKit :TObjectList;
     FKit :Boolean;
+    FDescricao_completa: String;
 
     procedure SetCodigo     (const value :Integer);
     procedure SetDescricao  (const value :String);
@@ -45,7 +46,9 @@ type
     property Cor_pai       :String   read FCor_pai       write SetCor_pai;
     property Codigo_colecao :Integer read FCodigo_colecao write FCodigo_colecao;
     property kit           :Boolean  read FKit           write FKit;
+    property descricao_completa :String read FDescricao_completa write FDescricao_completa;
 
+  public
     property CoresFilhas   :TObjectList read GetCoresFilhas;
     property CoresKit      :TObjectList read GetCoresKit;
   end;

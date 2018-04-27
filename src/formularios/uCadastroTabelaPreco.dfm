@@ -354,6 +354,19 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label2: TLabel
+        Left = 347
+        Top = 8
+        Width = 27
+        Height = 13
+        Caption = 'Ativa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtDescricao: TEdit
         Left = 8
         Top = 24
@@ -456,6 +469,20 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
         Visible = False
         OnEnter = edtDescricaoEnter
       end
+      object cbxAtiva: TComboBox
+        Left = 347
+        Top = 24
+        Width = 64
+        Height = 23
+        Style = csDropDownList
+        Enabled = False
+        ItemIndex = 0
+        TabOrder = 3
+        Text = 'SIM'
+        Items.Strings = (
+          'SIM'
+          'N'#195'O')
+      end
     end
   end
   object ds: TDataSource
@@ -477,6 +504,10 @@ inherited frmCadastroTabelaPreco: TfrmCadastroTabelaPreco
     object cdsDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
       Size = 50
+    end
+    object cdsATIVA: TStringField
+      FieldName = 'ATIVA'
+      Size = 1
     end
   end
   object dsp: TDataSetProvider

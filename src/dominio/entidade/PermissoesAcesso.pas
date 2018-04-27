@@ -101,6 +101,9 @@ const
   paVerificaErrosImportacaoPedido = 84;
   paRelatorioPedidosEmAberto      = 85;
   paCadastroPlanoContasContabeis  = 86;
+  paCadastroConfiguracoesIntegracao = 87;
+  paSincronizador                 = 88;
+  paVerificarOrcamentos           = 89;
 
 implementation
 

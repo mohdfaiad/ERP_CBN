@@ -914,6 +914,7 @@ begin
 
      Pedido.observacao        := memObs.Text;
      Pedido.tipo_frete        := cbTipoFrete.ItemIndex;
+     Pedido.tipo              := 'P';
 
  { - - - - - - - - - - - INSERÇÃO DOS ITENS DO PEDIDO - - - - - - - - - - - }
 
@@ -1684,7 +1685,7 @@ begin
     Lista.QuoteChar := #0;
 
     vHTTPJSON := nil;
-    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+    vHTTPJSON := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
 
     for i := 0 to BuscaPedido1.Ped.Conferencia.Itens.Count - 1 do
     begin
@@ -1804,7 +1805,7 @@ begin
     end;
 
     json := '['+Lista.DelimitedText+']';
-    vHTTPJSON.Post(json);
+    vHTTPJSON.Post('produtos/',json);
   Except
     on e :Exception do
     begin

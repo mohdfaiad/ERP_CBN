@@ -314,7 +314,7 @@ begin
    if self.PedidoJaAdicionado(Pedido.Codigo) then
      exit;
 
-   PedidoFaturado := TPedidoFaturado.Create(Pedido.Codigo);
+   PedidoFaturado := TPedidoFaturado.Create(0,Pedido.Codigo);
    PedidoFaturado.AdicionarBuscadorDeCodigoNotaFiscal(self.GetCodigo);
 
    if not Assigned(self.FPedidosFaturados) then

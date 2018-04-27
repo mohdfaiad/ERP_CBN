@@ -20,24 +20,19 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     dspQuinzena1: TDataSetProvider;
-    cdsQuinzena1: TClientDataSet;
+    cdsPedidosPeriodo: TClientDataSet;
     dsQuinzena1: TDataSource;
     gridQuinzena1: TDBGridCBN;
     btnBuscar: TBitBtn;
-    cdsQuinzena1TOT_PEDIDO: TAggregateField;
-    cdsQuinzena1TOT_VLRCOMISS: TAggregateField;
+    cdsPedidosPeriodoTOT_PEDIDO: TAggregateField;
+    cdsPedidosPeriodoTOT_VLRCOMISS: TAggregateField;
     cdsComissoes1: TClientDataSet;
     dsComissoes1: TDataSource;
     cdsComissoes1PERC_COMISSAO: TFloatField;
     cdsComissoes1TOTAL_PERCENTAGEM: TFloatField;
-    dsComissoes2: TDataSource;
-    cdsComissoes2: TClientDataSet;
-    FloatField7: TFloatField;
-    FloatField8: TFloatField;
     edtAno: TEdit;
     UpDown1: TUpDown;
     cdsComissoes1TOTAL_PEDIDO: TFloatField;
-    cdsComissoes2TOTAL_PEDIDO: TFloatField;
     gpbDebCred: TGroupBox;
     gridDebCred1: TDBGridCBN;
     Label12: TLabel;
@@ -108,14 +103,14 @@ type
     dtpFim: TDateTimePicker;
     Label33: TLabel;
     qryQuinzena1: TFDQuery;
-    cdsQuinzena1DT_ENVIO: TDateField;
-    cdsQuinzena1DIA_PEDIDO: TSmallintField;
-    cdsQuinzena1CLIENTE: TStringField;
-    cdsQuinzena1FPGTO: TStringField;
-    cdsQuinzena1NUMPEDIDO: TStringField;
-    cdsQuinzena1COMISSAO: TBCDField;
-    cdsQuinzena1VALOR_TOTAL: TBCDField;
-    cdsQuinzena1VLRCOMISSAO: TBCDField;
+    cdsPedidosPeriodoDT_ENVIO: TDateField;
+    cdsPedidosPeriodoDIA_PEDIDO: TSmallintField;
+    cdsPedidosPeriodoCLIENTE: TStringField;
+    cdsPedidosPeriodoFPGTO: TStringField;
+    cdsPedidosPeriodoNUMPEDIDO: TStringField;
+    cdsPedidosPeriodoCOMISSAO: TBCDField;
+    cdsPedidosPeriodoVALOR_TOTAL: TBCDField;
+    cdsPedidosPeriodoVLRCOMISSAO: TBCDField;
     ACBrMail1: TACBrMail;
     RLReport1: TRLReport;
     RLBand1: TRLBand;
@@ -168,8 +163,6 @@ type
     RLDBText10: TRLDBText;
     RLDBText11: TRLDBText;
     RLDBMemo1: TRLDBMemo;
-    RLBand12: TRLBand;
-    RLLabel20: TRLLabel;
     RLBand13: TRLBand;
     RLLabel21: TRLLabel;
     RLBand14: TRLBand;
@@ -210,16 +203,14 @@ type
     Label2: TLabel;
     RLLabel29: TRLLabel;
     RLDBText12: TRLDBText;
-    RLLabel32: TRLLabel;
-    lbSaldoP2: TRLLabel;
-    lbSaldoP1: TRLLabel;
     RLDraw3: TRLDraw;
     RLDraw5: TRLDraw;
-    RLDraw7: TRLDraw;
     Label13: TLabel;
     Label14: TLabel;
     edtVlrParcela1: TCurrencyEdit;
     edtVlrParcela2: TCurrencyEdit;
+    chkApenasUmaParcela: TCheckBox;
+    RLBand12: TRLBand;
     procedure FormShow(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
@@ -239,10 +230,7 @@ type
     procedure btnRemoverClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure gridQuinzena1DblClick(Sender: TObject);
-
-  private
-    repositorio            :TRepositorio;
-    comissao_representante :TComissaoRepresentante;
+    procedure chkApenasUmaParcelaClick(Sender: TObject);
 
   private
     procedure seleciona_comissoes;
@@ -262,8 +250,8 @@ type
 
     procedure salvar;
 
-    function salva_primeira_quinzena :Boolean;
-    function salva_debitos_creditos: Boolean;
+    function salva_comissao_representante(comissao_representante :TComissaoRepresentante) :Boolean;
+    function salva_debitos_creditos(comissao_representante :TComissaoRepresentante): Boolean;
 
     procedure imprimeEnviaRelatorio( acao :String);
     function EnviarEmail(Endereco: String; Assunto: String = ''; Texto: String = '';
@@ -292,7 +280,7 @@ procedure TfrmFechaComissaoRepresentante.FormShow(Sender: TObject);
 begin
   BuscaPessoa1.TipoPessoa := tpRepresentante;
   cdsComissoes1.CreateDataSet;
-  cdsComissoes2.CreateDataSet;
+
   cdsDebCred1.CreateDataSet;
   edtAno.Text          := FormatDateTime('yyyy', date);
   self.Top             := 7;
@@ -310,11 +298,7 @@ begin
   if BuscaPessoa1.edtCodigo.AsInteger <= 0 then begin
     BuscaPessoa1.edtCodigo.SetFocus;
     avisar('Favor selecionar o representante');
-  end  
- { else if cbMes.ItemIndex <= 0 then begin
-    cbMes.SetFocus;
-    avisar('Favor selecionar o mês da comissão');
-  end }
+  end
   else
     seleciona_comissoes;
 end;
@@ -323,11 +307,11 @@ procedure TfrmFechaComissaoRepresentante.seleciona_comissoes;
 begin
   limpa_dados;
 
-  cdsQuinzena1.Close;
+  cdsPedidosPeriodo.Close;
   qryQuinzena1.ParamByName('dt_ini').AsDateTime  := dtpInicio.DateTime;
   qryQuinzena1.ParamByName('dt_fim').AsDateTime  := dtpFim.DateTime;
   qryQuinzena1.ParamByName('codrep').AsInteger   := BuscaPessoa1.edtCodigo.AsInteger;
-  cdsQuinzena1.Open;
+  cdsPedidosPeriodo.Open;
 
 {  cdsQuinzena2.Close;
   qryQuinzena2.ParamByName('dt_ini').AsDateTime  := StrToDateTime( formatDateTime('16/mm/yyyy 00:00:00',dtpFim.DateTime) );
@@ -337,10 +321,10 @@ begin
 
   preenche_data_prevista;
 
-  if(cdsQuinzena1.IsEmpty) then
+  if(cdsPedidosPeriodo.IsEmpty) then
     avisar('Não foi encontrado nenhum registro utilizando os filtros informados')
   else
-    separa_porcentegens(cdsQuinzena1, cdsComissoes1, edtTotComissoes1, edtTotPedidos1);
+    separa_porcentegens(cdsPedidosPeriodo, cdsComissoes1, edtTotComissoes1, edtTotPedidos1);
 
   edtComissaoSaldo1.Value := edtTotComissoes1.Value;
 
@@ -396,7 +380,7 @@ procedure TfrmFechaComissaoRepresentante.btnIncluirClick(Sender: TObject);
 begin
   inherited;
 
-  if cdsQuinzena1.IsEmpty then exit;
+  if cdsPedidosPeriodo.IsEmpty then exit;
 
   btnIncluir.Tag          := 1;
   pnlDados.Enabled        := true;
@@ -460,7 +444,21 @@ begin
     avisar('Favor informar uma descrição');
     memoDescricao.SetFocus;
   end
+  else if (cbParcelaDestino.ItemIndex = 2) and chkApenasUmaParcela.Checked then begin
+    avisar('Nenhum lançamento pode ser efetuado para a 2ª parcela, pois a opção "Pagamento total na 1ª parcela" está habilitada.');
+  end
   else begin
+    { se for débito }
+    if (cbTipo.ItemIndex = 1) then
+    begin
+      if ((cbParcelaDestino.ItemIndex = 1) and (edtValor.Value > edtVlrParcela1.Value)) or
+         ((cbParcelaDestino.ItemIndex = 2) and (edtValor.Value > edtVlrParcela2.Value)) then
+      begin
+        avisar('O valor do débito não pode ser maior que o da parcela');
+        exit;
+      end;
+    end;
+
     if btnIncluir.Tag = 1 then begin
       cdsDebCred1.Append;
       cdsDebCred1CODIGO.AsFloat := 0;
@@ -496,6 +494,8 @@ begin
   debParc1 := 0; debParc2 := 0; credParc1 := 0; credParc2 := 0;
   edtDebitoSaldo1.Clear;
   edtCreditoSaldo1.Clear;
+  edtVlrParcela1.Clear;
+  edtVlrParcela2.Clear;
 
   cdsDebCred1.First;
 
@@ -524,8 +524,19 @@ begin
 
   edtSaldoTotal1.Value := edtComissaoSaldo1.Value - edtDebitoSaldo1.Value + edtCreditoSaldo1.Value;
 
-  edtVlrParcela1.Value := trunc(edtComissaoSaldo1.Value/2) - debParc1 + credParc1;
-  edtVlrParcela2.Value := edtComissaoSaldo1.Value-trunc(edtComissaoSaldo1.Value/2) - debParc2 + credParc2;
+  if chkApenasUmaParcela.Checked then
+    edtVlrParcela1.Value := edtComissaoSaldo1.Value - debParc1 + credParc1
+  else
+  begin
+    edtVlrParcela1.Value := trunc(edtComissaoSaldo1.Value/2) - debParc1 + credParc1;
+    edtVlrParcela2.Value := edtComissaoSaldo1.Value-trunc(edtComissaoSaldo1.Value/2) - debParc2 + credParc2;
+  end;
+
+  chkApenasUmaParcela.enabled := not(not cdsDebCred1.IsEmpty and cdsDebCred1.Locate('NUM_PARCELA','2',[]));
+
+  if chkApenasUmaParcela.Checked and (edtDebitoSaldo1.Value > (edtComissaoSaldo1.Value/2)) then
+    chkApenasUmaParcela.Enabled := false;
+
 end;
 
 procedure TfrmFechaComissaoRepresentante.memoDescricaoKeyPress(
@@ -540,8 +551,8 @@ end;
 procedure TfrmFechaComissaoRepresentante.btnSalvarClick(Sender: TObject);
 begin
   if not (verifica_condicoes) or not confirma('As informações salvas, referêntes a esta comissão, não poderão mais serem alteradas. Confirma?') then  Exit;
-
-  fdm.conexao.TxOptions.AutoCommit := false;
+  try
+    fdm.conexao.TxOptions.AutoCommit := false;
 
   try
 
@@ -560,33 +571,42 @@ begin
         Avisar(e.Message);
       end;
   end;
+  finally
+    fdm.conexao.TxOptions.AutoCommit := true;
+  end;
 end;
 
 procedure TfrmFechaComissaoRepresentante.salvar;
-var repositorio :TRepositorio;
+var
+    repositorio            :TRepositorio;
+    comissao_representante :TComissaoRepresentante;
+    Especificacao          :TEspecificacaoComissaoRepresentantePorAnoMes;
 begin
   try
-    comissao_representante := nil;
-
+  try
     { Salva comissão do representante }
+    Especificacao               := TEspecificacaoComissaoRepresentantePorAnoMes.Create( BuscaPessoa1.edtCodigo.AsInteger,
+                                                                                       strToInt( formatDateTime('yyyy', dtpFim.DateTime) ),
+                                                                                       StrToInt(formatDateTime('mm',dtpFim.DateTime)) );
+    repositorio                 := TFabricaRepositorio.GetRepositorio( TComissaoRepresentante.ClassName );
+    comissao_representante      := TComissaoRepresentante(repositorio.GetPorEspecificacao(Especificacao));
 
-    repositorio             := TFabricaRepositorio.GetRepositorio(TComissaoRepresentante.ClassName);
-    comissao_representante  := TComissaoRepresentante( repositorio.Get( edtCodigo.AsInteger ) );
+    if not assigned(comissao_representante) then
+    begin
+      comissao_representante  := TComissaoRepresentante.Create;
+      comissao_representante.codigo_representante := BuscaPessoa1.edtCodigo.AsInteger;
+      comissao_representante.ano                  := strToInt( formatDateTime('yyyy', dtpFim.DateTime) );
+      comissao_representante.mes                  := strToInt( formatDateTime('mm', dtpFim.DateTime) );
+    end;
 
-    if not Assigned(comissao_representante) then
-        comissao_representante := TComissaoRepresentante.Create;
-
-    comissao_representante.codigo_representante := BuscaPessoa1.edtCodigo.AsInteger;
-    comissao_representante.ano                  := strToInt( formatDateTime('yyyy', dtpFim.DateTime) );
-    comissao_representante.mes                  := strToInt( formatDateTime('mm', dtpFim.DateTime) );
-
+    comissao_representante.Apenas_uma_parcela := chkApenasUmaParcela.Checked;
     repositorio.Salvar(comissao_representante);
 
     Deleta_lancamentos_removidos;
 
-    { Salva lançamentos referentes a essa comissão }
-
-    if not cdsQuinzena1.IsEmpty then    salva_primeira_quinzena;
+    { Se existir pedidos no mes informado, salva o registro da comissão do representante selecionado }
+    if not cdsPedidosPeriodo.IsEmpty then
+      salva_comissao_representante(comissao_representante);
 
   except
     on e : Exception do
@@ -594,23 +614,36 @@ begin
         raise exception.Create( e.Message );
       end;
   end;
+  finally
+    FreeAndNil(comissao_representante);
+    FreeAndNil(repositorio);
+    FreeAndNil(Especificacao);
+  end;
 end;
 
-function TfrmFechaComissaoRepresentante.salva_primeira_quinzena: Boolean;
+function TfrmFechaComissaoRepresentante.salva_comissao_representante(comissao_representante :TComissaoRepresentante): Boolean;
 var repositorio :TRepositorio;
     Lancamento :TLancamento;
     comissao_has_lancamentos :TComissaoHasLancamentos;
+    novoLancamento :Boolean;
 begin
   try
+    novoLancamento := false;
     repositorio := nil;
     Lancamento  := nil;
     comissao_has_lancamentos   := nil;
 
     try
       repositorio                := TFabricaRepositorio.GetRepositorio(TLancamento.ClassName);
-      Lancamento                 := TLancamento.Create;
+      Lancamento                 := comissao_representante.LancamentoReferenteComissao;
 
-      Lancamento.codigo          := edtCodComissao1.AsInteger;
+      if not assigned(Lancamento) then
+      begin
+        novoLancamento := true;
+        Lancamento     := TLancamento.Create;
+      end;
+
+      //Lancamento.codigo          := edtCodComissao1.AsInteger;
       Lancamento.valor_total     := edtComissaoSaldo1.Value;
       Lancamento.data_vencimento := dtpDataPrevista.DateTime;
       Lancamento.data_cadastro   := Date;
@@ -624,23 +657,23 @@ begin
       repositorio.Salvar( Lancamento );
 
 
-      { Se o código for maior que ZERO, a relação ja existe, pois estará alterando }
-      if edtCodComissao1.AsInteger = 0 then begin
+      { Se o código = ZERO, é necessário criar a relação }
+      if novoLancamento then begin
 
           { Salva relação entre as tabelas COMISSAO_REPRESENTANTE e LANCAMENTOS, especificando o tipo como Quinzena 'Q' }
 
          repositorio                := TFabricaRepositorio.GetRepositorio( TComissaoHasLancamentos.ClassName );
          comissao_has_lancamentos   := TComissaoHasLancamentos.Create;
 
-         comissao_has_lancamentos.codigo_comissao_representante := strToInt( maior_valor_cadastrado('COMISSAO_REPRESENTANTE', 'CODIGO') );
-         comissao_has_lancamentos.codigo_lancamento             := strToInt( maior_valor_cadastrado('LANCAMENTOS', 'CODIGO') );;
+         comissao_has_lancamentos.codigo_comissao_representante := comissao_representante.codigo;
+         comissao_has_lancamentos.codigo_lancamento             := Lancamento.codigo;
          comissao_has_lancamentos.tipo                          := 'Q';
 
          repositorio.Salvar( comissao_has_lancamentos );
 
       end;
 
-      salva_debitos_creditos;
+      salva_debitos_creditos(comissao_representante);
 
     finally
       FreeAndNil(repositorio);
@@ -656,7 +689,7 @@ begin
   end;
 end;
 
-function TfrmFechaComissaoRepresentante.salva_debitos_creditos: Boolean;
+function TfrmFechaComissaoRepresentante.salva_debitos_creditos(comissao_representante :TComissaoRepresentante): Boolean;
 var repositorio :TRepositorio;
     Lancamento :TLancamento;
     comissao_has_lancamentos :TComissaoHasLancamentos;
@@ -672,7 +705,8 @@ begin
         repositorio             := TFabricaRepositorio.GetRepositorio(TLancamento.ClassName);
         Lancamento              := TLancamento( repositorio.Get( cdsDebCred1CODIGO.AsInteger ) );
 
-        if not Assigned(Lancamento) then Lancamento := TLancamento.Create;
+        if not Assigned(Lancamento) then
+          Lancamento := TLancamento.Create;
 
         Lancamento.valor_total     := cdsDebCred1VALOR.AsFloat;
         Lancamento.data_vencimento := dtpDataPrevista.DateTime;
@@ -694,13 +728,9 @@ begin
            if cdsDebCred1CODIGO.AsInteger > 0 then
              comissao_has_lancamentos.codigo_lancamento             := cdsDebCred1CODIGO.AsInteger
            else
-             comissao_has_lancamentos.codigo_lancamento             := strToInt( maior_valor_cadastrado('LANCAMENTOS', 'CODIGO') );
+             comissao_has_lancamentos.codigo_lancamento             := Lancamento.codigo;
 
-           if comissao_representante.codigo > 0 then
-             comissao_has_lancamentos.codigo_comissao_representante := comissao_representante.codigo
-           else
-             comissao_has_lancamentos.codigo_comissao_representante := strToInt( maior_valor_cadastrado('COMISSAO_REPRESENTANTE', 'CODIGO') );
-
+           comissao_has_lancamentos.codigo_comissao_representante := comissao_representante.codigo;
            comissao_has_lancamentos.tipo                          := copy(cdsDebCred1TIPO.AsString, 1, 1);
 
            repositorio.Salvar( comissao_has_lancamentos );
@@ -725,20 +755,18 @@ begin
 end;
 
 procedure TfrmFechaComissaoRepresentante.carrega_comissao;
-var  Especificacao :TEspecificacao;
-     lista_lancamentos_comissao :TObjectList;
-     comissao_lancamentos :TComissaoHasLancamentos;
-     lancamento          :TLancamento;
+var  comissao_representante :TComissaoRepresentante;
+     comissao_lancamento :TComissaoHasLancamentos;
+     Especificacao :TEspecificacaoComissaoRepresentantePorAnoMes;
+     repositorio :TRepositorio;
      i :Integer;
 begin
   repositorio                := nil;
+  comissao_representante     := nil;
+  comissao_lancamento        := nil;
   Especificacao              := nil;
-  lista_lancamentos_comissao := nil;
-  comissao_lancamentos       := nil;
-  lancamento                 := nil;
-
   try
- 
+
     Especificacao              := TEspecificacaoComissaoRepresentantePorAnoMes.Create( BuscaPessoa1.edtCodigo.AsInteger,
                                                                                        strToInt( formatDateTime('yyyy', dtpFim.DateTime) ),
                                                                                        StrToInt(formatDateTime('mm',dtpFim.DateTime)) );
@@ -747,36 +775,26 @@ begin
 
     if not assigned(comissao_representante) then exit;
 
-    edtCodigo.AsInteger := comissao_representante.codigo;
+    edtCodigo.AsInteger         := comissao_representante.codigo;
+    chkApenasUmaParcela.Checked := comissao_representante.Apenas_uma_parcela;
 
-    Especificacao              := TEspecificacaoCodigosLancamentoPorCodigoComissao.Create( comissao_representante.codigo );
-    repositorio                := TFabricaRepositorio.GetRepositorio( TComissaoHasLancamentos.ClassName );
-    lista_lancamentos_comissao := repositorio.GetListaPorEspecificacao( Especificacao );
-
-    if assigned(lista_lancamentos_comissao) then
-      for i := 0 to lista_lancamentos_comissao.Count - 1 do begin
-        comissao_lancamentos := ( lista_lancamentos_comissao.Items[i] as TComissaoHasLancamentos);
-
-        repositorio  := TFabricaRepositorio.GetRepositorio( TLancamento.ClassName );
-        lancamento  := TLancamento( repositorio.Get( comissao_lancamentos.codigo_lancamento ) );
-
-        carrega_lancamento( lancamento, comissao_lancamentos.tipo );
+    if assigned(comissao_representante.HasLancamentos) then
+      for i := 0 to comissao_representante.HasLancamentos.Count - 1 do begin
+        comissao_lancamento := ( comissao_representante.HasLancamentos.Items[i] as TComissaoHasLancamentos);
+        carrega_lancamento( comissao_lancamento.Lancamento, comissao_lancamento.tipo );
       end;
 
+     chkApenasUmaParcela.enabled := not(not cdsDebCred1.IsEmpty and cdsDebCred1.Locate('NUM_PARCELA','2',[]));
+
   finally
-    freeAndNil(repositorio                );
-    freeAndNil(Especificacao              );
-    freeAndNil(lista_lancamentos_comissao );
-    comissao_lancamentos := nil;
-    freeAndNil(lancamento                 );
+    freeAndNil(repositorio   );
+    freeAndNil(Especificacao );
+    FreeAndNil(comissao_representante);
   end;
 end;
 
 procedure TfrmFechaComissaoRepresentante.carrega_lancamento(lancamento: TLancamento; tipo: String);
-var  dia :integer;
 begin
-  dia := strToInt( FormatDateTime('dd', lancamento.data_vencimento) );
-
   if tipo = 'Q' then
     carrega_primeira_quinzena(lancamento)
   else
@@ -801,7 +819,12 @@ begin
   dtpDataPrevista.DateTime  := lancamento.data_vencimento;
   edtTotComissoes1.Value    := lancamento.valor_total;
   edtCodComissao1.AsInteger := lancamento.codigo;
-  obsQuinzena1.Text         := lancamento.observacao; 
+  obsQuinzena1.Text         := lancamento.observacao;
+end;
+
+procedure TfrmFechaComissaoRepresentante.chkApenasUmaParcelaClick(Sender: TObject);
+begin
+  atualiza_saldo1;
 end;
 
 function TfrmFechaComissaoRepresentante.verifica_condicoes: Boolean;
@@ -816,7 +839,6 @@ begin
     if ( FormatDateTime('MM', Date)   = formatDateTime('mm',dtpFim.DateTime)   ) and
        ( FormatDateTime('YYYY', Date) = formatDateTime('yyyy',dtpFim.DateTime) ) then
      avisar('Não é possível salvar a comissão de um mês em aberto')
-
   else
     Result := true;
 
@@ -824,9 +846,9 @@ end;
 
 procedure TfrmFechaComissaoRepresentante.limpa_dados;
 begin
-  if cdsQuinzena1.Active then  cdsQuinzena1.EmptyDataSet;
+  if cdsPedidosPeriodo.Active then  cdsPedidosPeriodo.EmptyDataSet;
   cdsComissoes1.EmptyDataSet;
-  cdsComissoes2.EmptyDataSet;
+
   cdsDebCred1.EmptyDataSet;
   edtTotPedidos1.Clear;
   edtTotComissoes1.Clear;
@@ -874,7 +896,7 @@ begin
       if not DirectoryExists(ExtractFilePath(Application.ExeName)+'/comissoes') then
         CreateDir(ExtractFilePath(Application.ExeName)+'/comissoes');
 
-    if not cdsQuinzena1.IsEmpty then begin
+    if not cdsPedidosPeriodo.IsEmpty then begin
       rlRepresentante.Caption := BuscaPessoa1.edtCodigo.Text + ' - ' + BuscaPessoa1.edtRazao.Text;
       rlMesAno.Caption        := TDateTimeUtilitario.mes_extenso( strToInt( formatDateTime('mm', dtpFim.DateTime) )) + ' de '+formatDateTime('yyyy', dtpFim.DateTime);
       lbTotComissao.Caption   := formatfloat('##,###,##0.00', edtComissaoSaldo1.Value);
@@ -908,8 +930,8 @@ begin
       lbDataParcela2.Caption  := DateToStr(dtpDataPrevista2.Date);
       lbValorParcela2.Caption := TStringUtilitario.FormataDinheiro(edtVlrParcela2.Value);
 
-      lbSaldoP1.Caption       := FormatFloat(',0.00; -,0.00;',creditoP1 - debitoP1);
-      lbSaldoP2.Caption       := FormatFloat(',0.00; -,0.00;',creditoP2 - debitoP2);
+   //   lbSaldoP1.Caption       := FormatFloat(',0.00; -,0.00;',creditoP1 - debitoP1);
+   //   lbSaldoP2.Caption       := FormatFloat(',0.00; -,0.00;',creditoP2 - debitoP2);
 
       if cdsDebCred1.IsEmpty then  RLSubDetail2.Visible := false
                              else  RLSubDetail2.Visible := true;
@@ -960,8 +982,9 @@ end;
 function TfrmFechaComissaoRepresentante.EnviarEmail(Endereco: String; Assunto: String = ''; Texto: String = '';
   stlAnexo: TStringList = nil): Boolean;
 var
-  nX        :integer;
-  configuracoes_email          :TConfiguracoesNFEmail;
+  nX                  :integer;
+  configuracoes_email :TConfiguracoesNFEmail;
+  repositorio         :TRepositorio;
 begin
  try
   try
@@ -1014,7 +1037,7 @@ procedure TfrmFechaComissaoRepresentante.BuscaPessoa1Exit(Sender: TObject);
 begin
   inherited;
   edtEmail.Text := BuscaPessoa1.Email;
-  if not cdsQuinzena1.IsEmpty then
+  if not cdsPedidosPeriodo.IsEmpty then
     limpa_dados;
 end;
 
@@ -1144,15 +1167,15 @@ procedure TfrmFechaComissaoRepresentante.gridQuinzena1DblClick(
   Sender: TObject);
 var total_comissao_atual :Real;
 begin
-  if cdsQuinzena1.IsEmpty then EXIT;
+  if cdsPedidosPeriodo.IsEmpty then EXIT;
 
-  total_comissao_atual := cdsQuinzena1TOT_VLRCOMISS.AsVariant;
+  total_comissao_atual := cdsPedidosPeriodoTOT_VLRCOMISS.AsVariant;
 
-  abre_pedido( cdsQuinzena1NUMPEDIDO.AsString );
+  abre_pedido( cdsPedidosPeriodoNUMPEDIDO.AsString );
 
   btnBuscar.Click;
 
-  if total_comissao_atual <> cdsQuinzena1TOT_VLRCOMISS.AsVariant then
+  if total_comissao_atual <> cdsPedidosPeriodoTOT_VLRCOMISS.AsVariant then
     avisar('A % de comissão de um pedido foi alterada. Para atualizar o total da comissão da 1ª, salve-a.');
 end;
 

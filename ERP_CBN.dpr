@@ -71,7 +71,7 @@ uses
   EventoAvisar in 'src\formularios\eventos\EventoAvisar.pas',
   EventoFechar in 'src\formularios\eventos\EventoFechar.pas',
   EventoExecutarOperacao in 'src\formularios\eventos\EventoExecutarOperacao.pas',
-  uCadastroRepresentante in 'src\formularios\uCadastroRepresentante.pas' {frmPadrao1},
+  uCadastroRepresentante in 'src\formularios\uCadastroRepresentante.pas' {frmCadastroRepresentante},
   uCadastroFornecedor in 'src\formularios\uCadastroFornecedor.pas' {frmCadastroFornecedor},
   uCadastroTabelaPreco in 'src\formularios\uCadastroTabelaPreco.pas' {frmCadastroTabelaPreco},
   TabelaPreco in 'src\dominio\entidade\TabelaPreco.pas',
@@ -485,7 +485,16 @@ uses
   EspecificacaoUnidadesEntSaiPorCodigoProduto in 'src\dominio\objetoValor\especificacao\EspecificacaoUnidadesEntSaiPorCodigoProduto.pas',
   uCadastroPlanoContasContabeis in 'src\formularios\uCadastroPlanoContasContabeis.pas' {frmCadastroPlanoContasContabeis},
   PlanoContasContabeis in 'src\dominio\entidade\PlanoContasContabeis.pas',
-  RepositorioPlanoContasContabeis in 'src\infraestrutura\persistencia\RepositorioPlanoContasContabeis.pas';
+  RepositorioPlanoContasContabeis in 'src\infraestrutura\persistencia\RepositorioPlanoContasContabeis.pas',
+  ConfigIntegracao in 'src\dominio\entidade\ConfigIntegracao.pas',
+  RelacaoTabelasImportacao in 'src\dominio\entidade\RelacaoTabelasImportacao.pas',
+  RepositorioConfigIntegracao in 'src\infraestrutura\persistencia\RepositorioConfigIntegracao.pas',
+  RepositorioRelacaoTabelasImportacao in 'src\infraestrutura\persistencia\RepositorioRelacaoTabelasImportacao.pas',
+  uCadastroConfiguracoesIntegracao in 'src\formularios\uCadastroConfiguracoesIntegracao.pas' {frmCadastroConfiguracoesIntegracao},
+  uSincronizador in 'src\formularios\uSincronizador.pas' {frmSincronizador},
+  uFundoContencao in 'src\formularios\uFundoContencao.pas' {frmFundoContencao},
+  ClienteHttpMeusPedidos in 'src\dominio\utilitario\ClienteHttpMeusPedidos.pas',
+  uOrcamentos in 'src\formularios\uOrcamentos.pas' {frmOrcamentos};
 
 {$R *.res}
 {$R win7810.res}
@@ -501,7 +510,6 @@ begin
   Application.Initialize;
   Application.Title := 'ERP CBN';
   Application.CreateForm(Tdm, dm);
-
   //------------------------------------------------------------------------------------------------//
   // Se não for encontrado o Banco de Dados, então é solicitado para o usário configurá-lo.         //
   //------------------------------------------------------------------------------------------------//

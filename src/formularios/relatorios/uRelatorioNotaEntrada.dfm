@@ -8,7 +8,7 @@ inherited frmRelatorioNotaEntrada: TfrmRelatorioNotaEntrada
   ExplicitWidth = 729
   ExplicitHeight = 164
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
@@ -653,6 +653,7 @@ inherited frmRelatorioNotaEntrada: TfrmRelatorioNotaEntrada
       Width = 447
       Height = 73
       Caption = ' Empresa '
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
@@ -660,30 +661,44 @@ inherited frmRelatorioNotaEntrada: TfrmRelatorioNotaEntrada
       ExplicitHeight = 73
     end
     inherited lblRazao: TStaticText [1]
-      Top = 21
-      Width = 68
-      Font.Color = 4079166
+      Top = 20
+      Width = 72
+      Height = 19
+      Font.Color = 4934475
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitTop = 21
-      ExplicitWidth = 68
+      Transparent = False
+      ExplicitTop = 20
+      ExplicitWidth = 72
+      ExplicitHeight = 19
     end
     inherited lblCodigo: TStaticText [2]
-      Top = 21
+      Top = 20
       Width = 42
-      Font.Color = 4079166
+      Height = 19
+      Font.Color = 4934475
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitTop = 21
+      Transparent = False
+      ExplicitTop = 20
       ExplicitWidth = 42
+      ExplicitHeight = 19
     end
-    inherited edtCodigo: TEdit [4]
+    inherited edtCodigo: TEdit [3]
+      Height = 23
+      ExplicitHeight = 23
+    end
+    inherited btnBusca: TBitBtn [4]
     end
     inherited edtRazao: TEdit [5]
       Width = 327
+      Height = 23
       ExplicitWidth = 327
+      ExplicitHeight = 23
     end
   end
   object cdsNotas: TClientDataSet

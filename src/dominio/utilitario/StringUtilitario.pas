@@ -17,6 +17,7 @@ type
     class function RemoveCaracteresEspeciais (texto :String) :String;
     class function CaracterAEsquerda(Caracter :Char; Texto :String; tamanho_maximo :Integer) :String;
     class function remove_quebras   (texto :String) :String;
+    class function StringParaMoeda  (value: String): Real;
 end;
 
 implementation
@@ -47,6 +48,11 @@ begin
 
   Result := StringOfChar(Caracter, vezes ) + Texto;
 
+end;
+
+class function TStringUtilitario.StringParaMoeda(value: String): Real;
+begin
+  result := StrToFloatDef(StringReplace(value, '.', ',', [rfReplaceAll, rfIgnoreCase]),0);
 end;
 
 class function TStringUtilitario.EstaVazia(Texto: String): Boolean;

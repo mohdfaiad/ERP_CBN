@@ -686,7 +686,7 @@ begin
     end;
 
     vHTTPJSON := nil;
-    vHTTPJSON := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+    vHTTPJSON := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
 
     result := vHTTPJSON.Get('produtos/?page='+intToStr(page));//???
   finally
@@ -723,7 +723,7 @@ begin
       begin
         try
           vHTTPJSON             := nil;
-          vHTTPJSON             := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+          vHTTPJSON             := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
           
           for i := 0 to cdsItensConferidos.Fields.Count - 1 do
           begin
@@ -746,7 +746,7 @@ begin
                 sku        := TStringUtilitario.RemoveCaracteresEspeciais( sku );
 
                 json := atualiza(sku, cdsItensConferidos.Fields[i].AsInteger, +1);
-                vHTTPJSON.Post(json);                   
+                vHTTPJSON.Post('produtos/',json);
               end;
             end;
           end;          
@@ -2509,7 +2509,7 @@ begin
     produtosAdicionados   := 0;
 
     vHTTPJSON             := nil;
-    vHTTPJSON             := THTTPJSON.Create(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
+    vHTTPJSON             := THTTPJSON.CreateEcommerce(fdm.configuracoesECommerce.token, fdm.configuracoesECommerce.url_base);
 
     cdsConferidos.First;
     while not cdsConferidos.Eof do
@@ -2535,7 +2535,7 @@ begin
       if (produtosAdicionados = 50) or cdsConferidos.Eof then
       begin
         json := '['+Lista.DelimitedText+']';
-        vHTTPJSON.Post(json);
+        vHTTPJSON.Post('produtos/',json);
 
         produtosAdicionados := 0;
         Lista.Clear;
@@ -2662,7 +2662,7 @@ var
 begin
  try
  try
-   vHTTPJSON := THTTPJSON.Create(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
+   vHTTPJSON := THTTPJSON.CreateEcommerce(dm.configuracoesECommerce.token, dm.configuracoesECommerce.url_base);
 
    Retorno := vHTTPJSON.Get('produto/'+sku);
    result  := Retorno;

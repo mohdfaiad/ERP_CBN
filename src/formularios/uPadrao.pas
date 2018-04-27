@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uModulo, stdCtrls, DBCtrls, Mask, RxCurrEdit, PermissoesAcesso, Vcl.Buttons;
+  Dialogs, uModulo, stdCtrls, DBCtrls, Mask, RxCurrEdit, PermissoesAcesso, Vcl.Buttons, uFundoContencao;
 
 type
   TfrmPadrao = class(TForm)
@@ -203,6 +203,8 @@ procedure TfrmPadrao.Aguarda(mensagem: String);
 begin
 
   if frmAguarde = nil then begin
+    frmFundoContencao := TfrmFundoContencao.Create(nil);
+    frmFundoContencao.Show;
     frmAguarde := TfrmAguarde.Create(nil, mensagem);
     frmAguarde.Show;
   end
@@ -225,6 +227,8 @@ begin
     self.FaguardaAtivo := false;
     frmAguarde.Release;
     frmAguarde := nil;
+    frmFundoContencao.Release;
+    frmFundoContencao := nil;
   end;
 
 end;

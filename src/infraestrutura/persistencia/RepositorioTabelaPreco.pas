@@ -44,7 +44,7 @@ implementation
 
 uses
   SysUtils,
-  TabelaPreco;
+  TabelaPreco, system.StrUtils;
 
 { TRepositorioTabelaPreco }
 
@@ -55,6 +55,7 @@ begin
    TabelaPreco            := TTabelaPreco.Create;
    TabelaPreco.Codigo     := self.FQuery.FieldByName('codigo'    ).AsInteger;
    TabelaPreco.Descricao  := self.FQuery.FieldByName('Descricao' ).AsString;
+   TabelaPreco.Ativa      := self.FQuery.FieldByName('ativa').AsString = 'S';
    result := TabelaPreco;
 end;
 
@@ -128,7 +129,8 @@ begin
    if (TabelaPreco.Codigo > 0) then  inherited SetParametro('codigo', TabelaPreco.Codigo)
    else                         inherited LimpaParametro('codigo');
 
-   self.FQuery.ParamByName('descricao').AsString        := TabelaPreco.Descricao;
+   self.FQuery.ParamByName('descricao').AsString     := TabelaPreco.Descricao;
+   self.FQuery.ParamByName('ativa').AsString         := IfThen(TabelaPreco.Ativa,'S','N');
 end;
 
 function TRepositorioTabelaPreco.SQLGet: String;
@@ -155,8 +157,8 @@ end;
 function TRepositorioTabelaPreco.SQLSalvar: String;
 begin
   result := 'update or insert into TABELAS_PRECO  '+
-            '(codigo, descricao)                  '+
-            ' Values (:codigo, :descricao)        ';
+            '(codigo, descricao, ativa)                  '+
+            ' Values (:codigo, :descricao, :ativa)        ';
 end;
 
 end.

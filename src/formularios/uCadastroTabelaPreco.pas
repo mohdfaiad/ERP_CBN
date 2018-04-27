@@ -25,6 +25,9 @@ type
     edtCodigo: TEdit;
     btnCancelar: TBitBtn;
     btnSalvar: TBitBtn;
+    Label2: TLabel;
+    cbxAtiva: TComboBox;
+    cdsATIVA: TStringField;
     procedure FormShow(Sender: TObject);
     procedure cdsAfterScroll(DataSet: TDataSet);
     procedure btnIncluirClick(Sender: TObject);
@@ -50,7 +53,7 @@ var
 
 implementation
 
-uses FabricaRepositorio;
+uses FabricaRepositorio, System.StrUtils;
 
 {$R *.dfm}
 
@@ -75,8 +78,9 @@ begin
       edtDescricao.SetFocus;
     end;
 
-  edtCodigo.Text    := cdsCODIGO.AsString;
-  edtDescricao.Text := cdsDESCRICAO.AsString;
+  edtCodigo.Text     := cdsCODIGO.AsString;
+  edtDescricao.Text  := cdsDESCRICAO.AsString;
+  cbxAtiva.ItemIndex := cbxAtiva.Items.IndexOf(IfThen(cdsATIVA.AsString='S','SIM','NÃO'));
 end;
 
 procedure TfrmCadastroTabelaPreco.btnIncluirClick(Sender: TObject);
@@ -84,7 +88,8 @@ begin
   inherited;
   edtDescricao.Clear;
   self.Tag := 1;
-  edtDescricao.Enabled := true;  
+  edtDescricao.Enabled := true;
+  cbxAtiva.Enabled := true;
   edtDescricao.SetFocus;
 end;
 
@@ -93,6 +98,7 @@ begin
   inherited;
   self.Tag := 2;
   edtDescricao.Enabled := true;
+  cbxAtiva.Enabled := true;
   edtDescricao.SetFocus;
 end;
 
@@ -108,6 +114,7 @@ begin
   inherited;
   habilita(false);
   edtDescricao.Enabled := false;
+  cbxAtiva.Enabled := false;
   edtCodigo.Text       := cdsCODIGO.AsString;
   edtDescricao.Text    := cdsDESCRICAO.AsString;
   gridTabPreco.SetFocus;
@@ -160,6 +167,7 @@ begin
     TabelaPreco.Codigo := cdsCODIGO.AsInteger;
 
   TabelaPreco.Descricao := trim(edtDescricao.Text);
+  TabelaPreco.Ativa     := cbxAtiva.Items[cbxAtiva.ItemIndex] = 'SIM';
 
   rep.Salvar(TabelaPreco);
 

@@ -62,14 +62,17 @@ type
   private
     FNcmIbpt: TNcmIbpt;
     FCodigo_ibpt: integer;
+    FDescricaoCompleta: String;
     function GetGrade: TGrade;
     function GetProdutosKit: TObjectList;
     function GetNcmIbpt: TNcmIbpt;
     function GetAliqNcmIbpt: Real;
+    procedure setDescricaoCompleta(const Value: String);
 
   public
     property Codigo       :integer read FCodigo       write setCodigo;
     property Descricao    :String  read FDescricao    write setDescricao;
+    property DescricaoCompleta :String  read FDescricaoCompleta    write setDescricaoCompleta;
     property Cod_Ncm      :integer read FCod_Ncm      write setCod_Ncm;
     property Cod_tipo     :integer read FCod_tipo     write setCod_tipo;
     property Cod_Grupo    :integer read FCod_Grupo    write setCod_Grupo;
@@ -150,6 +153,11 @@ end;
 procedure TProduto.setDescricao(const value: String);
 begin
   FDescricao := value;
+end;
+
+procedure TProduto.setDescricaoCompleta(const Value: String);
+begin
+  FDescricaoCompleta := Value;
 end;
 
 procedure TProduto.setEstoqueFis(const value: integer);

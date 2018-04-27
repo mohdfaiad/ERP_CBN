@@ -39,7 +39,7 @@ implementation
 
 uses                                                                                               
   SysUtils,                                                                                        
-  ComissaoRepresentante;                                                                        
+  ComissaoRepresentante, System.StrUtils;
 
 { TRepositorioComissaoRepresentante }                                                      
 
@@ -52,6 +52,7 @@ begin
    ComissaoRepresentante.CODIGO_REPRESENTANTE := self.FQuery.FieldByName('CODIGO_REPRESENTANTE'  ).AsInteger;
    ComissaoRepresentante.ANO                  := self.FQuery.FieldByName('ANO'  ).AsInteger;
    ComissaoRepresentante.MES                  := self.FQuery.FieldByName('MES'  ).AsInteger;
+   ComissaoRepresentante.Apenas_uma_parcela  := (self.FQuery.FieldByName('Apenas_UMA_PARCELA'  ).AsString = 'S');
    result := ComissaoRepresentante;
 end;                                                                                               
 
@@ -107,7 +108,7 @@ begin
    Auditoria.AdicionaCampoExcluido('CODIGO_REPRESENTANTE' , intToStr(ComissaoRepresentante.CODIGO_REPRESENTANTE));
    Auditoria.AdicionaCampoExcluido('ANO' , intToStr(ComissaoRepresentante.ANO));
    Auditoria.AdicionaCampoExcluido('MES' , intToStr(ComissaoRepresentante.MES));
-
+   Auditoria.AdicionaCampoExcluido('Apenas_uma_parcela' , IfThen(ComissaoRepresentante.Apenas_uma_parcela, 'S', 'N'));
 end;                                                                                               
 
 procedure TRepositorioComissaoRepresentante.SetCamposIncluidos(Auditoria: TAuditoria;        
@@ -121,8 +122,8 @@ begin
    Auditoria.AdicionaCampoIncluido('CODIGO_REPRESENTANTE' , intToStr(ComissaoRepresentante.CODIGO_REPRESENTANTE));
    Auditoria.AdicionaCampoIncluido('ANO' , intToStr(ComissaoRepresentante.ANO));
    Auditoria.AdicionaCampoIncluido('MES' , intToStr(ComissaoRepresentante.MES));
-
-end;                                                                                               
+   Auditoria.AdicionaCampoIncluido('Apenas_uma_parcela' , IfThen(ComissaoRepresentante.Apenas_uma_parcela,'S','N'));
+end;
 
 procedure TRepositorioComissaoRepresentante.SetIdentificador(Objeto: TObject;                
   Identificador: Variant);                                                                         
@@ -141,8 +142,8 @@ begin
    self.FQuery.ParamByName('CODIGO').AsInteger        := ComissaoRepresentante.CODIGO; 
    self.FQuery.ParamByName('CODIGO_REPRESENTANTE').AsInteger        := ComissaoRepresentante.CODIGO_REPRESENTANTE; 
    self.FQuery.ParamByName('ANO').AsInteger        := ComissaoRepresentante.ANO; 
-   self.FQuery.ParamByName('MES').AsInteger        := ComissaoRepresentante.MES; 
-
+   self.FQuery.ParamByName('MES').AsInteger        := ComissaoRepresentante.MES;
+   self.FQuery.ParamByName('Apenas_uma_parcela').AsString        := IfThen(ComissaoRepresentante.Apenas_uma_parcela,'S','N');
 end;                                                                                               
 
 function TRepositorioComissaoRepresentante.SQLGet: String;                                   
@@ -169,8 +170,9 @@ end;
 function TRepositorioComissaoRepresentante.SQLSalvar: String;                                
 begin                                                                                              
   result := 'update or insert into COMISSAO_REPRESENTANTE      '+
- ' ( CODIGO, CODIGO_REPRESENTANTE, ANO, MES) ' + 
-' Values ( :CODIGO, :CODIGO_REPRESENTANTE, :ANO, :MES) '
+            ' ( CODIGO, CODIGO_REPRESENTANTE, ANO, MES, Apenas_UMA_PARCELA) ' +
+            ' Values ( :CODIGO, :CODIGO_REPRESENTANTE, :ANO, :MES, :Apenas_UMA_PARCELA) '
 end;                                                                                               
 
-end.                                                                                               
+end.
+

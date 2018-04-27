@@ -4,7 +4,7 @@ object frmAguarde: TfrmAguarde
   BorderStyle = bsNone
   Caption = 'frmAguarde'
   ClientHeight = 113
-  ClientWidth = 426
+  ClientWidth = 515
   Color = clBtnHighlight
   TransparentColorValue = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -20,31 +20,25 @@ object frmAguarde: TfrmAguarde
   object Shape3: TShape
     Left = 0
     Top = 0
-    Width = 426
+    Width = 515
     Height = 113
+    Brush.Color = 2136956
     Pen.Color = 10197915
   end
   object Shape1: TShape
     Left = 107
     Top = 1
-    Width = 319
+    Width = 408
     Height = 112
     Brush.Color = 13035741
     Pen.Color = 13035741
     Pen.Style = psClear
   end
-  object gifAguarde: TACBrGIF
-    Left = 10
-    Top = 12
-    Width = 81
-    Height = 88
-    Transparent = True
-  end
   object memoAguarde: TMemo
     Left = 119
-    Top = 32
-    Width = 294
-    Height = 52
+    Top = 19
+    Width = 385
+    Height = 82
     TabStop = False
     BevelInner = bvNone
     BorderStyle = bsNone
@@ -58,5 +52,11 @@ object frmAguarde: TfrmAguarde
       'Aguarde um momento por favor')
     ParentFont = False
     TabOrder = 0
+  end
+  object Indicator: TActivityIndicator
+    Left = 24
+    Top = 20
+    IndicatorColor = aicWhite
+    IndicatorSize = aisXLarge
   end
 end

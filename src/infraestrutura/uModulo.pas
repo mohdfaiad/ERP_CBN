@@ -15,7 +15,7 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef, ConfiguracoesECommerce;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef, ConfiguracoesECommerce, ConfigIntegracao;
 
 type
   Tdm = class(TDataModule)
@@ -51,6 +51,8 @@ type
     FCaixaLoja: TCaixa;
     FCaixaAberto: Boolean;
     FConfiguracoesECommerce: TConfiguracoesECommerce;
+    FConfiguracoesIntegracao: TConfigIntegracao;
+
     procedure SetArquivoConfiguracao(const Value: TArquivoConfiguracao);
     procedure SetLogErros           (const Value: TLogErros);
     procedure SetUsuario            (const Value: TUsuario);
@@ -59,6 +61,7 @@ type
     procedure PreencheDadosConexaoBancoDeDados(Sender: TObject);
     function getCaixaAberto: Boolean;
     function getConfiguracoesECommerce: TConfiguracoesECommerce;
+    function getConfiguracoesIntegracao: TConfigIntegracao;
 
   public
     constructor Create(AOwner :TComponent); override;
@@ -72,6 +75,7 @@ type
      property CaixaLoja                :TCaixa                  read GetCaixaLoja         write FCaixaLoja;
      property caixaAberto              :Boolean                 read getCaixaAberto       write FCaixaAberto;
      property configuracoesECommerce   :TConfiguracoesECommerce read getConfiguracoesECommerce write FConfiguracoesECommerce;
+     property configuracoesIntegracao  :TConfigIntegracao       read getConfiguracoesIntegracao  write FConfiguracoesIntegracao;
      property informouSenhaSertificado :Boolean                 read FInformouSenhaSertificado write FInformouSenhaSertificado;
 
      // Apenas leitura
@@ -201,8 +205,7 @@ begin
        self.FConexaoBancoDeDados.TxOptions.AutoCommit   := true;
        self.FConexaoBancoDeDados.Connected              := true;
 
-       FDConnection.Connected  := true;
-
+       FDConnection.Connected                           := true;
      except
        on E: Exception do
         raise TExcecaoBancoDeDadosInvalido.Create;
@@ -342,6 +345,22 @@ begin
   end;
 
   Result := FConfiguracoesECommerce;
+end;
+
+function Tdm.getConfiguracoesIntegracao: TConfigIntegracao;
+var repositorio :TRepositorio;
+begin
+  if not Assigned(FConfiguracoesIntegracao) then
+  begin
+    try
+      repositorio              := TFabricaRepositorio.GetRepositorio(TConfigIntegracao.ClassName);
+      FConfiguracoesIntegracao := TConfigIntegracao(repositorio.Get(1));
+    finally
+      FreeAndNil(repositorio);
+    end;
+  end;
+
+  Result := FConfiguracoesIntegracao;
 end;
 
 function Tdm.GetLogo: String;

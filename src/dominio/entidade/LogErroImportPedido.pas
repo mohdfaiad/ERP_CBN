@@ -13,6 +13,7 @@ type
     Fdata :TDateTime;
     Fhora :TDateTime;
     Fverificado :Boolean;
+    FImportador :String;
 
   public
     property codigo                :Integer read Fcodigo                write Fcodigo;
@@ -20,6 +21,7 @@ type
     property data                  :TDateTime read Fdata                  write Fdata;
     property hora                  :TDateTime read Fhora                  write Fhora;
     property verificado            :Boolean read Fverificado            write Fverificado;
+    property importador            :String  read FImportador            write FImportador;
 end;
 
 implementation

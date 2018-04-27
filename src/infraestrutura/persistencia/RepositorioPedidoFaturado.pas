@@ -47,7 +47,8 @@ uses
 
 function TRepositorioPedidoFaturado.Get(Dataset: TDataSet): TObject;
 begin
-   result := TPedidoFaturado.Create( Dataset.FieldByName('CODIGO_NOTA_FISCAL').AsInteger,
+   result := TPedidoFaturado.Create( Dataset.FieldByName('CODIGO').AsInteger,
+                                     Dataset.FieldByName('CODIGO_NOTA_FISCAL').AsInteger,
                                      Dataset.FieldByName('CODIGO_PEDIDO').AsInteger,
                                      Dataset.FieldByName('MOTIVO').AsString);
 end;
@@ -108,6 +109,7 @@ var
 begin
    PedidoFaturado := (Objeto as TPedidoFaturado);
 
+   inherited SetParametro('codigo',             PedidoFaturado.Codigo);
    inherited SetParametro('codigo_nota_fiscal', PedidoFaturado.CodigoNotaFiscal);
    inherited SetParametro('codigo_pedido',      PedidoFaturado.CodigoPedido);
    inherited SetParametro('motivo',             PedidoFaturado.Motivo);
@@ -131,7 +133,7 @@ end;
 function TRepositorioPedidoFaturado.SQLSalvar: String;
 begin
    result := 'update or insert into '+self.GetNomeDaTabela +' (codigo, codigo_nota_fiscal,  codigo_pedido, motivo  )'+
-                             '                        values (0,      :codigo_nota_fiscal, :codigo_pedido, :motivo )';
+                             '                        values (:codigo, :codigo_nota_fiscal, :codigo_pedido, :motivo )';
 end;
 
 end.

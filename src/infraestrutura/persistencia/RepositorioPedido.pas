@@ -86,6 +86,7 @@ begin
    Pedido.cancelado         := self.FQuery.FieldByName('CANCELADO'        ).AsString;
    Pedido.peso              := self.FQuery.FieldByName('peso'  ).AsFloat;
    Pedido.volumes           := self.FQuery.FieldByName('volumes'  ).AsInteger;
+   Pedido.tipo              := self.FQuery.FieldByName('TIPO').AsString;
 
    Result := Pedido;
 end;
@@ -183,7 +184,8 @@ begin
     Auditoria.AdicionaCampoAlterado('peso', FloatToStr(PedidoAntigo.peso), FloatToStr(PedidoNovo.peso));
    if (PedidoAntigo.volumes <> PedidoNovo.volumes) then
     Auditoria.AdicionaCampoAlterado('volumes', iNTToStr(PedidoAntigo.volumes), IntToStr(PedidoNovo.volumes));
-
+   if (PedidoAntigo.tipo <> PedidoNovo.tipo) then
+    Auditoria.AdicionaCampoAlterado('tipo', PedidoAntigo.tipo, PedidoNovo.tipo);
 end;
 
 procedure TRepositorioPedido.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -225,7 +227,8 @@ begin
    Auditoria.AdicionaCampoExcluido('DESCONTO_COMISS'  , FloatToStr(Pedido.desconto_comiss));
    Auditoria.AdicionaCampoExcluido('CANCELADO'        , Pedido.cancelado                  );
    Auditoria.AdicionaCampoExcluido('PESO'             , FloatToStr(Pedido.PESO)           );
-   Auditoria.AdicionaCampoExcluido('VOLUMES'           , IntToStr(Pedido.volumes)           );
+   Auditoria.AdicionaCampoExcluido('VOLUMES'          , IntToStr(Pedido.volumes)          );
+   Auditoria.AdicionaCampoExcluido('TIPO'             , Pedido.tipo                       );
 end;
 
 procedure TRepositorioPedido.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -268,6 +271,7 @@ begin
    Auditoria.AdicionaCampoIncluido('CANCELADO'        , Pedido.cancelado                  );
    Auditoria.AdicionaCampoIncluido('PESO'             , FloatToStr(Pedido.PESO)           );
    Auditoria.AdicionaCampoIncluido('VOLUMES'           , IntToStr(Pedido.volumes)           );
+   Auditoria.AdicionaCampoIncluido('TIPO'             , Pedido.tipo                       );
 end;
 
 procedure TRepositorioPedido.SetIdentificador(Objeto: TObject;
@@ -325,7 +329,8 @@ begin
    inherited SetParametro('DESCONTO_COMISS'  , Pedido.desconto_comiss);
    inherited SetParametro('CANCELADO'        , Pedido.cancelado);
    inherited SetParametro('PESO'             , Pedido.peso);
-   inherited SetParametro('VOLUMES'           , Pedido.volumes);
+   inherited SetParametro('VOLUMES'          , Pedido.volumes);
+   inherited SetParametro('TIPO'             , Pedido.tipo);
 end;
 
 function TRepositorioPedido.SQLGet: String;
@@ -354,11 +359,11 @@ begin
   result := 'UPDATE OR INSERT INTO PEDIDOS (CODIGO, NUMPEDIDO, COD_TAB_PRECO, COD_FORMA_PAG, COD_FILIAL, COD_FILIAL_DIGI,                '+
             'COD_CLIENTE, COD_TRANSP, COD_REPRES, DT_cadastro, DT_representante, DT_RECEBIMENTO, DT_ENTREGA, DT_LIMITE_ENTREGA,          '+
             'DESCONTO, ACRESCIMO, VALOR_FRETE, COMISSAO, VALOR_TOTAL, APROVACAO, APROVADO_POR, DT_APROVACAO, OBSERVACAO, TIPO_FRETE, DESCONTO_FPGTO,  '+
-            'DESPACHADO, DT_DESPACHO, DESCONTO_ITENS, COD_PEDIDO_MATRIZ, DESCONTO_COMISS, CANCELADO, PESO, VOLUMES)                       '+
+            'DESPACHADO, DT_DESPACHO, DESCONTO_ITENS, COD_PEDIDO_MATRIZ, DESCONTO_COMISS, CANCELADO, PESO, VOLUMES, TIPO)                '+
             'VALUES (:CODIGO, :NUMPEDIDO, :COD_TAB_PRECO, :COD_FORMA_PAG, :COD_FILIAL, :COD_FILIAL_DIGI, :COD_CLIENTE, :COD_TRANSP,      '+
             ':COD_REPRES, :DT_cadastro, :DT_representante, :DT_RECEBIMENTO, :DT_ENTREGA, :DT_LIMITE_ENTREGA, :DESCONTO, :ACRESCIMO, :VALOR_FRETE,     '+
             ':COMISSAO, :VALOR_TOTAL, :APROVACAO, :APROVADO_POR, :DT_APROVACAO, :OBSERVACAO, :TIPO_FRETE, :DESCONTO_FPGTO, :DESPACHADO,  '+
-            ':DT_DESPACHO, :DESCONTO_ITENS, :COD_PEDIDO_MATRIZ, :DESCONTO_COMISS, :CANCELADO, :PESO, :VOLUMES)                            ';
+            ':DT_DESPACHO, :DESCONTO_ITENS, :COD_PEDIDO_MATRIZ, :DESCONTO_COMISS, :CANCELADO, :PESO, :VOLUMES, :TIPO)                    ';
 end;
 
 end.

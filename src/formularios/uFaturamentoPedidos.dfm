@@ -763,10 +763,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     OnEnter = pgcNotaFiscalEnter
     object tbsCabecalho: TTabSheet
       Caption = '&Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pgcCabecalho: TPageControl
         Left = 0
         Top = 0
@@ -778,10 +774,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         TabOrder = 0
         object tbsCabecalho1: TTabSheet
           Caption = '&1 - Cabe'#231'alho'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           inline BuscaTransportadora: TBuscaTransportadora
             Left = 4
             Top = 80
@@ -1384,10 +1376,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
         object tbsDestino: TTabSheet
           Caption = '&2 - Destino'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gbEnderecoEntrega: TGroupBox
             Left = 0
             Top = 0
@@ -1688,10 +1676,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsItensFisicos: TTabSheet
       Caption = '&Itens F'#237'sicos'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gridItensFisicos: TDBGridCBN
         Left = 0
         Top = 0
@@ -1788,10 +1772,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsItensFiscais: TTabSheet
       Caption = 'Itens &Fiscais'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gridItensFiscais: TDBGridCBN
         Left = 0
         Top = 0
@@ -1913,10 +1893,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsPedidos: TTabSheet
       Caption = '&Pedidos'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1027
         360)
@@ -2111,10 +2087,6 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     object tbsObservacoes: TTabSheet
       Caption = '&Observa'#231#245'es'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbObservacoes: TGroupBox
         Left = 0
         Top = 0

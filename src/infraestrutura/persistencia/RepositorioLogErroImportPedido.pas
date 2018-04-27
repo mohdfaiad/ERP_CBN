@@ -48,6 +48,7 @@ begin
    LogErroImportPedido.data       := self.FQuery.FieldByName('data').AsDateTime;
    LogErroImportPedido.hora       := self.FQuery.FieldByName('hora').AsDateTime;
    LogErroImportPedido.verificado := (self.FQuery.FieldByName('verificado').AsString = 'S');
+   LogErroImportPedido.importador := self.FQuery.FieldByName('importador').AsString;
 
    result := LogErroImportPedido;
 end;
@@ -92,6 +93,8 @@ begin
    if (LogErroImportPedidoAntigo.verificado <> LogErroImportPedidoNovo.verificado) then
      Auditoria.AdicionaCampoAlterado('verificado', IfThen(LogErroImportPedidoAntigo.verificado,'S','N'), IfThen(LogErroImportPedidoNovo.verificado,'S','N'));
 
+   if (LogErroImportPedidoAntigo.importador <> LogErroImportPedidoNovo.importador) then
+     Auditoria.AdicionaCampoAlterado('importador', LogErroImportPedidoAntigo.importador, LogErroImportPedidoNovo.importador);
 end;
 
 procedure TRepositorioLogErroImportPedido.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -104,6 +107,7 @@ begin
   Auditoria.AdicionaCampoExcluido('data'      , DateTimeToStr(LogErroImportPedido.data));
   Auditoria.AdicionaCampoExcluido('hora'      , DateTimeToStr(LogErroImportPedido.hora));
   Auditoria.AdicionaCampoExcluido('verificado', IfThen(LogErroImportPedido.verificado, 'S', 'N'));
+  Auditoria.AdicionaCampoExcluido('importador', LogErroImportPedido.importador);
 end;
 
 procedure TRepositorioLogErroImportPedido.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -111,11 +115,12 @@ var
   LogErroImportPedido :TLogErroImportPedido;
 begin
   LogErroImportPedido := (Objeto as TLogErroImportPedido);
-  Auditoria.AdicionaCampoIncluido('codigo'    ,    IntToStr(LogErroImportPedido.codigo));
-  Auditoria.AdicionaCampoIncluido('erro'      ,    LogErroImportPedido.erro);
-  Auditoria.AdicionaCampoIncluido('data'      ,    DateTimeToStr(LogErroImportPedido.data));
-  Auditoria.AdicionaCampoIncluido('hora'      ,    DateTimeToStr(LogErroImportPedido.hora));
-  Auditoria.AdicionaCampoIncluido('verificado',    IfThen(LogErroImportPedido.verificado, 'S', 'N'));
+  Auditoria.AdicionaCampoIncluido('codigo'    , IntToStr(LogErroImportPedido.codigo));
+  Auditoria.AdicionaCampoIncluido('erro'      , LogErroImportPedido.erro);
+  Auditoria.AdicionaCampoIncluido('data'      , DateTimeToStr(LogErroImportPedido.data));
+  Auditoria.AdicionaCampoIncluido('hora'      , DateTimeToStr(LogErroImportPedido.hora));
+  Auditoria.AdicionaCampoIncluido('verificado', IfThen(LogErroImportPedido.verificado, 'S', 'N'));
+  Auditoria.AdicionaCampoIncluido('importador', LogErroImportPedido.importador);
 end;
 
 procedure TRepositorioLogErroImportPedido.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -128,11 +133,12 @@ var
 begin
   LogErroImportPedido := (Objeto as TLogErroImportPedido);
 
-  self.FQuery.ParamByName('codigo').AsInteger     := LogErroImportPedido.codigo;
-  self.FQuery.ParamByName('erro').AsString       := LogErroImportPedido.erro;
+  self.FQuery.ParamByName('codigo').AsInteger      := LogErroImportPedido.codigo;
+  self.FQuery.ParamByName('erro').AsString         := LogErroImportPedido.erro;
   self.FQuery.ParamByName('data').AsDateTime       := LogErroImportPedido.data;
   self.FQuery.ParamByName('hora').AsDateTime       := LogErroImportPedido.hora;
-  self.FQuery.ParamByName('verificado').AsString := IfThen(LogErroImportPedido.verificado, 'S', 'N');
+  self.FQuery.ParamByName('verificado').AsString   := IfThen(LogErroImportPedido.verificado, 'S', 'N');
+  self.FQuery.ParamByName('importador').AsString   := LogErroImportPedido.importador;
 end;
 
 function TRepositorioLogErroImportPedido.SQLGet: String;
@@ -158,8 +164,8 @@ end;
 
 function TRepositorioLogErroImportPedido.SQLSalvar: String;
 begin
-  result := 'update or insert into LOG_ERROS_IMPORT_PEDIDOS (CODIGO ,ERRO ,DATA ,HORA ,VERIFICADO) '+
-           '                      values ( :CODIGO , :ERRO , :DATA , :HORA , :VERIFICADO) ';
+  result := 'update or insert into LOG_ERROS_IMPORT_PEDIDOS (CODIGO ,ERRO ,DATA ,HORA ,VERIFICADO, IMPORTADOR) '+
+           '                      values ( :CODIGO , :ERRO , :DATA , :HORA , :VERIFICADO, :IMPORTADOR) ';
 end;
 
 end.

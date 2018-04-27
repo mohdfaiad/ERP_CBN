@@ -3,17 +3,17 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
   Top = 314
   BorderStyle = bsSingle
   Caption = 'Relat'#243'rio de entradas'
-  ClientHeight = 211
-  ClientWidth = 439
+  ClientHeight = 260
+  ClientWidth = 501
   OnDblClick = FormDblClick
   OnShow = FormShow
-  ExplicitWidth = 445
-  ExplicitHeight = 239
+  ExplicitWidth = 507
+  ExplicitHeight = 288
   PixelsPerInch = 96
   TextHeight = 15
   object RLReport1: TRLReport
-    Left = 379
-    Top = 16
+    Left = 443
+    Top = 8
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -1688,15 +1688,15 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
   end
   object Panel1: TPanel
     Left = 0
-    Top = 170
-    Width = 439
+    Top = 219
+    Width = 501
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 197
-    ExplicitWidth = 443
+    ExplicitTop = 170
+    ExplicitWidth = 439
     object btnImprimir: TBitBtn
-      Left = 232
+      Left = 256
       Top = 6
       Width = 153
       Height = 29
@@ -1773,7 +1773,7 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
       OnClick = btnImprimirClick
     end
     object btnSair: TBitBtn
-      Left = 64
+      Left = 88
       Top = 6
       Width = 153
       Height = 29
@@ -1810,8 +1810,8 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
     end
   end
   object GroupBox1: TGroupBox
-    Left = 96
-    Top = 56
+    Left = 24
+    Top = 16
     Width = 252
     Height = 73
     Caption = ' Per'#237'odo '
@@ -1879,6 +1879,45 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
       ParentFont = False
       TabOrder = 1
       OnExit = dtpFimExit
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 24
+    Top = 104
+    Width = 453
+    Height = 92
+    Caption = ' [Filtro por Produto ]'
+    TabOrder = 3
+    inline BuscaProduto1: TBuscaProduto
+      Left = 15
+      Top = 21
+      Width = 430
+      Height = 66
+      TabOrder = 0
+      ExplicitLeft = 15
+      ExplicitTop = 21
+      ExplicitWidth = 430
+      inherited StaticText1: TStaticText
+        Font.Color = 6250335
+      end
+      inherited StaticText2: TStaticText
+        Width = 61
+        Caption = 'Descri'#231#227'o'
+        Font.Color = 6250335
+        ExplicitWidth = 61
+      end
+      inherited edtReferencia: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtDescricao: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
+      inherited edtGrade: TEdit
+        Height = 23
+        ExplicitHeight = 23
+      end
     end
   end
   object DataSource1: TDataSource
@@ -2058,8 +2097,8 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
         'order by es.data_producao, es.codigo_produto, pro.referencia, pr' +
         'o.descricao, es.codigo_intervalo'
       '')
-    Left = 16
-    Top = 8
+    Left = 312
+    Top = 16
     object qryDATA_PRODUCAO: TDateField
       FieldName = 'DATA_PRODUCAO'
       Origin = 'DATA_PRODUCAO'
@@ -2114,8 +2153,8 @@ inherited frmRelatorioEntradas: TfrmRelatorioEntradas
     Connection = dm.FDConnection
     SQL.Strings = (
       'select * from intervalos_producao')
-    Left = 16
-    Top = 56
+    Left = 312
+    Top = 64
     object qryIntervalosCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Origin = 'CODIGO'

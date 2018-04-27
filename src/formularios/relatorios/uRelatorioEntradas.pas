@@ -9,7 +9,7 @@ uses
   ComCtrls, Grids, DBGrids, ACBrNFe, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, RLFilters;
+  FireDAC.Comp.Client, RLFilters, frameBuscaProduto;
 
 type
   TfrmRelatorioEntradas = class(TfrmPadrao)
@@ -191,6 +191,8 @@ type
     TOT_PECAS_TOTAIS: TRLLabel;
     RLLabel30: TRLLabel;
     rlReferencias: TRLLabel;
+    GroupBox2: TGroupBox;
+    BuscaProduto1: TBuscaProduto;
     procedure btnImprimirClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RLDBText2BeforePrint(Sender: TObject; var Text: String;
@@ -263,6 +265,8 @@ begin
   qry.SQL.Text := montaSQL;
   qry.ParamByName('dti').AsDateTime := dtpInicio.DateTime;
   qry.ParamByName('dtf').AsDateTime := dtpFim.DateTime;
+  if assigned(BuscaProduto1.Prod) then
+    qry.ParamByName('codpro').AsInteger := BuscaProduto1.Prod.Codigo;
   qry.Open;
 
   if qry.IsEmpty then
@@ -276,13 +280,16 @@ begin
 end;
 
 function TfrmRelatorioEntradas.montaSQL: String;
+var filtro_produto :String;
 begin
+  if assigned(BuscaProduto1.Prod) then
+    filtro_produto := ' and (pro.codigo = :codpro) ';
 
   result := 'select es.data_producao, es.codigo_produto, pro.referencia, pro.descricao, es.codigo_intervalo,  '+
             ' Max(es.data_lancamento) dt_lancamento, SUM(es.quantidade) quantidade, MAX(pro.qtd_pecas) pecas  '+
             '               from entradas_saidas es                                                           '+
             'inner join produtos pro on pro.codigo = es.codigo_produto                                        '+
-            'where es.tipo = ''E'' and (es.data_producao between :dti and :dtf)                               '+
+            'where es.tipo = ''E'' and (es.data_producao between :dti and :dtf) '+ filtro_produto +
             'group by es.data_producao, es.codigo_produto, pro.referencia, pro.descricao, es.codigo_intervalo '+
             'order by es.data_producao, es.codigo_produto, pro.referencia, pro.descricao, es.codigo_intervalo';
 end;

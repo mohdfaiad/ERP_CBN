@@ -154,6 +154,14 @@ type
     EmAberto1: TMenuItem;
     tmrVerificaPedidosEmAberto: TTimer;
     PlanodeContasContbeis1: TMenuItem;
+    ConfiguraesdeIntegrao1: TMenuItem;
+    Sincronizador1: TMenuItem;
+    EnviarparaapiMeusPedidos1: TMenuItem;
+    shpOrcamentos: TShape;
+    lbTituloOrcamentos: TLabel;
+    lbOrcamentos: TLabel;
+    lbDescOrcamentos: TLabel;
+    btnVerificarOrcamentos: TBitBtn;
     procedure Perfisdeacesso1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Usurios1Click(Sender: TObject);
@@ -252,6 +260,11 @@ type
     procedure EmAberto1Click(Sender: TObject);
     procedure tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
     procedure PlanodeContasContbeis1Click(Sender: TObject);
+    procedure ConfiguraesdeIntegrao1Click(Sender: TObject);
+    procedure ApplicationEvents1Activate(Sender: TObject);
+    procedure ApplicationEvents1Deactivate(Sender: TObject);
+    procedure EnviarparaapiMeusPedidos1Click(Sender: TObject);
+    procedure btnVerificarOrcamentosClick(Sender: TObject);
 
   private
     FVerificadorManutencao :TServicoVerificadorSistemaEmManutencao;
@@ -265,7 +278,9 @@ type
     procedure MostraTempoRestante(TempoRestante :String);
     procedure efetuaDebitosDoDia;
     procedure verificarErros;
+    procedure verificarOrcamentos;
     procedure iniciaVErificadorErroImportacao(temPermissao :Boolean);
+    procedure iniciaVerificadorOrcamentosVerificacao(temPermissao :Boolean);
 
   public
     constructor Create(AOwner :TComponent); override;
@@ -280,7 +295,7 @@ implementation
 uses
   RLConsts,
   uCadastroPerfilAcesso,
-  uCadastroUsuario,
+  uCadastroUsuario, uAguarde,
   uBackup,
   uCadastroCliente,
   uModulo,
@@ -315,11 +330,11 @@ uses
   uCadastroCfopCorrespondente,
   uRelatorioRaioXRepresentante,
   uRelatorioNotaEntrada,
-  uRelatorioClientes,
+  uRelatorioClientes, uOrcamentos,
   uRelatorioReferencias, LogErroImportPedido,
   uFechaComissaoRepresentante, uSincronizaProdutoEcommerce,
   uSintegra, uParcelamento, uErrosImportacaoPedido,
-  uEFDContribuicoes, uCadastroGrupo,
+  uEFDContribuicoes, uCadastroGrupo, uCadastroConfiguracoesIntegracao,
   uCadastroContador, uImportadorOrdemServico, uPedidosEmAberto,
   uEFDFiscal, uCadastroContasBanco, uCaixa, uCadastroCidade, uCadastroNCM, uRelatorioMaterias,
   uRelatorioNotasFiscaisVenda, uSupervisor, Usuario, uConferenciaPedido, uEntradaManualMateria,
@@ -328,7 +343,7 @@ uses
   uRelatorioTotalizarEstoque, uContasPagar, uRelatorioMovimentos, uRelatorioCaixa, uFechaComissaoECommerce,
   uBuscarRomaneio, uCadastroColecao, uCadastroIntervaloProducao, uRelatorioEntradas, uImportadadorClientesTricae,
   uCadastroPadrao, uRelatorioContasPagar, uVisualizaPedidosNfes, uPedidoConsumidorFinal, uTransferenciaEstoque, uDevolucao,
-  uGeraArquivoMeusPedidos, uCadastroPlanoContasContabeis;
+  uGeraArquivoMeusPedidos, uCadastroPlanoContasContabeis, uSincronizador;
 
 {$R *.dfm}
 
@@ -365,6 +380,7 @@ begin
 
   efetuaDebitosDoDia;
   iniciaVerificadorErroImportacao(TPermissoesAcesso.VerificaPermissao(paVerificaErrosImportacaoPedido,'',false));
+  iniciaVerificadorOrcamentosVerificacao(TPermissoesAcesso.VerificaPermissao(paVerificarOrcamentos,'',false));
 end;
 
 procedure TfrmInicial.Usurios1Click(Sender: TObject);
@@ -384,6 +400,23 @@ begin
   try
      self.AbreForm(TfrmErrosImportacaoPedido, paVerificaErrosImportacaoPedido);
      verificarErros;
+  except
+    on e : Exception do
+      begin
+        Avisar(e.Message);
+      end;
+  end;
+end;
+
+procedure TfrmInicial.btnVerificarOrcamentosClick(Sender: TObject);
+begin
+  try
+     //self.AbreForm(TfrmOrcamentos, paVerificarOrcamentos);
+     frmOrcamentos := TfrmOrcamentos.Create(nil);
+     frmOrcamentos.ShowModal;
+     frmOrcamentos.Release;
+     frmOrcamentos := nil;
+     verificarOrcamentos;
   except
     on e : Exception do
       begin
@@ -432,6 +465,26 @@ begin
                                                                                self.HabilitaContagemRegressiva,
                                                                                self.MostraTempoRestante,
                                                                                self.DesabilitaContagemRegressiva);
+end;
+
+procedure TfrmInicial.ApplicationEvents1Activate(Sender: TObject);
+begin
+  inherited;
+  if not (frmAguarde = nil) then
+  begin
+    frmAguarde.FormStyle := fsStayOnTop;
+    frmAguarde.Show;
+  end;
+end;
+
+procedure TfrmInicial.ApplicationEvents1Deactivate(Sender: TObject);
+begin
+  inherited;
+  if not (frmAguarde = nil) then
+  begin
+    frmAguarde.Hide;
+    frmAguarde.FormStyle := fsNormal;
+  end;
 end;
 
 procedure TfrmInicial.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
@@ -1000,16 +1053,14 @@ begin
   frmConferenciaPedido := nil;
 end;
 
+procedure TfrmInicial.ConfiguraesdeIntegrao1Click(Sender: TObject);
+begin
+   self.AbreForm(TfrmCadastroConfiguracoesIntegracao, paCadastroConfiguracoesIntegracao);
+end;
+
 procedure TfrmInicial.ConfiguraesEcommerce1Click(Sender: TObject);
 begin
-  try
-     self.AbreForm(TfrmCadastroConfiguracoesECommerce, paCadastroConfiguracoesEcommerce);
-  except
-    on e : Exception do
-      begin
-        Avisar(e.Message);
-      end;
-  end;
+   self.AbreForm(TfrmCadastroConfiguracoesECommerce, paCadastroConfiguracoesEcommerce);
 end;
 
 procedure TfrmInicial.Venda1Click(Sender: TObject);
@@ -1123,6 +1174,25 @@ begin
   end;
 end;
 
+procedure TfrmInicial.verificarOrcamentos;
+var qry :TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := dm.conexao;
+    qry.Close;
+    qry.SQL.Text := 'select count(p.codigo) QTD from pedidos p '+
+                    ' inner join relacao_tab_importacao rt on ((rt.url = ''pedidos'')and(rt.id_erp = p.codigo)) '+
+                    ' where p.tipo = ''O'' and not p.cancelado = ''S''';
+    qry.Open();
+
+    lbOrcamentos.Caption      := qry.FieldByName('QTD').AsString;
+    btnVerificar.Enabled := qry.FieldByName('QTD').AsInteger > 0;
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
 procedure TfrmInicial.ImprimirRomaneio1Click(Sender: TObject);
 begin
   inherited;
@@ -1140,6 +1210,21 @@ begin
   lbDescErro.Visible    := temPermissao;
   lbErros.Visible       := temPermissao;
   btnVerificar.Visible  := temPermissao;
+  //fixo em 5min
+  if temPermissao then
+  begin
+    timerLogErros.Enabled := true;
+    timerLogErrosTimer(nil);
+  end;
+end;
+
+procedure TfrmInicial.iniciaVerificadorOrcamentosVerificacao(temPermissao: Boolean);
+begin
+  shpOrcamentos.Visible       := temPermissao;
+  lbTituloOrcamentos.Visible  := temPermissao;
+  lbDescOrcamentos.Visible    := temPermissao;
+  lbOrcamentos.Visible        := temPermissao;
+  btnVerificarOrcamentos.Visible  := temPermissao;
   //fixo em 5min
   if temPermissao then
   begin
@@ -1176,6 +1261,7 @@ end;
 procedure TfrmInicial.timerLogErrosTimer(Sender: TObject);
 begin
   verificarErros;
+  verificarOrcamentos;
 end;
 
 procedure TfrmInicial.tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
@@ -1192,10 +1278,10 @@ end;
 
 procedure TfrmInicial.Button1Click(Sender: TObject);
 begin
-  frmGeraArquivoMeusPedidos := TfrmGeraArquivoMeusPedidos.Create(nil);
+ { frmGeraArquivoMeusPedidos := TfrmGeraArquivoMeusPedidos.Create(nil);
   frmGeraArquivoMeusPedidos.ShowModal;
   frmGeraArquivoMeusPedidos.Release;
-  frmGeraArquivoMeusPedidos := nil;
+  frmGeraArquivoMeusPedidos := nil;}
 end;
       {
 Initialization
@@ -1214,6 +1300,11 @@ end;
 procedure TfrmInicial.Entradas1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioEntradas, paRelatorioEntradas);
+end;
+
+procedure TfrmInicial.EnviarparaapiMeusPedidos1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmSincronizador, paSincronizador);
 end;
 
 procedure TfrmInicial.Estoque1Click(Sender: TObject);

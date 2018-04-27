@@ -283,7 +283,7 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
         Top = 56
         Width = 814
         Height = 417
-        ActivePage = TabSheet3
+        ActivePage = TabSheet2
         TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'Permiss'#245'es B'#225'sicas'
@@ -503,6 +503,14 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Cadastrar plano de contas cont'#225'beis'
             TabOrder = 26
+          end
+          object chk87: TCheckBox
+            Left = 272
+            Top = 272
+            Width = 226
+            Height = 17
+            Caption = 'Cadastrar configura'#231#245'es Integra'#231#227'o'
+            TabOrder = 27
           end
         end
         object TabSheet7: TTabSheet
@@ -799,6 +807,22 @@ inherited frmCadastroPerfilAcesso: TfrmCadastroPerfilAcesso
             Height = 17
             Caption = 'Verificar erros importa'#231#227'o pedido'
             TabOrder = 12
+          end
+          object chk88: TCheckBox
+            Left = 8
+            Top = 320
+            Width = 212
+            Height = 17
+            Caption = 'Sincronizador'
+            TabOrder = 13
+          end
+          object ch89: TCheckBox
+            Left = 8
+            Top = 344
+            Width = 212
+            Height = 17
+            Caption = 'Verificar or'#231'amentos pendentes'
+            TabOrder = 14
           end
         end
         object TabSheet6: TTabSheet

@@ -23,6 +23,10 @@ inherited frmPedido: TfrmPedido
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         1037
         426)
@@ -4446,6 +4450,10 @@ inherited frmPedido: TfrmPedido
     object TabSheet3: TTabSheet
       Caption = 'F3 - Itens'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Shape2: TShape
         Left = 4
         Top = 375

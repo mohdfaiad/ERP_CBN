@@ -55,7 +55,7 @@ type
   end;
 
 CONST
-  prefixos : Array[1..4] of string = ('78992426','78991340','78996349','78999967');
+  prefixos : Array[1..5] of string = ('78992426','78991340','78996349','78999967','79081293');
   QTD_MAX_COD_POR_PREFIXO = 10000;
 
 implementation
@@ -113,7 +113,10 @@ begin
                     '           where numeracao starts with :prefixo3 ) + '+
                     '         ( select count(cb.codigo)                   '+
                     '           from codigo_barras cb                     '+
-                    '           where numeracao starts with :prefixo4 ))  '+
+                    '           where numeracao starts with :prefixo4 ) + '+
+                    '         ( select count(cb.codigo)                   '+
+                    '           from codigo_barras cb                     '+
+                    '           where numeracao starts with :prefixo5 ))  '+
                     '         QTD_CODIGOS                                 '+
                     '     from codigo_barras cb                           '+
                     ' where numeracao starts with :prefixo1               ';
@@ -122,6 +125,7 @@ begin
     qry.ParamByName('prefixo2').AsString := prefixos[2];
     qry.ParamByName('prefixo3').AsString := prefixos[3];
     qry.ParamByName('prefixo4').AsString := prefixos[4];
+    qry.ParamByName('prefixo5').AsString := prefixos[5];
     qry.Open;
 
     result := (length(prefixos) * QTD_MAX_COD_POR_PREFIXO) - qry.FieldByName('QTD_CODIGOS').AsInteger;

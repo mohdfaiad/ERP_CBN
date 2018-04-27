@@ -4,14 +4,14 @@ interface
                                                   
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Buttons, ACBrGIF;
+  Dialogs, StdCtrls, ExtCtrls, Buttons, ACBrGIF, Vcl.WinXCtrls;
 
 type
   TfrmAguarde = class(TForm)
     memoAguarde: TMemo;
     Shape3: TShape;
     Shape1: TShape;
-    gifAguarde: TACBrGIF;
+    Indicator: TActivityIndicator;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -37,8 +37,9 @@ end;
 
 procedure TfrmAguarde.FormShow(Sender: TObject);
 begin
-  frmAguarde.gifAguarde.Filename := ExtractFilePath( Application.ExeName )+'\erp img\Aguarda.gif';
-  frmAguarde.gifAguarde.Active   := true;
+  Application.ProcessMessages;
+  Indicator.Animate   := true;
+  Application.ProcessMessages;
 end;
 
 end.

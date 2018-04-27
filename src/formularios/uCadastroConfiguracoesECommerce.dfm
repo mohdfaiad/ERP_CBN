@@ -19,6 +19,8 @@ inherited frmCadastroConfiguracoesECommerce: TfrmCadastroConfiguracoesECommerce
     ExplicitWidth = 548
     ExplicitHeight = 455
     inherited tsConsulta: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 540
       ExplicitHeight = 425
       inherited gridConsulta: TDBGridCBN
@@ -27,7 +29,7 @@ inherited frmCadastroConfiguracoesECommerce: TfrmCadastroConfiguracoesECommerce
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 406
-        Width = 540
+        Width = 240
         ExplicitTop = 406
       end
     end

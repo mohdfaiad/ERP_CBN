@@ -90,6 +90,9 @@ type
     ListaColecoes: TListaCampo;
     BuscaCor1: TBuscaCor;
     BuscaCor2: TBuscaCor;
+    Label13: TLabel;
+    edtDescricaoCompleta: TEdit;
+    cdsDESCRICAO_COMPLETA: TStringField;
     procedure FormShow(Sender: TObject);
     procedure cdsAfterScroll(DataSet: TDataSet);
     procedure btnIncluirClick(Sender: TObject);
@@ -111,6 +114,7 @@ type
     procedure edtReferenciaChange(Sender: TObject);
     procedure btnSelecionarImgClick(Sender: TObject);
     procedure btnDeletarImgClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     CoresFilhasDeletadas :TStringList;
     CoresKitDeletadas :TStringList;
@@ -178,9 +182,11 @@ end;
 procedure TfrmCadastroCores.btnIncluirClick(Sender: TObject);
 begin
   inherited;
+  cds.AfterScroll := nil;
   edtReferencia.OnChange := nil;
   pgcCores.ActivePageIndex := 0;
   edtDescricao.Clear;
+  edtDescricaoCompleta.Clear;
   edtReferencia.Clear;
   edtCodigo.Text := '0';
   edtDesc.Clear;
@@ -190,25 +196,34 @@ begin
   cbpai.ItemIndex       := -1;
   self.Tag              := 1;
   edtReferencia.Enabled := true;
+  edtDescricaoCompleta.Enabled := true;
+  edtDescricao.Enabled := true;
   gpbDescricao2.Enabled := true;
+  ListaColecoes.Enabled := true;
   btnDeletarImg.Enabled := true;
   btnSelecionarImg.Enabled := true;
   edtReferencia.SetFocus;
   edtReferencia.OnChange := edtReferenciaChange;
   cmbKit.ItemIndex := -1;
+  cds.AfterScroll := cdsAfterScroll;
 end;
 
 procedure TfrmCadastroCores.btnAlterarClick(Sender: TObject);
 begin
   inherited;
+  cds.AfterScroll := nil;
   self.Tag := 2;
   pgcCores.ActivePageIndex := 0;
   edtReferencia.Enabled := true;
   gpbDescricao2.Enabled := true;
   btnDeletarImg.Enabled := true;
+  edtDescricaoCompleta.Enabled  := true;
+  edtDescricao.Enabled := true;
+  ListaColecoes.Enabled := true;
   btnSelecionarImg.Enabled := true;
   edtReferencia.SetFocus;
   pgcCores.Pages[1].Enabled := true;
+  cds.AfterScroll := cdsAfterScroll;
 end;
 
 procedure TfrmCadastroCores.btnCancelarClick(Sender: TObject);
@@ -217,6 +232,9 @@ begin
   habilitar(false);
   pgcCores.ActivePageIndex := 0;
   edtReferencia.Enabled    := false;
+  edtDescricaoCompleta.Enabled := false;
+  ListaColecoes.Enabled := false;
+  edtDescricao.Enabled := false;
   gpbDescricao2.Enabled    := false;
   FDesejaAlterarReferencia := false;
   btnDeletarImg.Enabled := false;
@@ -351,6 +369,7 @@ begin
   Cor.Cor_pai        := IfThen(cdsCoresFilhas.IsEmpty, 'N', copy( cbPai.Items[cbPai.itemIndex], 1, 1) );
   cor.Codigo_colecao := ListaColecoes.CodCampo;
   Cor.kit            := (cdsCoresKit.RecordCount > 0) and (cmbKit.Items[cmbKit.ItemIndex] = 'SIM');
+  Cor.descricao_completa := trim(edtDescricaoCompleta.Text);
 
   rep.Salvar(Cor);
   edtCodigo.Text := IntToStr(Cor.Codigo);
@@ -472,6 +491,7 @@ begin
     lbCor.Caption       := cdsDESCRICAO.AsString;
     ListaColecoes.CodCampo := cdsCODIGO_COLECAO.AsInteger;
     cmbKit.ItemIndex    := cmbKit.Items.IndexOf(IfThen(cdsKIT.AsString='S', 'SIM', 'NÃO'));
+    edtDescricaoCompleta.Text := cdsDESCRICAO_COMPLETA.AsString;
 
     cbPaiChange(nil);
     cmbKitChange(nil);
@@ -543,6 +563,13 @@ begin
   cdsCoresFilhas.CreateDataSet;
   cdsCoresKit.CreateDataSet;
   pgcCores.ActivePageIndex := 0;
+end;
+
+procedure TfrmCadastroCores.FormDestroy(Sender: TObject);
+begin
+  CDS.AfterScroll := NIL;
+
+  inherited;
 end;
 
 procedure TfrmCadastroCores.gridCoresFilhasKeyDown(Sender: TObject;
@@ -644,7 +671,10 @@ begin
   if FileExists(server+destino+nomeArq) then
     RedimensionarJPG(server+destino+nomeArq,110,110)
   else
-    imgCor.Picture := nil;
+  begin
+    if assigned(imgCor) then
+      imgCor.Picture := nil;
+  end;
 end;
 
 procedure TfrmCadastroCores.cbPaiChange(Sender: TObject);

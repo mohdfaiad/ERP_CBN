@@ -678,7 +678,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
       Left = 39
       Top = 356
       Width = 716
-      Height = 113
+      Height = 106
       DataSource = dsDebCred1
       object RLBand10: TRLBand
         Left = 0
@@ -818,79 +818,6 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
       end
-      object RLBand12: TRLBand
-        Left = 0
-        Top = 66
-        Width = 716
-        Height = 37
-        BandType = btColumnFooter
-        Borders.Sides = sdCustom
-        Borders.DrawLeft = False
-        Borders.DrawTop = False
-        Borders.DrawRight = False
-        Borders.DrawBottom = False
-        object RLDraw7: TRLDraw
-          Left = -2
-          Top = -1
-          Width = 718
-          Height = 24
-          Brush.Style = bsClear
-          Pen.Color = 10197915
-          Pen.Style = psDot
-        end
-        object RLLabel20: TRLLabel
-          Left = 5
-          Top = 4
-          Width = 109
-          Height = 16
-          Caption = 'Saldo Parcela 1:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object RLLabel32: TRLLabel
-          Left = 237
-          Top = 4
-          Width = 109
-          Height = 16
-          Caption = 'Saldo Parcela 2:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lbSaldoP2: TRLLabel
-          Left = 349
-          Top = 4
-          Width = 29
-          Height = 16
-          Caption = '0,00'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
-        end
-        object lbSaldoP1: TRLLabel
-          Left = 117
-          Top = 4
-          Width = 29
-          Height = 16
-          Caption = '0,00'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
-        end
-      end
       object RLBand13: TRLBand
         Left = 0
         Top = 0
@@ -922,10 +849,17 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           Transparent = False
         end
       end
+      object RLBand12: TRLBand
+        Left = 0
+        Top = 66
+        Width = 716
+        Height = 18
+        BandType = btColumnFooter
+      end
     end
     object RLBand14: TRLBand
       Left = 39
-      Top = 469
+      Top = 462
       Width = 716
       Height = 111
       BandType = btSummary
@@ -1265,7 +1199,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     end
     object RLBand30: TRLBand
       Left = 39
-      Top = 580
+      Top = 573
       Width = 716
       Height = 39
       BandType = btSummary
@@ -1507,7 +1441,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
       object gpbDebCred: TGroupBox
         Left = 330
         Top = 308
-        Width = 505
+        Width = 467
         Height = 241
         Anchors = [akRight, akBottom]
         Caption = ' D'#233'bito / Cr'#233'dito (Representante) '
@@ -1521,11 +1455,11 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         object Label12: TLabel
           Left = 10
           Top = 104
-          Width = 480
+          Width = 438
           Height = 14
           Caption = 
             '________________________________________________________________' +
-            '________________'
+            '_________'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 12895940
           Font.Height = -11
@@ -1534,7 +1468,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object btnRemover: TSpeedButton
-          Left = 397
+          Left = 357
           Top = 208
           Width = 97
           Height = 25
@@ -1617,7 +1551,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           OnClick = btnRemoverClick
         end
         object btnAlterar: TSpeedButton
-          Left = 397
+          Left = 357
           Top = 156
           Width = 97
           Height = 25
@@ -1702,8 +1636,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         object gridDebCred1: TDBGridCBN
           Left = 11
           Top = 131
-          Width = 374
-          Height = 100
+          Width = 337
+          Height = 101
           Color = 14803425
           DataSource = dsDebCred1
           Font.Charset = DEFAULT_CHARSET
@@ -1787,7 +1721,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
             end>
         end
         object btnIncluir: TBitBtn
-          Left = 397
+          Left = 357
           Top = 130
           Width = 97
           Height = 25
@@ -1870,7 +1804,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           OnClick = btnIncluirClick
         end
         object btnCancelar: TBitBtn
-          Left = 397
+          Left = 357
           Top = 182
           Width = 97
           Height = 25
@@ -1956,7 +1890,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         object pnlDados: TPanel
           Left = 8
           Top = 16
-          Width = 489
+          Width = 449
           Height = 97
           BevelOuter = bvNone
           Enabled = False
@@ -2016,7 +1950,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           object memoDescricao: TMemo
             Left = 57
             Top = 49
-            Width = 376
+            Width = 334
             Height = 43
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -2024,7 +1958,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 2
+            TabOrder = 3
             OnKeyPress = memoDescricaoKeyPress
           end
           object cbTipo: TComboBox
@@ -2066,10 +2000,10 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
             TabOrder = 0
           end
           object btnOK: TBitBtn
-            Left = 441
-            Top = 25
+            Left = 397
+            Top = 48
             Width = 47
-            Height = 49
+            Height = 44
             Caption = 'OK'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -2146,7 +2080,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
             Layout = blGlyphTop
             NumGlyphs = 2
             ParentFont = False
-            TabOrder = 3
+            TabOrder = 4
             OnClick = btnOKClick
           end
           object cbParcelaDestino: TComboBox
@@ -2162,7 +2096,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
             Font.Style = []
             ItemIndex = 0
             ParentFont = False
-            TabOrder = 4
+            TabOrder = 2
             Text = '<selecione>'
             Items.Strings = (
               '<selecione>'
@@ -2172,9 +2106,9 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         end
       end
       object GroupBox7: TGroupBox
-        Left = 843
+        Left = 812
         Top = 308
-        Width = 270
+        Width = 301
         Height = 241
         Anchors = [akRight, akBottom]
         Caption = ' S A L D O '
@@ -2186,8 +2120,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         ParentFont = False
         TabOrder = 2
         object Label17: TLabel
-          Left = 24
-          Top = 28
+          Left = 40
+          Top = 22
           Width = 88
           Height = 13
           Caption = 'Total Comiss'#227'o >'
@@ -2199,8 +2133,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label18: TLabel
-          Left = 24
-          Top = 60
+          Left = 40
+          Top = 52
           Width = 89
           Height = 13
           Caption = 'Total D'#233'bito      >'
@@ -2212,8 +2146,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label19: TLabel
-          Left = 24
-          Top = 92
+          Left = 40
+          Top = 82
           Width = 89
           Height = 13
           Caption = 'Total Cr'#233'dito     >'
@@ -2225,8 +2159,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label20: TLabel
-          Left = 24
-          Top = 127
+          Left = 40
+          Top = 113
           Width = 89
           Height = 13
           Caption = 'Saldo Total        >'
@@ -2239,10 +2173,10 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         end
         object Label3: TLabel
           Left = 4
-          Top = 164
-          Width = 261
+          Top = 141
+          Width = 293
           Height = 13
-          Caption = '-- Datas previstas para pagamento --------------------'
+          Caption = '-- Datas previstas para pagamento ----------------------------'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 6049328
           Font.Height = -11
@@ -2251,8 +2185,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label5: TLabel
-          Left = 8
-          Top = 191
+          Left = 16
+          Top = 167
           Width = 34
           Height = 13
           Caption = 'Parc 1:'
@@ -2264,8 +2198,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label8: TLabel
-          Left = 8
-          Top = 218
+          Left = 16
+          Top = 194
           Width = 34
           Height = 13
           Caption = 'Parc 2:'
@@ -2277,8 +2211,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label13: TLabel
-          Left = 148
-          Top = 191
+          Left = 172
+          Top = 167
           Width = 33
           Height = 13
           Caption = 'Vlr P1:'
@@ -2290,8 +2224,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object Label14: TLabel
-          Left = 148
-          Top = 218
+          Left = 172
+          Top = 194
           Width = 33
           Height = 13
           Caption = 'Vlr P2:'
@@ -2303,8 +2237,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
         end
         object edtComissaoSaldo1: TCurrencyEdit
-          Left = 125
-          Top = 24
+          Left = 141
+          Top = 18
           Width = 115
           Height = 21
           AutoSize = False
@@ -2322,8 +2256,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 0
         end
         object edtDebitoSaldo1: TCurrencyEdit
-          Left = 125
-          Top = 56
+          Left = 141
+          Top = 48
           Width = 115
           Height = 21
           AutoSize = False
@@ -2341,8 +2275,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 1
         end
         object edtCreditoSaldo1: TCurrencyEdit
-          Left = 125
-          Top = 88
+          Left = 141
+          Top = 78
           Width = 115
           Height = 21
           AutoSize = False
@@ -2360,8 +2294,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 2
         end
         object edtSaldoTotal1: TCurrencyEdit
-          Left = 125
-          Top = 122
+          Left = 141
+          Top = 108
           Width = 115
           Height = 22
           AutoSize = False
@@ -2380,8 +2314,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           OnChange = edtSaldoTotal1Change
         end
         object dtpDataPrevista: TDateTimePicker
-          Left = 48
-          Top = 186
+          Left = 56
+          Top = 162
           Width = 89
           Height = 21
           Date = 41715.574898217590000000
@@ -2389,8 +2323,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 4
         end
         object dtpDataPrevista2: TDateTimePicker
-          Left = 49
-          Top = 213
+          Left = 57
+          Top = 189
           Width = 89
           Height = 21
           Date = 41715.574898217590000000
@@ -2398,8 +2332,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 5
         end
         object edtVlrParcela1: TCurrencyEdit
-          Left = 185
-          Top = 186
+          Left = 209
+          Top = 162
           Width = 72
           Height = 22
           AutoSize = False
@@ -2417,8 +2351,8 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           TabOrder = 6
         end
         object edtVlrParcela2: TCurrencyEdit
-          Left = 185
-          Top = 213
+          Left = 209
+          Top = 189
           Width = 72
           Height = 22
           AutoSize = False
@@ -2434,6 +2368,21 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
           ParentFont = False
           ReadOnly = True
           TabOrder = 7
+        end
+        object chkApenasUmaParcela: TCheckBox
+          Left = 17
+          Top = 220
+          Width = 275
+          Height = 17
+          Caption = 'Pagamento total na 1'#170' parcela'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 8
+          OnClick = chkApenasUmaParcelaClick
         end
       end
       object DBEdit2: TDBEdit
@@ -2454,7 +2403,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
         Top = 316
         Width = 316
         Height = 224
-        ActivePage = TabSheet4
+        ActivePage = TabSheet3
         Anchors = [akLeft, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3252,51 +3201,51 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     Left = 80
     Top = 192
   end
-  object cdsQuinzena1: TClientDataSet
+  object cdsPedidosPeriodo: TClientDataSet
     Aggregates = <>
     AggregatesActive = True
     Params = <>
     ProviderName = 'dspQuinzena1'
     Left = 112
     Top = 192
-    object cdsQuinzena1DT_ENVIO: TDateField
+    object cdsPedidosPeriodoDT_ENVIO: TDateField
       FieldName = 'DT_ENVIO'
       ReadOnly = True
     end
-    object cdsQuinzena1DIA_PEDIDO: TSmallintField
+    object cdsPedidosPeriodoDIA_PEDIDO: TSmallintField
       FieldName = 'DIA_PEDIDO'
       ReadOnly = True
     end
-    object cdsQuinzena1CLIENTE: TStringField
+    object cdsPedidosPeriodoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Size = 60
     end
-    object cdsQuinzena1FPGTO: TStringField
+    object cdsPedidosPeriodoFPGTO: TStringField
       FieldName = 'FPGTO'
       Size = 100
     end
-    object cdsQuinzena1NUMPEDIDO: TStringField
+    object cdsPedidosPeriodoNUMPEDIDO: TStringField
       FieldName = 'NUMPEDIDO'
       Size = 22
     end
-    object cdsQuinzena1COMISSAO: TBCDField
+    object cdsPedidosPeriodoCOMISSAO: TBCDField
       FieldName = 'COMISSAO'
       Precision = 18
       Size = 2
     end
-    object cdsQuinzena1VALOR_TOTAL: TBCDField
+    object cdsPedidosPeriodoVALOR_TOTAL: TBCDField
       FieldName = 'VALOR_TOTAL'
       DisplayFormat = ' ,0.00; -,0.00'
       Precision = 18
       Size = 2
     end
-    object cdsQuinzena1VLRCOMISSAO: TBCDField
+    object cdsPedidosPeriodoVLRCOMISSAO: TBCDField
       FieldName = 'VLRCOMISSAO'
       DisplayFormat = ' ,0.00; -,0.00'
       Precision = 18
       Size = 2
     end
-    object cdsQuinzena1TOT_PEDIDO: TAggregateField
+    object cdsPedidosPeriodoTOT_PEDIDO: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_PEDIDO'
       Active = True
@@ -3304,7 +3253,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(VALOR_TOTAL)'
     end
-    object cdsQuinzena1TOT_VLRCOMISS: TAggregateField
+    object cdsPedidosPeriodoTOT_VLRCOMISS: TAggregateField
       Alignment = taRightJustify
       FieldName = 'TOT_VLRCOMISS'
       Active = True
@@ -3314,7 +3263,7 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     end
   end
   object dsQuinzena1: TDataSource
-    DataSet = cdsQuinzena1
+    DataSet = cdsPedidosPeriodo
     Left = 144
     Top = 192
   end
@@ -3342,31 +3291,6 @@ inherited frmFechaComissaoRepresentante: TfrmFechaComissaoRepresentante
     DataSet = cdsComissoes1
     Left = 80
     Top = 488
-  end
-  object dsComissoes2: TDataSource
-    DataSet = cdsComissoes2
-    Left = 184
-    Top = 488
-  end
-  object cdsComissoes2: TClientDataSet
-    Aggregates = <>
-    AggregatesActive = True
-    Params = <>
-    ProviderName = 'dspQuinzena2'
-    Left = 152
-    Top = 488
-    object FloatField7: TFloatField
-      FieldName = 'PERC_COMISSAO'
-      DisplayFormat = '0.00%'
-    end
-    object FloatField8: TFloatField
-      FieldName = 'TOTAL_PERCENTAGEM'
-      DisplayFormat = ' ,0.00; -,0.00'
-    end
-    object cdsComissoes2TOTAL_PEDIDO: TFloatField
-      FieldName = 'TOTAL_PEDIDO'
-      DisplayFormat = ' ,0.00; -,0.00'
-    end
   end
   object cdsDebCred1: TClientDataSet
     Aggregates = <>

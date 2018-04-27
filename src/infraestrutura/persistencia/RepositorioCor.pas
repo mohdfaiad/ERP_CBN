@@ -62,7 +62,8 @@ begin
    cor.Cor_pai        := self.FQuery.fieldByName('cor_pai').AsString;
    cor.Codigo_colecao := self.FQuery.FieldByName('codigo_colecao').AsInteger;
    cor.kit            := (self.FQuery.fieldByName('KIT').AsString = 'S');
-      
+   cor.descricao_completa := self.FQuery.fieldByName('descricao_completa').AsString;
+
    result := Cor;
 end;
 
@@ -109,6 +110,8 @@ begin
     Auditoria.AdicionaCampoAlterado('cor_pai', CorAntigo.Cor_pai, CorNovo.Cor_pai);
    if (CorAntigo.Codigo_colecao <> CorNovo.Codigo_colecao) then
     Auditoria.AdicionaCampoAlterado('Codigo_colecao', IntToStr(CorAntigo.Codigo_colecao), IntToStr(CorNovo.Codigo_colecao));
+   if (CorAntigo.descricao_completa <> CorNovo.descricao_completa) then
+    Auditoria.AdicionaCampoAlterado('descricao_completa', CorAntigo.descricao_completa, CorNovo.descricao_completa);
 end;
 
 procedure TRepositorioCor.SetCamposExcluidos(Auditoria: TAuditoria;
@@ -126,6 +129,7 @@ begin
    Auditoria.AdicionaCampoExcluido('tipo'         , Cor.Tipo);
    Auditoria.AdicionaCampoExcluido('cor_pai'      , Cor.Cor_pai);
    Auditoria.AdicionaCampoExcluido('codigo_colecao', intToStr(Cor.Codigo_colecao));
+   Auditoria.AdicionaCampoExcluido('descricao_completa', Cor.descricao_completa);
 end;
 
 procedure TRepositorioCor.SetCamposIncluidos(Auditoria: TAuditoria;
@@ -143,6 +147,7 @@ begin
    Auditoria.AdicionaCampoIncluido('tipo'         , Cor.Tipo);
    Auditoria.AdicionaCampoIncluido('cor_pai'      , Cor.Cor_pai);
    Auditoria.AdicionaCampoIncluido('codigo_colecao', intToStr(Cor.Codigo_colecao));
+   Auditoria.AdicionaCampoIncluido('descricao_completa', Cor.descricao_completa);
 end;
 
 procedure TRepositorioCor.SetIdentificador(Objeto: TObject;
@@ -170,6 +175,8 @@ begin
 
    if Cor.Codigo_colecao > 0 then
      self.FQuery.ParamByName('codigo_colecao').AsInteger  := Cor.Codigo_colecao;
+
+   self.FQuery.ParamByName('descricao_completa').AsString := Cor.descricao_completa;
 end;
 
 function TRepositorioCor.SQLGet: String;
@@ -196,8 +203,8 @@ end;
 function TRepositorioCor.SQLSalvar: String;
 begin
   result := 'update or insert into CORES                                                                        '+
-            '(codigo, descricao, referencia, desc_producao, cor, tipo, cor_pai, codigo_colecao,  KIT)                 '+
-            ' Values (:codigo, :descricao, :referencia, :desc_producao, :cor, :tipo, :cor_pai, :codigo_colecao, :KIT) ';
+            '(codigo, descricao, referencia, desc_producao, cor, tipo, cor_pai, codigo_colecao,  KIT, DESCRICAO_COMPLETA)                 '+
+            ' Values (:codigo, :descricao, :referencia, :desc_producao, :cor, :tipo, :cor_pai, :codigo_colecao, :KIT, :DESCRICAO_COMPLETA) ';
 end;
 
 end.
