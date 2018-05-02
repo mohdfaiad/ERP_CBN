@@ -286,6 +286,52 @@ type
     RLLabel31: TRLLabel;
     RLLabel32: TRLLabel;
     rgSetor: TRadioGroup;
+    qryItensTOT_RN: TAggregateField;
+    lbTotRn: TRLLabel;
+    lbTotP: TRLLabel;
+    lbTotM: TRLLabel;
+    lbTotG: TRLLabel;
+    lbTot1: TRLLabel;
+    lbTot2: TRLLabel;
+    lbTot3: TRLLabel;
+    lbTot4: TRLLabel;
+    lbTot6: TRLLabel;
+    lbTot8: TRLLabel;
+    lbTot10: TRLLabel;
+    lbTot12: TRLLabel;
+    lbTot14: TRLLabel;
+    lbTotUnica: TRLLabel;
+    qryItensTOT_P: TAggregateField;
+    qryItensTOT_M: TAggregateField;
+    qryItensTOT_G: TAggregateField;
+    qryItensTOT_1: TAggregateField;
+    qryItensTOT_2: TAggregateField;
+    qryItensTOT_3: TAggregateField;
+    qryItensTOT_4: TAggregateField;
+    qryItensTOT_6: TAggregateField;
+    qryItensTOT_8: TAggregateField;
+    qryItensTOT_10: TAggregateField;
+    qryItensTOT_12: TAggregateField;
+    qryItensTOT_14: TAggregateField;
+    qryItensTOT_UNICA: TAggregateField;
+    lbTotGeralRN: TRLLabel;
+    lbTotGeralP: TRLLabel;
+    lbTotGeralM: TRLLabel;
+    lbTotGeralG: TRLLabel;
+    lbTotGeral1: TRLLabel;
+    lbTotGeral2: TRLLabel;
+    lbTotGeral3: TRLLabel;
+    lbTotGeral4: TRLLabel;
+    lbTotGeral6: TRLLabel;
+    lbTotGeral8: TRLLabel;
+    lbTotGeral10: TRLLabel;
+    lbTotGeral12: TRLLabel;
+    lbTotGeral14: TRLLabel;
+    lbTotGeralUNICA: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLDraw35: TRLDraw;
+    RLLabel9: TRLLabel;
+    RLLabel17: TRLLabel;
     procedure btnAddPedidoClick(Sender: TObject);
     procedure btnAddReferenciaClick(Sender: TObject);
     procedure gridPedidosKeyDown(Sender: TObject; var Key: Word;
@@ -320,7 +366,41 @@ type
     procedure cdsCoresAfterPost(DataSet: TDataSet);
     procedure rgCoresClick(Sender: TObject);
     procedure rgAgrupamentoClick(Sender: TObject);
+    procedure RLBand2AfterPrint(Sender: TObject);
+    procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure lbTotRnBeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+    procedure RLBand7BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
+    FQtdTotRn    :Integer;
+    FQtdTotP     :Integer;
+    FQtdTotM     :Integer;
+    FQtdTotG     :Integer;
+    FQtdTot1     :Integer;
+    FQtdTot2     :Integer;
+    FQtdTot3     :Integer;
+    FQtdTot4     :Integer;
+    FQtdTot6     :Integer;
+    FQtdTot8     :Integer;
+    FQtdTot10    :Integer;
+    FQtdTot12    :Integer;
+    FQtdTot14    :Integer;
+    FQtdTotUnica :Integer;
+
+    FQtdTotGeralRn    :Integer;
+    FQtdTotGeralP     :Integer;
+    FQtdTotGeralM     :Integer;
+    FQtdTotGeralG     :Integer;
+    FQtdTotGeral1     :Integer;
+    FQtdTotGeral2     :Integer;
+    FQtdTotGeral3     :Integer;
+    FQtdTotGeral4     :Integer;
+    FQtdTotGeral6     :Integer;
+    FQtdTotGeral8     :Integer;
+    FQtdTotGeral10    :Integer;
+    FQtdTotGeral12    :Integer;
+    FQtdTotGeral14    :Integer;
+    FQtdTotGeralUnica :Integer;
+
     procedure imprimir;
     procedure montaSQL;
     procedure montaSQLparaSaldo;
@@ -333,6 +413,8 @@ type
     function coresSelecionadas :String;
     function Faturado(codPedido :integer) :Boolean;
     function contem_referencias :Boolean;
+
+    procedure zeraCamposTotais;
   public
     { Public declarations }
   end;
@@ -453,10 +535,9 @@ begin
 
   if      (rgtipo.ItemIndex = NORMAL) then
     montaSQL
-  else if (rgtipo.ItemIndex = SALDO)  then begin
-    montaSQLparaSaldo;
+  else if (rgtipo.ItemIndex = SALDO)  then
+    montaSQLparaSaldo
 //    RemoveItensVazios;
-  end
   else if (rgtipo.ItemIndex = NAO_CONFERIDOS) then
     montaSQLparaNaoConferidos;
 
@@ -468,6 +549,11 @@ begin
     else
       RLReport2.PreviewModal;
   end;
+end;
+
+procedure TfrmRelatorioPedidosProducao.lbTotRnBeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
+begin
+  PrintIt := not Text.Equals('0');
 end;
 
 procedure TfrmRelatorioPedidosProducao.montaSQL;
@@ -702,6 +788,21 @@ begin
   RLDBText37.Visible := true;
   RLDBText38.Visible := true;
 
+  FQtdTotRn    := FQtdTotRn    + qryItensQTD_RN.AsInteger;
+  FQtdTotP     := FQtdTotP     + qryItensQTD_P.AsInteger;
+  FQtdTotM     := FQtdTotM     + qryItensQTD_M.AsInteger;
+  FQtdTotG     := FQtdTotG     + qryItensQTD_G.AsInteger;
+  FQtdTot1     := FQtdTot1     + qryItensQTD_1.AsInteger;
+  FQtdTot2     := FQtdTot2     + qryItensQTD_2.AsInteger;
+  FQtdTot3     := FQtdTot3     + qryItensQTD_3.AsInteger;
+  FQtdTot4     := FQtdTot4     + qryItensQTD_4.AsInteger;
+  FQtdTot6     := FQtdTot6     + qryItensQTD_6.AsInteger;
+  FQtdTot8     := FQtdTot8     + qryItensQTD_8.AsInteger;
+  FQtdTot10    := FQtdTot10    + qryItensQTD_10.AsInteger;
+  FQtdTot12    := FQtdTot12    + qryItensQTD_12.AsInteger;
+  FQtdTot14    := FQtdTot14    + qryItensQTD_14.AsInteger;
+  FQtdTotUnica := FQtdTotUnica + qryItensQTD_UNICA.AsInteger;
+
   if qryItensQTD_RN.AsInteger    <= 0  then  RLDBText3.Visible := false;
   if qryItensQTD_P.AsInteger     <= 0  then  RLDBText4.Visible := false;
   if qryItensQTD_M.AsInteger     <= 0  then  RLDBText5.Visible := false;
@@ -718,6 +819,24 @@ begin
   if qryItensQTD_UNICA.AsInteger <= 0  then  RLDBText13.Visible := false;
 end;
 
+procedure TfrmRelatorioPedidosProducao.RLBand7BeforePrint(Sender: TObject; var PrintIt: Boolean);
+begin
+  lbTotGeralRn.Caption    :=  IntToStr(FQtdTotGeralRn   );
+  lbTotGeralP.Caption     :=  IntToStr(FQtdTotGeralP    );
+  lbTotGeralM.Caption     :=  IntToStr(FQtdTotGeralM    );
+  lbTotGeralG.Caption     :=  IntToStr(FQtdTotGeralG    );
+  lbTotGeral1.Caption     :=  IntToStr(FQtdTotGeral1    );
+  lbTotGeral2.Caption     :=  IntToStr(FQtdTotGeral2    );
+  lbTotGeral3.Caption     :=  IntToStr(FQtdTotGeral3    );
+  lbTotGeral4.Caption     :=  IntToStr(FQtdTotGeral4    );
+  lbTotGeral6.Caption     :=  IntToStr(FQtdTotGeral6    );
+  lbTotGeral8.Caption     :=  IntToStr(FQtdTotGeral8    );
+  lbTotGeral10.Caption    :=  IntToStr(FQtdTotGeral10   );
+  lbTotGeral12.Caption    :=  IntToStr(FQtdTotGeral12   );
+  lbTotGeral14.Caption    :=  IntToStr(FQtdTotGeral14   );
+  lbTotGeralUnica.Caption :=  IntToStr(FQtdTotGeralUnica);
+end;
+
 procedure TfrmRelatorioPedidosProducao.RLReport1BeforePrint(
   Sender: TObject; var PrintIt: Boolean);
 begin
@@ -728,6 +847,21 @@ begin
   else
     rlbGeral.Visible := true;
 
+  zeraCamposTotais;
+  FQtdTotGeralRn    := 0;
+  FQtdTotGeralP     := 0;
+  FQtdTotGeralM     := 0;
+  FQtdTotGeralG     := 0;
+  FQtdTotGeral1     := 0;
+  FQtdTotGeral2     := 0;
+  FQtdTotGeral3     := 0;
+  FQtdTotGeral4     := 0;
+  FQtdTotGeral6     := 0;
+  FQtdTotGeral8     := 0;
+  FQtdTotGeral10    := 0;
+  FQtdTotGeral12    := 0;
+  FQtdTotGeral14    := 0;
+  FQtdTotGeralUnica := 0;
 end;
 
 function TfrmRelatorioPedidosProducao.Faturado(
@@ -767,6 +901,24 @@ procedure TfrmRelatorioPedidosProducao.SpeedButton1Click(Sender: TObject);
 begin
   inherited;
   self.close;
+end;
+
+procedure TfrmRelatorioPedidosProducao.zeraCamposTotais;
+begin
+  FQtdTotRn    := 0;
+  FQtdTotP     := 0;
+  FQtdTotM     := 0;
+  FQtdTotG     := 0;
+  FQtdTot1     := 0;
+  FQtdTot2     := 0;
+  FQtdTot3     := 0;
+  FQtdTot4     := 0;
+  FQtdTot6     := 0;
+  FQtdTot8     := 0;
+  FQtdTot10    := 0;
+  FQtdTot12    := 0;
+  FQtdTot14    := 0;
+  FQtdTotUnica := 0;
 end;
 
 // diminui dos itens dos pedidos filtrados, as quantidades conferidas, (quando a conferencia correspondente ainda esta em aberto)
@@ -955,6 +1107,44 @@ begin
   RLDBText27.Visible := (cdsItens2SALDO_6.AsInteger     > 0);
   RLDBText28.Visible := (cdsItens2SALDO_8.AsInteger     > 0);
   RLDBText29.Visible := (cdsItens2SALDO_UNICA.AsInteger > 0);
+end;
+
+procedure TfrmRelatorioPedidosProducao.RLBand2AfterPrint(Sender: TObject);
+begin
+  zeraCamposTotais;
+end;
+
+procedure TfrmRelatorioPedidosProducao.RLBand2BeforePrint(Sender: TObject; var PrintIt: Boolean);
+begin
+  lbTotRn.Caption    :=  IntToStr(FQtdTotRn   );
+  lbTotP.Caption     :=  IntToStr(FQtdTotP    );
+  lbTotM.Caption     :=  IntToStr(FQtdTotM    );
+  lbTotG.Caption     :=  IntToStr(FQtdTotG    );
+  lbTot1.Caption     :=  IntToStr(FQtdTot1    );
+  lbTot2.Caption     :=  IntToStr(FQtdTot2    );
+  lbTot3.Caption     :=  IntToStr(FQtdTot3    );
+  lbTot4.Caption     :=  IntToStr(FQtdTot4    );
+  lbTot6.Caption     :=  IntToStr(FQtdTot6    );
+  lbTot8.Caption     :=  IntToStr(FQtdTot8    );
+  lbTot10.Caption    :=  IntToStr(FQtdTot10   );
+  lbTot12.Caption    :=  IntToStr(FQtdTot12   );
+  lbTot14.Caption    :=  IntToStr(FQtdTot14   );
+  lbTotUnica.Caption :=  IntToStr(FQtdTotUnica);
+
+  FQtdTotGeralRn     :=   FQtdTotGeralRn    + FQtdTotRn;
+  FQtdTotGeralP      :=   FQtdTotGeralP     + FQtdTotP;
+  FQtdTotGeralM      :=   FQtdTotGeralM     + FQtdTotM;
+  FQtdTotGeralG      :=   FQtdTotGeralG     + FQtdTotG;
+  FQtdTotGeral1      :=   FQtdTotGeral1     + FQtdTot1;
+  FQtdTotGeral2      :=   FQtdTotGeral2     + FQtdTot2;
+  FQtdTotGeral3      :=   FQtdTotGeral3     + FQtdTot3;
+  FQtdTotGeral4      :=   FQtdTotGeral4     + FQtdTot4;
+  FQtdTotGeral6      :=   FQtdTotGeral6     + FQtdTot6;
+  FQtdTotGeral8      :=   FQtdTotGeral8     + FQtdTot8;
+  FQtdTotGeral10     :=   FQtdTotGeral10    + FQtdTot10;
+  FQtdTotGeral12     :=   FQtdTotGeral12    + FQtdTot12;
+  FQtdTotGeral14     :=   FQtdTotGeral14    + FQtdTot14;
+  FQtdTotGeralUnica  :=   FQtdTotGeralUnica + FQtdTotUnica;
 end;
 
 procedure TfrmRelatorioPedidosProducao.RLBand11BeforePrint(Sender: TObject; var PrintIt: Boolean);

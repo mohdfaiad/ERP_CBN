@@ -201,7 +201,6 @@ end;
 
 procedure TfrmPadrao.Aguarda(mensagem: String);
 begin
-
   if frmAguarde = nil then begin
     frmFundoContencao := TfrmFundoContencao.Create(nil);
     frmFundoContencao.Show;

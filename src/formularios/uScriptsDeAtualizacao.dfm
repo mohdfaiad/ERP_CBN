@@ -10162,4 +10162,33 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 242
     WordWrap = False
   end
+  object versao242: TMemo
+    Left = 153
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'DROP VIEW VW_PEDIDOS_P_CONFERENCIA'
+      '^'
+      'CREATE VIEW VW_PEDIDOS_P_CONFERENCIA('
+      '    CODIGO,'
+      '    DT_REPRESENTANTE,'
+      '    NUMPEDIDO,'
+      '    VALOR_TOTAL,'
+      '    RAZAO)'
+      'AS'
+      
+        'select p.codigo,p.dt_representante, p.numpedido , p.valor_total,' +
+        ' c.razao    from pedidos p'
+      
+        '  inner join pessoas c on c.codigo = p.cod_cliente  left join pe' +
+        'didos_faturados pf on pf.codigo_pedido = p.codigo'
+      
+        '  where not (p.cancelado = '#39'S'#39') and (p.tipo = '#39'P'#39') and ( (pf.cod' +
+        'igo is null) and not(p.despachado = '#39'S'#39') )'
+      'order by p.dt_representante'
+      '^')
+    TabOrder = 243
+    WordWrap = False
+  end
 end

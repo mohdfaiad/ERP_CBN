@@ -13,7 +13,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
   TextHeight = 15
   object RLReport1: TRLReport
     Left = 46
-    Top = 218
+    Top = 219
     Width = 794
     Height = 1123
     Margins.LeftMargin = 5.000000000000000000
@@ -190,17 +190,27 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
       Left = 20
       Top = 273
       Width = 754
-      Height = 24
+      Height = 41
+      AlignToBottom = True
       BandType = btSummary
       Borders.Sides = sdCustom
       Borders.DrawLeft = False
-      Borders.DrawTop = False
+      Borders.DrawTop = True
       Borders.DrawRight = False
       Borders.DrawBottom = True
+      BeforePrint = RLBand7BeforePrint
+      object RLDraw35: TRLDraw
+        Left = 650
+        Top = 1
+        Width = 104
+        Height = 40
+        Brush.Color = 15132390
+        Pen.Style = psClear
+      end
       object RLDBResult1: TRLDBResult
-        Left = 581
-        Top = 3
-        Width = 122
+        Left = 650
+        Top = 19
+        Width = 50
         Height = 16
         Alignment = taRightJustify
         DataField = 'QTD_TOTAL'
@@ -215,9 +225,9 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Text = ''
       end
       object RLDBResult2: TRLDBResult
-        Left = 661
-        Top = 4
-        Width = 90
+        Left = 703
+        Top = 19
+        Width = 50
         Height = 16
         Alignment = taRightJustify
         DataField = 'PECAS'
@@ -232,16 +242,268 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
         Text = ''
       end
       object RLLabel4: TRLLabel
-        Left = 321
-        Top = 4
-        Width = 240
+        Left = 3
+        Top = 20
+        Width = 66
         Height = 15
-        Caption = 'Quantidade total de refer'#234'ncias e pe'#231'as  >>'
+        Caption = 'Total Geral:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbTotGeralRN: TRLLabel
+        Left = 71
+        Top = 20
+        Width = 54
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_RN'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
         Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeralP: TRLLabel
+        Left = 116
+        Top = 20
+        Width = 44
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_P'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeralM: TRLLabel
+        Left = 155
+        Top = 20
+        Width = 46
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_M'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeralG: TRLLabel
+        Left = 195
+        Top = 20
+        Width = 46
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_G'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral1: TRLLabel
+        Left = 237
+        Top = 20
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral2: TRLLabel
+        Left = 277
+        Top = 19
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral3: TRLLabel
+        Left = 317
+        Top = 19
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral4: TRLLabel
+        Left = 357
+        Top = 19
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_4'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral6: TRLLabel
+        Left = 397
+        Top = 19
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_6'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral8: TRLLabel
+        Left = 437
+        Top = 19
+        Width = 42
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_8'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral10: TRLLabel
+        Left = 473
+        Top = 19
+        Width = 50
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_10'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral12: TRLLabel
+        Left = 513
+        Top = 19
+        Width = 50
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_12'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeral14: TRLLabel
+        Left = 553
+        Top = 19
+        Width = 50
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_14'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object lbTotGeralUNICA: TRLLabel
+        Left = 581
+        Top = 19
+        Width = 74
+        Height = 16
+        Alignment = taCenter
+        Caption = 'TOT_UNICA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        BeforePrint = lbTotRnBeforePrint
+      end
+      object RLLabel3: TRLLabel
+        Left = 89
+        Top = 3
+        Width = 546
+        Height = 14
+        Caption = 
+          'RN          P           M          G           1           2    ' +
+          '       3           4            6           8          10       ' +
+          '   12          14     UNICA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel9: TRLLabel
+        Left = 658
+        Top = 3
+        Width = 31
+        Height = 14
+        Caption = 'Refs.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel17: TRLLabel
+        Left = 709
+        Top = 3
+        Width = 36
+        Height = 14
+        Caption = 'Pe'#231'as'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentFont = False
       end
     end
@@ -294,24 +556,241 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
           Top = 48
           Width = 754
           Height = 24
-          BandType = btColumnFooter
+          BandType = btSummary
+          AfterPrint = RLBand2AfterPrint
+          BeforePrint = RLBand2BeforePrint
+          object RLDraw14: TRLDraw
+            Left = 662
+            Top = 2
+            Width = 96
+            Height = 21
+            Brush.Color = 15132390
+            Pen.Style = psClear
+          end
           object RLDraw13: TRLDraw
-            Left = -3
+            Left = -20
             Top = 0
-            Width = 760
-            Height = 24
+            Width = 794
+            Height = 23
+            Borders.Sides = sdCustom
+            Borders.DrawLeft = False
+            Borders.DrawTop = True
+            Borders.DrawRight = False
+            Borders.DrawBottom = True
             Brush.Style = bsClear
             Color = clWhite
             ParentColor = False
+            Pen.Style = psClear
             Transparent = False
           end
-          object RLDraw14: TRLDraw
-            Left = 570
-            Top = 1
-            Width = 188
-            Height = 22
-            Brush.Color = 15132390
-            Pen.Style = psClear
+          object RLDBResult4: TRLDBResult
+            Left = 582
+            Top = 3
+            Width = 122
+            Height = 16
+            Alignment = taRightJustify
+            DataField = 'QTD_TOTAL'
+            DataSource = dsItens
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
+          object lbTotRn: TRLLabel
+            Left = 252
+            Top = 3
+            Width = 56
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_RN'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText3
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTotP: TRLLabel
+            Left = 288
+            Top = 3
+            Width = 46
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_P'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText4
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTotM: TRLLabel
+            Left = 317
+            Top = 3
+            Width = 48
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_M'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText5
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTotG: TRLLabel
+            Left = 348
+            Top = 3
+            Width = 48
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_G'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText6
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot1: TRLLabel
+            Left = 378
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_1'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText7
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot2: TRLLabel
+            Left = 404
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_2'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText8
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot3: TRLLabel
+            Left = 433
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_3'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText9
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot4: TRLLabel
+            Left = 460
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_4'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText10
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot6: TRLLabel
+            Left = 486
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_6'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText11
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot8: TRLLabel
+            Left = 513
+            Top = 3
+            Width = 44
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_8'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText12
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot10: TRLLabel
+            Left = 540
+            Top = 3
+            Width = 52
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_10'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText36
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTot12: TRLLabel
+            Left = 567
+            Top = 3
+            Width = 52
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_12'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText37
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
           end
           object RLDBResult3: TRLDBResult
             Left = 662
@@ -330,22 +809,37 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
             ParentFont = False
             Text = ''
           end
-          object RLDBResult4: TRLDBResult
-            Left = 582
+          object lbTot14: TRLLabel
+            Left = 596
             Top = 3
-            Width = 122
+            Width = 52
             Height = 16
-            Alignment = taRightJustify
-            DataField = 'QTD_TOTAL'
-            DataSource = dsItens
+            Alignment = taCenter
+            Caption = 'TOT_14'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'Arial'
             Font.Style = [fsBold]
-            Info = riSum
+            Holder = RLDBText38
             ParentFont = False
-            Text = ''
+            BeforePrint = lbTotRnBeforePrint
+          end
+          object lbTotUnica: TRLLabel
+            Left = 614
+            Top = 3
+            Width = 78
+            Height = 16
+            Alignment = taCenter
+            Caption = 'TOT_UNICA'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            Holder = RLDBText13
+            ParentFont = False
+            BeforePrint = lbTotRnBeforePrint
           end
         end
         object RLBand5: TRLBand
@@ -3181,7 +3675,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
       'Produtos'
       'Cores')
     ParentFont = False
-    TabOrder = 12
+    TabOrder = 11
     OnClick = rgAgrupamentoClick
   end
   object rgSetor: TRadioGroup
@@ -3535,6 +4029,7 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
     Top = 304
   end
   object qryItens: TFDQuery
+    AggregatesActive = True
     Connection = dm.FDConnection
     SQL.Strings = (
       
@@ -3588,7 +4083,6 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
       ReadOnly = True
     end
     object qryItensQTD_RN: TLargeintField
-      AutoGenerateValue = arDefault
       FieldName = 'QTD_RN'
       Origin = 'QTD_RN'
       ProviderFlags = []
@@ -3741,6 +4235,91 @@ inherited frmRelatorioPedidosProducao: TfrmRelatorioPedidosProducao
       ProviderFlags = []
       ReadOnly = True
       Size = 22
+    end
+    object qryItensTOT_RN: TAggregateField
+      FieldName = 'TOT_RN'
+      Visible = True
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_RN)'
+    end
+    object qryItensTOT_P: TAggregateField
+      FieldName = 'TOT_P'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_P)'
+    end
+    object qryItensTOT_M: TAggregateField
+      FieldName = 'TOT_M'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_M)'
+    end
+    object qryItensTOT_G: TAggregateField
+      FieldName = 'TOT_G'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_G)'
+    end
+    object qryItensTOT_1: TAggregateField
+      FieldName = 'TOT_1'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_1)'
+    end
+    object qryItensTOT_2: TAggregateField
+      FieldName = 'TOT_2'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_2)'
+    end
+    object qryItensTOT_3: TAggregateField
+      FieldName = 'TOT_3'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_3)'
+    end
+    object qryItensTOT_4: TAggregateField
+      FieldName = 'TOT_4'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_4)'
+    end
+    object qryItensTOT_6: TAggregateField
+      FieldName = 'TOT_6'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_6)'
+    end
+    object qryItensTOT_8: TAggregateField
+      FieldName = 'TOT_8'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_8)'
+    end
+    object qryItensTOT_10: TAggregateField
+      FieldName = 'TOT_10'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_10)'
+    end
+    object qryItensTOT_12: TAggregateField
+      FieldName = 'TOT_12'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_12)'
+    end
+    object qryItensTOT_14: TAggregateField
+      FieldName = 'TOT_14'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_14)'
+    end
+    object qryItensTOT_UNICA: TAggregateField
+      FieldName = 'TOT_UNICA'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTD_UNICA)'
     end
   end
 end

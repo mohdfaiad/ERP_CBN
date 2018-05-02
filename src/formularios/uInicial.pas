@@ -261,8 +261,6 @@ type
     procedure tmrVerificaPedidosEmAbertoTimer(Sender: TObject);
     procedure PlanodeContasContbeis1Click(Sender: TObject);
     procedure ConfiguraesdeIntegrao1Click(Sender: TObject);
-    procedure ApplicationEvents1Activate(Sender: TObject);
-    procedure ApplicationEvents1Deactivate(Sender: TObject);
     procedure EnviarparaapiMeusPedidos1Click(Sender: TObject);
     procedure btnVerificarOrcamentosClick(Sender: TObject);
 
@@ -465,26 +463,6 @@ begin
                                                                                self.HabilitaContagemRegressiva,
                                                                                self.MostraTempoRestante,
                                                                                self.DesabilitaContagemRegressiva);
-end;
-
-procedure TfrmInicial.ApplicationEvents1Activate(Sender: TObject);
-begin
-  inherited;
-  if not (frmAguarde = nil) then
-  begin
-    frmAguarde.FormStyle := fsStayOnTop;
-    frmAguarde.Show;
-  end;
-end;
-
-procedure TfrmInicial.ApplicationEvents1Deactivate(Sender: TObject);
-begin
-  inherited;
-  if not (frmAguarde = nil) then
-  begin
-    frmAguarde.Hide;
-    frmAguarde.FormStyle := fsNormal;
-  end;
 end;
 
 procedure TfrmInicial.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
@@ -1187,7 +1165,7 @@ begin
     qry.Open();
 
     lbOrcamentos.Caption      := qry.FieldByName('QTD').AsString;
-    btnVerificar.Enabled := qry.FieldByName('QTD').AsInteger > 0;
+    btnVerificarOrcamentos.Enabled := qry.FieldByName('QTD').AsInteger > 0;
   finally
     FreeAndNil(qry);
   end;

@@ -94,7 +94,7 @@ begin
                 ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo '+
                 ' left join nfce on nfce.codigo_pedido = p.codigo               '+
                 ' left join pedidos_mapa pm on pm.codigo_pedido = p.codigo      '+
-                'where p.'+campoRetorno+'='''+ codigo + ''''+ condicao_tipo +
+                'where p.tipo = ''P'' and p.'+campoRetorno+'='''+ codigo + ''''+ condicao_tipo +
                 condicao_cancelado + condicao_mapa;
 
                                //condição para bloquear a seleção de pedidos bloqueados
@@ -195,7 +195,7 @@ begin
            ' left join pedidos_faturados pf on pf.codigo_pedido = p.codigo                      '+
            ' left join nfce on nfce.codigo_pedido = p.codigo                                    '+
            ' left join pedidos_mapa pm on pm.codigo_pedido = p.codigo                           '+
-           ' where (1=1) '+ condicao_tipo+ condicao_mapa + condicao_cancelado +
+           ' where (p.tipo = ''P'') '+ condicao_tipo+ condicao_mapa + condicao_cancelado +
            ' order by p.dt_representante                                                        ';
   end
   else

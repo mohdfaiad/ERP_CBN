@@ -17,6 +17,7 @@ type
     ds: TDataSource;
     cdsERRO: TStringField;
     cdsCODIGO: TIntegerField;
+    cdsPEDIDO: TStringField;
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnMarcarClick(Sender: TObject);
@@ -90,6 +91,7 @@ begin
     cds.Append;
     cdsCODIGO.AsInteger    := Erro.codigo;
     cdsERRO.AsString       := Erro.erro;
+    cdsPEDIDO.AsString     := Erro.importador;
     cds.Post;
   end;
 end;

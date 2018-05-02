@@ -70,6 +70,12 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     Columns = <
       item
         Expanded = False
+        FieldName = 'PEDIDO'
+        Width = 82
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'ERRO'
         Visible = True
       end>
@@ -111,6 +117,9 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     end
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
+    end
+    object cdsPEDIDO: TStringField
+      FieldName = 'PEDIDO'
     end
   end
   object ds: TDataSource
