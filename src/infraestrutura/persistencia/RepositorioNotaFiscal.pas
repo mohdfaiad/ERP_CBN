@@ -47,7 +47,8 @@ type
     procedure salva_itens_materias(notaFiscal :TNotaFiscal);
   private
     function pedidoSincronizado(codPedido :integer) :integer;
-    procedure marcaComoFaturado(id_externo :integer; total :Real; data :TDate; numeroNF :integer);
+    procedure marcaComoFaturado(id_externo :integer; total :Real; data :TDate; numeroNF :integer; codigoPedidoFaturado :String);
+    function getIdExterno(idErp, tabelaERP: String): String;    
 end;
 
 
@@ -59,13 +60,17 @@ uses
   SysUtils, FabricaRepositorio, ItemNotaFiscal, PedidoFaturado,
   LocalEntregaNotaFiscal, VolumesNotaFiscal, ObservacaoNotaFiscal, Funcoes,
   TotaisNotaFiscal, LoteNFe, NFe, RepositorioItemAvulso, ItemAvulso, ItemNfMateria, Math,
-  StrUtils;
+  StrUtils, RelacaoTabelasImportacao;
 
+const
+  ST_OK_INCLUSAO  = 201;
+  ST_OK_ALTERACAO = 200;
+    
 { TRepositorioNotaFiscal }
 
 function TRepositorioNotaFiscal.CondicaoSQLGetAll: String;
 begin
-  result := ' WHERE data_saida between '+FIdentificador;
+  result := ' WHERE CAST(data_emissao as Date) between '+FIdentificador;
 end;
 
 procedure TRepositorioNotaFiscal.ExecutaDepoisDeSalvar(Objeto: TObject);
@@ -116,12 +121,13 @@ begin
    result := (TNotaFiscal(Objeto).CodigoNotaFiscal <= 0);
 end;
 
-procedure TRepositorioNotaFiscal.marcaComoFaturado(id_externo: integer; total :Real; data :TDate; numeroNF :integer);
+procedure TRepositorioNotaFiscal.marcaComoFaturado(id_externo: integer; total :Real; data :TDate; numeroNF :integer; codigoPedidoFaturado :String);
 var
   Client :TClienteHttpMeusPedidos;
   json   :String;
   result :String;
   dataFat, valor :String;
+  idExternoFaturamento :String;
 begin
   try
   try
@@ -138,10 +144,17 @@ begin
                                              fdm.configuracoesIntegracao.company_token,
                                              fdm.configuracoesIntegracao.url_base);
 
-    Client.Post('faturamento',json);
-
-    if Client.IdResponse <> '201' then
-      raise Exception.Create('Erro ao marcar pedido '+IntToStr(id_externo)+' como faturado na plataforma Meus Pedidos.');
+    idExternoFaturamento := getIdExterno(codigoPedidoFaturado, 'PEDIDOS_FATURADOS');
+                                             
+    if idExternoFaturamento.IsEmpty then                                             
+      Client.Post('faturamento',json)
+    else  
+      Client.Put('faturamento/'+idExternoFaturamento,json);
+      
+    if not (Client.ClientHttp.ResponseCode in [ST_OK_INCLUSAO, ST_OK_ALTERACAO]) then
+      raise Exception.Create('Erro ao marcar pedido '+IntToStr(id_externo)+' como faturado na plataforma Meus Pedidos.')
+    else if Client.ClientHttp.ResponseCode = ST_OK_INCLUSAO then
+      TRelacaoTabelasImportacao.criaRelacao('faturamento','PEDIDOS_FATURADOS', Client.IdResponse, codigoPedidoFaturado, DateToStr(Date));  
   Except
     on e :Exception do
       raise Exception.Create(e.Message);
@@ -149,6 +162,11 @@ begin
   finally
     FreeAndNil(Client);
   end;
+end;
+
+function TRepositorioNotaFiscal.getIdExterno(idErp, tabelaERP: String): String;
+begin
+  result := Campo_por_campo('RELACAO_TAB_IMPORTACAO','ID_EXTERNO','TABELA_ERP',tabelaERP,'ID_ERP',idErp);
 end;
 
 function TRepositorioNotaFiscal.pedidoSincronizado(codPedido :integer): integer;
@@ -198,7 +216,6 @@ var
   nX                :Integer;
   codigo_item       :Integer;
   id_externo :integer;
-  inserindo         :boolean;
 begin
    RepItens           := nil;
    RepPedFat          := nil;
@@ -297,14 +314,15 @@ begin
        for nX := 0 to (NotaFiscal.PedidosFaturados.Count-1) do begin
          if Assigned(self.FAtualizarTela) then
            self.FAtualizarTela;
-         inserindo := TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).Codigo = 0;
+           
          RepPedFat.Salvar(NotaFiscal.PedidosFaturados[nX]);
 
          id_externo := pedidoSincronizado(TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).CodigoPedido);
-         if inserindo and (id_externo > 0) then
+         if (id_externo > 0) then
            marcaComoFaturado(id_externo, TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).Pedido.valor_total,
                                          NotaFiscal.DataEmissao,
-                                         NotaFiscal.NumeroNotaFiscal);
+                                         NotaFiscal.NumeroNotaFiscal,
+                                         TPedidoFaturado(NotaFiscal.PedidosFaturados[nX]).Codigo.ToString);
        end;
      end;
 

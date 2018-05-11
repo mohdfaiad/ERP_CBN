@@ -1142,7 +1142,7 @@ begin
     qry.Connection := dm.conexao;
     qry.Close;
     qry.SQL.Text := 'SELECT COUNT(CODIGO) QTD FROM LOG_ERROS_IMPORT_PEDIDOS'+
-                    ' WHERE VERIFICADO = ''N''                         ';
+                    ' WHERE (VERIFICADO = ''N'') and ((EXPORTADO IS NULL)OR(EXPORTADO <> ''S'')) ';
     qry.Open();
 
     lbErros.Caption      := qry.FieldByName('QTD').AsString;

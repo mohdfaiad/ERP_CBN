@@ -49,6 +49,8 @@ begin
    LogErroImportPedido.hora       := self.FQuery.FieldByName('hora').AsDateTime;
    LogErroImportPedido.verificado := (self.FQuery.FieldByName('verificado').AsString = 'S');
    LogErroImportPedido.importador := self.FQuery.FieldByName('importador').AsString;
+   LogErroImportPedido.num_pedido := self.FQuery.FieldByName('num_pedido').AsString;
+   LogErroImportPedido.exportado  := (self.FQuery.FieldByName('exportado').AsString = 'S');
 
    result := LogErroImportPedido;
 end;
@@ -95,6 +97,12 @@ begin
 
    if (LogErroImportPedidoAntigo.importador <> LogErroImportPedidoNovo.importador) then
      Auditoria.AdicionaCampoAlterado('importador', LogErroImportPedidoAntigo.importador, LogErroImportPedidoNovo.importador);
+
+   if (LogErroImportPedidoAntigo.num_pedido <> LogErroImportPedidoNovo.num_pedido) then
+     Auditoria.AdicionaCampoAlterado('num_pedido', LogErroImportPedidoAntigo.num_pedido, LogErroImportPedidoNovo.num_pedido);
+
+   if (LogErroImportPedidoAntigo.exportado <> LogErroImportPedidoNovo.exportado) then
+     Auditoria.AdicionaCampoAlterado('exportado', IfThen(LogErroImportPedidoAntigo.exportado,'S','N'), IfThen(LogErroImportPedidoNovo.exportado,'S','N'));
 end;
 
 procedure TRepositorioLogErroImportPedido.SetCamposExcluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -108,6 +116,8 @@ begin
   Auditoria.AdicionaCampoExcluido('hora'      , DateTimeToStr(LogErroImportPedido.hora));
   Auditoria.AdicionaCampoExcluido('verificado', IfThen(LogErroImportPedido.verificado, 'S', 'N'));
   Auditoria.AdicionaCampoExcluido('importador', LogErroImportPedido.importador);
+  Auditoria.AdicionaCampoExcluido('num_pedido', LogErroImportPedido.num_pedido);
+  Auditoria.AdicionaCampoExcluido('exportado' , IfThen(LogErroImportPedido.exportado, 'S', 'N'));
 end;
 
 procedure TRepositorioLogErroImportPedido.SetCamposIncluidos(Auditoria :TAuditoria;               Objeto :TObject);
@@ -121,6 +131,8 @@ begin
   Auditoria.AdicionaCampoIncluido('hora'      , DateTimeToStr(LogErroImportPedido.hora));
   Auditoria.AdicionaCampoIncluido('verificado', IfThen(LogErroImportPedido.verificado, 'S', 'N'));
   Auditoria.AdicionaCampoIncluido('importador', LogErroImportPedido.importador);
+  Auditoria.AdicionaCampoIncluido('num_pedido', LogErroImportPedido.num_pedido);
+  Auditoria.AdicionaCampoIncluido('exportado' , IfThen(LogErroImportPedido.exportado, 'S', 'N'));
 end;
 
 procedure TRepositorioLogErroImportPedido.SetIdentificador(Objeto: TObject; Identificador: Variant);
@@ -139,6 +151,8 @@ begin
   self.FQuery.ParamByName('hora').AsDateTime       := LogErroImportPedido.hora;
   self.FQuery.ParamByName('verificado').AsString   := IfThen(LogErroImportPedido.verificado, 'S', 'N');
   self.FQuery.ParamByName('importador').AsString   := LogErroImportPedido.importador;
+  self.FQuery.ParamByName('num_pedido').AsString   := LogErroImportPedido.num_pedido;
+  self.FQuery.ParamByName('exportado').AsString    := IfThen(LogErroImportPedido.exportado, 'S', 'N');
 end;
 
 function TRepositorioLogErroImportPedido.SQLGet: String;
@@ -164,8 +178,8 @@ end;
 
 function TRepositorioLogErroImportPedido.SQLSalvar: String;
 begin
-  result := 'update or insert into LOG_ERROS_IMPORT_PEDIDOS (CODIGO ,ERRO ,DATA ,HORA ,VERIFICADO, IMPORTADOR) '+
-           '                      values ( :CODIGO , :ERRO , :DATA , :HORA , :VERIFICADO, :IMPORTADOR) ';
+  result := 'update or insert into LOG_ERROS_IMPORT_PEDIDOS (CODIGO ,ERRO ,DATA ,HORA ,VERIFICADO, IMPORTADOR, NUM_PEDIDO, EXPORTADO) '+
+           '                      values ( :CODIGO , :ERRO , :DATA , :HORA , :VERIFICADO, :IMPORTADOR, :NUM_PEDIDO, :EXPORTADO) ';
 end;
 
 end.

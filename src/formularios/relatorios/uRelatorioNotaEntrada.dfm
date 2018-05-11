@@ -657,6 +657,7 @@ inherited frmRelatorioNotaEntrada: TfrmRelatorioNotaEntrada
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
+      ExplicitTop = 0
       ExplicitWidth = 447
       ExplicitHeight = 73
     end

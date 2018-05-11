@@ -84,7 +84,6 @@ uses  FabricaRepositorio, EspecificacaoNotaFiscalPorPeriodoTipoEmpresa, Reposito
 
 procedure TfrmRelatorioNotaEntrada.FormCreate(Sender: TObject);
 var repositorio :TRepositorio;
-    especificacao : TEspecificacaoNotaFiscalPorPeriodoTipoEmpresa;
     Lista :TObjectList;
 begin
   inherited;
@@ -143,7 +142,8 @@ begin
 
     repositorio    := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
     especificacao  := TEspecificacaoNotaFiscalPorPeriodoTipoEmpresa.create(dtpInicio.Date, dtpFim.Date, 'E', BuscaEmpresa1.Empresa.Codigo);
-    Lista          := repositorio.GetListaPorEspecificacao(especificacao);
+    Lista          := repositorio.GetListaPorEspecificacao(especificacao, QuotedStr(FormatDateTime('dd.mm.yyyy',dtpInicio.Date))+' and '+
+                                                                          QuotedStr(FormatDateTime('dd.mm.yyyy',dtpFim.Date)));
 
     if not cdsNotas.Active  then    cdsNotas.CreateDataSet;
 

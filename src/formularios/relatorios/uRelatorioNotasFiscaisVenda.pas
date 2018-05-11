@@ -79,8 +79,8 @@ begin
                                                                      false, true, false, false,
                                                                      self.BuscaEmpresa1.Empresa.CPF_CNPJ);
 
-   ListaNotas    := repositorio.GetListaPorEspecificacao( especificacao,  ''''+formatDateTime('dd.mm.yyyy hh:mm:ss',dtpInicio.DateTime)+ ''' and ''' +
-                                                                               formatDateTime('dd.mm.yyyy hh:mm:ss',dtpFim.DateTime)+'''');
+   ListaNotas    := repositorio.GetListaPorEspecificacao( especificacao,  QuotedStr(FormatDateTime('dd.mm.yyyy',dtpInicio.Date))+' and '+
+                                                                          QuotedStr(FormatDateTime('dd.mm.yyyy',dtpFim.Date)));
 
    if ListaNotas.Count > 0 then begin
 

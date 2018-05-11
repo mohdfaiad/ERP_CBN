@@ -1,18 +1,18 @@
 inherited frmSincronizador: TfrmSincronizador
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Sincronizador'
-  ClientHeight = 629
+  ClientHeight = 640
   ClientWidth = 1193
   ExplicitWidth = 1209
-  ExplicitHeight = 667
+  ExplicitHeight = 678
   PixelsPerInch = 96
   TextHeight = 15
   object pgcPrincipal: TPageControl
     Left = 0
     Top = 0
     Width = 1193
-    Height = 629
-    ActivePage = TabSheet6
+    Height = 640
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     OnChange = pgcPrincipalChange
@@ -33,7 +33,7 @@ inherited frmSincronizador: TfrmSincronizador
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
+        Height = 601
         ActivePage = tsListaProd
         Align = alClient
         TabOrder = 0
@@ -250,7 +250,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel1: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -358,7 +358,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel2: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -531,6 +531,7 @@ inherited frmSincronizador: TfrmSincronizador
             Width = 1137
             Height = 540
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
@@ -553,7 +554,7 @@ inherited frmSincronizador: TfrmSincronizador
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
+        Height = 601
         ActivePage = tsListaTabelas
         Align = alClient
         TabOrder = 0
@@ -636,7 +637,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel3: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -728,7 +729,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel4: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -871,6 +872,7 @@ inherited frmSincronizador: TfrmSincronizador
             Width = 1137
             Height = 540
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
@@ -892,7 +894,7 @@ inherited frmSincronizador: TfrmSincronizador
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
+        Height = 601
         ActivePage = tsListaTabProduto
         Align = alClient
         TabOrder = 0
@@ -1105,7 +1107,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel5: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -1213,7 +1215,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel6: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -1358,6 +1360,7 @@ inherited frmSincronizador: TfrmSincronizador
             Width = 1137
             Height = 540
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
@@ -1375,376 +1378,933 @@ inherited frmSincronizador: TfrmSincronizador
         Align = alTop
         ResizeStyle = rsNone
       end
-      object pgcClientes: TPageControl
+      object pgcClientesIn: TPageControl
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
-        ActivePage = TabSheet4
+        Height = 601
+        ActivePage = tbClientesUsuario
         Align = alClient
         TabOrder = 0
         object TabSheet4: TTabSheet
-          Caption = 'Lista de clientes'
-          object DBGridCBN4: TDBGridCBN
-            Left = 3
-            Top = 3
-            Width = 1085
-            Height = 450
-            Color = 14803425
-            DataSource = dsClientes
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Calibri'
-            Font.Style = []
-            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-            ParentFont = False
-            TabOrder = 0
-            TitleFont.Charset = DEFAULT_CHARSET
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'MS Sans Serif'
-            TitleFont.Style = []
-            OnDrawColumnCell = gridProdutosDrawColumnCell
-            BuscaHabilitada = True
-            ConfCores.Normal.CorFonte = clWindowText
-            ConfCores.Normal.CorFundo = 14803425
-            ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
-            ConfCores.Normal.Tipo.Color = clWindowText
-            ConfCores.Normal.Tipo.Height = -11
-            ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
-            ConfCores.Normal.Tipo.Style = []
-            ConfCores.Zebrada.CorFonte = clWindowText
-            ConfCores.Zebrada.CorFundo = clWhite
-            ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
-            ConfCores.Zebrada.Tipo.Color = clWindowText
-            ConfCores.Zebrada.Tipo.Height = -11
-            ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
-            ConfCores.Zebrada.Tipo.Style = []
-            ConfCores.Selecao.CorFonte = clWindowText
-            ConfCores.Selecao.CorFundo = 16037533
-            ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
-            ConfCores.Selecao.Tipo.Color = clWindowText
-            ConfCores.Selecao.Tipo.Height = -11
-            ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
-            ConfCores.Selecao.Tipo.Style = []
-            ConfCores.Destacado.CorFonte = 8650884
-            ConfCores.Destacado.CorFundo = clWhite
-            ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
-            ConfCores.Destacado.Tipo.Color = 8650884
-            ConfCores.Destacado.Tipo.Height = -11
-            ConfCores.Destacado.Tipo.Name = 'Lucida Console'
-            ConfCores.Destacado.Tipo.Style = [fsBold]
-            ConfCores.Titulo.CorFonte = clWindowText
-            ConfCores.Titulo.CorFundo = clBtnFace
-            ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
-            ConfCores.Titulo.Tipo.Color = clWindowText
-            ConfCores.Titulo.Tipo.Height = -11
-            ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
-            ConfCores.Titulo.Tipo.Style = []
-            Ordenavel = True
-            TipoBusca.ListarApenasEncontrados = False
-            TipoBusca.QualquerParte = False
-            SalvaConfiguracoes = False
-            Columns = <
-              item
-                Expanded = False
-                FieldName = 'CODIGO'
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'RAZAO'
-                Title.Caption = 'CLIENTE'
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'CPF_CNPJ'
-                Title.Caption = 'CPF/CNPJ'
-                Width = 99
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'RG_IE'
-                Title.Caption = 'RG/IE'
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'CIDADE'
-                Width = 250
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'SIGLA'
-                Title.Caption = 'UF'
-                Width = 32
-                Visible = True
-              end>
-          end
-          object Panel7: TPanel
+          Caption = 'Todos os clientes'
+          object pgcClientes: TPageControl
             Left = 0
-            Top = 510
+            Top = 0
             Width = 1177
-            Height = 50
-            Align = alBottom
-            BevelKind = bkTile
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Shape16: TShape
-              Left = 16
-              Top = 16
-              Width = 15
-              Height = 15
-              Brush.Color = 15649954
-              Pen.Color = 12028956
-              Shape = stEllipse
+            Height = 571
+            ActivePage = TabSheet16
+            Align = alClient
+            TabOrder = 0
+            object TabSheet16: TTabSheet
+              Caption = 'Lista de clientes'
+              object DBGridCBN4: TDBGridCBN
+                Left = 3
+                Top = 3
+                Width = 1085
+                Height = 450
+                Color = 14803425
+                DataSource = dsClientes
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Calibri'
+                Font.Style = []
+                Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+                ParentFont = False
+                TabOrder = 0
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                OnDrawColumnCell = gridProdutosDrawColumnCell
+                BuscaHabilitada = True
+                ConfCores.Normal.CorFonte = clWindowText
+                ConfCores.Normal.CorFundo = 14803425
+                ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Normal.Tipo.Color = clWindowText
+                ConfCores.Normal.Tipo.Height = -11
+                ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Normal.Tipo.Style = []
+                ConfCores.Zebrada.CorFonte = clWindowText
+                ConfCores.Zebrada.CorFundo = clWhite
+                ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Zebrada.Tipo.Color = clWindowText
+                ConfCores.Zebrada.Tipo.Height = -11
+                ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Zebrada.Tipo.Style = []
+                ConfCores.Selecao.CorFonte = clWindowText
+                ConfCores.Selecao.CorFundo = 16037533
+                ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Selecao.Tipo.Color = clWindowText
+                ConfCores.Selecao.Tipo.Height = -11
+                ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Selecao.Tipo.Style = []
+                ConfCores.Destacado.CorFonte = 8650884
+                ConfCores.Destacado.CorFundo = clWhite
+                ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Destacado.Tipo.Color = 8650884
+                ConfCores.Destacado.Tipo.Height = -11
+                ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+                ConfCores.Destacado.Tipo.Style = [fsBold]
+                ConfCores.Titulo.CorFonte = clWindowText
+                ConfCores.Titulo.CorFundo = clBtnFace
+                ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Titulo.Tipo.Color = clWindowText
+                ConfCores.Titulo.Tipo.Height = -11
+                ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Titulo.Tipo.Style = []
+                Ordenavel = True
+                TipoBusca.ListarApenasEncontrados = False
+                TipoBusca.QualquerParte = False
+                SalvaConfiguracoes = False
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'CODIGO'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'RAZAO'
+                    Title.Caption = 'CLIENTE'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'CPF_CNPJ'
+                    Title.Caption = 'CPF/CNPJ'
+                    Width = 99
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'RG_IE'
+                    Title.Caption = 'RG/IE'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'CIDADE'
+                    Width = 250
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'SIGLA'
+                    Title.Caption = 'UF'
+                    Width = 32
+                    Visible = True
+                  end>
+              end
+              object Panel7: TPanel
+                Left = 0
+                Top = 491
+                Width = 1169
+                Height = 50
+                Align = alBottom
+                BevelKind = bkTile
+                BevelOuter = bvNone
+                TabOrder = 1
+                object Shape16: TShape
+                  Left = 16
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 15649954
+                  Pen.Color = 12028956
+                  Shape = stEllipse
+                end
+                object Label28: TLabel
+                  Left = 43
+                  Top = 13
+                  Width = 169
+                  Height = 19
+                  Caption = 'Registros j'#225' sincronizados'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object btnSepararClientes: TBitBtn
+                  Left = 992
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = '[ F3 ] Separar Selecionado'
+                  TabOrder = 0
+                  OnClick = btnSepararClientesClick
+                end
+              end
             end
-            object Label28: TLabel
-              Left = 43
-              Top = 13
-              Width = 169
-              Height = 19
-              Caption = 'Registros j'#225' sincronizados'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = 5987163
-              Font.Height = -16
-              Font.Name = 'Calibri'
-              Font.Style = []
-              ParentFont = False
+            object TTabSheet
+              Caption = 'Clientes separados para envio'
+              ImageIndex = 1
+              object Shape17: TShape
+                Left = 3
+                Top = 452
+                Width = 1085
+                Height = 35
+                Brush.Color = 16579573
+                Pen.Style = psDot
+              end
+              object Label29: TLabel
+                Left = 85
+                Top = 459
+                Width = 135
+                Height = 19
+                Caption = 'Registros separados'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label30: TLabel
+                Left = 262
+                Top = 451
+                Width = 8
+                Height = 19
+                Caption = '_'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clGray
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label31: TLabel
+                Left = 306
+                Top = 459
+                Width = 290
+                Height = 19
+                Caption = 'Pressione [Delete] para remover o registro'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 5673237
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Panel8: TPanel
+                Left = 0
+                Top = 491
+                Width = 1169
+                Height = 50
+                Align = alBottom
+                BevelKind = bkTile
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Shape18: TShape
+                  Left = 16
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 210
+                  Pen.Color = 157
+                  Shape = stEllipse
+                end
+                object Label32: TLabel
+                  Left = 43
+                  Top = 13
+                  Width = 181
+                  Height = 19
+                  Caption = 'Registros com erro no envio'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label33: TLabel
+                  Left = 267
+                  Top = 13
+                  Width = 210
+                  Height = 19
+                  Caption = 'Registros enviados com sucesso'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Shape19: TShape
+                  Left = 240
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 7375126
+                  Pen.Color = 4872975
+                  Shape = stEllipse
+                end
+                object btnEnviarClientes: TBitBtn
+                  Left = 992
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = 'Enviar Clientes'
+                  TabOrder = 0
+                  OnClick = btnEnviarClientesClick
+                end
+                object btnLimpaListaClientes: TBitBtn
+                  Left = 812
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = 'Limpar lista de separados'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clBlack
+                  Font.Height = -13
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 1
+                  OnClick = btnLimpaListaTabelasClick
+                end
+              end
+              object DBGrid1: TDBGrid
+                Left = 3
+                Top = 3
+                Width = 1085
+                Height = 450
+                DataSource = dsCli
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Calibri'
+                Font.Style = []
+                Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 1
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -12
+                TitleFont.Name = 'Calibri'
+                TitleFont.Style = []
+                OnDrawColumnCell = gridProdutosSeparadosDrawColumnCell
+                OnKeyDown = DBGrid4KeyDown
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'CODIGO'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'RAZAO'
+                    Title.Caption = 'CLIENTE'
+                    Width = 364
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'CPF_CNPJ'
+                    Title.Caption = 'CPF/CNPJ'
+                    Width = 99
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'RG_IE'
+                    Title.Caption = 'RG/IE'
+                    Width = 94
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'CIDADE'
+                    Width = 250
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'ESTADO'
+                    Title.Caption = 'UF'
+                    Width = 31
+                    Visible = True
+                  end>
+              end
+              object edtClientesSeparados: TCurrencyEdit
+                Left = 38
+                Top = 459
+                Width = 40
+                Height = 24
+                BorderStyle = bsNone
+                Color = 16579573
+                DisplayFormat = '0'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+                TabOrder = 2
+              end
             end
-            object btnSepararClientes: TBitBtn
-              Left = 992
-              Top = 8
-              Width = 170
-              Height = 30
-              Caption = '[ F3 ] Separar Selecionado'
-              TabOrder = 0
-              OnClick = btnSepararClientesClick
+            object TabSheet17: TTabSheet
+              Caption = 'LOG ERROS'
+              ImageIndex = 2
+              object memLogClientes: TMemo
+                Left = 6
+                Top = 6
+                Width = 1137
+                Height = 526
+                ReadOnly = True
+                ScrollBars = ssVertical
+                TabOrder = 0
+              end
             end
           end
         end
-        object TTabSheet
-          Caption = 'Clientes separados para envio'
+        object tbClientesUsuario: TTabSheet
+          Caption = 'Clientes por usu'#225'rio'
           ImageIndex = 1
-          object Shape17: TShape
-            Left = 3
-            Top = 452
-            Width = 1085
-            Height = 35
-            Brush.Color = 16579573
-            Pen.Style = psDot
-          end
-          object Label29: TLabel
-            Left = 85
-            Top = 459
-            Width = 135
-            Height = 19
-            Caption = 'Registros separados'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 13335598
-            Font.Height = -16
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label30: TLabel
-            Left = 262
-            Top = 451
-            Width = 8
-            Height = 19
-            Caption = '_'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clGray
-            Font.Height = -16
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label31: TLabel
-            Left = 306
-            Top = 459
-            Width = 290
-            Height = 19
-            Caption = 'Pressione [Delete] para remover o registro'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 5673237
-            Font.Height = -16
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Panel8: TPanel
+          object pgcCliUsu: TPageControl
             Left = 0
-            Top = 510
+            Top = 0
             Width = 1177
-            Height = 50
-            Align = alBottom
-            BevelKind = bkTile
-            BevelOuter = bvNone
+            Height = 571
+            ActivePage = TabSheet7
+            Align = alClient
             TabOrder = 0
-            object Shape18: TShape
-              Left = 16
-              Top = 16
-              Width = 15
-              Height = 15
-              Brush.Color = 210
-              Pen.Color = 157
-              Shape = stEllipse
-            end
-            object Label32: TLabel
-              Left = 43
-              Top = 13
-              Width = 181
-              Height = 19
-              Caption = 'Registros com erro no envio'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = 5987163
-              Font.Height = -16
-              Font.Name = 'Calibri'
-              Font.Style = []
-              ParentFont = False
-            end
-            object Label33: TLabel
-              Left = 267
-              Top = 13
-              Width = 210
-              Height = 19
-              Caption = 'Registros enviados com sucesso'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = 5987163
-              Font.Height = -16
-              Font.Name = 'Calibri'
-              Font.Style = []
-              ParentFont = False
-            end
-            object Shape19: TShape
-              Left = 240
-              Top = 16
-              Width = 15
-              Height = 15
-              Brush.Color = 7375126
-              Pen.Color = 4872975
-              Shape = stEllipse
-            end
-            object btnEnviarClientes: TBitBtn
-              Left = 992
-              Top = 8
-              Width = 170
-              Height = 30
-              Caption = 'Enviar Clientes'
-              TabOrder = 0
-              OnClick = btnEnviarClientesClick
-            end
-            object btnLimpaListaClientes: TBitBtn
-              Left = 812
-              Top = 8
-              Width = 170
-              Height = 30
-              Caption = 'Limpar lista de separados'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
-              Font.Height = -13
-              Font.Name = 'Calibri'
-              Font.Style = []
-              ParentFont = False
-              TabOrder = 1
-              OnClick = btnLimpaListaTabelasClick
-            end
-          end
-          object DBGrid1: TDBGrid
-            Left = 3
-            Top = 3
-            Width = 1085
-            Height = 450
-            DataSource = dsCli
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Calibri'
-            Font.Style = []
-            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-            ParentFont = False
-            ReadOnly = True
-            TabOrder = 1
-            TitleFont.Charset = DEFAULT_CHARSET
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -12
-            TitleFont.Name = 'Calibri'
-            TitleFont.Style = []
-            OnDrawColumnCell = gridProdutosSeparadosDrawColumnCell
-            OnKeyDown = DBGrid4KeyDown
-            Columns = <
-              item
-                Expanded = False
-                FieldName = 'CODIGO'
-                Visible = True
+            object TabSheet7: TTabSheet
+              Caption = 'Libera'#231#227'o de clientes por usu'#225'rio'
+              object Label45: TLabel
+                Left = 11
+                Top = 13
+                Width = 149
+                Height = 19
+                Caption = 'Usu'#225'rios sincronizados'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 5987163
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = []
+                ParentFont = False
               end
-              item
-                Expanded = False
-                FieldName = 'RAZAO'
-                Title.Caption = 'CLIENTE'
-                Width = 364
-                Visible = True
+              object Label46: TLabel
+                Left = 304
+                Top = 13
+                Width = 61
+                Height = 19
+                Caption = 'Atualizar'
+                Color = 14860158
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 14000706
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentColor = False
+                ParentFont = False
+                OnClick = Label46Click
+                OnMouseMove = Label46MouseMove
+                OnMouseLeave = Label46MouseLeave
               end
-              item
-                Expanded = False
-                FieldName = 'CPF_CNPJ'
-                Title.Caption = 'CPF/CNPJ'
-                Width = 99
-                Visible = True
+              object Shape32: TShape
+                Left = 515
+                Top = 439
+                Width = 566
+                Height = 35
+                Brush.Color = 16579573
+                Pen.Style = psDot
               end
-              item
-                Expanded = False
-                FieldName = 'RG_IE'
-                Title.Caption = 'RG/IE'
-                Width = 94
-                Visible = True
+              object Label53: TLabel
+                Left = 598
+                Top = 449
+                Width = 122
+                Height = 15
+                Caption = 'Registros selecionados'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -13
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
               end
-              item
-                Expanded = False
-                FieldName = 'CIDADE'
-                Width = 250
-                Visible = True
+              object Label54: TLabel
+                Left = 761
+                Top = 441
+                Width = 8
+                Height = 19
+                Caption = '_'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clGray
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
               end
-              item
-                Expanded = False
-                FieldName = 'ESTADO'
-                Title.Caption = 'UF'
-                Width = 31
-                Visible = True
-              end>
-          end
-          object edtClientesSeparados: TCurrencyEdit
-            Left = 38
-            Top = 459
-            Width = 40
-            Height = 24
-            BorderStyle = bsNone
-            Color = 16579573
-            DisplayFormat = '0'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = 13335598
-            Font.Height = -16
-            Font.Name = 'Calibri'
-            Font.Style = [fsBold]
-            ParentFont = False
-            TabOrder = 2
-          end
-        end
-        object TabSheet7: TTabSheet
-          Caption = 'LOG ERROS'
-          ImageIndex = 2
-          object memLogClientes: TMemo
-            Left = 6
-            Top = 6
-            Width = 1137
-            Height = 540
-            ReadOnly = True
-            TabOrder = 0
+              object Label55: TLabel
+                Left = 814
+                Top = 449
+                Width = 152
+                Height = 15
+                Caption = 'Duplo clique para selecionar'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 5673237
+                Font.Height = -13
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object DBGridCBN6: TDBGridCBN
+                Left = 11
+                Top = 36
+                Width = 354
+                Height = 438
+                Color = 14803425
+                DataSource = dsUsuarios
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Calibri'
+                Font.Style = []
+                Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+                ParentFont = False
+                TabOrder = 0
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                OnDrawColumnCell = gridProdutosDrawColumnCell
+                BuscaHabilitada = True
+                ConfCores.Normal.CorFonte = clWindowText
+                ConfCores.Normal.CorFundo = 14803425
+                ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Normal.Tipo.Color = clWindowText
+                ConfCores.Normal.Tipo.Height = -11
+                ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Normal.Tipo.Style = []
+                ConfCores.Zebrada.CorFonte = clWindowText
+                ConfCores.Zebrada.CorFundo = clWhite
+                ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Zebrada.Tipo.Color = clWindowText
+                ConfCores.Zebrada.Tipo.Height = -11
+                ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Zebrada.Tipo.Style = []
+                ConfCores.Selecao.CorFonte = clWindowText
+                ConfCores.Selecao.CorFundo = 16037533
+                ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Selecao.Tipo.Color = clWindowText
+                ConfCores.Selecao.Tipo.Height = -11
+                ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Selecao.Tipo.Style = []
+                ConfCores.Destacado.CorFonte = 8650884
+                ConfCores.Destacado.CorFundo = clWhite
+                ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Destacado.Tipo.Color = 8650884
+                ConfCores.Destacado.Tipo.Height = -11
+                ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+                ConfCores.Destacado.Tipo.Style = [fsBold]
+                ConfCores.Titulo.CorFonte = clWindowText
+                ConfCores.Titulo.CorFundo = clBtnFace
+                ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Titulo.Tipo.Color = clWindowText
+                ConfCores.Titulo.Tipo.Height = -11
+                ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Titulo.Tipo.Style = []
+                Ordenavel = True
+                TipoBusca.ListarApenasEncontrados = False
+                TipoBusca.QualquerParte = False
+                SalvaConfiguracoes = False
+              end
+              object Indicator: TActivityIndicator
+                Left = 371
+                Top = 10
+                IndicatorSize = aisSmall
+              end
+              object DBGridCBN7: TDBGridCBN
+                Left = 515
+                Top = 36
+                Width = 566
+                Height = 405
+                Color = 14803425
+                DataSource = dsCliUsu
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Calibri'
+                Font.Style = []
+                Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+                ParentFont = False
+                TabOrder = 2
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                OnDrawColumnCell = gridCoresDrawColumnCell
+                OnDblClick = DBGridCBN7DblClick
+                BuscaHabilitada = True
+                ConfCores.Normal.CorFonte = clWindowText
+                ConfCores.Normal.CorFundo = 14803425
+                ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Normal.Tipo.Color = clWindowText
+                ConfCores.Normal.Tipo.Height = -11
+                ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Normal.Tipo.Style = []
+                ConfCores.Zebrada.CorFonte = clWindowText
+                ConfCores.Zebrada.CorFundo = clWhite
+                ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Zebrada.Tipo.Color = clWindowText
+                ConfCores.Zebrada.Tipo.Height = -11
+                ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Zebrada.Tipo.Style = []
+                ConfCores.Selecao.CorFonte = clWindowText
+                ConfCores.Selecao.CorFundo = 16037533
+                ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Selecao.Tipo.Color = clWindowText
+                ConfCores.Selecao.Tipo.Height = -11
+                ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Selecao.Tipo.Style = []
+                ConfCores.Destacado.CorFonte = 8650884
+                ConfCores.Destacado.CorFundo = clWhite
+                ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Destacado.Tipo.Color = 8650884
+                ConfCores.Destacado.Tipo.Height = -11
+                ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+                ConfCores.Destacado.Tipo.Style = [fsBold]
+                ConfCores.Titulo.CorFonte = clWindowText
+                ConfCores.Titulo.CorFundo = clBtnFace
+                ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Titulo.Tipo.Color = clWindowText
+                ConfCores.Titulo.Tipo.Height = -11
+                ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Titulo.Tipo.Style = []
+                Ordenavel = True
+                TipoBusca.ListarApenasEncontrados = False
+                TipoBusca.QualquerParte = False
+                SalvaConfiguracoes = False
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'CODIGO'
+                    Width = 75
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'RAZAO'
+                    Title.Caption = 'CLIENTE'
+                    Width = 453
+                    Visible = True
+                  end>
+              end
+              object RadioGroup1: TRadioGroup
+                Left = 515
+                Top = -4
+                Width = 566
+                Height = 37
+                Caption = ' '
+                Columns = 3
+                ItemIndex = 2
+                Items.Strings = (
+                  'N'#227'o sincronizados'
+                  'Sincronizados'
+                  'Ambos os tipos')
+                TabOrder = 3
+                Visible = False
+              end
+              object Panel14: TPanel
+                Left = 0
+                Top = 491
+                Width = 1169
+                Height = 50
+                Align = alBottom
+                BevelKind = bkTile
+                BevelOuter = bvNone
+                TabOrder = 4
+                object Shape31: TShape
+                  Left = 16
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 15649954
+                  Pen.Color = 12028956
+                  Shape = stEllipse
+                end
+                object Label52: TLabel
+                  Left = 43
+                  Top = 13
+                  Width = 169
+                  Height = 19
+                  Caption = 'Registros j'#225' sincronizados'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object BitBtn3: TBitBtn
+                  Left = 992
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = '[ F3 ] Separar Selecionado'
+                  TabOrder = 0
+                  OnClick = BitBtn3Click
+                end
+              end
+              object edtCliUsuSelecionados: TCurrencyEdit
+                Left = 556
+                Top = 449
+                Width = 40
+                Height = 24
+                BorderStyle = bsNone
+                Color = 16579573
+                DisplayFormat = '0'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -13
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+                TabOrder = 5
+              end
+            end
+            object TabSheet18: TTabSheet
+              Caption = 'Clientes separados para envio'
+              ImageIndex = 1
+              object Shape28: TShape
+                Left = 11
+                Top = 444
+                Width = 910
+                Height = 35
+                Brush.Color = 16579573
+                Pen.Style = psDot
+              end
+              object Label47: TLabel
+                Left = 93
+                Top = 451
+                Width = 135
+                Height = 19
+                Caption = 'Registros separados'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label48: TLabel
+                Left = 270
+                Top = 443
+                Width = 8
+                Height = 19
+                Caption = '_'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clGray
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label49: TLabel
+                Left = 314
+                Top = 451
+                Width = 290
+                Height = 19
+                Caption = 'Pressione [Delete] para remover o registro'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 5673237
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object DBGridCBN8: TDBGridCBN
+                Left = 11
+                Top = 12
+                Width = 910
+                Height = 437
+                Color = 14803425
+                DataSource = DataSource1
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Calibri'
+                Font.Style = []
+                Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+                ParentFont = False
+                TabOrder = 0
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                OnDrawColumnCell = gridProdutosDrawColumnCell
+                OnKeyDown = DBGrid4KeyDown
+                BuscaHabilitada = True
+                ConfCores.Normal.CorFonte = clWindowText
+                ConfCores.Normal.CorFundo = 14803425
+                ConfCores.Normal.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Normal.Tipo.Color = clWindowText
+                ConfCores.Normal.Tipo.Height = -11
+                ConfCores.Normal.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Normal.Tipo.Style = []
+                ConfCores.Zebrada.CorFonte = clWindowText
+                ConfCores.Zebrada.CorFundo = clWhite
+                ConfCores.Zebrada.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Zebrada.Tipo.Color = clWindowText
+                ConfCores.Zebrada.Tipo.Height = -11
+                ConfCores.Zebrada.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Zebrada.Tipo.Style = []
+                ConfCores.Selecao.CorFonte = clWindowText
+                ConfCores.Selecao.CorFundo = 16037533
+                ConfCores.Selecao.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Selecao.Tipo.Color = clWindowText
+                ConfCores.Selecao.Tipo.Height = -11
+                ConfCores.Selecao.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Selecao.Tipo.Style = []
+                ConfCores.Destacado.CorFonte = 8650884
+                ConfCores.Destacado.CorFundo = clWhite
+                ConfCores.Destacado.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Destacado.Tipo.Color = 8650884
+                ConfCores.Destacado.Tipo.Height = -11
+                ConfCores.Destacado.Tipo.Name = 'Lucida Console'
+                ConfCores.Destacado.Tipo.Style = [fsBold]
+                ConfCores.Titulo.CorFonte = clWindowText
+                ConfCores.Titulo.CorFundo = clBtnFace
+                ConfCores.Titulo.Tipo.Charset = DEFAULT_CHARSET
+                ConfCores.Titulo.Tipo.Color = clWindowText
+                ConfCores.Titulo.Tipo.Height = -11
+                ConfCores.Titulo.Tipo.Name = 'MS Sans Serif'
+                ConfCores.Titulo.Tipo.Style = []
+                Ordenavel = True
+                TipoBusca.ListarApenasEncontrados = False
+                TipoBusca.QualquerParte = False
+                SalvaConfiguracoes = False
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'CLIENTE'
+                    Width = 442
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'USUARIO'
+                    Width = 428
+                    Visible = True
+                  end>
+              end
+              object edtCliUsuSeparados: TCurrencyEdit
+                Left = 46
+                Top = 451
+                Width = 40
+                Height = 24
+                BorderStyle = bsNone
+                Color = 16579573
+                DisplayFormat = '0'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 13335598
+                Font.Height = -16
+                Font.Name = 'Calibri'
+                Font.Style = [fsBold]
+                ParentFont = False
+                TabOrder = 1
+              end
+              object Panel13: TPanel
+                Left = 0
+                Top = 491
+                Width = 1169
+                Height = 50
+                Align = alBottom
+                BevelKind = bkTile
+                BevelOuter = bvNone
+                TabOrder = 2
+                object Shape29: TShape
+                  Left = 16
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 210
+                  Pen.Color = 157
+                  Shape = stEllipse
+                end
+                object Label50: TLabel
+                  Left = 43
+                  Top = 13
+                  Width = 181
+                  Height = 19
+                  Caption = 'Registros com erro no envio'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label51: TLabel
+                  Left = 267
+                  Top = 13
+                  Width = 210
+                  Height = 19
+                  Caption = 'Registros enviados com sucesso'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 5987163
+                  Font.Height = -16
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Shape30: TShape
+                  Left = 240
+                  Top = 16
+                  Width = 15
+                  Height = 15
+                  Brush.Color = 7375126
+                  Pen.Color = 4872975
+                  Shape = stEllipse
+                end
+                object btnEnviarCliUsu: TBitBtn
+                  Left = 992
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = 'Enviar Clientes'
+                  TabOrder = 0
+                  OnClick = btnEnviarCliUsuClick
+                end
+                object btnLimpaListaCliUsu: TBitBtn
+                  Left = 812
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = 'Limpar lista de separados'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clBlack
+                  Font.Height = -13
+                  Font.Name = 'Calibri'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 1
+                  OnClick = btnLimpaListaTabelasClick
+                end
+              end
+            end
+            object TabSheet19: TTabSheet
+              Caption = 'LOG ERROS'
+              ImageIndex = 2
+              object memLogCliUsu: TMemo
+                Left = 6
+                Top = 9
+                Width = 1137
+                Height = 520
+                ReadOnly = True
+                ScrollBars = ssVertical
+                TabOrder = 0
+              end
+            end
           end
         end
       end
@@ -1765,7 +2325,7 @@ inherited frmSincronizador: TfrmSincronizador
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
+        Height = 601
         ActivePage = TabSheet10
         Align = alClient
         TabOrder = 0
@@ -1861,7 +2421,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel9: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -1953,7 +2513,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel10: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -2104,6 +2664,7 @@ inherited frmSincronizador: TfrmSincronizador
             Width = 1137
             Height = 540
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
@@ -2125,8 +2686,8 @@ inherited frmSincronizador: TfrmSincronizador
         Left = 0
         Top = 9
         Width = 1185
-        Height = 590
-        ActivePage = TabSheet13
+        Height = 601
+        ActivePage = TabSheet14
         Align = alClient
         TabOrder = 0
         object TabSheet13: TTabSheet
@@ -2207,7 +2768,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel11: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -2299,7 +2860,7 @@ inherited frmSincronizador: TfrmSincronizador
           end
           object Panel12: TPanel
             Left = 0
-            Top = 510
+            Top = 521
             Width = 1177
             Height = 50
             Align = alBottom
@@ -2436,9 +2997,155 @@ inherited frmSincronizador: TfrmSincronizador
             Width = 1137
             Height = 540
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
+      end
+    end
+    object TabSheet15: TTabSheet
+      Caption = 'Sincroniza Pedidos Faturados'
+      ImageIndex = 6
+      object Shape27: TShape
+        Left = 264
+        Top = 96
+        Width = 527
+        Height = 25
+        Brush.Color = 16316664
+        Pen.Color = 13553358
+        Shape = stRoundRect
+      end
+      object lbQtdPedidos: TLabel
+        Left = 272
+        Top = 99
+        Width = 242
+        Height = 18
+        Caption = '0 Pedidos separados para sincroniza'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 14855197
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label43: TLabel
+        Left = 655
+        Top = 171
+        Width = 111
+        Height = 15
+        Caption = 'Pedidos importados'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 7444804
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label44: TLabel
+        Left = 655
+        Top = 195
+        Width = 135
+        Height = 15
+        Caption = 'Pedidos n'#227'o importados'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 3413448
+        Font.Height = -13
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+      end
+      inline buscaRepresentante1: TbuscaRepresentante
+        Left = 264
+        Top = 41
+        Width = 542
+        Height = 53
+        TabOrder = 0
+        ExplicitLeft = 264
+        ExplicitTop = 41
+        ExplicitWidth = 542
+        inherited edtRazao: TEdit
+          Height = 23
+          ExplicitHeight = 23
+        end
+      end
+      object ProgressBar1: TProgressBar
+        Left = 264
+        Top = 139
+        Width = 527
+        Height = 24
+        TabOrder = 1
+      end
+      object BitBtn1: TBitBtn
+        Left = 810
+        Top = 54
+        Width = 145
+        Height = 25
+        Caption = 'Buscar Pedidos'
+        TabOrder = 2
+        OnClick = BitBtn1Click
+      end
+      object BitBtn2: TBitBtn
+        Left = 810
+        Top = 96
+        Width = 145
+        Height = 25
+        Caption = 'Realizar sincroniza'#231#227'o'
+        TabOrder = 3
+        OnClick = BitBtn2Click
+      end
+      object memLogPedidos: TMemo
+        Left = 16
+        Top = 216
+        Width = 1137
+        Height = 369
+        Lines.Strings = (
+          '')
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 4
+      end
+      object btnLimpar: TBitBtn
+        Left = 810
+        Top = 138
+        Width = 145
+        Height = 25
+        Caption = 'Limpar'
+        TabOrder = 5
+        OnClick = btnLimparClick
+      end
+      object edtImportados: TCurrencyEdit
+        Left = 607
+        Top = 169
+        Width = 41
+        Height = 23
+        AutoSize = False
+        BorderStyle = bsNone
+        DisplayFormat = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 6
+      end
+      object edtNaoImportados: TCurrencyEdit
+        Left = 607
+        Top = 193
+        Width = 41
+        Height = 23
+        AutoSize = False
+        BorderStyle = bsNone
+        DisplayFormat = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Calibri'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 7
       end
     end
   end
@@ -3311,5 +4018,159 @@ inherited frmSincronizador: TfrmSincronizador
     OnDataChange = dsFPgtoDataChange
     Left = 504
     Top = 248
+  end
+  object qryPedidos: TFDQuery
+    Connection = dm.FDConnection
+    FetchOptions.AssignedValues = [evRowsetSize]
+    FetchOptions.RowsetSize = 300
+    SQL.Strings = (
+      'select p.codigo from pedidos p'
+      
+        'left join relacao_tab_importacao rti on ((rti.id_erp = p.codigo)' +
+        ' and (rti.tabela_erp = '#39'PEDIDOS'#39'))'
+      'left join pedidos_faturados pf on pf.codigo_pedido = p.codigo'
+      
+        'left join notas_fiscais_nfe_retorno nfr on nfr.codigo_nota_fisca' +
+        'l = pf.codigo_nota_fiscal'
+      
+        'where (p.cod_repres = :codrep) and (rti.codigo is null) and (p.d' +
+        't_entrega >= :dti) and (p.tipo = '#39'P'#39')'
+      
+        '  and ((not(nfr.codigo_nota_fiscal is null)and(nfr.status = '#39'100' +
+        #39')) or (p.despachado = '#39'S'#39') )')
+    Left = 48
+    Top = 376
+    ParamData = <
+      item
+        Name = 'CODREP'
+        ParamType = ptInput
+      end
+      item
+        Name = 'DTI'
+        ParamType = ptInput
+      end>
+  end
+  object cdsUsuarios: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    AfterScroll = cdsUsuariosAfterScroll
+    Left = 320
+    Top = 352
+    object cdsUsuariosCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
+    object cdsUsuariosID_EXTERNO: TStringField
+      FieldName = 'ID_EXTERNO'
+    end
+    object cdsUsuariosNOME: TStringField
+      FieldName = 'NOME'
+      Size = 100
+    end
+  end
+  object dsUsuarios: TDataSource
+    DataSet = cdsUsuarios
+    OnDataChange = dsCliDataChange
+    Left = 320
+    Top = 400
+  end
+  object qryCliUsu: TFDQuery
+    SQL.Strings = (
+      
+        'select p.codigo, p.razao, rti.id_externo id_externo_cliente, rti' +
+        '2.id_externo from pessoas p'
+      
+        'inner join cliente_representante  cr   on (cr.cod_cliente = p.co' +
+        'digo)'
+      
+        'inner join relacao_tab_importacao rti  on ((rti.url = '#39'clientes'#39 +
+        ')and(rti.id_erp = p.codigo))'
+      
+        'left join relacao_tab_importacao  rti2 on ((rti2.url = '#39'usuarios' +
+        '_clientes'#39') and (rti2.id_erp = cr.codigo))'
+      'where cr.cod_representante = :cod_rep')
+    Left = 376
+    Top = 352
+    ParamData = <
+      item
+        Name = 'COD_REP'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qryCliUsuCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryCliUsuRAZAO: TStringField
+      FieldName = 'RAZAO'
+      Origin = 'RAZAO'
+      Size = 60
+    end
+    object qryCliUsuID_EXTERNO_CLIENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_EXTERNO_CLIENTE'
+      Origin = 'ID_EXTERNO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 12
+    end
+    object qryCliUsuID_EXTERNO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_EXTERNO'
+      Origin = 'ID_EXTERNO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 12
+    end
+    object qryCliUsuSELECIONADO: TStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'SELECIONADO'
+      Size = 1
+    end
+  end
+  object dsCliUsu: TDataSource
+    DataSet = qryCliUsu
+    Left = 376
+    Top = 400
+  end
+  object cdsCliUsu: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 376
+    Top = 456
+    object cdsCliUsuCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
+    object cdsCliUsuCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Size = 100
+    end
+    object cdsCliUsuUSUARIO: TStringField
+      FieldName = 'USUARIO'
+      Size = 100
+    end
+    object cdsCliUsuID_EXTERNO_CLIENTE: TStringField
+      FieldName = 'ID_EXTERNO_CLIENTE'
+      Size = 15
+    end
+    object cdsCliUsuID_EXTERNO_USUARIO: TStringField
+      FieldName = 'ID_EXTERNO_USUARIO'
+      Size = 15
+    end
+    object cdsCliUsuID_EXTERNO: TStringField
+      FieldName = 'ID_EXTERNO'
+      Size = 15
+    end
+    object cdsCliUsuENVIOU: TStringField
+      FieldName = 'ENVIOU'
+      Size = 1
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = cdsCliUsu
+    OnDataChange = DataSource1DataChange
+    Left = 376
+    Top = 504
   end
 end

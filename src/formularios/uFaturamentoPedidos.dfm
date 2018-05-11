@@ -756,7 +756,7 @@ inherited frmFaturamentoPedidos: TfrmFaturamentoPedidos
     Top = 200
     Width = 1035
     Height = 393
-    ActivePage = tbsCabecalho
+    ActivePage = tbsPedidos
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 2

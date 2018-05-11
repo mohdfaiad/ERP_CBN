@@ -1,17 +1,30 @@
 inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
   Caption = 'Erros de importa'#231#227'o de pedido'
-  ClientHeight = 543
+  ClientHeight = 589
   ClientWidth = 1163
   OnShow = FormShow
   ExplicitWidth = 1179
-  ExplicitHeight = 581
+  ExplicitHeight = 627
   PixelsPerInch = 96
   TextHeight = 15
+  object lbErros: TLabel
+    Left = 8
+    Top = 495
+    Width = 199
+    Height = 18
+    Caption = '0 Erros pendentes de verifica'#231#227'o'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Calibri'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object DBGridCBN1: TDBGridCBN
     Left = 8
     Top = 16
     Width = 1147
-    Height = 457
+    Height = 473
     Color = 14803425
     DataSource = ds
     Font.Charset = DEFAULT_CHARSET
@@ -27,6 +40,8 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+    OnDrawColumnCell = DBGridCBN1DrawColumnCell
+    OnDblClick = DBGridCBN1DblClick
     BuscaHabilitada = True
     ConfCores.Normal.CorFonte = clWindowText
     ConfCores.Normal.CorFundo = 14803425
@@ -77,16 +92,18 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
       item
         Expanded = False
         FieldName = 'ERRO'
+        Width = 1023
         Visible = True
       end>
   end
   object Panel1: TPanel
     Left = 0
-    Top = 488
+    Top = 534
     Width = 1163
     Height = 55
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 488
     object btnMarcar: TBitBtn
       Left = 968
       Top = 16
@@ -120,6 +137,18 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     end
     object cdsPEDIDO: TStringField
       FieldName = 'PEDIDO'
+    end
+    object cdsNUM_PEDIDO: TStringField
+      FieldName = 'NUM_PEDIDO'
+    end
+    object cdsSELECIONADO: TStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'SELECIONADO'
+      Size = 1
+    end
+    object cdsMARCADO: TStringField
+      FieldName = 'MARCADO'
+      Size = 1
     end
   end
   object ds: TDataSource

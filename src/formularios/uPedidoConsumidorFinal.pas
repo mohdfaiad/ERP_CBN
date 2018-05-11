@@ -506,6 +506,7 @@ begin
      pedido.dt_despacho       := date;
      pedido.aprovacao         := 'A';
      pedido.aprovado_por      := 'PEDIDO CONSUMIDOR FINAL';
+     pedido.tipo              := 'P';
 
      cdsItens.First;
      repositorio := TFabricaRepositorio.GetRepositorio(TItem.ClassName);

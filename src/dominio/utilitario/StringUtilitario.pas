@@ -18,6 +18,7 @@ type
     class function CaracterAEsquerda(Caracter :Char; Texto :String; tamanho_maximo :Integer) :String;
     class function remove_quebras   (texto :String) :String;
     class function StringParaMoeda  (value: String): Real;
+    class function MoedaParaStringJSON(value: Real): String;
 end;
 
 implementation
@@ -53,6 +54,11 @@ end;
 class function TStringUtilitario.StringParaMoeda(value: String): Real;
 begin
   result := StrToFloatDef(StringReplace(value, '.', ',', [rfReplaceAll, rfIgnoreCase]),0);
+end;
+
+class function TStringUtilitario.MoedaParaStringJSON(value: Real): String;
+begin
+  result := StringReplace(FloatToStr(value), ',', '.', [rfReplaceAll, rfIgnoreCase]);
 end;
 
 class function TStringUtilitario.EstaVazia(Texto: String): Boolean;

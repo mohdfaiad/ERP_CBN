@@ -7,9 +7,9 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.ComCtrls, Data.DB, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids,
   DBGridCBN, Datasnap.DBClient, System.Contnrs, FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, Vcl.Mask,
-  RxToolEdit, RxCurrEdit, Data.Win.ADODB;
+  RxToolEdit, RxCurrEdit, Data.Win.ADODB, frameBuscaRepresentante, Pedido, Item, Vcl.WinXCtrls;
 
-type TSincronizacao = (sincProdutos, sincTabelasPreco, sincTabelasDoProduto, sincClientes, sincTransportadoras, sincFormasPagamento);
+type TSincronizacao = (sincProdutos, sincTabelasPreco, sincTabelasDoProduto, sincClientes, sincCliPorUsu, sincTransportadoras, sincFormasPagamento, sincPedidos);
 
 type
   TfrmSincronizador = class(TfrmPadrao)
@@ -191,28 +191,6 @@ type
     cdsProdTabID_EXTERNO_PRODUTO: TStringField;
     TabSheet1: TTabSheet;
     Splitter4: TSplitter;
-    pgcClientes: TPageControl;
-    TabSheet4: TTabSheet;
-    DBGridCBN4: TDBGridCBN;
-    Panel7: TPanel;
-    Shape16: TShape;
-    Label28: TLabel;
-    btnSepararClientes: TBitBtn;
-    Shape17: TShape;
-    Label29: TLabel;
-    Label30: TLabel;
-    Label31: TLabel;
-    Panel8: TPanel;
-    Shape18: TShape;
-    Label32: TLabel;
-    Label33: TLabel;
-    Shape19: TShape;
-    btnEnviarClientes: TBitBtn;
-    btnLimpaListaClientes: TBitBtn;
-    DBGrid1: TDBGrid;
-    edtClientesSeparados: TCurrencyEdit;
-    TabSheet7: TTabSheet;
-    memLogClientes: TMemo;
     qryClientes: TFDQuery;
     dsClientes: TDataSource;
     cdsClientes: TClientDataSet;
@@ -326,6 +304,99 @@ type
     cdsFormasPgtoDESCRICAO: TStringField;
     cdsFormasPgtoID_EXTERNO: TStringField;
     cdsFormasPgtoENVIOU: TStringField;
+    TabSheet15: TTabSheet;
+    buscaRepresentante1: TbuscaRepresentante;
+    qryPedidos: TFDQuery;
+    lbQtdPedidos: TLabel;
+    ProgressBar1: TProgressBar;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Shape27: TShape;
+    memLogPedidos: TMemo;
+    btnLimpar: TBitBtn;
+    edtImportados: TCurrencyEdit;
+    edtNaoImportados: TCurrencyEdit;
+    Label43: TLabel;
+    Label44: TLabel;
+    pgcClientesIn: TPageControl;
+    TabSheet4: TTabSheet;
+    pgcClientes: TPageControl;
+    TabSheet16: TTabSheet;
+    DBGridCBN4: TDBGridCBN;
+    Panel7: TPanel;
+    Shape16: TShape;
+    Label28: TLabel;
+    btnSepararClientes: TBitBtn;
+    Shape17: TShape;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Panel8: TPanel;
+    Shape18: TShape;
+    Label32: TLabel;
+    Label33: TLabel;
+    Shape19: TShape;
+    btnEnviarClientes: TBitBtn;
+    btnLimpaListaClientes: TBitBtn;
+    DBGrid1: TDBGrid;
+    edtClientesSeparados: TCurrencyEdit;
+    TabSheet17: TTabSheet;
+    memLogClientes: TMemo;
+    tbClientesUsuario: TTabSheet;
+    cdsUsuarios: TClientDataSet;
+    dsUsuarios: TDataSource;
+    cdsUsuariosCODIGO: TIntegerField;
+    cdsUsuariosID_EXTERNO: TStringField;
+    cdsUsuariosNOME: TStringField;
+    qryCliUsu: TFDQuery;
+    dsCliUsu: TDataSource;
+    cdsCliUsu: TClientDataSet;
+    DataSource1: TDataSource;
+    cdsCliUsuCLIENTE: TStringField;
+    cdsCliUsuUSUARIO: TStringField;
+    cdsCliUsuENVIOU: TStringField;
+    cdsCliUsuID_EXTERNO: TStringField;
+    cdsCliUsuID_EXTERNO_CLIENTE: TStringField;
+    cdsCliUsuID_EXTERNO_USUARIO: TStringField;
+    pgcCliUsu: TPageControl;
+    TabSheet7: TTabSheet;
+    TabSheet18: TTabSheet;
+    DBGridCBN6: TDBGridCBN;
+    Label45: TLabel;
+    Label46: TLabel;
+    Indicator: TActivityIndicator;
+    DBGridCBN7: TDBGridCBN;
+    RadioGroup1: TRadioGroup;
+    DBGridCBN8: TDBGridCBN;
+    edtCliUsuSeparados: TCurrencyEdit;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    Shape28: TShape;
+    Panel13: TPanel;
+    Shape29: TShape;
+    Label50: TLabel;
+    Label51: TLabel;
+    Shape30: TShape;
+    btnEnviarCliUsu: TBitBtn;
+    btnLimpaListaCliUsu: TBitBtn;
+    cdsCliUsuCODIGO: TIntegerField;
+    Panel14: TPanel;
+    Shape31: TShape;
+    Label52: TLabel;
+    BitBtn3: TBitBtn;
+    TabSheet19: TTabSheet;
+    memLogCliUsu: TMemo;
+    qryCliUsuCODIGO: TIntegerField;
+    qryCliUsuRAZAO: TStringField;
+    qryCliUsuID_EXTERNO_CLIENTE: TStringField;
+    qryCliUsuID_EXTERNO: TStringField;
+    qryCliUsuSELECIONADO: TStringField;
+    edtCliUsuSelecionados: TCurrencyEdit;
+    Shape32: TShape;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label55: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure gridCoresDblClick(Sender: TObject);
     procedure gridCoresDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -358,6 +429,17 @@ type
     procedure btnEnviarFormasPgtoClick(Sender: TObject);
     procedure dsFPgtoDataChange(Sender: TObject; Field: TField);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure Label46MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure Label46MouseLeave(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure btnEnviarCliUsuClick(Sender: TObject);
+    procedure Label46Click(Sender: TObject);
+    procedure cdsUsuariosAfterScroll(DataSet: TDataSet);
+    procedure DBGridCBN7DblClick(Sender: TObject);
+    procedure DataSource1DataChange(Sender: TObject; Field: TField);
   private
     FUmMinuto :Integer;
 
@@ -376,6 +458,15 @@ type
       procedure LimpaListaSeparados;//remove todos os registros atualmente separados para sincronização, referente a aba focada
       procedure lancaLog(text :String);//informa no respectivo memo da aba focada, uma mensagem de retorno referente a sincronização
       procedure AguardarUmMinuto;//quando o nº limite de requisições é atingido, a função de sincronização é bloqueada até que o servidor da api esteja disponível novamente
+
+      function getIdExterno(idErp, tabelaERP :String; msgErro :String):String;
+      function efetuarSincronizacaoDePedido(codigoPedido :integer) :String;
+      function getJsonPedido(Pedido :TPedido) :String;
+      function getJsonItensPedido(Pedido :TPedido) :String;
+      function getQuantidadeItem(item :TItem) :String;
+      function getQuantidade(cor, tamanho :String; qtd :integer) :String;
+      function getIdTabPrecoPorValor(codTabela, codProduto :integer; valor :Real) :String;
+      function buscaUsuariosMP :String;
 
   private
     { * * PRODUTOS * * }
@@ -421,6 +512,17 @@ type
       procedure ocultaClientesSelecionados; //oculta os clientes já separados da lista de seleção
       procedure buscaClientes; //busca os clientes disponíveis para sincronização
 
+    { * * CLIENTES POR USUÁRIO * * }
+      { . Sincronização . }
+      procedure separaCliPorUsuSelecionado; //separa cliente para a tela de envio de requisições
+      function sincronizaCliPorUsu :boolean;  //envia requisições em formato json para a api "Meus pedidos"
+      function getJsonCliPorUsu: String; //retorna os dados da tabela selecionada em formato JSON
+
+      { . Auxiliares . }
+      function removeCliPorUsuSeparado(var codigo, id_externo :String; const pergunta :Boolean = true) :TFDQuery; //remove cliente selecionado da lista de separados
+      procedure ocultaCliPorUsuSelecionados; //oculta os clientes já separados da lista de seleção
+      procedure buscaUsuarios; //busca os clientes disponíveis para sincronização
+
     { * * TRANSPORTADORAS * * }
       { . Sincronização . }
       procedure separaTransportadoraSelecionada; //separa transportadora para a tela de envio de requisições
@@ -457,7 +559,7 @@ CONST
 implementation
 
 uses Math, uModulo, repositorio, fabricaRepositorio, Produto, Cor, System.StrUtils, HTTPJSON, Grade, Tamanho,
-     RelacaoTabelasImportacao, System.JSon, ClienteHttpMeusPedidos, StringUtilitario;
+     RelacaoTabelasImportacao, System.JSon, ClienteHttpMeusPedidos, StringUtilitario, Funcoes;
 
 {$R *.dfm}
 
@@ -471,6 +573,15 @@ end;
 procedure TfrmSincronizador.btnLimpaListaTabelasClick(Sender: TObject);
 begin
   LimpaListaSeparados;
+end;
+
+procedure TfrmSincronizador.btnLimparClick(Sender: TObject);
+begin
+  inherited;
+  lbQtdPedidos.Caption := '0 Pedidos separados para sincronização';
+  memLogPedidos.Clear;
+  edtImportados.Value := 0;
+  edtNaoImportados.Value := 0;
 end;
 
 procedure TfrmSincronizador.btnEnviarTabelasProdutoClick(Sender: TObject);
@@ -500,9 +611,62 @@ begin
   sincronizar(sincFormasPagamento);
 end;
 
+procedure TfrmSincronizador.BitBtn1Click(Sender: TObject);
+begin
+  if not assigned(buscaRepresentante1.Representante) then
+  begin
+    avisar('Primeiramente selecione o representante');
+    buscaRepresentante1.edtCodigo.SetFocus;
+  end
+  else
+  begin
+    qryPedidos.Close;
+    qryPedidos.ParamByName('codrep').AsInteger := buscaRepresentante1.Representante.Codigo;
+    qryPedidos.ParamByName('dti').AsDateTime   := Date-180;//6 meses atras
+    qryPedidos.Open;
+  end;
+
+    lbQtdPedidos.Caption := intToStr(qryPedidos.recordcount)+' Pedidos separados para sincronização no período de '+
+                                                             DateToStr(Date-180) +' a '+ DateToStr(Date);
+end;
+
+procedure TfrmSincronizador.BitBtn2Click(Sender: TObject);
+begin
+  if qryPedidos.RecordCount > 0 then
+  begin
+    memLogPedidos.Lines.Clear;
+    ProgressBar1.Max := qryPedidos.RecordCount;
+    qryPedidos.First;
+    edtImportados.Value := 0;
+    edtNaoImportados.Value := 0;
+    while not qryPedidos.Eof do
+    begin
+      efetuarSincronizacaoDePedido(qryPedidos.FieldByName('CODIGO').AsInteger);
+      qryPedidos.Next;
+      ProgressBar1.Position := qryPedidos.RecNo;
+      Application.ProcessMessages;
+    end;
+    memLogPedidos.SetFocus;
+    memLogPedidos.SelStart := 0;
+  end
+  else
+    avisar('Nenhum pedido foi separado para sincronização');
+end;
+
+procedure TfrmSincronizador.BitBtn3Click(Sender: TObject);
+begin
+  if not qryClientes.IsEmpty then
+    separaCliPorUsuSelecionado;
+end;
+
 procedure TfrmSincronizador.btnEnviarClientesClick(Sender: TObject);
 begin
   sincronizar(sincClientes);
+end;
+
+procedure TfrmSincronizador.btnEnviarCliUsuClick(Sender: TObject);
+begin
+  sincronizar(sincCliPorUsu);
 end;
 
 procedure TfrmSincronizador.btnEnviarProdutosClick(Sender: TObject);
@@ -549,6 +713,34 @@ begin
   qryClientes.Open();
 end;
 
+procedure TfrmSincronizador.buscaUsuarios;
+var qry :TFDQuery;
+begin
+  try
+    cdsUsuarios.AfterScroll := nil;
+    qry := dm.GetConsulta('select p.codigo, p.razao, rti.id_externo from pessoas p                                       '+
+                          ' inner join relacao_tab_importacao rti on ((rti.url = ''usuarios'')and(rti.id_erp = p.codigo))'+
+                          ' order by  p.razao ');
+    qry.Open();
+
+    qry.First;
+    while not qry.Eof do
+    begin
+      cdsUsuarios.Append;
+      cdsUsuariosCODIGO.AsInteger     := qry.FieldByName('codigo').AsInteger;
+      cdsUsuariosNOME.AsString        := qry.FieldByName('razao').AsString;
+      cdsUsuariosID_EXTERNO.AsString  := qry.FieldByName('id_externo').AsString;
+      cdsUsuarios.Post;
+
+      qry.Next;
+    end;
+
+  finally
+    cdsUsuarios.AfterScroll := cdsUsuariosAfterScroll;
+    FreeAndNil(qry);
+  end;
+end;
+
 procedure TfrmSincronizador.buscaFormasPagamento;
 begin
   qryFormasPgto.Close;
@@ -575,6 +767,56 @@ begin
   qryTransportadoras.Open();
 end;
 
+function TfrmSincronizador.buscaUsuariosMP: String;
+var
+    Retorno, jsonRegistroAtual, idERP :String;
+    Client   :TClienteHttpMeusPedidos;
+    Usuarios :TJSONArray;
+    Usuario  :TJSONObject;
+    i        :integer;
+begin
+  try
+  try
+    result := '';
+    Client := nil;
+    Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
+                                             fdm.configuracoesIntegracao.company_token,
+                                             fdm.configuracoesIntegracao.url_base);
+
+    Usuarios := TJSONObject.ParseJSONValue( Client.Get('usuarios') ) as TJSONArray;
+
+    for i := 0 to Usuarios.Count-1 do
+      begin
+        Usuario := (Usuarios.Items[i] as TJSONObject);
+
+        if not cdsUsuarios.Locate('ID_EXTERNO',Usuario.GetValue('id').Value,[]) then
+        begin
+          idERP := Campo_por_campo('PESSOAS','CODIGO','EMAIL',Usuario.GetValue('email').Value+';');
+
+          if idERP.IsEmpty then
+            lancaLog('Nenhum representante encontrado com o e-mail: '+Usuario.GetValue('email').Value+#13#10+
+                     'Usuário '+Usuario.GetValue('nome').Value+' não foi sincronizado')
+          else
+          begin
+            TRelacaoTabelasImportacao.criaRelacao('usuarios','PESSOAS',Usuario.GetValue('id').Value, idERP,DateToStr(Date));
+
+            cdsUsuarios.Append;
+            cdsUsuariosCODIGO.AsInteger     := strToInt(idERP);
+            cdsUsuariosID_EXTERNO.AsString  := Usuario.GetValue('id').Value;
+            cdsUsuariosNOME.AsString        := Usuario.GetValue('nome').Value;
+            cdsUsuarios.Post;
+          end;
+        end;
+      end;
+  except
+    on e :Exception do
+      avisar('Erro ao buscar usuários cadastrados na MP.'+#13#10+e.Message);
+  end;
+  finally
+    FreeAndNil(Client);
+  end;
+end;
+
 procedure TfrmSincronizador.cdsProdutosAfterScroll(DataSet: TDataSet);
 begin
   inherited;
@@ -584,6 +826,22 @@ begin
   cdsCores.Filter   := 'CODIGO_PRODUTO='+cdsProdutosCODIGO.AsString;
   cdsCores.Filtered := true;
   edtProdutosSeparados.Value := cdsProdutos.RecordCount;
+end;
+
+procedure TfrmSincronizador.cdsUsuariosAfterScroll(DataSet: TDataSet);
+begin
+  if not cdsUsuarios.IsEmpty then
+  begin
+    qryCliUsu.Close;
+    qryCliUsu.ParamByName('cod_rep').AsInteger := cdsUsuariosCODIGO.AsInteger;
+    qryCliUsu.Open();
+  end;
+end;
+
+procedure TfrmSincronizador.DataSource1DataChange(Sender: TObject; Field: TField);
+begin
+  if cdsCliUsu.Active then
+    edtCliUsuSeparados.Value := cdsCliUsu.RecordCount;
 end;
 
 procedure TfrmSincronizador.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -623,6 +881,19 @@ begin
   end;
 end;
 
+procedure TfrmSincronizador.DBGridCBN7DblClick(Sender: TObject);
+begin
+  with qryCliUsu do
+  begin
+    if IsEmpty then
+      exit;
+    Edit;
+    qryCliUsuSELECIONADO.AsString := IfThen(qryCliUsuSELECIONADO.AsString.IsEmpty, 'S', '');
+    edtCliUsuSelecionados.Value   := edtCliUsuSelecionados.AsInteger + (1 * IfThen(qryCliUsuSELECIONADO.AsString.IsEmpty, -1, 1));
+    Post;
+  end;
+end;
+
 procedure TfrmSincronizador.dsCliDataChange(Sender: TObject; Field: TField);
 begin
   if cdsClientes.Active then
@@ -652,6 +923,55 @@ procedure TfrmSincronizador.dsTranspDataChange(Sender: TObject; Field: TField);
 begin
   if cdsTransportadoras.Active then
     edtTransportadorasSeparadas.Value := cdsTransportadoras.RecordCount;
+end;
+
+function TfrmSincronizador.efetuarSincronizacaoDePedido(codigoPedido: integer): String;
+var
+    Retorno, jsonRegistroAtual :String;
+    Client   :TClienteHttpMeusPedidos;
+    Pedido   :TPedido;
+    Repositorio :TRepositorio;
+    JSONPedido :String;
+begin
+  try
+    Client := nil;
+    Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
+                                             fdm.configuracoesIntegracao.company_token,
+                                             fdm.configuracoesIntegracao.url_base);
+    Repositorio := TFabricaRepositorio.GetRepositorio(TPedido.ClassName);
+    Pedido      := TPedido(Repositorio.Get(codigoPedido));
+
+      try
+        JSONPedido := getJsonPedido(Pedido);
+        try
+          Retorno := Client.Post('pedidos/', JSONPedido);
+        Except
+          on e :Exception do
+            raise Exception.Create(UTF8Decode(e.Message));
+        end;
+      Except
+      on e:Exception do
+        begin
+          lancaLog('ERRO >> '+e.Message+#13#10+#13#10+' Pedido '+Pedido.numpedido+' não sincronizado >> ');
+          if pos('limite_de_requisicoes', e.Message) > 0 then
+            AguardarUmMinuto;
+        end;
+      end;
+
+      if Client.ClientHttp.ResponseCode in [ST_OK_INCLUSAO, ST_OK_ALTERACAO] then
+      begin
+        { Se ainda não tem relação criada, cria uma }
+        TRelacaoTabelasImportacao.criaRelacao('pedidos','PEDIDOS',Client.IdResponse,intToStr(Pedido.Codigo), DateToStr(Date));
+        edtImportados.Value := edtImportados.Value + 1;
+      end
+      else //ocorreu erro
+      begin
+        lancaLog(Retorno);
+        edtNaoImportados.Value := edtNaoImportados.Value + 1;
+      end;
+  finally
+    FreeAndNil(Client);
+  end;
 end;
 
 procedure TfrmSincronizador.gridProdutosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
@@ -718,6 +1038,26 @@ begin
   result := copy(result, 1, length(result)-2);
 end;
 
+procedure TfrmSincronizador.Label46Click(Sender: TObject);
+begin
+  try
+    indicator.Animate := true;
+    buscaUsuariosMP;
+  finally
+    indicator.Animate := false;
+  end;
+end;
+
+procedure TfrmSincronizador.Label46MouseLeave(Sender: TObject);
+begin
+  TLabel(Sender).Font.Style := [fsBold];
+end;
+
+procedure TfrmSincronizador.Label46MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+  TLabel(Sender).Font.Style := [fsBold, fsunderline];
+end;
+
 procedure TfrmSincronizador.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -727,8 +1067,11 @@ begin
   pgcTabelas.ActivePageIndex   := 0;
   pgcTabelasProduto.ActivePageIndex := 0;
   pgcClientes.ActivePageIndex  := 0;
+  pgcClientesIn.ActivePageIndex := 0;
+  pgcCliUsu.ActivePageIndex := 0;
   pgcTransportadoras.ActivePageIndex := 0;
   pgcFormasPagamento.ActivePageIndex := 0;
+
   qryCores.Connection          := dm.conexao;
   qryProdutos.Connection       := dm.conexao;
   qryTabelas.Connection        := dm.conexao;
@@ -737,11 +1080,15 @@ begin
   qryClientes.Connection       := dm.conexao;
   qryTransportadoras.Connection := dm.conexao;
   qryFormasPgto.Connection     := dm.conexao;
+  qryPedidos.Connection        := dm.conexao;
+  qryCliUsu.Connection         := dm.conexao;
   cdsProdutos.CreateDataSet;
   cdsCores.CreateDataSet;
   cdsTabelas.CreateDataSet;
   cdsProdTab.CreateDataSet;
   cdsClientes.CreateDataSet;
+  cdsUsuarios.CreateDataSet;
+  cdsCliUsu.CreateDataSet;
   cdsTransportadoras.CreateDataSet;
   cdsFormasPgto.CreateDataSet;
 
@@ -767,6 +1114,33 @@ begin
       sincTransportadoras  : btnSepararTransportadoras.Click;
       sincFormasPagamento  : btnSepararFormaPgto.Click;
     end;
+  end;
+end;
+
+function TfrmSincronizador.getIdExterno(idErp, tabelaERP: String; msgErro :String): String;
+begin
+  result := Campo_por_campo('RELACAO_TAB_IMPORTACAO','ID_EXTERNO','TABELA_ERP',tabelaERP,'ID_ERP',idErp);
+  if result.IsEmpty then
+    raise Exception.Create(msgErro);
+end;
+
+function TfrmSincronizador.getIdTabPrecoPorValor(codTabela, codProduto: integer; valor: Real): String;
+var qry :TFDQuery;
+begin
+  try
+    qry := dm.GetConsulta('SELECT CODIGO FROM PRODUTO_TABELA_PRECO '+
+                          ' WHERE PRECO = :VALOR AND CODTABELA = :CODTABELA AND CODPRODUTO = :CODPRODUTO ');
+    qry.ParamByName('valor').AsFloat := valor;
+    qry.ParamByName('codtabela').AsInteger := codTabela;
+    qry.ParamByName('codProduto').AsInteger := codProduto;
+    qry.Open;
+
+    if qry.IsEmpty then
+      raise Exception.Create('Tabela de preço encontrada para ')
+    else
+      result := qry.Fields[0].AsString;
+  finally
+    FreeAndNil(qry);
   end;
 end;
 
@@ -801,6 +1175,17 @@ begin
             ' "observacao": "'+observacao+'", '+
             ' "emails": ['+getJsonEmails(emails)+'],'+
             ' "telefones": ['+getJsonFones(fone1, fone2)+']}';
+end;
+
+function TfrmSincronizador.getJsonCliPorUsu: String;
+var id_cliente, id_usuario :String;
+begin
+  id_cliente  := cdsCliUsuID_EXTERNO_CLIENTE.AsString;
+  id_usuario  := cdsCliUsuID_EXTERNO_USUARIO.AsString;
+
+  result := '{ "cliente_id": '+id_cliente+', '+
+            '  "usuario_id": '+id_usuario+', '+
+            '  "liberado": true } '
 end;
 
 function TfrmSincronizador.getJsonCoresDoProduto: String;
@@ -861,6 +1246,60 @@ begin
   result := '{ "nome": "'+descricao+'"}';
 end;
 
+function TfrmSincronizador.getJsonItensPedido(Pedido: TPedido): String;
+var
+    i :integer;
+    Item :TItem;
+    produto_id, tabela_preco_id, preco_bruto, preco_liquido, stringJson, stringRetorno :String;
+begin
+    result  := '';
+
+    for i := 0 to Pedido.Itens.Count-1 do
+    begin
+      try
+        Item := TItem(Pedido.Itens[i]);
+        produto_id      := getIdExterno(intToStr(Item.cod_produto),'PRODUTOS', 'Produto Ref: "'+Item.Produto.Referencia+'" ainda não foi sincronizado' );
+     //   tabela_preco_id := getIdExterno(getIdTabPrecoPorValor(Pedido.cod_tab_preco, Item.Produto.Codigo, Item.preco),
+     //                                   'PRODUTO_TABELA_PRECO', 'Tabela de preço: Código[ "'+intToStr(Pedido.cod_tab_preco)+'"');
+        preco_bruto     := TStringUtilitario.MoedaParaStringJSON(Item.preco);
+        preco_liquido   := TStringUtilitario.MoedaParaStringJSON(Item.preco);
+
+        stringJson := '{ "produto_id": '+produto_id+', '+
+                    //  '  "tabela_preco_id": '+tabela_preco_id+', '+
+                      '  "quantidade_grades": [ '+  getQuantidadeItem(Item) + ' ], '+
+                      '  "preco_bruto": '+preco_bruto+', '+
+                      '  "preco_liquido": '+preco_liquido+' }';
+
+        stringRetorno := stringRetorno + stringJson + ',';
+      Except
+        on e :Exception do
+          raise Exception.Create(e.Message);
+      end;
+    end;
+    result := copy(stringRetorno,1,length(stringRetorno)-1);
+end;
+
+function TfrmSincronizador.getJsonPedido(Pedido: TPedido): String;
+var cod_cliente, data_emissao, cod_transportadora, cod_representante, cod_formapagto :String;
+    observacoes :String;
+begin
+  cod_cliente        := getIdExterno(intToStr(Pedido.cod_cliente),'PESSOAS', 'Cliente '+Pedido.Cliente.Razao+' ainda não foi sincronizado');
+  data_emissao       := FormatDateTime('yyyy-mm-dd', Pedido.dt_entrega);
+  cod_transportadora := getIdExterno(intToStr(Pedido.cod_transp),'PESSOAS', 'Transportadora '+Pedido.Transportadora.Razao+' ainda não foi sincronizada');
+  cod_representante  := getIdExterno(intToStr(Pedido.cod_repres),'PESSOAS', 'Representante '+Pedido.Representante.Razao +' ainda não foi sincronizado');
+  cod_formapagto     := getIdExterno(intToStr(Pedido.cod_forma_pag),'FORMAS_PGTO', 'Forma de Pagamento '+ Pedido.FormaPagamento.Descricao +' ainda não foi sincronizada');
+  observacoes        := Pedido.observacao;
+
+
+  result := '{ "cliente_id": '+cod_cliente+', '+
+            '  "data_emissao": "'+data_emissao+'", '+
+            '  "transportadora_id": '+cod_transportadora+', '+
+            '  "criador_id": '+cod_representante+', '+
+            '  "condicao_pagamento_id": '+cod_formapagto+', '+
+            '  "observacoes": "'+observacoes+'", '+
+            '  "itens": [ '+getJsonItensPedido(Pedido)+' ]}';
+end;
+
 function TfrmSincronizador.getJsonProduto: String;
 var produto, preco_tabela, referencia, unidade, codigo_ncm :String;
 begin
@@ -888,6 +1327,7 @@ begin
     sincTabelasPreco     : result := getJsonTabela;
     sincTabelasDoProduto : result := getJsonTabelaDoProduto;
     sincClientes         : result := getJsonCliente;
+    sincCliPorUsu        : result := getJsonCliPorUsu;
     sincTransportadoras  : result := getJsonTransportadora;
     sincFormasPagamento  : result := getJsonFormasPagamento;
   end;
@@ -953,6 +1393,50 @@ begin
             ' "telefones": ['+getJsonFones(fone1, fone2)+']}';
 end;
 
+function TfrmSincronizador.getQuantidade(cor, tamanho: String; qtd: integer): String;
+begin
+  result := '{ "cor": "'+cor+'", '+
+            '  "tamanho": "'+tamanho+'", '+
+            '  "quantidade": '+intToStr(qtd)+' }';
+end;
+
+function TfrmSincronizador.getQuantidadeItem(item: TItem): String;
+var stringRetorno :String;
+begin
+    if item.qtd_PM > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'PM',item.qtd_PM)+',';
+    if item.qtd_RN > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'RN',item.qtd_RN)+',';
+    if item.qtd_P > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'P',item.qtd_P)+',';
+    if item.qtd_M > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'M',item.qtd_M)+',';
+    if item.qtd_G > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'G',item.qtd_G)+',';
+    if item.qtd_1 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'1',item.qtd_1)+',';
+    if item.qtd_2 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'2',item.qtd_2)+',';
+    if item.qtd_3 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'3',item.qtd_3)+',';
+    if item.qtd_4 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'4',item.qtd_4)+',';
+    if item.qtd_6 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'6',item.qtd_6)+',';
+    if item.qtd_8 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'8',item.qtd_8)+',';
+    if item.qtd_10 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'10',item.qtd_10)+',';
+    if item.qtd_12 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'12',item.qtd_12)+',';
+    if item.qtd_14 > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'14',item.qtd_14)+',';
+    if item.qtd_UNICA > 0 then
+      stringRetorno := stringRetorno + getQuantidade(Item.Cor.Descricao,'UNICA',trunc(item.qtd_UNICA))+',';
+
+    result := copy(stringRetorno, 1, length(stringRetorno)-1);
+end;
+
 procedure TfrmSincronizador.gridCoresDblClick(Sender: TObject);
 begin
   with qryCores do
@@ -997,14 +1481,15 @@ begin
     sincTabelasPreco     : memoLog := memLogTabelas;
     sincTabelasDoProduto : memoLog := memLogTabelaProduto;
     sincClientes         : memoLog := memLogClientes;
+    sincCliPorUsu        : memoLog := memLogCliUsu;
     sincTransportadoras  : memoLog := memLogTransportadoras;
     sincFormasPagamento  : memoLog := memLogFormasPagamento;
+    sincPedidos          : memoLog := memLogPedidos;
   end;
 
+  memoLog.Lines.Add(text);
   if memoLog.Lines.Count > 0 then
     memoLog.Lines.Add(quebra);
-
-  memoLog.Lines.Add(text);
 end;
 
 procedure TfrmSincronizador.LimpaListaSeparados;
@@ -1015,6 +1500,7 @@ begin
     sincTabelasPreco     : cds := cdsTabelas;
     sincTabelasDoProduto : cds := cdsProdTab;
     sincClientes         : cds := cdsClientes;
+    sincCliPorUsu        : cds := cdsCliUsu;
     sincTransportadoras  : cds := cdsTransportadoras;
     sincFormasPagamento  : cds := cdsFormasPgto;
   end;
@@ -1034,6 +1520,11 @@ end;
 procedure TfrmSincronizador.ocultaClientesSelecionados;
 begin
   ocultaRegistrosSelecionados(cdsClientes, qryClientes);
+end;
+
+procedure TfrmSincronizador.ocultaCliPorUsuSelecionados;
+begin
+  ocultaRegistrosSelecionados(cdsCliUsu, qryCliUsu);
 end;
 
 procedure TfrmSincronizador.ocultaFormasPagamentoSelecionadas;
@@ -1095,6 +1586,8 @@ begin
     3 :begin
       FSincronizando := sincClientes;
       buscaClientes;
+      buscaUsuarios;
+      cdsUsuariosAfterScroll(nil);
     end;
     4 :begin
       FSincronizando := sincTransportadoras;
@@ -1103,6 +1596,10 @@ begin
     5 :begin
       FSincronizando := sincFormasPagamento;
       buscaFormasPagamento;
+    end;
+    6 :begin
+      FSincronizando := sincPedidos;
+      buscaRepresentante1.edtCodigo.SetFocus;
     end;
   end;
 end;
@@ -1133,6 +1630,19 @@ begin
     cdsClientes.Delete;
     ocultaClientesSelecionados;
     result := qryClientes;
+  end;
+end;
+
+function TfrmSincronizador.removeCliPorUsuSeparado(var codigo, id_externo: String; const pergunta: Boolean): TFDQuery;
+begin
+  if not cdsCliUsu.IsEmpty and ( not pergunta or
+    confirma('Remover '+cdsCliUsuCLIENTE.AsString+' dos clientes separados para sincronização?')) then
+  begin
+    codigo      := cdsCliUsuCODIGO.AsString;
+    id_externo  := cdsCliUsuID_EXTERNO.AsString;
+    cdsCliUsu.Delete;
+    ocultaCliPorUsuSelecionados;
+    result := qryCliUsu;
   end;
 end;
 
@@ -1186,6 +1696,7 @@ begin
     sincTabelasPreco     : qry := removeTabelaSeparada(codigo, id_externo, false);
     sincTabelasDoProduto : qry := removeTabelaProdutoSeparada(codigo, id_externo, false);
     sincClientes         : qry := removeClienteSeparado(codigo, id_externo, false);
+    sincCliPorUsu        : qry := removeCliPorUsuSeparado(codigo, id_externo, false);
     sincTransportadoras  : qry := removeTransportadoraSeparada(codigo, id_externo, false);
     sincFormasPagamento  : qry := removeFormaPagamentoSeparada(codigo, id_externo, false);
   end;
@@ -1261,6 +1772,31 @@ begin
   cdsClientes.Post;
 
   ocultaClientesSelecionados;
+end;
+
+procedure TfrmSincronizador.separaCliPorUsuSelecionado;
+begin
+  qryCliUsu.Filtered := false;
+  qryCliUsu.Filter   := 'SELECIONADO=''S'' ';
+  qryCliUsu.Filtered := true;
+  qryCliUsu.First;
+
+  while not qryCliUsu.Eof do
+  begin
+    cdsCliUsu.AfterScroll := nil;
+    cdsCliUsu.Append;
+    cdsCliUsuCODIGO.AsInteger            := qryCliUsuCODIGO.AsInteger;
+    cdsCliUsuCLIENTE.AsString            := qryCliUsuRAZAO.AsString;
+    cdsCliUsuUSUARIO.AsString            := cdsUsuariosNOME.AsString;
+    cdsCliUsuID_EXTERNO_CLIENTE.AsString := qryCliUsuID_EXTERNO_CLIENTE.AsString;
+    cdsCliUsuID_EXTERNO_USUARIO.AsString := cdsUsuariosID_EXTERNO.AsString;
+    cdsCliUsuID_EXTERNO.AsString         := qryCliUsuID_EXTERNO.AsString;
+    cdsCliUsu.Post;
+    qryCliUsu.Next;
+  end;
+
+  ocultaCliPorUsuSelecionados;
+  qryProdAfterScroll(nil);
 end;
 
 procedure TfrmSincronizador.separaFormaPagamentoSelecionada;
@@ -1389,6 +1925,22 @@ begin
   result := true;
 end;
 
+function TfrmSincronizador.sincronizaCliPorUsu: boolean;
+begin
+  result := false;
+  if edtCliUsuSeparados.Value <= 0 then
+  begin
+    avisar('Nenhum cliente foi separado para envio');
+    exit;
+  end;
+
+  sincronizarRegistros('CLIENTE',
+                       'usuarios_clientes',
+                       'CLIENTE_REPRESENTANTE',
+                       cdsCliUsu);
+  result := true;
+end;
+
 function TfrmSincronizador.sincronizaFormasPagamento: boolean;
 begin
   result := false;
@@ -1432,6 +1984,7 @@ begin
       sincTabelasPreco    : sincronizaTabelas;
       sincTabelasDoProduto: sincronizaTabelaDoProduto;
       sincClientes        : sincronizaClientes;
+      sincCliPorUsu       : sincronizaCliPorUsu;
       sincTransportadoras : sincronizaTransportadoras;
       sincFormasPagamento : sincronizaFormasPagamento;
     end;
@@ -1463,7 +2016,7 @@ begin
         if not cds.FieldByName(CAMPO_ID_EXTERNO).AsString.isEmpty then
           Retorno := Client.Put(urlMP+'/' + cds.FieldByName(CAMPO_ID_EXTERNO).AsString, jsonRegistroAtual)
         else
-          Retorno := Client.Post(urlMP+'/', jsonRegistroAtual);
+          Retorno := Client.Post(urlMP, jsonRegistroAtual);
       Except
       on e:Exception do
         begin

@@ -278,6 +278,10 @@ begin
               COD_PAIS := '1058';
               CNPJ     := trim( IfThen( length(participante.CPF_CNPJ) > 11, participante.CPF_CNPJ, '') );
               CPF      := TStringUtilitario.ApenasNumeros( trim( IfThen( length(participante.CPF_CNPJ) > 11, '', participante.CPF_CNPJ) ));
+
+              if CPF.Length < 11 then
+                CPF := StringOfChar('0',11-CPF.Length) + CPF;
+
               IE       := TStringUtilitario.ApenasNumeros( trim( participante.RG_IE ) );
               COD_MUN  := participante.Endereco.Cidade.codibge;
               SUFRAMA  := ''; //no momento nenhum cliente ou fornecedor referente a zona franca de manaus

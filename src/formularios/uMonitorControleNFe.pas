@@ -296,8 +296,8 @@ begin
                                                                self.chkFiltroCancelada.Checked);
 
        Repositorio  := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
-       NotasFiscais := Repositorio.GetListaPorEspecificacao(Esp, ''''+formatDateTime('dd.mm.yyyy hh:mm:ss',dtpFiltroDataInicial.DateTime)+ ''' and ''' +
-                                                                 formatDateTime('dd.mm.yyyy hh:mm:ss',dtpFiltroDataFinal.DateTime)+'''');
+       NotasFiscais := Repositorio.GetListaPorEspecificacao(Esp, QuotedStr(formatDateTime('dd.mm.yyyy',dtpFiltroDataInicial.DateTime))+ ' and ' +
+                                                                 QuotedStr(formatDateTime('dd.mm.yyyy',dtpFiltroDataFinal.DateTime)));
 
        self.AdicionarNotasFiscaisNoCDS(NotasFiscais);
 

@@ -100,6 +100,8 @@ inherited frmContasPagar: TfrmContasPagar
     ExplicitWidth = 998
     ExplicitHeight = 562
     inherited tsConsulta: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 990
       ExplicitHeight = 532
       DesignSize = (
@@ -1151,6 +1153,10 @@ inherited frmContasPagar: TfrmContasPagar
     object TabSheet1: TTabSheet
       Caption = 'Parcelas'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlParcelas: TPanel
         Left = 0
         Top = 0

@@ -843,7 +843,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
           Anchors = [akTop, akRight]
           BorderStyle = bsNone
           Color = 5460819
-          DataField = 'PRECO_CUSTO'
+          DataField = 'TOT_CUSTO'
           DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 6930274
@@ -3233,7 +3233,7 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
     Left = 495
     Top = 241
     Bitmap = {
-      494C010106000900940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000900A00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000EDD9C800D18D5300C0620D00C0620D00D18D5300EDD9C8000000
@@ -3657,6 +3657,12 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       DisplayFormat = ' ,0.00; -,0.00'
       Expression = 'SUM(TOTAL_BRUTO)'
     end
+    object cdsTOT_CUSTO: TAggregateField
+      FieldName = 'TOT_CUSTO'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(PRECO_CUSTO)'
+    end
   end
   object DataSetProvider1: TDataSetProvider
     DataSet = qry
@@ -3802,6 +3808,12 @@ inherited frmRelatorioVendas: TfrmRelatorioVendas
       DisplayName = ''
       DisplayFormat = '0'
       Expression = 'SUM(QTD_PECAS)'
+    end
+    object ClientDataSet1TOT_CUSTO: TAggregateField
+      FieldName = 'TOT_CUSTO'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(PRECO_CUSTO)'
     end
   end
   object DataSource2: TDataSource

@@ -290,6 +290,8 @@ type
     Label10: TLabel;
     DBEdit4: TDBEdit;
     Label4: TLabel;
+    cdsTOT_CUSTO: TAggregateField;
+    ClientDataSet1TOT_CUSTO: TAggregateField;
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure btnImprimirClick(Sender: TObject);
     procedure dtpFimChange(Sender: TObject);
@@ -350,7 +352,7 @@ uses RxCurrEdit, uPedido, PermissoesAcesso, IdIOHandlerStack, FabricaRepositorio
      StrUtils, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
      IdMessageClient, IdSMTP, IdAttachmentFile, IdExplicitTLSClientServerBase,
      IdSSLOpenSSL, IdIOHandler, IdIOHandlerSocket, ConfiguracoesNFEmail,
-     Endereco, Pessoa, GeradorNFe, NotaFiscal;
+     Endereco, Pessoa, GeradorNFe, NotaFiscal, uModulo;
 
 {$R *.dfm}
 
@@ -514,7 +516,7 @@ begin
             ' left join ITENS on itens.COD_PEDIDO = p.CODIGO '+#13#10+
             ' left join produtos pro on ITENS.COD_PRODUTO = pro.CODIGO '+#13#10+
             IfThen(rgLeiaute.ItemIndex = 0, '', ' left join cores cor  on cor.codigo = itens.cod_cor ') +
-            ' left join produto_tabela_preco pt on ((pt.codproduto = pro.codigo)and(pt.codtabela = 36)) '+
+            ' left join produto_tabela_preco pt on ((pt.codproduto = pro.codigo)and(pt.codtabela = 39)) '+
             ' left join naturezas_operacao nat on nat.codigo = nf.codigo_natureza '+#13#10+
             ' left join clientes cli on cli.codcli = c.codigo '+#13#10+
             ' left join dados_representante dr on dr.codigo_representante = p.cod_repres '+#13#10+
@@ -691,7 +693,7 @@ var arq: TextFile;
     fixo, cpfCnpj, nome, email :String;
     aosCuidados, contato, cep, logradouro :String;
     numero, complemento, bairro, cidade :String;
-    telefone, celular, fax :String;
+    telefone, celular, fax, aviso :String;
     caminho :String;
     Destinatario :TPessoa;
     repositorio  :TRepositorio;
@@ -721,7 +723,6 @@ begin
    Rewrite(arq);
    Writeln(arq, '1SIGEP DESTINATARIO NACIONAL');
 
-   try
    repositorio := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
    erro        := false;
 
@@ -730,46 +731,52 @@ begin
 
      Destinatario := TPessoa( repositorio.Get(cdsCODCLI.AsInteger) );
 
-     fixo := '2';
-     cpfCnpj     := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.CPF_CNPJ), 14);
-     nome        := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Razao), 50);
-     email       := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
-     aosCuidados := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
-     contato     := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
-     cep         := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.CEP), 8);
-     logradouro  := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.logradouro), 50);
-     numero      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.numero), 6);
-     complemento := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.complemento), 30);
-     bairro      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.bairro), 50);
-     cidade      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.Cidade.nome), 50);
-     telefone    := TStringUtilitario.CaracterAEsquerda(' ', '', 18);
-     celular     := TStringUtilitario.CaracterAEsquerda(' ', '', 12);
-     fax         := TStringUtilitario.CaracterAEsquerda(' ', '', 12);
+     try
+       if not assigned(Destinatario.Endereco) then
+         raise Exception.Create('Destinatário '+Destinatario.Razao+' não possui endereço cadastrado')
+       else if not assigned(Destinatario.Endereco.Cidade) then
+         raise Exception.Create('Destinatário '+Destinatario.Razao+' não possui cidade cadastrada');
 
-     Writeln(arq, fixo + cpfCnpj + nome + email + aosCuidados + contato + cep + logradouro +
-             numero + complemento + bairro + cidade + telefone + celular + fax);
+       fixo := '2';
+       cpfCnpj     := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.CPF_CNPJ), 14);
+       nome        := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Razao), 50);
+       email       := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
+       aosCuidados := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
+       contato     := TStringUtilitario.CaracterAEsquerda(' ', '', 50);
+       cep         := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.CEP), 8);
+       logradouro  := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.logradouro), 50);
+       numero      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.numero), 6);
+       complemento := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.complemento), 30);
+       bairro      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.bairro), 50);
+       cidade      := TStringUtilitario.CaracterAEsquerda(' ',TRIM(Destinatario.Endereco.Cidade.nome), 50);
+       telefone    := TStringUtilitario.CaracterAEsquerda(' ', '', 18);
+       celular     := TStringUtilitario.CaracterAEsquerda(' ', '', 12);
+       fax         := TStringUtilitario.CaracterAEsquerda(' ', '', 12);
 
+       Writeln(arq, fixo + cpfCnpj + nome + email + aosCuidados + contato + cep + logradouro +
+               numero + complemento + bairro + cidade + telefone + celular + fax);
+
+     Except
+       on e :Exception do
+       begin
+         dm.LogErros.AdicionaErro('uRelatorioVendas', 'Importacao', e.Message);
+         erro := true;
+       end;
+     end;
      cds.Next;
 
      FreeAndNil(Destinatario);
    end;
 
    Writeln(arq, '9'+TStringUtilitario.CaracterAEsquerda('0', intToStr(cds.RecordCount), 6));
-  except
-    on e : Exception do
-    begin
-      avisar('Erro ao gerar arquivo. '+#13#10+e.Message);
-      erro := true;
-    end;
-  end;
-
    CloseFile(arq);
 
    chkSelecionar.OnClick := nil;
    chkSelecionar.Checked := false;
    chkSelecionar.OnClick := chkSelecionarClick;
-   if not erro then
-     avisar('Arquivo gerado com sucesso!');
+   if erro then
+     aviso := ' Porém ocorreu um ou mais erros durante a geração. Para visualizar acesse o log de erros.';
+   avisar('Arquivo gerado com sucesso.'+aviso);
 
  finally
    cds.Filtered := false;

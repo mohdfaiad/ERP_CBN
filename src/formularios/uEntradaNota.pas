@@ -7,7 +7,7 @@ uses
   Dialogs, uPadrao, StdCtrls, Buttons, ACBrNFe, ACBrNFeNotasFiscais, Repositorio,
   FabricaRepositorio, NotaFiscal, NaturezaOperacao, TipoSerie, Pessoa, ItemNotaFiscal,
   TotaisNotaFiscal, Empresa, TipoRegimeTributario, ExtCtrls, DB, DBClient, pcnNFe,
-  Grids, DBGrids, DBGridCBN, ImgList, Menus, ACBrBase, ACBrDFe, System.ImageList, contnrs;
+  Grids, DBGrids, DBGridCBN, ImgList, Menus, ACBrBase, ACBrDFe, System.ImageList, contnrs, FireDAC.Comp.Client;
 
 type
 
@@ -95,9 +95,11 @@ type
     procedure CadastrarUnidadeCorrespondente1Click(Sender: TObject);
 
   private
+    FCodigoFornecedor :integer;
+  private
     function MateriaCadastrada(produtoNfe :TProd) :Integer;
     function fornecedorCadastrado: Boolean;
-    function  Nota_ja_importada(numero_nota :String) :Boolean;
+    function  Nota_ja_importada(numero_nota, cod_emitente, serie: integer) :Boolean;
     function  associar_produto(produtoNfe :TProd)    :Boolean;
     function  cadastrar_produto(produtoNfe :TProd)   :Boolean;
     function  associar_cfop(codigo_natureza :integer) :Boolean;
@@ -219,7 +221,9 @@ begin
     fornecedor_yes.Visible  := true;
   end;
 
-  if fornecedor_yes.Visible and Nota_ja_importada( intToStr(AcbrNfe.NotasFiscais.Items[0].NFe.Ide.nNF) ) then begin
+  if fornecedor_yes.Visible and Nota_ja_importada( AcbrNfe.NotasFiscais.Items[0].NFe.Ide.nNF,
+                                                   FCodigoFornecedor,
+                                                   AcbrNfe.NotasFiscais.Items[0].NFe.Ide.serie) then begin
     lbInfoNota.Caption := 'Nota Fiscal de Nº '+ intToStr(AcbrNfe.NotasFiscais.Items[0].NFe.Ide.nNF)+', referente ao fornecedor:'+#13#10+#13#10+
                           '( '+lbFornecedor.Caption+')  já foi importada!';
     Nota_yes.Visible  := false;
@@ -306,7 +310,10 @@ begin
   dm.qryGenerica.Open;
 
   if not dm.qryGenerica.IsEmpty then
-    lbFornecedor.Caption := dm.qryGenerica.fieldByName('CODIGO').AsString + ' - ' + dm.qryGenerica.fieldByName('RAZAO').AsString
+  begin
+    lbFornecedor.Caption := dm.qryGenerica.fieldByName('CODIGO').AsString + ' - ' + dm.qryGenerica.fieldByName('RAZAO').AsString;
+    FCodigoFornecedor    := dm.qryGenerica.fieldByName('CODIGO').AsInteger;
+  end
   else
     lbFornecedor.Caption := AcbrNfe.NotasFiscais.Items[0].NFe.Emit.xNome;
 
@@ -323,15 +330,21 @@ begin
   avisar(lbInfoNota.Caption);
 end;
 
-function TfrmEntradaNota.Nota_ja_importada(numero_nota: String): Boolean;
+function TfrmEntradaNota.Nota_ja_importada(numero_nota, cod_emitente, serie: integer): Boolean;
+var qry :TFDQuery;
 begin
-  Result := true;
+  try
+    Result := true;
+    qry := dm.GetConsulta('SELECT CODIGO FROM NOTAS_FISCAIS WHERE NUMERO_NOTA_FISCAL = :NNOTA AND CODIGO_EMITENTE = :CODEMIT AND SERIE = :SERIE');
+    qry.ParamByName('NNOTA').AsInteger   := numero_nota;
+    qry.ParamByName('CODEMIT').AsInteger := cod_emitente;
+    qry.ParamByName('SERIE').AsInteger   := serie;
+    qry.Open;
 
-  { Se ja existir uma NF com o mesmo numero e fornecedor da nota corrente }
-  if Campo_por_campo('NOTAS_FISCAIS', 'CODIGO', 'NUMERO_NOTA_FISCAL', numero_nota, 'CODIGO_EMITENTE', trim(copy(lbFornecedor.Caption, 1 ,pos('-',lbFornecedor.Caption)-1))) <> '' then
-    Result := true
-  else
-    Result := false;
+    Result := not qry.IsEmpty;
+  finally
+    FreeAndNil(qry);
+  end;
 end;
 
 function TfrmEntradaNota.associar_produto(produtoNfe: TProd): Boolean;
@@ -594,6 +607,7 @@ end;
 procedure TfrmEntradaNota.btnAtulizaClick(Sender: TObject);
 var caminho :String;
 begin
+  FCodigoFornecedor := 0;
   if edtCaminhoXml.Text <> '' then begin
     caminho := edtCaminhoXml.Text;
     btnLimpa.Click;

@@ -348,7 +348,7 @@ begin
   if (Key = '-') and (Pos('-',self.edtNumPedido.Text) > 0) then
     Key := #0;
     
-  If not( key in['0'..'9',#08,'-','#','L','M','R'] ) then
+  If not( key in['0'..'9',#08,'-','#','L','M','R','B','D'] ) then
     key := #0;
 end;
 

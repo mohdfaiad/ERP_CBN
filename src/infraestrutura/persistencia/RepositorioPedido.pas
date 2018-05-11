@@ -330,6 +330,10 @@ begin
    inherited SetParametro('CANCELADO'        , Pedido.cancelado);
    inherited SetParametro('PESO'             , Pedido.peso);
    inherited SetParametro('VOLUMES'          , Pedido.volumes);
+
+   if Pedido.tipo.IsEmpty then
+     Pedido.tipo := 'P';
+
    inherited SetParametro('TIPO'             , Pedido.tipo);
 end;
 

@@ -39,7 +39,7 @@ type
 
     procedure SetNumeroNotaFiscal(const Value: String);
 
-    procedure buscaNotaFiscal(codigo :String);
+    procedure buscaNotaFiscal(codigo :integer);
     function GetNotaFiscal: TNotaFiscal;
     procedure SetCodNotaFiscal(const Value: Integer);
 
@@ -65,11 +65,11 @@ uses uPesquisaSimples, DB, repositorio, fabricaRepositorio, uModulo, uPAdrao;
 
 { TBuscaNotaFiscal }
 
-procedure TBuscaNotaFiscal.buscaNotaFiscal(codigo: String);
+procedure TBuscaNotaFiscal.buscaNotaFiscal(codigo: integer);
 var
   campoRetorno, condicao_empresa, condicao_contas, condicao_entradaSaida :String;
 begin
-  campoRetorno := 'numero_nota_fiscal'; //campo que deseja que retorne
+  campoRetorno := 'codigo'; //campo que deseja que retorne
 
   if FCodigo_empresa <> '' then
     condicao_empresa := ' and (iif(nf.entrada_saida = ''E'', nf.codigo_destinatario, nf.codigo_emitente) = '+FCodigo_empresa+') ';
@@ -88,7 +88,7 @@ begin
             ' left join pessoas           p    on p.codigo = nf.codigo_destinatario                  '+
             ' left join notas_fiscais_nfe nfe  on nfe.codigo_nota_fiscal = nf.codigo                 '+
             ' left join contas_pagar cp on cp.codigo_nf = nf.codigo                                  '+
-            'where nf.'+campoRetorno+'='+ codigo + condicao_empresa + condicao_contas + condicao_entradaSaida;
+            'where nf.'+campoRetorno+'='+ intToStr(codigo) + condicao_empresa + condicao_contas + condicao_entradaSaida;
 
 
   if not NF.BuscaVazia then begin
@@ -97,7 +97,6 @@ begin
     self.FcodNotaFiscal    := NF.getCampo('codigo').AsInteger;
     self.FID               := NF.getCampo('chave_acesso').AsString;
     self.FDestinatario     := NF.getCampo('Destinatario').AsString;
-
 
     keybd_event(VK_TAB, 0, 0, 0);
   end
@@ -125,12 +124,17 @@ begin
 end;
 
 procedure TBuscaNotaFiscal.edtNrNotaExit(Sender: TObject);
+var condicao_entradaSaida :String;
 begin
+
+  if FEntradaSaida <> '' then
+    condicao_entradaSaida := ' and nf.entrada_saida = '''+FEntradaSaida+''' ';
+
   if edtNrNota.AsInteger > 0 then
   begin
     dm.qryGenerica2.Close;
     dm.qryGenerica2.SQL.Text := 'SELECT NF.CODIGO FROM NOTAS_FISCAIS NF  '+
-                                ' WHERE ENTRADA_SAIDA = ''E'' and NF.NUMERO_NOTA_FISCAL = '+ intToStr(edtNrNota.AsInteger);
+                                ' WHERE NF.NUMERO_NOTA_FISCAL = '+ intToStr(edtNrNota.AsInteger)+ condicao_entradaSaida;
     dm.qryGenerica2.Open();
 
     if dm.qryGenerica2.RecordCount > 1 then
@@ -139,7 +143,7 @@ begin
       btnBuscaClick(nil);
     end
     else
-      buscaNotaFiscal(edtNrNota.Text)
+      buscaNotaFiscal(dm.qryGenerica2.Fields[0].AsInteger);
   end
   else
     limpa;
@@ -156,7 +160,7 @@ end;
 procedure TBuscaNotaFiscal.btnBuscaClick(Sender: TObject);
 var campoRetorno, condicao_empresa, condicao_contas, condicao_entradaSaida  :String;
 begin
-  campoRetorno := 'numero_nota_fiscal';
+  campoRetorno := 'codigo';
 
   if FCodigo_empresa <> '' then
     condicao_empresa := ' and (iif(nf.entrada_saida = ''E'', nf.codigo_destinatario, nf.codigo_emitente) = '+FCodigo_empresa+') ';
@@ -177,7 +181,7 @@ begin
                                                         ' order by 1 ', campoRetorno, 'Selecione a Nota Fiscal desejada...', 700, 500);
 
   if frmPesquisaSimples.ShowModal = mrOk then
-    buscaNotaFiscal(frmPesquisaSimples.cds_retorno.Fields[0].AsString);
+    buscaNotaFiscal(frmPesquisaSimples.cds_retorno.Fields[0].AsInteger);
 
   frmPesquisaSimples.Release;
 end;

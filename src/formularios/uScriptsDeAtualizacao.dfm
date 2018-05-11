@@ -10191,4 +10191,19 @@ object frmScriptsDeAtualizacao: TfrmScriptsDeAtualizacao
     TabOrder = 243
     WordWrap = False
   end
+  object versao243: TMemo
+    Left = 177
+    Top = 324
+    Width = 25
+    Height = 25
+    Lines.Strings = (
+      'ALTER TABLE LOG_ERROS_IMPORT_PEDIDOS'
+      'ADD NUM_PEDIDO VARCHAR(20)'
+      '^'
+      'ALTER TABLE LOG_ERROS_IMPORT_PEDIDOS'
+      'ADD EXPORTADO CHAR(1)'
+      '^')
+    TabOrder = 244
+    WordWrap = False
+  end
 end

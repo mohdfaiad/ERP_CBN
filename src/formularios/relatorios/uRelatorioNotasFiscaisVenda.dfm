@@ -9,7 +9,7 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
   ExplicitWidth = 512
   ExplicitHeight = 444
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Label1: TLabel
     Left = -8
     Top = 152
@@ -33,13 +33,34 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
     TabOrder = 0
     ExplicitLeft = 8
     ExplicitTop = 8
-    inherited lblCodigo: TStaticText
-      Width = 42
-      ExplicitWidth = 42
+    ExplicitWidth = 486
+    ExplicitHeight = 63
+    inherited gpbEmpresa: TGroupBox
+      Width = 486
+      Height = 63
+      ExplicitTop = 0
+      ExplicitWidth = 486
+      ExplicitHeight = 63
+    end
+    inherited edtRazao: TEdit
+      Height = 23
+      ExplicitHeight = 23
     end
     inherited lblRazao: TStaticText
-      Width = 68
-      ExplicitWidth = 68
+      Width = 74
+      Height = 19
+      ExplicitWidth = 74
+      ExplicitHeight = 19
+    end
+    inherited edtCodigo: TEdit
+      Height = 23
+      ExplicitHeight = 23
+    end
+    inherited lblCodigo: TStaticText
+      Width = 42
+      Height = 19
+      ExplicitWidth = 42
+      ExplicitHeight = 19
     end
   end
   object Panel1: TPanel
@@ -295,16 +316,26 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
       ExplicitWidth = 427
     end
     inherited lblCFOP: TStaticText
-      Width = 32
-      ExplicitWidth = 32
+      Width = 33
+      Height = 19
+      ExplicitWidth = 33
+      ExplicitHeight = 19
     end
     inherited lblRazao: TStaticText
-      Width = 53
-      ExplicitWidth = 53
+      Width = 59
+      Height = 19
+      ExplicitWidth = 59
+      ExplicitHeight = 19
+    end
+    inherited edtCFOP: TEdit
+      Height = 23
+      ExplicitHeight = 23
     end
     inherited edtDescricao: TEdit
       Width = 303
+      Height = 23
       ExplicitWidth = 303
+      ExplicitHeight = 23
     end
   end
   object BitBtn1: TBitBtn
@@ -396,8 +427,8 @@ inherited frmRelatorioNotasFiscaisVenda: TfrmRelatorioNotasFiscaisVenda
     TabOrder = 5
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Segoe UI'
+    TitleFont.Height = -13
+    TitleFont.Name = 'Calibri'
     TitleFont.Style = []
     OnKeyDown = DBGrid1KeyDown
     Columns = <
