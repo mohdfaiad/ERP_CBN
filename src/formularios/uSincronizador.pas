@@ -363,10 +363,9 @@ type
     TabSheet18: TTabSheet;
     DBGridCBN6: TDBGridCBN;
     Label45: TLabel;
-    Label46: TLabel;
+    lbAtualizaUsuarios: TLabel;
     Indicator: TActivityIndicator;
     DBGridCBN7: TDBGridCBN;
-    RadioGroup1: TRadioGroup;
     DBGridCBN8: TDBGridCBN;
     edtCliUsuSeparados: TCurrencyEdit;
     Label47: TLabel;
@@ -390,13 +389,16 @@ type
     qryCliUsuCODIGO: TIntegerField;
     qryCliUsuRAZAO: TStringField;
     qryCliUsuID_EXTERNO_CLIENTE: TStringField;
-    qryCliUsuID_EXTERNO: TStringField;
     qryCliUsuSELECIONADO: TStringField;
     edtCliUsuSelecionados: TCurrencyEdit;
     Shape32: TShape;
     Label53: TLabel;
     Label54: TLabel;
     Label55: TLabel;
+    btnExcluirCliente: TBitBtn;
+    cdsCliUsuCODIGO_CLIENTE: TIntegerField;
+    qryCliUsuCODIGO_CLIENTE: TIntegerField;
+    qryCliUsuID_ERP: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure gridCoresDblClick(Sender: TObject);
     procedure gridCoresDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -406,7 +408,6 @@ type
     procedure btnEnviarProdutosClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure gridProdutosSeparadosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure gridProdutosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure btnSepararTabelasClick(Sender: TObject);
     procedure btnLimpaListaTabelasClick(Sender: TObject);
@@ -432,16 +433,22 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure btnLimparClick(Sender: TObject);
-    procedure Label46MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure Label46MouseLeave(Sender: TObject);
+    procedure lbAtualizaUsuariosMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure lbAtualizaUsuariosMouseLeave(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure btnEnviarCliUsuClick(Sender: TObject);
-    procedure Label46Click(Sender: TObject);
+    procedure lbAtualizaUsuariosClick(Sender: TObject);
     procedure cdsUsuariosAfterScroll(DataSet: TDataSet);
     procedure DBGridCBN7DblClick(Sender: TObject);
     procedure DataSource1DataChange(Sender: TObject; Field: TField);
+    procedure btnExcluirClienteClick(Sender: TObject);
+    procedure qryClientesAfterScroll(DataSet: TDataSet);
+    procedure DBGridCBN7DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure pgcClientesInChange(Sender: TObject);
+    procedure gridProdutosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
   private
-    FUmMinuto :Integer;
+      FSegundos :smallint;
+      FFinalizaAguarda :boolean;
 
   private
       FSincronizando :TSincronizacao;
@@ -457,7 +464,7 @@ type
       procedure ocultaRegistrosSelecionados(cds :TClientDataSet; qry :TFDQuery);//oculta os registros que já foram separados, para que não sejam separados novamente
       procedure LimpaListaSeparados;//remove todos os registros atualmente separados para sincronização, referente a aba focada
       procedure lancaLog(text :String);//informa no respectivo memo da aba focada, uma mensagem de retorno referente a sincronização
-      procedure AguardarUmMinuto;//quando o nº limite de requisições é atingido, a função de sincronização é bloqueada até que o servidor da api esteja disponível novamente
+      procedure AguardarSegundos(segundos :smallint; const finaliza :boolean = false);//quando o nº limite de requisições é atingido, a função de sincronização é bloqueada até que o servidor da api esteja disponível novamente
 
       function getIdExterno(idErp, tabelaERP :String; msgErro :String):String;
       function efetuarSincronizacaoDePedido(codigoPedido :integer) :String;
@@ -467,6 +474,8 @@ type
       function getQuantidade(cor, tamanho :String; qtd :integer) :String;
       function getIdTabPrecoPorValor(codTabela, codProduto :integer; valor :Real) :String;
       function buscaUsuariosMP :String;
+      procedure marcaComoExcluido(json, url :String; qry :TFDQuery);
+      function excluiRelacao(idRelacao :integer) :Boolean;
 
   private
     { * * PRODUTOS * * }
@@ -507,6 +516,7 @@ type
       function sincronizaClientes :boolean;  //envia requisições em formato json para a api "Meus pedidos"
       function getJsonCliente: String; //retorna os dados da tabela selecionada em formato JSON
       function getJsonEmails(emails :String): String; //retorna os emails em formato JSON
+      function getJsonExcluirCliente :String;
       { . Auxiliares . }
       function removeClienteSeparado(var codigo, id_externo :String; const pergunta :Boolean = true) :TFDQuery; //remove cliente selecionado da lista de separados
       procedure ocultaClientesSelecionados; //oculta os clientes já separados da lista de seleção
@@ -548,6 +558,9 @@ var
   frmSincronizador: TfrmSincronizador;
 
 CONST
+  CAMPO_ID_EXTERNO = 'ID_EXTERNO';
+  CAMPO_ID_ERP = 'CODIGO';
+  CAMPO_MARCACAO = 'ENVIOU';
   SQL_PRODUTOS = 'SELECT PRO.*, RTI.id_externo FROM PRODUTOS PRO                                                                           '+
                  'left join relacao_tab_importacao rti on ((rti.id_erp = pro.codigo)and(rti.tabela_erp = ''PRODUTOS''))                    '+
                  'where (ativo = ''S'') and not((select first 1 cb.codigo from codigo_barras cb where cb.codproduto = pro.codigo) is null) '+
@@ -555,6 +568,7 @@ CONST
 
   ST_OK_INCLUSAO  = 201;
   ST_OK_ALTERACAO = 200;
+  MSG_REQUISICOES_ATINGIDAS = 'Número de requisições máximas por minuto foi atingida, por favor aguarde alguns instantes.';
 
 implementation
 
@@ -563,10 +577,11 @@ uses Math, uModulo, repositorio, fabricaRepositorio, Produto, Cor, System.StrUti
 
 {$R *.dfm}
 
-procedure TfrmSincronizador.AguardarUmMinuto;
+procedure TfrmSincronizador.AguardarSegundos(segundos :smallint; const finaliza :boolean);
 begin
+  FFinalizaAguarda := finaliza;
   Aguarda('Número de requisições máximas por minuto foi atingida, por favor aguarde alguns instantes.'+#13#10+
-            '    '+IntToStr(FUmMinuto));
+            '    '+IntToStr(segundos));
   Timer1.Enabled := true;
 end;
 
@@ -598,6 +613,13 @@ end;
 procedure TfrmSincronizador.btnEnviarTransportadorasClick(Sender: TObject);
 begin
   sincronizar(sincTransportadoras);
+end;
+
+procedure TfrmSincronizador.btnExcluirClienteClick(Sender: TObject);
+begin
+  if confirma('ATENÇÃO! Deseja realmente marcar o Cliente como excluido?'+#13#10+
+           'Os dados do cliente não estarão mais acessíveis no app Meus pedidos e esta operação é irreversível.') then
+    marcaComoExcluido(getJsonExcluirCliente, 'clientes', qryClientes);
 end;
 
 procedure TfrmSincronizador.btnSepararFormaPgtoClick(Sender: TObject);
@@ -718,6 +740,7 @@ var qry :TFDQuery;
 begin
   try
     cdsUsuarios.AfterScroll := nil;
+    cdsUsuarios.EmptyDataSet;
     qry := dm.GetConsulta('select p.codigo, p.razao, rti.id_externo from pessoas p                                       '+
                           ' inner join relacao_tab_importacao rti on ((rti.url = ''usuarios'')and(rti.id_erp = p.codigo))'+
                           ' order by  p.razao ');
@@ -774,9 +797,11 @@ var
     Usuarios :TJSONArray;
     Usuario  :TJSONObject;
     i        :integer;
+    jsonRet  :TJSonObject;
 begin
   try
   try
+    Application.ProcessMessages;
     result := '';
     Client := nil;
     Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
@@ -787,11 +812,14 @@ begin
 
     for i := 0 to Usuarios.Count-1 do
       begin
+        Application.ProcessMessages;
         Usuario := (Usuarios.Items[i] as TJSONObject);
 
-        if not cdsUsuarios.Locate('ID_EXTERNO',Usuario.GetValue('id').Value,[]) then
+        if not cdsUsuarios.Locate('ID_EXTERNO',Usuario.GetValue('id').Value,[]) and
+           not (Usuario.GetValue('administrador').Value.Equals('true')) and
+           not (Usuario.GetValue('excluido').Value.Equals('true')) then
         begin
-          idERP := Campo_por_campo('PESSOAS','CODIGO','EMAIL',Usuario.GetValue('email').Value+';');
+          idERP := Campo_por_campo('PESSOAS','CODIGO','EMAIL',Usuario.GetValue('email').Value+';','TIPO','R');
 
           if idERP.IsEmpty then
             lancaLog('Nenhum representante encontrado com o e-mail: '+Usuario.GetValue('email').Value+#13#10+
@@ -810,10 +838,20 @@ begin
       end;
   except
     on e :Exception do
-      avisar('Erro ao buscar usuários cadastrados na MP.'+#13#10+e.Message);
+    begin
+      if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+      begin
+        jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+        AguardarSegundos(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0), true);
+      end
+      else
+        avisar('Erro ao buscar usuários cadastrados na MP.'+#13#10+e.Message);
+    end;
   end;
   finally
     FreeAndNil(Client);
+    if Assigned(jsonret) then
+      freeandnil(jsonRet);
   end;
 end;
 
@@ -894,6 +932,21 @@ begin
   end;
 end;
 
+procedure TfrmSincronizador.DBGridCBN7DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  if not TDBGrid(Sender).DataSource.DataSet.FieldByName('ID_ERP').AsString.IsEmpty then
+    TDBGrid(Sender).Canvas.Brush.Color := $00EECCA2;
+
+  if TDBGridCBN(Sender).DataSource.DataSet.FieldByName('SELECIONADO').AsString.Equals('S') then
+  begin
+    TDBGridCBN(Sender).Canvas.Font.Color  := $00D56A00;
+    TDBGridCBN(Sender).Canvas.Brush.Color := $00FAEEDA;
+  end;
+
+  TDBGridCBN(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
 procedure TfrmSincronizador.dsCliDataChange(Sender: TObject; Field: TField);
 begin
   if cdsClientes.Active then
@@ -932,6 +985,7 @@ var
     Pedido   :TPedido;
     Repositorio :TRepositorio;
     JSONPedido :String;
+    jsonRet  :TJSonObject;
 begin
   try
     Client := nil;
@@ -953,8 +1007,11 @@ begin
       on e:Exception do
         begin
           lancaLog('ERRO >> '+e.Message+#13#10+#13#10+' Pedido '+Pedido.numpedido+' não sincronizado >> ');
-          if pos('limite_de_requisicoes', e.Message) > 0 then
-            AguardarUmMinuto;
+          if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+          begin
+            jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+            AguardarSegundos(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0));
+          end;
         end;
       end;
 
@@ -971,18 +1028,36 @@ begin
       end;
   finally
     FreeAndNil(Client);
+    if assigned(jsonRet) then
+      FreeAndNil(jsonRet);
+  end;
+end;
+
+function TfrmSincronizador.excluiRelacao(idRelacao: integer) :boolean;
+var repositorio :TRepositorio;
+begin
+  result := false;
+  try
+  try
+    repositorio := TFabricaRepositorio.GetRepositorio(TRelacaoTabelasImportacao.ClassName);
+    repositorio.RemoverPorIdentificador(idRelacao);
+    result := true;
+  Except
+    on e :Exception do
+      avisar('Falha ao excluir relação ERP/MP.'+#13#10+e.Message);
+  end;
+  finally
+    FreeAndNil(repositorio);
   end;
 end;
 
 procedure TfrmSincronizador.gridProdutosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-  inherited;
-
   if not TDBGrid(Sender).DataSource.DataSet.FieldByName('ID_EXTERNO').AsString.IsEmpty then
     TDBGrid(Sender).Canvas.Brush.Color := $00EECCA2;
 
-  TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  TDBGridCBN(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TfrmSincronizador.gridProdutosSeparadosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -1038,7 +1113,7 @@ begin
   result := copy(result, 1, length(result)-2);
 end;
 
-procedure TfrmSincronizador.Label46Click(Sender: TObject);
+procedure TfrmSincronizador.lbAtualizaUsuariosClick(Sender: TObject);
 begin
   try
     indicator.Animate := true;
@@ -1048,12 +1123,12 @@ begin
   end;
 end;
 
-procedure TfrmSincronizador.Label46MouseLeave(Sender: TObject);
+procedure TfrmSincronizador.lbAtualizaUsuariosMouseLeave(Sender: TObject);
 begin
   TLabel(Sender).Font.Style := [fsBold];
 end;
 
-procedure TfrmSincronizador.Label46MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+procedure TfrmSincronizador.lbAtualizaUsuariosMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   TLabel(Sender).Font.Style := [fsBold, fsunderline];
 end;
@@ -1061,7 +1136,7 @@ end;
 procedure TfrmSincronizador.FormCreate(Sender: TObject);
 begin
   inherited;
-  FUmMinuto                    := 60;
+  FFinalizaAguarda := false;
   pgcPrincipal.ActivePageIndex := 0;
   pgcProdutos.ActivePageIndex  := 0;
   pgcTabelas.ActivePageIndex   := 0;
@@ -1224,6 +1299,17 @@ begin
     result := result + email + ',';
   end;
   result := copy(result,1,length(result)-1);
+end;
+
+function TfrmSincronizador.getJsonExcluirCliente: String;
+var razao_social, tipo :String;
+begin
+  razao_social := qryClientesRAZAO.AsString;
+  tipo         := IfThen(qryClientesCPF_CNPJ.AsString.Length > 12,'J','F');
+
+  result := '{ "tipo": "'+tipo+'", '+
+            '  "razao_social": "'+razao_social+'", '+
+            '  "excluido": true }';
 end;
 
 function TfrmSincronizador.getJsonFones(fone1, fone2: String): String;
@@ -1517,6 +1603,57 @@ begin
   cds.EmptyDataSet;
 end;
 
+procedure TfrmSincronizador.marcaComoExcluido(json, url: String; qry :TFDQuery);
+var
+  Client   :TClienteHttpMeusPedidos;
+  jsonRet  :TJSonObject;
+  idRelacao :integer;
+  idExterno :String;
+begin
+  try
+    Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
+                                             fdm.configuracoesIntegracao.company_token,
+                                             fdm.configuracoesIntegracao.url_base);
+
+      try
+        idExterno := qry.FieldByName(CAMPO_ID_EXTERNO).AsString;
+        Client.Put(url+'/' + idExterno, json);
+      Except
+      on e:Exception do
+        begin
+          lancaLog('ERRO >> '+UTF8Decode(e.Message)+#13#10+#13#10+' excluindo '+' >> '+json);
+          if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+          begin
+            jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+            AguardarSegundos(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0));
+          end;
+        end;
+      end;
+
+      if Client.ClientHttp.ResponseCode = ST_OK_ALTERACAO then
+      begin
+        avisar('Operação realizada com sucesso!',3);
+        idRelacao := strToIntdef(Campo_por_campo('RELACAO_TAB_IMPORTACAO','CODIGO','URL',url,'ID_EXTERNO', idExterno),0);
+        if excluiRelacao(idRelacao) then
+        begin
+          qry.Edit;
+          qry.FieldByName(CAMPO_ID_EXTERNO).AsString := '';
+          qry.Post;
+        end;
+      end
+      else
+      begin
+        if not assigned(jsonRet) then
+          Avisar('Falha ao tentar excluir.'+#13#10+Client.ClientHttp.ResponseText);
+      end;
+
+  finally
+    FreeAndNil(Client);
+    if assigned(jsonRet) then
+      FreeAndNil(jsonRet);
+  end;
+end;
+
 procedure TfrmSincronizador.ocultaClientesSelecionados;
 begin
   ocultaRegistrosSelecionados(cdsClientes, qryClientes);
@@ -1566,6 +1703,23 @@ begin
   ocultaRegistrosSelecionados(cdsTransportadoras, qryTransportadoras);
 end;
 
+procedure TfrmSincronizador.pgcClientesInChange(Sender: TObject);
+begin
+  inherited;
+  case pgcClientesIn.ActivePageIndex of
+    0 :begin
+      FSincronizando := sincClientes;
+      buscaClientes;
+      buscaUsuarios;
+      cdsUsuariosAfterScroll(nil);
+    end;
+    1 :begin
+      FSincronizando := sincCliPorUsu;
+      cdsUsuariosAfterScroll(nil);
+    end;
+  end;
+end;
+
 procedure TfrmSincronizador.pgcPrincipalChange(Sender: TObject);
 begin
   //É setado o tipo de sincronização ao mudar de aba, pois o usuário pode iniciar uma sincronização (setando o tipo), não terminar e mudar de aba
@@ -1602,6 +1756,12 @@ begin
       buscaRepresentante1.edtCodigo.SetFocus;
     end;
   end;
+end;
+
+procedure TfrmSincronizador.qryClientesAfterScroll(DataSet: TDataSet);
+begin
+  inherited;
+    btnExcluirCliente.Enabled := StrToIntDef(qryClientesID_EXTERNO.AsString,0) > 0;
 end;
 
 procedure TfrmSincronizador.qryProdAfterScroll(DataSet: TDataSet);
@@ -1752,7 +1912,6 @@ end;
 
 procedure TfrmSincronizador.separaClienteSelecionado;
 begin
-  cdsClientes.AfterScroll := nil;
   cdsClientes.Append;
   cdsClientesCODIGO.AsInteger     := qryClientesCODIGO.AsInteger;
   cdsClientesRAZAO.AsString       := qryClientesRAZAO.AsString;
@@ -1786,11 +1945,12 @@ begin
     cdsCliUsu.AfterScroll := nil;
     cdsCliUsu.Append;
     cdsCliUsuCODIGO.AsInteger            := qryCliUsuCODIGO.AsInteger;
+    cdsCliUsuCODIGO_CLIENTE.AsInteger    := qryCliUsuCODIGO_CLIENTE.AsInteger;
     cdsCliUsuCLIENTE.AsString            := qryCliUsuRAZAO.AsString;
     cdsCliUsuUSUARIO.AsString            := cdsUsuariosNOME.AsString;
     cdsCliUsuID_EXTERNO_CLIENTE.AsString := qryCliUsuID_EXTERNO_CLIENTE.AsString;
     cdsCliUsuID_EXTERNO_USUARIO.AsString := cdsUsuariosID_EXTERNO.AsString;
-    cdsCliUsuID_EXTERNO.AsString         := qryCliUsuID_EXTERNO.AsString;
+    //cdsCliUsuID_EXTERNO.AsString         := qryCliUsuID_EXTERNO.AsString;
     cdsCliUsu.Post;
     qryCliUsu.Next;
   end;
@@ -1997,12 +2157,11 @@ function TfrmSincronizador.sincronizarRegistros(itemSincro, urlMP, tabelaERP: St
 var
     Retorno, jsonRegistroAtual :String;
     Client   :TClienteHttpMeusPedidos;
-const
-    CAMPO_ID_EXTERNO = 'ID_EXTERNO';
-    CAMPO_ID_ERP = 'CODIGO';
-    CAMPO_MARCACAO = 'ENVIOU';
+    jsonRet  :TJSonObject;
+    erroMuitasrequisicoes :Boolean;
 begin
   try
+    erroMuitasrequisicoes := false;
     result := false;
     Client := nil;
     Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
@@ -2011,18 +2170,23 @@ begin
     cds.First;
     while not cds.Eof do
     begin
+      Application.ProcessMessages;
       jsonRegistroAtual := getJsonRegistros;
       try
         if not cds.FieldByName(CAMPO_ID_EXTERNO).AsString.isEmpty then
-          Retorno := Client.Put(urlMP+'/' + cds.FieldByName(CAMPO_ID_EXTERNO).AsString, jsonRegistroAtual)
+          Client.Put(urlMP+'/' + cds.FieldByName(CAMPO_ID_EXTERNO).AsString, jsonRegistroAtual)
         else
-          Retorno := Client.Post(urlMP, jsonRegistroAtual);
+          Client.Post(urlMP, jsonRegistroAtual);
       Except
       on e:Exception do
         begin
           lancaLog('ERRO >> '+UTF8Decode(e.Message)+#13#10+#13#10+itemSincro+' >> '+jsonRegistroAtual);
-          if pos('limite_de_requisicoes', e.Message) > 0 then
-            AguardarUmMinuto;
+          if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+          begin
+            jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+            AguardarSegundos(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0));
+            erroMuitasrequisicoes := true;
+          end;
         end;
       end;
 
@@ -2032,23 +2196,33 @@ begin
         if cds.FieldByName(CAMPO_ID_EXTERNO).AsString.isEmpty then
           TRelacaoTabelasImportacao.criaRelacao(urlMP,tabelaERP,Client.IdResponse,cds.FieldByName(CAMPO_ID_ERP).AsString, DateToStr(Date));
 
-        cds.Edit;
-        cds.FieldByName(CAMPO_MARCACAO).AsString   := 'S';
-        cds.FieldByName(CAMPO_ID_EXTERNO).AsString := Client.IdResponse;
-        cds.Post;
+          cds.Edit;
+          cds.FieldByName(CAMPO_MARCACAO).AsString   := 'S';
+          if cds.FieldByName(CAMPO_ID_EXTERNO).AsString.isEmpty then
+            cds.FieldByName(CAMPO_ID_EXTERNO).AsString := Client.IdResponse;
+          cds.Post;
       end
       else //ocorreu erro
       begin
-        lancaLog(Retorno);
+        Retorno := Client.ClientHttp.ResponseText;
+
+        lancaLog(inttostr(Client.ClientHttp.ResponseCode)+' - '+ Retorno);
         cds.Edit;
         cds.FieldByName(CAMPO_MARCACAO).AsString   := 'N';
         cds.Post;
       end;
-      cds.Next;
+
+      // se for erro de numero maximo de requisicoes atingidas, passado a espera ele vai tentar enviar o mesmo que parou
+      if erroMuitasrequisicoes then
+        erroMuitasrequisicoes := false
+      else
+        cds.Next;
     end;
 
     result := true;
   finally
+    if Assigned(jsonRet) then
+      freeAndNil(jsonRet);
     FreeAndNil(Client);
   end;
 end;
@@ -2103,17 +2277,23 @@ end;
 
 procedure TfrmSincronizador.Timer1Timer(Sender: TObject);
 begin
-  if FUmMinuto > 0 then
+  if FSegundos > 0 then
   begin
-    Dec(FUmMinuto);
+    Dec(FSegundos);
     Aguarda('Número de requisições máximas por minuto foi atingida, por favor aguarde alguns instantes.'+#13#10+#13#10+
-            '      '+IntToStr(FUmMinuto)+'s restantes');
+            '      '+IntToStr(FSegundos)+'s restantes');
   end
   else
   begin
-    FUmMinuto := 60;
+    FSegundos := 0;
     Timer1.Enabled := false;
-    FimAguarda();
+    if FFinalizaAguarda then
+    begin
+      FFinalizaAguarda := false;
+      FimAguarda();
+    end
+    else
+      Aguarda('Relizando sincronização, por favor aguarde');
   end;
 end;
 

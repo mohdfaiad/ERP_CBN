@@ -8,7 +8,7 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
   ExplicitWidth = 899
   ExplicitHeight = 536
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Label1: TLabel
     Left = 24
     Top = 262
@@ -88,19 +88,21 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
       Left = 16
       Top = 10
       Width = 369
-      Height = 40
+      Height = 43
       TabOrder = 0
       ExplicitLeft = 16
       ExplicitTop = 10
       ExplicitWidth = 369
-      ExplicitHeight = 40
+      ExplicitHeight = 43
       inherited staTitulo: TLabel
         Top = 3
         ExplicitTop = 3
       end
       inherited comListaCampo: TComboBox
         Width = 363
+        Height = 23
         ExplicitWidth = 363
+        ExplicitHeight = 23
       end
     end
   end
@@ -114,19 +116,21 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
       Left = 16
       Top = 10
       Width = 369
-      Height = 40
+      Height = 43
       TabOrder = 0
       ExplicitLeft = 16
       ExplicitTop = 10
       ExplicitWidth = 369
-      ExplicitHeight = 40
+      ExplicitHeight = 43
       inherited staTitulo: TLabel
         Top = 3
         ExplicitTop = 3
       end
       inherited comListaCampo: TComboBox
         Width = 363
+        Height = 23
         ExplicitWidth = 363
+        ExplicitHeight = 23
       end
     end
   end
@@ -140,19 +144,21 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
       Left = 16
       Top = 10
       Width = 369
-      Height = 40
+      Height = 43
       TabOrder = 0
       ExplicitLeft = 16
       ExplicitTop = 10
       ExplicitWidth = 369
-      ExplicitHeight = 40
+      ExplicitHeight = 43
       inherited staTitulo: TLabel
         Top = 3
         ExplicitTop = 3
       end
       inherited comListaCampo: TComboBox
         Width = 363
+        Height = 23
         ExplicitWidth = 363
+        ExplicitHeight = 23
       end
     end
   end
@@ -166,15 +172,17 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
       Left = 16
       Top = 10
       Width = 378
-      Height = 40
+      Height = 43
       TabOrder = 0
       ExplicitLeft = 16
       ExplicitTop = 10
       ExplicitWidth = 378
-      ExplicitHeight = 40
+      ExplicitHeight = 43
       inherited comListaCampo: TComboBox
         Width = 363
+        Height = 23
         ExplicitWidth = 363
+        ExplicitHeight = 23
       end
     end
   end
@@ -189,7 +197,7 @@ inherited frmImportadadorClientesTricae: TfrmImportadadorClientesTricae
       Left = 16
       Top = 32
       Width = 689
-      Height = 21
+      Height = 23
       ReadOnly = True
       TabOrder = 0
     end

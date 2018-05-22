@@ -17,16 +17,12 @@ inherited frmPedido: TfrmPedido
     Top = 97
     Width = 1045
     Height = 456
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     OnChange = pagPedidoChange
     object TabSheet1: TTabSheet
       Caption = 'F1 - Cabe'#231'alho'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1037
         426)
@@ -4450,10 +4446,6 @@ inherited frmPedido: TfrmPedido
     object TabSheet3: TTabSheet
       Caption = 'F3 - Itens'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Shape2: TShape
         Left = 4
         Top = 375
@@ -8334,9 +8326,9 @@ inherited frmPedido: TfrmPedido
     BevelOuter = bvNone
     TabOrder = 2
     object btnCancelar: TSpeedButton
-      Left = 605
+      Left = 729
       Top = 5
-      Width = 170
+      Width = 150
       Height = 30
       Caption = ' Cancelar'
       Glyph.Data = {
@@ -8410,9 +8402,9 @@ inherited frmPedido: TfrmPedido
       OnClick = btnCancelarClick
     end
     object btnSalvar: TSpeedButton
-      Left = 782
+      Left = 886
       Top = 5
-      Width = 170
+      Width = 150
       Height = 30
       Caption = ' Salvar'
       Glyph.Data = {

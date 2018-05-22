@@ -38,6 +38,8 @@ type
     procedure FimAguarda(const mensagem :String = '');
     procedure buscaTelaAtalhos;
 
+    function getMsgAguarda :String;
+
   public
     constructor Create(AOwner :TComponent); override;
 
@@ -145,6 +147,13 @@ begin
 
 end;
 
+function TfrmPadrao.getMsgAguarda: String;
+begin
+  result := '';
+  if assigned(frmAguarde) then
+    result := frmAguarde.memoAguarde.Text;
+end;
+
 function TfrmPadrao.confirma(mensagem: String): Boolean;
 begin
   Result := false;
@@ -217,8 +226,6 @@ procedure TfrmPadrao.FimAguarda(const mensagem :String);
 begin
   if self.FaguardaAtivo then begin
     frmAguarde.memoAguarde.Text := mensagem;
-
-    Application.ProcessMessages;
 
     if mensagem <> '' then
       sleep(3000);

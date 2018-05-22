@@ -19,6 +19,10 @@ inherited frmSincronizador: TfrmSincronizador
     object Produtos: TTabSheet
       Caption = 'Produtos'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 0
@@ -39,6 +43,10 @@ inherited frmSincronizador: TfrmSincronizador
         TabOrder = 0
         object tsListaProd: TTabSheet
           Caption = 'Lista de produtos'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape1: TShape
             Left = 652
             Top = 452
@@ -309,6 +317,10 @@ inherited frmSincronizador: TfrmSincronizador
         object tsProdSeparados: TTabSheet
           Caption = 'Produtos separados para envio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape2: TShape
             Left = 3
             Top = 452
@@ -525,6 +537,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TabSheet2: TTabSheet
           Caption = 'LOG ERROS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memLogProdutos: TMemo
             Left = 6
             Top = 6
@@ -540,6 +556,10 @@ inherited frmSincronizador: TfrmSincronizador
     object TabSheet3: TTabSheet
       Caption = 'Tabelas de Pre'#231'o'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 0
@@ -560,6 +580,10 @@ inherited frmSincronizador: TfrmSincronizador
         TabOrder = 0
         object tsListaTabelas: TTabSheet
           Caption = 'Lista de Tabelas'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridCBN1: TDBGridCBN
             Left = 3
             Top = 3
@@ -680,6 +704,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TTabSheet
           Caption = 'Tabelas separadas para envio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape8: TShape
             Left = 3
             Top = 452
@@ -866,6 +894,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TabSheet5: TTabSheet
           Caption = 'LOG ERROS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memLogTabelas: TMemo
             Left = 6
             Top = 6
@@ -881,6 +913,10 @@ inherited frmSincronizador: TfrmSincronizador
     object TabSheet6: TTabSheet
       Caption = 'Tabela Pre'#231'o/Produto'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 0
@@ -900,6 +936,10 @@ inherited frmSincronizador: TfrmSincronizador
         TabOrder = 0
         object tsListaTabProduto: TTabSheet
           Caption = 'Lista de tabelas por produto'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape6: TShape
             Left = 652
             Top = 452
@@ -1166,6 +1206,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TTabSheet
           Caption = 'Tabelas separados para envio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape12: TShape
             Left = 3
             Top = 452
@@ -1354,6 +1398,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TabSheet8: TTabSheet
           Caption = 'LOG ERROS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memLogTabelaProduto: TMemo
             Left = 6
             Top = 6
@@ -1383,9 +1431,10 @@ inherited frmSincronizador: TfrmSincronizador
         Top = 9
         Width = 1185
         Height = 601
-        ActivePage = tbClientesUsuario
+        ActivePage = TabSheet4
         Align = alClient
         TabOrder = 0
+        OnChange = pgcClientesInChange
         object TabSheet4: TTabSheet
           Caption = 'Todos os clientes'
           object pgcClientes: TPageControl
@@ -1538,11 +1587,25 @@ inherited frmSincronizador: TfrmSincronizador
                   TabOrder = 0
                   OnClick = btnSepararClientesClick
                 end
+                object btnExcluirCliente: TBitBtn
+                  Left = 816
+                  Top = 8
+                  Width = 170
+                  Height = 30
+                  Caption = 'Marcar como exclu'#237'do'
+                  Enabled = False
+                  TabOrder = 1
+                  OnClick = btnExcluirClienteClick
+                end
               end
             end
             object TTabSheet
               Caption = 'Clientes separados para envio'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Shape17: TShape
                 Left = 3
                 Top = 452
@@ -1751,6 +1814,10 @@ inherited frmSincronizador: TfrmSincronizador
             object TabSheet17: TTabSheet
               Caption = 'LOG ERROS'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object memLogClientes: TMemo
                 Left = 6
                 Top = 6
@@ -1766,6 +1833,10 @@ inherited frmSincronizador: TfrmSincronizador
         object tbClientesUsuario: TTabSheet
           Caption = 'Clientes por usu'#225'rio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object pgcCliUsu: TPageControl
             Left = 0
             Top = 0
@@ -1776,6 +1847,10 @@ inherited frmSincronizador: TfrmSincronizador
             TabOrder = 0
             object TabSheet7: TTabSheet
               Caption = 'Libera'#231#227'o de clientes por usu'#225'rio'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Label45: TLabel
                 Left = 11
                 Top = 13
@@ -1789,8 +1864,8 @@ inherited frmSincronizador: TfrmSincronizador
                 Font.Style = []
                 ParentFont = False
               end
-              object Label46: TLabel
-                Left = 304
+              object lbAtualizaUsuarios: TLabel
+                Left = 400
                 Top = 13
                 Width = 61
                 Height = 19
@@ -1803,9 +1878,9 @@ inherited frmSincronizador: TfrmSincronizador
                 Font.Style = [fsBold]
                 ParentColor = False
                 ParentFont = False
-                OnClick = Label46Click
-                OnMouseMove = Label46MouseMove
-                OnMouseLeave = Label46MouseLeave
+                OnClick = lbAtualizaUsuariosClick
+                OnMouseMove = lbAtualizaUsuariosMouseMove
+                OnMouseLeave = lbAtualizaUsuariosMouseLeave
               end
               object Shape32: TShape
                 Left = 515
@@ -1857,7 +1932,7 @@ inherited frmSincronizador: TfrmSincronizador
               object DBGridCBN6: TDBGridCBN
                 Left = 11
                 Top = 36
-                Width = 354
+                Width = 454
                 Height = 438
                 Color = 14803425
                 DataSource = dsUsuarios
@@ -1874,7 +1949,6 @@ inherited frmSincronizador: TfrmSincronizador
                 TitleFont.Height = -11
                 TitleFont.Name = 'MS Sans Serif'
                 TitleFont.Style = []
-                OnDrawColumnCell = gridProdutosDrawColumnCell
                 BuscaHabilitada = True
                 ConfCores.Normal.CorFonte = clWindowText
                 ConfCores.Normal.CorFundo = 14803425
@@ -1915,9 +1989,22 @@ inherited frmSincronizador: TfrmSincronizador
                 TipoBusca.ListarApenasEncontrados = False
                 TipoBusca.QualquerParte = False
                 SalvaConfiguracoes = False
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'CODIGO'
+                    Width = 55
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'NOME'
+                    Width = 363
+                    Visible = True
+                  end>
               end
               object Indicator: TActivityIndicator
-                Left = 371
+                Left = 363
                 Top = 10
                 IndicatorSize = aisSmall
               end
@@ -1941,7 +2028,7 @@ inherited frmSincronizador: TfrmSincronizador
                 TitleFont.Height = -11
                 TitleFont.Name = 'MS Sans Serif'
                 TitleFont.Style = []
-                OnDrawColumnCell = gridCoresDrawColumnCell
+                OnDrawColumnCell = DBGridCBN7DrawColumnCell
                 OnDblClick = DBGridCBN7DblClick
                 BuscaHabilitada = True
                 ConfCores.Normal.CorFonte = clWindowText
@@ -1998,21 +2085,6 @@ inherited frmSincronizador: TfrmSincronizador
                     Visible = True
                   end>
               end
-              object RadioGroup1: TRadioGroup
-                Left = 515
-                Top = -4
-                Width = 566
-                Height = 37
-                Caption = ' '
-                Columns = 3
-                ItemIndex = 2
-                Items.Strings = (
-                  'N'#227'o sincronizados'
-                  'Sincronizados'
-                  'Ambos os tipos')
-                TabOrder = 3
-                Visible = False
-              end
               object Panel14: TPanel
                 Left = 0
                 Top = 491
@@ -2021,7 +2093,7 @@ inherited frmSincronizador: TfrmSincronizador
                 Align = alBottom
                 BevelKind = bkTile
                 BevelOuter = bvNone
-                TabOrder = 4
+                TabOrder = 3
                 object Shape31: TShape
                   Left = 16
                   Top = 16
@@ -2068,12 +2140,16 @@ inherited frmSincronizador: TfrmSincronizador
                 Font.Name = 'Calibri'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 5
+                TabOrder = 4
               end
             end
             object TabSheet18: TTabSheet
               Caption = 'Clientes separados para envio'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Shape28: TShape
                 Left = 11
                 Top = 444
@@ -2141,7 +2217,7 @@ inherited frmSincronizador: TfrmSincronizador
                 TitleFont.Height = -11
                 TitleFont.Name = 'MS Sans Serif'
                 TitleFont.Style = []
-                OnDrawColumnCell = gridProdutosDrawColumnCell
+                OnDrawColumnCell = gridProdutosSeparadosDrawColumnCell
                 OnKeyDown = DBGrid4KeyDown
                 BuscaHabilitada = True
                 ConfCores.Normal.CorFonte = clWindowText
@@ -2295,6 +2371,10 @@ inherited frmSincronizador: TfrmSincronizador
             object TabSheet19: TTabSheet
               Caption = 'LOG ERROS'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object memLogCliUsu: TMemo
                 Left = 6
                 Top = 9
@@ -2312,6 +2392,10 @@ inherited frmSincronizador: TfrmSincronizador
     object TabSheet9: TTabSheet
       Caption = 'Transportadoras'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter5: TSplitter
         Left = 0
         Top = 0
@@ -2331,6 +2415,10 @@ inherited frmSincronizador: TfrmSincronizador
         TabOrder = 0
         object TabSheet10: TTabSheet
           Caption = 'Lista de Transportadoras'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object gridTransportadoras: TDBGridCBN
             Left = 3
             Top = 3
@@ -2464,6 +2552,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TTabSheet
           Caption = 'Transportadoras separadas para envio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape20: TShape
             Left = 3
             Top = 452
@@ -2658,6 +2750,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TabSheet11: TTabSheet
           Caption = 'LOG ERROS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memLogTransportadoras: TMemo
             Left = 6
             Top = 6
@@ -2673,6 +2769,10 @@ inherited frmSincronizador: TfrmSincronizador
     object TabSheet12: TTabSheet
       Caption = 'Formas de Pagamento'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter6: TSplitter
         Left = 0
         Top = 0
@@ -2687,11 +2787,15 @@ inherited frmSincronizador: TfrmSincronizador
         Top = 9
         Width = 1185
         Height = 601
-        ActivePage = TabSheet14
+        ActivePage = TabSheet13
         Align = alClient
         TabOrder = 0
         object TabSheet13: TTabSheet
           Caption = 'Lista de Formas de Pagamento'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridCBN5: TDBGridCBN
             Left = 3
             Top = 3
@@ -2811,6 +2915,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TTabSheet
           Caption = 'Formas de Pagamento separadas para envio'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Shape24: TShape
             Left = 3
             Top = 452
@@ -2991,6 +3099,10 @@ inherited frmSincronizador: TfrmSincronizador
         object TabSheet14: TTabSheet
           Caption = 'LOG ERROS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memLogFormasPagamento: TMemo
             Left = 6
             Top = 6
@@ -3006,6 +3118,10 @@ inherited frmSincronizador: TfrmSincronizador
     object TabSheet15: TTabSheet
       Caption = 'Sincroniza Pedidos Faturados'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Shape27: TShape
         Left = 264
         Top = 96
@@ -3639,6 +3755,7 @@ inherited frmSincronizador: TfrmSincronizador
     Top = 248
   end
   object qryClientes: TFDQuery
+    AfterScroll = qryClientesAfterScroll
     SQL.Strings = (
       
         'select p.codigo, p.razao, p.cpf_cnpj, p.rg_ie, e.logradouro||'#39','#39 +
@@ -4076,8 +4193,8 @@ inherited frmSincronizador: TfrmSincronizador
   object qryCliUsu: TFDQuery
     SQL.Strings = (
       
-        'select p.codigo, p.razao, rti.id_externo id_externo_cliente, rti' +
-        '2.id_externo from pessoas p'
+        'select cr.codigo, p.codigo codigo_cliente, p.razao, rti.id_exter' +
+        'no id_externo_cliente, rti2.id_erp from pessoas p'
       
         'inner join cliente_representante  cr   on (cr.cod_cliente = p.co' +
         'digo)'
@@ -4102,6 +4219,9 @@ inherited frmSincronizador: TfrmSincronizador
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
+    object qryCliUsuCODIGO_CLIENTE: TIntegerField
+      FieldName = 'CODIGO_CLIENTE'
+    end
     object qryCliUsuRAZAO: TStringField
       FieldName = 'RAZAO'
       Origin = 'RAZAO'
@@ -4115,13 +4235,9 @@ inherited frmSincronizador: TfrmSincronizador
       ReadOnly = True
       Size = 12
     end
-    object qryCliUsuID_EXTERNO: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'ID_EXTERNO'
-      Origin = 'ID_EXTERNO'
-      ProviderFlags = []
-      ReadOnly = True
-      Size = 12
+    object qryCliUsuID_ERP: TStringField
+      FieldName = 'ID_ERP'
+      Size = 15
     end
     object qryCliUsuSELECIONADO: TStringField
       FieldKind = fkInternalCalc
@@ -4141,6 +4257,9 @@ inherited frmSincronizador: TfrmSincronizador
     Top = 456
     object cdsCliUsuCODIGO: TIntegerField
       FieldName = 'CODIGO'
+    end
+    object cdsCliUsuCODIGO_CLIENTE: TIntegerField
+      FieldName = 'CODIGO_CLIENTE'
     end
     object cdsCliUsuCLIENTE: TStringField
       FieldName = 'CLIENTE'

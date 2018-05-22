@@ -188,7 +188,7 @@ begin
           cpfCnpj := '0'+ cpfCnpj;
 
         repositorioCliente := TFabricaRepositorio.GetRepositorio(TCliente.ClassName);
-        codigoPessoa       := strToIntDef(Campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',cpfCnpj),0);
+        codigoPessoa       := strToIntDef(Campo_por_campo('PESSOAS','CODIGO','CPF_CNPJ',cpfCnpj,'TIPO','C'),0);
         Cliente            := TCliente(repositorioCliente.Get(codigoPessoa));
 
         if not assigned(Cliente) then

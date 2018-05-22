@@ -6,7 +6,7 @@ uses
   DB,
   Auditoria,
   NotaFiscal,
-  Repositorio, Dialogs;
+  Repositorio, Dialogs, DateTimeutilitario;
 
 type
   TRepositorioNotaFiscal = class(TRepositorio)
@@ -48,7 +48,7 @@ type
   private
     function pedidoSincronizado(codPedido :integer) :integer;
     procedure marcaComoFaturado(id_externo :integer; total :Real; data :TDate; numeroNF :integer; codigoPedidoFaturado :String);
-    function getIdExterno(idErp, tabelaERP: String): String;    
+    function getIdExterno(idErp, tabelaERP: String): String;
 end;
 
 
@@ -60,11 +60,12 @@ uses
   SysUtils, FabricaRepositorio, ItemNotaFiscal, PedidoFaturado,
   LocalEntregaNotaFiscal, VolumesNotaFiscal, ObservacaoNotaFiscal, Funcoes,
   TotaisNotaFiscal, LoteNFe, NFe, RepositorioItemAvulso, ItemAvulso, ItemNfMateria, Math,
-  StrUtils, RelacaoTabelasImportacao;
+  StrUtils, RelacaoTabelasImportacao, System.JSon;
 
 const
   ST_OK_INCLUSAO  = 201;
   ST_OK_ALTERACAO = 200;
+  ST_LIMITE_REQUISICOES = 429;
     
 { TRepositorioNotaFiscal }
 
@@ -128,6 +129,7 @@ var
   result :String;
   dataFat, valor :String;
   idExternoFaturamento :String;
+  jsonRet  :TJSonObject;
 begin
   try
   try
@@ -145,21 +147,37 @@ begin
                                              fdm.configuracoesIntegracao.url_base);
 
     idExternoFaturamento := getIdExterno(codigoPedidoFaturado, 'PEDIDOS_FATURADOS');
-                                             
-    if idExternoFaturamento.IsEmpty then                                             
-      Client.Post('faturamento',json)
-    else  
-      Client.Put('faturamento/'+idExternoFaturamento,json);
-      
+
+    try
+      if idExternoFaturamento.IsEmpty then
+        Client.Post('faturamento',json)
+      else
+        Client.Put('faturamento/'+idExternoFaturamento,json);
+    Except
+      on e :Exception do
+      begin
+        if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+        begin
+          jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+          raise Exception.Create('Número máximo de requisições atingida. Por favor aguarde '
+                                 +TDateTimeutilitario.SegundosToTime(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0))+
+                                 ' e tente novamente.');
+        end;
+      end;
+    end;
+
     if not (Client.ClientHttp.ResponseCode in [ST_OK_INCLUSAO, ST_OK_ALTERACAO]) then
       raise Exception.Create('Erro ao marcar pedido '+IntToStr(id_externo)+' como faturado na plataforma Meus Pedidos.')
     else if Client.ClientHttp.ResponseCode = ST_OK_INCLUSAO then
-      TRelacaoTabelasImportacao.criaRelacao('faturamento','PEDIDOS_FATURADOS', Client.IdResponse, codigoPedidoFaturado, DateToStr(Date));  
+      TRelacaoTabelasImportacao.criaRelacao('faturamento','PEDIDOS_FATURADOS', Client.IdResponse, codigoPedidoFaturado, DateToStr(Date));
+
   Except
     on e :Exception do
       raise Exception.Create(e.Message);
   end;
   finally
+    if assigned(jsonret) then
+      FreeAndNil(jsonRet);
     FreeAndNil(Client);
   end;
 end;

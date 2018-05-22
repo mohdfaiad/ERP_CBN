@@ -2,42 +2,54 @@ unit Funcoes;
 
 interface
 
-uses Controls, Printers, FireDAC.Comp.Client;
+uses Controls, Printers, FireDAC.Comp.Client, Vcl.ExtCtrls;
 
-function substituiString(S, localizar, substituir :String): String;
-
-{ ******* FUNÇÕES / VALORES *******}
-function arredonda(valor :Real; const considerar_casas :integer = 2) :Real;
-
-{ ******* FUNÇÕES / BANCO DE DADOS *******}
-function Maior_Valor_Cadastrado(Tabela, campo :String): String;
-function Campo_por_campo(Tabela, campo_procurado, campo_referencia, valor_campo_referencia :String;
-          const campo_referencia2 :String = ''; const valor_referencia2 :String = '') :String;
-
-{ ******* FUNÇÕES / FISCAL *******}
-function CFOP_entrada(codigo_natureza :integer) :Boolean;
-function buscaCFOPCorrespondente(CFOP: String): String;
-function CFOP_por_codigo_natureza(codigo_natureza :integer) :String;
-function Codigo_natureza_por_CFOP(CFOP :String) :String;
-function retorna_estado(const codigo_estado :integer = 0; const uf :String = ''):Variant;
-
-{ ******* FUNÇÕES / DATA-HORA *******}
-function SegundosToTime( Segundos : Cardinal ) : String;
-function TimeToSegundos( hora :TTime): Cardinal;
-Function DataExt(Data: TDate): String;
-function RemoveAcento(Str: string): string;
-
-procedure executa_SQL(SQL :STring);
-procedure EmiteSomErro;
-function impressoraPadrao:String;
-function Valida_CPF_CNPJ(Nr_CGC:String):boolean;
-function UF_TO_CODUF(UF :String) :integer;
-function zeroEsquerda(texto :String; tamMax :integer) :String;
-function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer = 0) :String;
+Type TFuncoes = class
+   procedure Timer1Timer(Sender: TObject); 
+  public
+    timer :TTimer;
+    FSegundos :smallint;
+    Fmensagem :String;
+    FMsgAntes :String;
+    FFinaliza :Boolean;
+    
+    procedure AguardaSegundos(segundos :integer; finaliza :boolean; mensagem :String);
+end;
+   
+   function substituiString(S, localizar, substituir :String): String;
+   
+   { ******* FUNÇÕES / VALORES *******}
+   function arredonda(valor :Real; const considerar_casas :integer = 2) :Real;
+   
+   { ******* FUNÇÕES / BANCO DE DADOS *******}
+   function Maior_Valor_Cadastrado(Tabela, campo :String): String;
+   function Campo_por_campo(Tabela, campo_procurado, campo_referencia, valor_campo_referencia :String;
+             const campo_referencia2 :String = ''; const valor_referencia2 :String = '') :String;
+   
+   { ******* FUNÇÕES / FISCAL *******}
+   function CFOP_entrada(codigo_natureza :integer) :Boolean;
+   function buscaCFOPCorrespondente(CFOP: String): String;
+   function CFOP_por_codigo_natureza(codigo_natureza :integer) :String;
+   function Codigo_natureza_por_CFOP(CFOP :String) :String;
+   function retorna_estado(const codigo_estado :integer = 0; const uf :String = ''):Variant;
+   
+   { ******* FUNÇÕES / DATA-HORA *******}
+   function SegundosToTime( Segundos : Cardinal ) : String;
+   function TimeToSegundos( hora :TTime): Cardinal;
+   Function DataExt(Data: TDate): String;
+   function RemoveAcento(Str: string): string;
+   
+   procedure executa_SQL(SQL :STring);
+   procedure EmiteSomErro;
+   function impressoraPadrao:String;
+   function Valida_CPF_CNPJ(Nr_CGC:String):boolean;
+   function UF_TO_CODUF(UF :String) :integer;
+   function zeroEsquerda(texto :String; tamMax :integer) :String;
+   function buscaCodigoBarras(codigoProduto, codigoCor, codigoTamanho :integer; const codigoGrade :integer = 0) :String;
 
 implementation
 
-uses StrUtils, Windows, SysUtils, Types, Math, Dialogs, uModulo, DateUtils, Forms, MMSystem;
+uses StrUtils, Windows, SysUtils, Types, Math, Dialogs, uModulo, DateUtils, Forms, MMSystem, uPadrao;
 
 function RemoveAcento(Str: string): string;
 const ComAcento = 'àâêôûãõáéíóúçüÀÂÊÔÛÃÕÁÉÍÓÚÜ';
@@ -49,6 +61,40 @@ begin
       Str[x] := SemAcento[Pos(Str[x], ComAcento)];
 
   Result := Str;
+end;
+
+procedure TFuncoes.AguardaSegundos(segundos :integer; finaliza :boolean; mensagem :String);
+begin
+  timer := TTimer.Create(nil);
+  timer.Enabled := false;  
+  timer.Interval := 1000;
+  timer.OnTimer := Timer1Timer;
+  FSegundos := segundos;
+  Fmensagem := mensagem;
+  FFinaliza := finaliza;
+  FMsgAntes := frmPadrao.getMsgAguarda;
+  frmPadrao.Aguarda(mensagem+#13#10+'    '+IntToStr(segundos));
+  timer.Enabled := true;
+end;
+
+procedure TFuncoes.Timer1Timer(Sender: TObject);
+begin
+  if FSegundos > 0 then
+  begin
+    Dec(FSegundos);
+    frmPadrao.Aguarda(Fmensagem+#13#10+#13#10+
+            '      '+IntToStr(FSegundos)+'s restantes');
+  end
+  else
+  begin
+    FSegundos := 0;
+    timer.Enabled := false;
+    if FFinaliza then
+      frmPadrao.FimAguarda()
+    else  
+      frmPadrao.Aguarda(FMsgAntes);
+    FreeAndNil(timer);
+  end;
 end;
 
 function zeroEsquerda(texto :String; tamMax :integer) :String;

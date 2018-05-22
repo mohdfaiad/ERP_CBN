@@ -271,6 +271,7 @@ type
     procedure DeletaItensArmazenados;
     procedure calculaTotais;
 
+
     function  verificaObrigatoriosItem :Boolean;
     function  verificaObrigatoriosPedido :Boolean;
     function  pedidoECommerce :Boolean;
@@ -279,6 +280,7 @@ type
     procedure Atualiza_estoque(pedido :TPedido);
     procedure AtualizaEstoquePlataforma;
     function  getQuantidadeAtual(sku: String; httpJson :THTTPJSON): integer;
+    procedure cancelaPedidoExterno;
 
 //    procedure Salva_estoque(cod_produto, cod_cor, cod_tamanho :integer; quantidade :Real);
     procedure Busca_tamanhos(var cds :TClientDataSet);
@@ -296,7 +298,8 @@ implementation
 
 uses Math, FabricaRepositorio, StrUtils, uRelatorioExpedicao, PermissoesAcesso, funcoes, uRelatorioPedidoVenda, System.JSon,
      uCadastroCliente, uInformacoesPessoa, Tamanho, Estoque, EspecificacaoEstoquePorProdutoCorTamanho, ConferenciaItem,
-     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao, CaixaPedido, TipoSetorEstoque, StringUtilitario;
+     EspecificacaoItemConferidoPorCodigoItem, uModulo, uGeraCotacao, CaixaPedido, TipoSetorEstoque, StringUtilitario,
+     ClienteHttpMeusPedidos, DateTimeUtilitario;
 
 {$R *.dfm}
 
@@ -893,15 +896,22 @@ begin
      Pedido.desconto_itens    := edtDescontoItens.Value;  //itens
      Pedido.valor_frete       := edtValorFrete.Value;
 
-     {se pedido já já foi totalmente conferido e esta sendo cancelado, retorna o estoque conferido}
-     if assigned(BuscaPedido1.Ped) and assigned(BuscaPedido1.Ped.Conferencia)
-     and (Pedido.cancelado <> 'S') and (rgStatus.ItemIndex = 1) then
+     { Ee o pedido está sendo cancelado... }
+     if (Pedido.cancelado <> 'S') and (rgStatus.ItemIndex = 1) then
      begin
-       Atualiza_estoque(BuscaPedido1.Ped);
-       { se for pedido e-commerce e nao for referente a shoppub o estoque da shoppub tem que ser atualizado }
-       if assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce and
-         (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
-         AtualizaEstoquePlataforma;
+       { ...e se pedido já já foi totalmente conferido. Os produtos conferido são retornado ao estoque }
+       if assigned(BuscaPedido1.Ped) and assigned(BuscaPedido1.Ped.Conferencia) then
+       begin
+         Atualiza_estoque(BuscaPedido1.Ped);
+         { se for pedido e-commerce e nao for referente a shoppub o estoque da shoppub tem que ser atualizado }
+         if assigned(BuscaPedido1.Ped.Representante.DadosRepresentante) and BuscaPedido1.Ped.Representante.DadosRepresentante.rep_ecommerce and
+           (dm.configuracoesECommerce.codigo_representante <> BuscaPedido1.Ped.Representante.Codigo) then
+           AtualizaEstoquePlataforma;
+       end;
+       { ...e se pedido for da Meus Pedidos. O pedido é cancelado também na plataforma }
+       if copy(BuscaPedido1.Ped.numpedido,1,2).Equals('BD') then
+          cancelaPedidoExterno;
+
      end;
 
      Pedido.cancelado         := IfThen(rgStatus.ItemIndex = 1, 'S', '');
@@ -973,6 +983,51 @@ begin
  finally
    FreeAndNil(pedido);
  end;
+end;
+
+procedure TfrmPedido.cancelaPedidoExterno;
+var
+  Client :TClienteHttpMeusPedidos;
+  json, resultado   :String;
+  jsonRet  :TJSonObject;
+  idExterno :String;
+begin
+  try
+  try
+    json   := '';
+    idExterno := Campo_por_campo('RELACAO_TAB_IMPORTACAO','ID_EXTERNO','TABELA_ERP','PEDIDOS','ID_ERP',intToStr(Pedido.Codigo));
+    if idExterno.IsEmpty then
+      raise Exception.Create('Relação com o pedido da Meus Pedidos não foi encontrada');
+
+    Client := nil;
+    Client := TClienteHttpMeusPedidos.Create(fdm.configuracoesIntegracao.application_token,
+                                             fdm.configuracoesIntegracao.company_token,
+                                             fdm.configuracoesIntegracao.url_base);
+
+    resultado := Client.Post('pedidos/cancelar/'+idExterno,json);
+
+    resultado := Client.ClientHttp.ResponseCode.ToString;
+  Except
+    on e :Exception do
+    begin
+      if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+      begin
+        jsonRet    := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+        resultado  := 'Número máximo de requisições atingida. Por favor aguarde '
+                      +TDateTimeutilitario.SegundosToTime(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0))+
+                      ' e tente novamente.'
+      end
+      else
+        resultado := e.Message;
+
+      raise Exception.Create(resultado);
+    end;
+  end;
+  finally
+    FreeAndNil(Client);
+    if Assigned(jsonRet) then
+      freeandnil(jsonRet);
+  end;
 end;
 
 procedure TfrmPedido.SetPedidoTricae(const Value: Boolean);
@@ -1896,8 +1951,12 @@ end;
 procedure TfrmPedido.rgStatusClick(Sender: TObject);
 begin
   if rgStatus.ItemIndex = 1 then
+  begin
+    rgStatus.OnClick := nil;
     if not confirma('Uma vez cancelado, o pedido não voltará mais ao status de "normal". Confirma operação?') then
       rgStatus.ItemIndex := 0;
+    rgStatus.OnClick := rgStatusClick;
+  end;
 end;
       {
 procedure TfrmPedido.Salva_estoque(cod_produto, cod_cor,

@@ -29,7 +29,7 @@ end;
 
 implementation
 
-uses repositorioRelacaoTabelasImportacao, DateTimeUtilitario;
+uses repositorioRelacaoTabelasImportacao, DateTimeUtilitario, funcoes;
 
 { TRelacaoTabelasImportacao }
 
@@ -37,14 +37,24 @@ class procedure TRelacaoTabelasImportacao.criaRelacao(urlExterna, TabelaERP, IdE
 var repositorio :TRepositorioRelacaoTabelasImportacao;
     Relacao :TRelacaoTabelasImportacao;
     data_hora :TDateTime;
+    idRelacao :integer;
 begin
   try
     repositorio             := TRepositorioRelacaoTabelasImportacao.Create;
-    Relacao                 := TRelacaoTabelasImportacao.Create;
-    Relacao.Furl            := urlExterna;
-    Relacao.Ftabela_erp     := TabelaERP;
-    Relacao.Fid_externo     := IdExterno;
-    Relacao.Fid_erp         := IdERP;
+
+    idRelacao := strToIntDef(Campo_por_campo('RELACAO_TAB_IMPORTACAO','CODIGO','URL',urlExterna,'ID_EXTERNO',IdExterno),0);
+
+    if idRelacao > 0 then
+      Relacao := TRelacaoTabelasImportacao(repositorio.Get(idRelacao))
+    else
+    begin
+      Relacao                 := TRelacaoTabelasImportacao.Create;
+
+      Relacao.Furl            := urlExterna;
+      Relacao.Ftabela_erp     := TabelaERP;
+      Relacao.Fid_externo     := IdExterno;
+      Relacao.Fid_erp         := IdERP;
+    end;
 
     if pos('-', data_alteracao) > 0 then
       data_hora := StrToDateTime(TDateTimeUtilitario.padrao_EUA_to_BR(data_alteracao))

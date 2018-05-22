@@ -46,7 +46,7 @@ const
 
 implementation
 
-uses uModulo, ClienteHttpMeusPedidos, System.StrUtils, PEdido, repositorio, fabricaRepositorio;
+uses uModulo, ClienteHttpMeusPedidos, System.StrUtils, PEdido, repositorio, fabricaRepositorio, System.Json, DateTimeutilitario;
 
 {$R *.dfm}
 
@@ -58,9 +58,12 @@ begin
     repositorio := TFabricaRepositorio.GetRepositorio(TPedido.ClassName);
     Pedido      := TPedido(repositorio.get(qryOrcamentosCODIGO.AsInteger));
 
-    Pedido.tipo := 'P';
-    if status.Equals('C') then
-      Pedido.cancelado := 'S';
+    { caso estiver cancelando, mantem o tipo como "Orçamento" para saber que foi um orçamento cancelado }
+    if status.Equals(ST_CANCELADO) then
+      Pedido.cancelado := 'S'
+    else
+      Pedido.tipo := 'P';
+
     repositorio.Salvar(Pedido);
   finally
     FreeAndNil(Pedido);
@@ -72,6 +75,7 @@ function TfrmOrcamentos.cancelaPedidoExterno: String;
 var
   Client :TClienteHttpMeusPedidos;
   json   :String;
+  jsonRet  :TJSonObject;
 begin
   try
   try
@@ -87,7 +91,18 @@ begin
     result := Client.ClientHttp.ResponseCode.ToString;
   Except
     on e :Exception do
-      result := e.Message;
+    begin
+      if pos('tempo_ate_permitir_novamente', e.Message) > 0 then
+      begin
+        jsonRet := TJSONObject.ParseJSONValue( e.Message ) as TJSONObject;
+        result  := 'Número máximo de requisições atingida. Por favor aguarde '
+                   +TDateTimeutilitario.SegundosToTime(StrToIntDef(jsonRet.GetValue('tempo_ate_permitir_novamente').Value,0))+
+                   ' e tente novamente.';
+        freeandnil(jsonRet);
+      end
+      else
+        result := e.Message;
+    end;
   end;
   finally
     FreeAndNil(Client);

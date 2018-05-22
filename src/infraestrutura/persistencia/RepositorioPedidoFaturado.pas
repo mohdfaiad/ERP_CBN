@@ -28,6 +28,7 @@ type
 
   protected
     procedure SetParametros   (Objeto :TObject                        ); override;
+    procedure SetIdentificador(Objeto :TObject; Identificador :Variant); override;
 
   //==============================================================================
   // Auditoria
@@ -71,7 +72,7 @@ end;
 
 function TRepositorioPedidoFaturado.IsComponente: Boolean;
 begin
-   result := true; 
+   result := false;
 end;
 
 function TRepositorioPedidoFaturado.IsInsercao(Objeto: TObject): Boolean;
@@ -101,6 +102,11 @@ begin
    Auditoria.AdicionaCampoIncluido('codigo_nota_fiscal',  FloatToStr(PedidoFaturado.CodigoNotaFiscal));
    Auditoria.AdicionaCampoIncluido('codigo_pedido',       IntToStr(PedidoFaturado.CodigoPedido));
    Auditoria.AdicionaCampoIncluido('motivo',              PedidoFaturado.motivo);
+end;
+
+procedure TRepositorioPedidoFaturado.SetIdentificador(Objeto: TObject; Identificador: Variant);
+begin
+  TPedidoFaturado(Objeto).Codigo := Integer(Identificador);
 end;
 
 procedure TRepositorioPedidoFaturado.SetParametros(Objeto: TObject);

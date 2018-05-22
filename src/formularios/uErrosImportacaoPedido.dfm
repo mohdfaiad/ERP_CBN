@@ -20,6 +20,19 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object Label1: TLabel
+    Left = 890
+    Top = 495
+    Width = 264
+    Height = 18
+    Caption = 'Duplo Clique seleciona o registro desejado'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 11502384
+    Font.Height = -15
+    Font.Name = 'Calibri'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object DBGridCBN1: TDBGridCBN
     Left = 8
     Top = 16
@@ -103,7 +116,6 @@ inherited frmErrosImportacaoPedido: TfrmErrosImportacaoPedido
     Height = 55
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 488
     object btnMarcar: TBitBtn
       Left = 968
       Top = 16

@@ -24,6 +24,7 @@ type
     cdsSELECIONADO: TStringField;
     cdsMARCADO: TStringField;
     lbErros: TLabel;
+    Label1: TLabel;
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnMarcarClick(Sender: TObject);
@@ -56,6 +57,12 @@ begin
     index := cds.RecNo;
     cds.Filter   := 'SELECIONADO = ''S'' ';
     cds.Filtered := TRUE;
+
+    if cds.isEmpty then
+    begin
+      avisar('Atenção! Nenhum registro foi selecionado.');
+      exit;
+    end;
 
     cds.First;
     while not cds.Eof do

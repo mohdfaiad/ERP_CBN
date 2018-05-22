@@ -11,6 +11,7 @@ type
     class function mes_extenso(mes :integer) :String;
     class function dia_semana(data :TDateTime) :String;
     class function padrao_EUA_to_BR(data :String) :String;
+    class function SegundosToTime( Segundos : Cardinal ) : String;
 end;
 
 implementation
@@ -20,6 +21,20 @@ uses
   DateUtils;
 
 { TDateTimeUtilitario }
+
+class function TDateTimeUtilitario.SegundosToTime( Segundos : Cardinal ) : String;
+var
+  Seg, Min, Hora: Cardinal;
+begin
+  Hora := Segundos div 3600;
+  Seg := Segundos mod 3600;
+  Min := Seg div 60;
+  Seg := Seg mod 60;
+
+  Result := FormatFloat(',00', Hora) + ':' +
+  FormatFloat('00', Min) + ':' +
+  FormatFloat('00', Seg);
+end;
 
 class function TDateTimeUtilitario.DataSEFAZToDateTime(const Data: String): TDateTime;
 var
